@@ -45,6 +45,7 @@ DOCS_DIR = REPO_ROOT / "docs"
 # Mutable config (set in main)
 class _Cfg:
     games_dir: Path = REPO_ROOT / "games"
+    programs_dir: Path = REPO_ROOT / "programs"
 
 
 CFG = _Cfg()
@@ -454,11 +455,13 @@ class OGHHandler(BaseHTTPRequestHandler):
     def _resolve_static(self, path: str) -> Optional[Path]:
         if path in ("/", "/index.html", "/lobby", "/lobby/"):
             return WWW_DIR / "index.html"
-        # Games hub (library + profile)
-        if path in ("/games", "/games/", "/library", "/library/"):
+        # Games hub (library + profile) — also lists programs from catalog
+        if path in ("/games", "/games/", "/library", "/library/", "/apps", "/apps/"):
             return CFG.games_dir / "hub" / "index.html"
         if path.startswith("/games/"):
             return safe_join(CFG.games_dir, path[len("/games/") :])
+        if path.startswith("/programs/"):
+            return safe_join(CFG.programs_dir, path[len("/programs/") :])
         if path.startswith("/shared/"):
             # alias games/_shared
             return safe_join(CFG.games_dir / "_shared", path[len("/shared/") :])

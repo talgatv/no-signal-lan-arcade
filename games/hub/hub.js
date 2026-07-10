@@ -19,10 +19,14 @@ function qsPlay() {
   return `name=${name}&room=${room}`;
 }
 
-function entryToPath(entry) {
+function entryToPath(g) {
+  const entry = typeof g === 'string' ? g : g?.entry;
   if (!entry) return '#';
+  const kind = (typeof g === 'object' && g?.kind) || 'game';
+  const root = kind === 'program' ? '/programs/' : '/games/';
   let p = String(entry).replace(/index\.html$/i, '');
-  if (!p.startsWith('/')) p = '/games/' + p;
+  if (p.startsWith('/')) return p.endsWith('/') ? p : p + '/';
+  p = root + p;
   if (!p.endsWith('/')) p += '/';
   return p;
 }
@@ -140,15 +144,19 @@ function filteredSorted() {
   const sort = $('sort').value;
   const minP = $('filterPlayers').value;
   const mpOnly = $('filterMp').checked;
+  const kindF = $('filterKind')?.value || 'any';
   const progressMap = Object.fromEntries(
     OGHProfile.listProgress().map((e) => [e.gameId, e.updatedAt || ''])
   );
 
   let list = catalog.filter((g) => g.status !== 'deprecated' && g.status !== 'idea');
 
+  if (kindF === 'game') list = list.filter((g) => (g.kind || 'game') === 'game');
+  if (kindF === 'program') list = list.filter((g) => g.kind === 'program');
+
   if (q) {
     list = list.filter((g) => {
-      const blob = [g.name, g.tagline, ...(g.genres || []), ...(g.tags || []), g.style]
+      const blob = [g.name, g.tagline, g.kind, ...(g.genres || []), ...(g.tags || []), g.style]
         .join(' ')
         .toLowerCase();
       return blob.includes(q);
@@ -188,18 +196,22 @@ function renderGrid() {
 
   grid.innerHTML = list
     .map((g) => {
-      const path = entryToPath(g.entry);
+      const path = entryToPath(g);
       const mp = isMp(g);
+      const isProg = g.kind === 'program';
       const hasProg = progressIds.has(g.id);
       const genres = (g.genres || []).slice(0, 2).join(', ');
       const players = g.players ? `${g.players.min}–${g.players.max}` : '?';
       const blurb = g.tagline || g.instructions?.en || '';
+      const wip = g.status === 'wip';
       return `
-      <a class="hub-card" href="${path}?${qsPlay()}">
+      <a class="hub-card ${wip ? 'is-wip' : ''}" href="${wip ? '#' : path + '?' + qsPlay()}" ${wip ? 'aria-disabled="true"' : ''}>
         <h2>
           ${escapeHtml(g.name || g.id)}
+          ${isProg ? '<span class="hub-badge">APP</span>' : ''}
           ${mp ? '<span class="hub-badge mp">MP</span>' : ''}
           ${hasProg ? '<span class="hub-badge prog">saved</span>' : ''}
+          ${wip ? '<span class="hub-badge">WIP</span>' : ''}
         </h2>
         <p>${escapeHtml(blurb)}</p>
         <div class="hub-meta">
@@ -288,9 +300,11 @@ $('importFile').addEventListener('change', async () => {
   $('importFile').value = '';
 });
 
-['search', 'sort', 'filterPlayers', 'filterMp'].forEach((id) => {
-  $(id).addEventListener('input', renderGrid);
-  $(id).addEventListener('change', renderGrid);
+['search', 'sort', 'filterPlayers', 'filterMp', 'filterKind'].forEach((id) => {
+  const el = $(id);
+  if (!el) return;
+  el.addEventListener('input', renderGrid);
+  el.addEventListener('change', renderGrid);
 });
 
 window.addEventListener('ogh-profile-changed', () => {

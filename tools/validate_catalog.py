@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate games/catalog JSON and that game packs exist on disk."""
+"""Validate games/catalog JSON and that game/program packs exist on disk."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 GAMES = ROOT / "games"
+PROGRAMS = ROOT / "programs"
 CAT = GAMES / "catalog"
 
 REQUIRED_GAME_FIELDS = [
@@ -33,6 +34,10 @@ def load(path: Path):
         return None
 
 
+def pack_root(kind: str) -> Path:
+    return PROGRAMS if kind == "program" else GAMES
+
+
 def main() -> int:
     errors = 0
     games_path = CAT / "games.json"
@@ -53,6 +58,7 @@ def main() -> int:
             errors += 1
             continue
         gid = g.get("id")
+        kind = g.get("kind") or "game"
         for field in REQUIRED_GAME_FIELDS:
             if field not in g:
                 print(f"FAIL {prefix} id={gid}: missing field '{field}'")
@@ -68,21 +74,27 @@ def main() -> int:
             print(f"FAIL id must not start with underscore: {gid}")
             errors += 1
 
-        folder = GAMES / gid
+        # WIP placeholders may not have files yet
+        if g.get("status") == "wip" and not (pack_root(kind) / gid).is_dir():
+            print(f"WARN id={gid}: wip without folder (ok)")
+            continue
+
+        root = pack_root(kind)
+        folder = root / gid
         if not folder.is_dir():
-            print(f"FAIL id={gid}: folder games/{gid}/ missing")
+            print(f"FAIL id={gid}: folder {root.name}/{gid}/ missing")
             errors += 1
         else:
             entry = g.get("entry", "")
-            entry_path = GAMES / entry
+            entry_path = root / entry
             if not entry_path.is_file():
-                print(f"FAIL id={gid}: entry file missing: {entry}")
+                print(f"FAIL id={gid}: entry file missing: {root.name}/{entry}")
                 errors += 1
             man = g.get("manifest")
             if man:
-                mp = GAMES / man
+                mp = root / man
                 if not mp.is_file():
-                    print(f"FAIL id={gid}: manifest missing: {man}")
+                    print(f"FAIL id={gid}: manifest missing: {root.name}/{man}")
                     errors += 1
 
         players = g.get("players") or {}
@@ -101,14 +113,12 @@ def main() -> int:
             print(f"FAIL id={gid}: instructions must be non-empty object")
             errors += 1
 
-    # authors / families optional soft checks
     for name in ("authors.json", "families.json"):
         p = CAT / name
         if p.exists() and load(p) is None:
             errors += 1
 
-    # warn templates not in catalog (ok)
-    print(f"checked {len(games)} catalog games")
+    print(f"checked {len(games)} catalog entries")
     if errors:
         print(f"FAILED with {errors} error(s)")
         return 1

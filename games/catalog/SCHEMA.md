@@ -21,7 +21,8 @@ Schema version: **1**. Each root JSON has `schemaVersion`.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `id` | string | yes | Unique slug: `comet`, `demo-tap` |
+| `id` | string | yes | Unique slug: `comet`, `lan-chat` |
+| `kind` | string | no | `game` (default) or `program` (utility app) |
 | `name` | string | yes | Display name (default locale) |
 | `names` | map locale→string | no | Localized titles |
 | `tagline` | string | no | One-line pitch |
@@ -45,8 +46,10 @@ Schema version: **1**. Each root JSON has `schemaVersion`.
 | `players.min` | int | yes | |
 | `players.max` | int | yes | |
 | `players.solo` | bool | yes | |
-| `entry` | string | yes | Path from `games/`: `comet/client/index.html` |
-| `manifest` | string | no | Path to manifest.json |
+| `entry` | string | yes | Path under pack root: `comet/client/index.html` or `lan-chat/client/index.html` |
+| `manifest` | string | no | Path under pack root to manifest.json |
+
+**Pack root:** `games/<id>/` when `kind` is `game` (or omitted); `programs/<id>/` when `kind` is `program`.
 | `version` | string | no | semver |
 | `sizeBudgetKb` | number | no | Budget |
 | `sizeMeasuredKb` | number | no | Measured `du` |

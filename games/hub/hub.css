@@ -149,6 +149,11 @@
 
 .hub-card:active { transform: scale(0.99); }
 .hub-card:hover { border-color: rgba(92, 225, 255, 0.45); }
+.hub-card.is-wip {
+  opacity: 0.55;
+  pointer-events: none;
+  cursor: default;
+}
 
 .hub-card h2 {
   margin: 0 0 6px;

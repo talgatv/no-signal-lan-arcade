@@ -464,6 +464,103 @@
       "tags": [
         "beginner"
       ]
+    },
+    {
+      "id": "lan-chat",
+      "name": "LAN Chat & Radio",
+      "kind": "program",
+      "tagline": "Text chat and walkie-talkie (PTT) on your LAN room.",
+      "style": "minimal-line",
+      "genres": [
+        "utility",
+        "social",
+        "communication"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Type to chat. Hold TALK for push-to-talk radio."
+        }
+      },
+      "instructions": {
+        "en": "Connect via PC host. Text tab for messages. Radio tab: hold TALK to send a short voice clip to the room."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10"
+      },
+      "players": {
+        "min": 1,
+        "max": 32,
+        "solo": true
+      },
+      "entry": "lan-chat/client/index.html",
+      "manifest": "lan-chat/manifest.json",
+      "version": "0.1.0",
+      "status": "experimental",
+      "familyFriendly": true,
+      "tags": [
+        "program",
+        "chat",
+        "walkie-talkie",
+        "multiplayer"
+      ],
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "Text + PTT audio over host WebSocket"
+      }
+    },
+    {
+      "id": "compass",
+      "name": "Compass",
+      "kind": "program",
+      "tagline": "Simple compass utility (pack by community / you).",
+      "style": "minimal-line",
+      "genres": [
+        "utility"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch"
+        ],
+        "keyboard": "none",
+        "mouse": "ok"
+      },
+      "instructions": {
+        "en": "Coming soon — place files in programs/compass/ and set status to experimental."
+      },
+      "authorId": "ogh-team",
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10"
+      },
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "compass/client/index.html",
+      "manifest": "compass/manifest.json",
+      "version": "0.0.0",
+      "status": "wip",
+      "familyFriendly": true,
+      "tags": [
+        "program",
+        "utility",
+        "wip"
+      ],
+      "notes": "User-owned compass program; scaffold when ready."
     }
   ]
 }

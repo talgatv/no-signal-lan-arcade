@@ -1,0 +1,27 @@
+{
+  "id": "lan-chat",
+  "name": "LAN Chat & Radio",
+  "version": "0.1.0",
+  "kind": "program",
+  "minPlayers": 1,
+  "maxPlayers": 32,
+  "supportsSolo": true,
+  "genres": ["utility", "social", "communication"],
+  "tags": ["program", "chat", "walkie-talkie", "multiplayer", "ptt"],
+  "style": "minimal-line",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse", "keyboard"],
+    "keyboard": "optional",
+    "mouse": "ok"
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "Text chat + push-to-talk audio clips over host WebSocket"
+  },
+  "shared": ["css/ogh-base.css", "js/ogh-net.js", "js/ogh-profile.js", "js/ogh-sfx.js"]
+}

@@ -55,7 +55,14 @@ If you can edit HTML/CSS/JavaScript and open a browser, you can ship a pack.
 5. Guests **do not install** your game as an APK — they open a URL.
 
 Your contribution is almost never “rewrite the server”.  
-Your contribution is a **game pack**: a small static website + a catalog row.
+Your contribution is a **pack**: a small static website + a catalog row.
+
+Packs can be:
+
+| `kind` | Folder | Examples |
+|--------|--------|----------|
+| `game` (default) | `games/<id>/` | Comet, Pulse Race |
+| `program` | `programs/<id>/` | LAN Chat, Compass |
 
 ```text
 ┌──────────────────────────────────────────────┐
