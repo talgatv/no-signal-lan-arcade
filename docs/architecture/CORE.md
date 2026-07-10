@@ -1,130 +1,134 @@
-# Портативное ядро (Game Core)
+# Portable game core
 
-## Цель
+## Goal
 
-Один **Game Core**, который:
+A **host core** that:
 
-- поднимает HTTP + WebSocket сервер;
-- раздаёт статический UI лобби и игры;
-- управляет комнатами, игроками, lifecycle игр;
-- **не зависит** от Android / iOS / desktop UI.
+- serves HTTP (lobby + static game packs);
+- runs a WebSocket hub (rooms, players, relay);
+- does **not** depend on Android / iOS / desktop UI chrome.
 
-Платформа = **тонкий адаптер**: lifecycle ОС, foreground service, hotspot API, иконка в трее.
+A **platform shell** only provides: process lifecycle, foreground service, hotspot helpers, tray icon, permissions.
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
-│  Platform Host (Android / iOS / Electron / CLI)         │
-│  - permissions, hotspot, notifications, tray            │
+│  Platform Host (PC Python / Android / future iOS)       │
+│  permissions, hotspot, notifications, tray             │
 └──────────────────────────┬──────────────────────────────┘
-                           │ Host Adapter API
+                           │ thin adapter
 ┌──────────────────────────▼──────────────────────────────┐
-│  GAME CORE (portable)                                   │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐ │
-│  │ HTTP     │ │ WebSocket│ │ Lobby &  │ │ Game       │ │
-│  │ static   │ │ hub      │ │ Rooms    │ │ Registry   │ │
-│  └──────────┘ └──────────┘ └──────────┘ └─────┬──────┘ │
-│                                               │        │
-│  ┌────────────────────────────────────────────▼──────┐ │
-│  │ Game Plugin API  (manifest + client + optional    │ │
-│  │                   authoritative server module)    │ │
-│  └───────────────────────────────────────────────────┘ │
+│  HOST CORE                                              │
+│  HTTP static │ WebSocket hub │ Rooms │ Game registry    │
+│                      │                                  │
+│              Game packs (plugins)                       │
+│         manifest + client HTML (+ optional logic)       │
 └─────────────────────────────────────────────────────────┘
          │ LAN
          ▼
-   Browser clients (phones)
+   Browser clients
 ```
 
-## Рекомендуемый стек (с учётом ультра-лёгкости)
+## Stack (lightweight-first)
 
-> Детали Android: [ANDROID_STACK.md](./ANDROID_STACK.md)
+| Layer | Choice | Why |
+|-------|--------|-----|
+| **PC host (now)** | Python 3 **stdlib** (`pc/host.py`) | No Node/pip; offline portable runtimes |
+| **Android host (planned)** | Kotlin + Compose + thin HTTP/WS | Small APK; Dual-like DX |
+| **Lobby + games** | Vanilla HTML/CSS/JS + canvas/SVG | Universal phones; ≤ 10 MB packs |
+| **Net client** | `games/_shared/js/ogh-net.js` | One API for all multiplayer packs |
+| **i18n goal** | en, zh, ru, es, ar, fr | Host strings + game JSON locales |
 
-| Слой | Выбор | Почему |
-|------|--------|--------|
-| **Android host** | **Kotlin + Jetpack Compose + Material 3** | Как Dual; тонкий native UI; маленький APK |
-| **HTTP + WebSocket на хосте** | **Kotlin** (Ktor CIO или ultra-minimal server) | Без Node/Chromium в APK |
-| **Клиент лобби и игр** | **Vanilla JS + HTML/CSS + canvas/SVG** | Браузер гостей; max 10 МБ/игра, цель ≪ 2 МБ |
-| **Серверная логика игр** | JS в sandbox **или** Kotlin handlers | MVP: state machine на хосте на Kotlin; простые игры — client-authoritative + host relay |
-| **Desktop later** | Kotlin/JVM CLI или Compose Desktop | Тот же протокол, другой shell |
-| **i18n** | UN-6: en, zh, ru, es, ar, fr | Хост: strings.xml; игры: JSON packs; CJK/AR шрифты системные |
+**Portability model:** one **protocol** + one **web pack format** + thin **host shells** (`pc/`, `android/`, …) — not one giant binary for everything.
 
-**Почему не TS/Node внутри Android:** философия продукта — соревнование лёгкости. Встроенный runtime съест бюджет размера раньше первой игры.
+**Why not Node inside Android:** the size budget dies before the first game.
 
-**Портируемость:** не «один бинарник на всё», а **один протокол + одни game packs (web) + тонкие host shells** (`android/`, `desktop/`, …).
+## Game plugin format
 
-## Game Plugin (формат игры)
-
-Каждая игра — папка:
-
-```
+```text
 games/
-  codenames/
-    manifest.json      # id, title, players min/max, genres, size budget
-    client/            # то, что отдаётся браузеру
-      index.html
-      ...
-    server/            # optional: authoritative logic
-      index.ts         # hooks: onJoin, onMessage, onLeave, tick
-    assets/            # ≤ суммарно укладываемся в 10 МБ
+  <id>/
+    manifest.json
     README.md
+    client/
+      index.html      # required entry
+      ...
+    server/           # optional future: authoritative host logic
+    assets/
 ```
 
-### manifest.json (черновик схемы)
+### manifest.json (example)
 
 ```json
 {
   "id": "codenames",
-  "name": "Кодовые имена",
+  "name": "Code Names",
   "version": "0.1.0",
   "minPlayers": 4,
   "maxPlayers": 8,
-  "bestPlayers": [4, 6],
   "supportsSolo": false,
   "genres": ["party", "word", "team"],
-  "tags": ["speech", "teams", "asymmetric"],
-  "estimatedSizeMb": 1.2,
-  "entry": {
-    "client": "client/index.html",
-    "server": "server/index.ts"
+  "style": "flat-ui",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok"
   },
-  "orientation": "any",
+  "entry": { "client": "client/index.html" },
   "familyFriendly": true
 }
 ```
 
-## Сетевой протокол (черновик)
+Library listing also requires a row in `games/catalog/games.json`.  
+See [contributing/ENGINE_API.md](../contributing/ENGINE_API.md).
 
-- REST/static: `GET /`, `GET /games/:id/*`, `GET /api/lobby`  
-- WS: `/ws`  
-  - клиент → сервер: `join`, `ready`, `game:action`, `chat`  
-  - сервер → клиент: `lobby:state`, `game:state`, `game:event`, `error`  
+## Network protocol (v1)
 
-Игры **не** открывают свои порты: только сообщения через core hub с `gameId` + `roomId`.
+| Channel | Role |
+|---------|------|
+| `GET /` | Lobby UI |
+| `GET /games/...` | Static packs |
+| `GET /games/catalog/games.json` | Library metadata |
+| `WS /ws` | Realtime |
 
-## Режимы хоста
+**Client → server:** `join`, `ready`, `game:action`, `chat`, `game:start` (host)  
+**Server → client:** `hello`, `lobby`, `game:action` (relay), `game:state`, `game:event`, `error`
 
-1. **Hotspot host** — телефон раздаёт Wi‑Fi, сервер на нём.  
-2. **LAN host** — все в одной домашней сети.  
-3. **Local solo** — браузер на том же устройстве (`127.0.0.1`).
+Games **do not** open their own ports. All traffic goes through the host hub with `room` + `gameId`.
 
-## Портируемость
+Details: [MULTIPLAYER.md](./MULTIPLAYER.md).
 
-| Платформа | Роль host adapter | Приоритет |
-|-----------|-------------------|-----------|
-| Linux desktop | CLI / tray app | P0 (разработка) |
-| Android | Foreground service + QR | P0 (продукт) |
-| Windows / macOS | CLI / tray | P1 |
-| iOS | Ограничения background/hotspot | P2 (сложнее) |
+## Host modes
 
-**Правило:** любая платформа, где можно слушать TCP на LAN и раздавать файлы, может быть хостом. Игроки всегда = браузер.
+1. **Hotspot host** — phone shares Wi‑Fi; server on the phone (Android).  
+2. **LAN host** — everyone on the same router (PC or phone).  
+3. **Local solo** — browser on `127.0.0.1`.
 
-## Что ядро НЕ делает
+## Platform priority
 
-- Не рисует сложный native UI игр (это HTML).  
-- Не хранит облачные аккаунты.  
-- Не обновляет игры из интернета в offline-режиме (обновления — при наличии сети, отдельно).
+| Platform | Role | Priority |
+|----------|------|----------|
+| Linux / Windows PC | Python host | **P0** (now) |
+| Android | Compose shell + embedded server | **P0** product |
+| macOS | System Python / future tray | P1 |
+| iOS | Background/hotspot limits | P2 |
 
-## Следующие архитектурные решения (открыты)
+**Rule:** any OS that can listen on LAN TCP can be a host. Players are always browsers.
 
-1. Runtime: Node vs Bun vs Go binary.  
-2. Нужен ли authoritative server для каждой игры или достаточно host-as-player trust.  
-3. Как паковать игры в APK (assets vs downloadable packs при установке с ПК).
+## What the core does *not* do
+
+- Paint complex native game UI (that is HTML).  
+- Cloud accounts or matchmaking.  
+- Auto-update games while offline.
+
+## Open decisions
+
+1. Android HTTP: Ktor vs minimal ServerSocket.  
+2. Per-game authoritative server modules vs host-player trust.  
+3. APK ships few demo packs vs external pack install.
+
+## Related
+
+- [ANDROID_STACK.md](./ANDROID_STACK.md)  
+- [HOST_PC.md](./HOST_PC.md)  
+- [../VISION.md](../VISION.md)

@@ -19,7 +19,6 @@ Humans and AI agents are both welcome — same rules.
 
 1. Read [README.md](README.md) and [docs/VISION.md](docs/VISION.md).  
 2. **Add a game (beginners):** [docs/contributing/ADD_A_GAME.md](docs/contributing/ADD_A_GAME.md)  
-   · [Русский](docs/contributing/ADD_A_GAME.ru.md)  
 3. **Multiplayer games:** [docs/contributing/ADD_MULTIPLAYER_GAME.md](docs/contributing/ADD_MULTIPLAYER_GAME.md)  
 4. Engine index: [docs/contributing/README.md](docs/contributing/README.md) · [games/ENGINE.md](games/ENGINE.md)  
 5. Prefer **one focused change** per pull request.

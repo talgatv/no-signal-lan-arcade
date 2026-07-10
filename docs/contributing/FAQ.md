@@ -42,7 +42,9 @@ Not in git. See `pc/OFFLINE.md`. Contributors don’t need to commit them.
 
 ### I only speak Russian / Chinese / …
 
-Welcome. Catalog supports `names` / `instructions` maps. English `instructions.en` helps global review; add your language too.
+Welcome. Catalog supports `names` / `instructions` maps for many locales.  
+**Project documentation is English** so every contributor can review the same text.  
+English `instructions.en` helps global review; add your language keys too.
 
 ### Who do I ask?
 

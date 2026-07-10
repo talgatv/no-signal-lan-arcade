@@ -9,11 +9,12 @@ Solo and multiplayer both use the same shape; multiplayer also uses `ogh-net`.
 | Level | Doc | Time |
 |-------|-----|------|
 | **Beginner — first solo game** | [ADD_A_GAME.md](./ADD_A_GAME.md) | 30–60 min |
-| **То же по-русски** | [ADD_A_GAME.ru.md](./ADD_A_GAME.ru.md) | 30–60 min |
 | **Multiplayer game** | [ADD_MULTIPLAYER_GAME.md](./ADD_MULTIPLAYER_GAME.md) | +1–2 h |
 | **API reference** | [ENGINE_API.md](./ENGINE_API.md) | reference |
 | **Copy-paste checklist** | [CHECKLIST.md](./CHECKLIST.md) | 5 min |
 | **FAQ** | [FAQ.md](./FAQ.md) | when stuck |
+
+Official language of documentation: **English** ([docs index](../README.md)).
 
 ## Templates (copy these)
 

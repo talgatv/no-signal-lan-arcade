@@ -1,39 +1,39 @@
-# Rootwork (Корнедел)
+# Rootwork
 
-**2D песочница** — не Minecraft. Ты роешь норы, кладёшь блоки, находишь кристаллы света.
+**2D sandbox** — not Minecraft. Dig tunnels, place blocks, find light crystals.
 
-## Жанр
+## Genre
 
-Sandbox / dig-build · side-view · pixel · solo (LAN-мир — позже)
+Sandbox / dig-build · side-view · pixel · solo (shared LAN world later)
 
-## Управление
+## Controls
 
-| | |
-|--|--|
-| **Тач** | Левый стик / стрелки на экране · прыжок · режим Dig/Place · слот инвентаря |
-| **Мышь** | Клик по тайлу = dig/place · A/D или стрелки · Space прыжок · 1–7 слот · Tab режим |
-| **Клавиатура** | A/D / ←→ · W/Space прыжок · E dig · Q place · R reset world |
+| Touch | Keyboard / mouse |
+|-------|------------------|
+| Stick left | A/D or arrows |
+| Jump | Space / W |
+| DIG / PLACE mode | Tab · E dig · Q place |
+| Action | LMB dig · RMB / F place |
+| Inventory slots | 1–6 |
 
-## Блоки
+Starter kit: rootwood + soil. Auto-save in `localStorage`. **New world** / **Shift+R** for a fresh burrow.
 
-| ID | Имя | |
-|----|-----|--|
-| 0 | Air | пусто |
-| 1 | Soil | копается быстро |
-| 2 | Clay | чуть крепче |
-| 3 | Stone | дольше |
-| 4 | Rootwood | строительный |
-| 5 | Crystal | светится |
-| 6 | Mycel | мягкий, быстро |
-| 7 | Bedrock | не ломается |
+## Blocks
 
-## Сохранение
+| ID | Name | Notes |
+|----|------|--------|
+| 0 | Air | empty |
+| 1 | Soil | digs fast |
+| 2 | Clay | a bit tougher |
+| 3 | Stone | longer dig |
+| 4 | Rootwood | building block |
+| 5 | Crystal | emits light |
+| 6 | Mycel | soft, fast dig |
+| 7 | Bedrock | unbreakable |
 
-Автосейв в `localStorage` (`ogh_rootwork_v1`).
-
-## Запуск
+## Run
 
 ```bash
-cd games && python3 -m http.server 8080
-# http://127.0.0.1:8080/rootwork/client/
+cd pc && ./start.sh
+# http://127.0.0.1:8080/games/rootwork/client/
 ```

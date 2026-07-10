@@ -1,390 +1,216 @@
-# Каталог игр
+# Game idea catalog
 
-Сборник **лёгких браузерных игр** (каждая ≤ 10 МБ) для локальной сети.  
-Сортировка: **сначала жанр → внутри жанра механики → число игроков**.
+Lightweight **browser games** (each ≤ 10 MB) for LAN play.  
+Sort order: **genre → mechanics → player count**.
 
-**Легенда игроков**
+**Player codes**
 
-| Код | Значение |
-|-----|----------|
+| Code | Meaning |
+|------|---------|
 | **S** | Solo (1) |
 | **D** | Duel (2) |
 | **T** | Trio (3) |
 | **P** | Party (4+) |
 
-**Легенда сложности реализации (для планирования)**
+**Implementation difficulty (planning)**
 
 | | |
 |-|-|
-| ★ | Тривиально (статика / простые ходы) |
-| ★★ | Средне (таймеры, комнаты, синхрон) |
-| ★★★ | Сложнее (realtime action, физика, asymmetric roles) |
+| ★ | Trivial (static / simple turns) |
+| ★★ | Medium (timers, rooms, sync) |
+| ★★★ | Harder (realtime, physics, asymmetric roles) |
 
-**Статус в каталоге:** все позиции — *кандидаты*. Shortlist MVP отмечен `🚀`.
+**Catalog status:** ideas unless marked shipped. Shortlist MVP games may be marked `🚀`.
 
----
-
-## 1. Пазлы и логика (Puzzle)
-
-*Спокойный темп, идеально для соло и дуэлей «кто быстрее».*
-
-| Игра | Игроки | Механика | ★ | Примечание |
-|------|--------|----------|---|------------|
-| **2048** 🚀 | S | Слайд-тайлы, слияние чисел | ★ | Классика; позже duel-race |
-| **Судоку** | S | Цифровая сетка 9×9 | ★ | Несколько сложностей |
-| **Сапёр** | S | Открытие клеток, мины | ★ | |
-| **Нонogram / Японский кроссворд** | S | Логика по числам | ★★ | |
-| **Пятнашки** | S | Слайд-пазл 15+1 | ★ | |
-| **Memory (пары)** | S / D / T / P | Открывать карты-пары | ★ | На 2+ — по очереди |
-| **Цвета / Simon** | S / D | Запомнить последовательность | ★ | |
-| **Лабиринт дня** | S / D | Генерация maze, кто быстрее | ★★ | |
-| **Танграм / силуэты** | S | Собрать фигуру | ★★ | Векторная графика — мало МБ |
-| **Hashi / мосты, Kakuro** | S | Логические сетки | ★★ | Пак «японская логика» |
-
-**По числу игроков (Puzzle)**
-
-- **Solo:** 2048, Судоку, Сапёр, Нонogram, Пятнашки, Танграм, Hashi  
-- **2:** Memory duel, Simon duel, Maze race, 2048 race  
-- **3:** Memory на троих  
-- **4+:** Memory party (общая доска), «кто первый решит» (одинаковый пазл)  
+Shipped in-repo: **Comet**, **Comet Pixel**, **Rootwork**, **Pulse Race**, **Demo Tap**.  
+Add packs via [contributing/ADD_A_GAME.md](../contributing/ADD_A_GAME.md).
 
 ---
 
-## 2. Слова и язык (Word)
+## 1. Puzzle
 
-*Отлично работает голосом в одной комнате + экран телефона.*
-
-| Игра | Игроки | Механика | ★ | Примечание |
-|------|--------|----------|---|------------|
-| **Wordle-клон (офлайн словарь)** | S / D | Угадать слово за 6 попыток | ★ | Duel: одно слово, кто быстрее |
-| **Виселица** | S / D / T / P | Буквы, общее слово | ★ | |
-| **Слова из слова** | S / D | Анаграммы | ★ | |
-| **Alias / Объясни слово** | D / T / P | Объяснять без однокоренных | ★★ | Команды 2×2+ |
-| **Codenames (Кодовые имена)** 🚀 | P (4–8) | Ассоциации, команды, grid 5×5 | ★★ | Хит вечеринок |
-| **Шляпа / Крокодил (слова)** | P | Объяснение / жесты | ★★ | Таймер раундов |
-| **Буква → слова** | T / P | На букву за 30 сек | ★ | |
-| **Контакты** (классика) | P | Угадывание по подсказкам | ★★ | |
-| **Балда** | D / T / P | Буквы на поле, слова | ★★ | |
-| **Словомеска / Boggle** | D / T / P | Сетка букв, таймер | ★★ | |
-
-**По числу игроков (Word)**
-
-- **Solo:** Wordle, Виселица, Слова из слова  
-- **2:** Wordle duel, Alias 1v1, Балда  
-- **3:** Виселица, Буква→слова (судья + 2)  
-- **4+:** Codenames, Alias, Шляпа, Boggle, Контакты  
+| Game | Players | Mechanics | ★ | Notes |
+|------|---------|-----------|---|--------|
+| **2048** | S | Slide tiles, merge | ★ | Later: duel race |
+| **Sudoku** | S | 9×9 digits | ★ | Multiple difficulties |
+| **Minesweeper** | S | Open cells | ★ | |
+| **Nonogram** | S | Number logic | ★★ | |
+| **15-puzzle** | S | Sliding puzzle | ★ | |
+| **Memory pairs** | S/D/T/P | Flip cards | ★ | Turn-based multi |
+| **Simon / colors** | S/D | Sequence memory | ★ | |
+| **Maze of the day** | S/D | Generated maze race | ★★ | |
+| **Tangram** | S | Shape assembly | ★★ | Vector = small |
 
 ---
 
-## 3. Викторины и знания (Trivia / Quiz)
+## 2. Word
 
-*Максимальный «вау» при отключении света: все смотрят в телефоны, хост ведёт.*
-
-| Игра | Игроки | Механика | ★ | Примечание |
-|------|--------|----------|---|------------|
-| **Викторина (кнопка-ответ)** 🚀 | T / P | Вопрос → 4 варианта → очки | ★★ | Паки вопросов JSON |
-| **Свой / Чужой (правда-ложь)** | D / T / P | Бинарные ответы | ★ | |
-| **Гео-квиз (флаги, столицы)** | S / D / P | Картинка/название → ответ | ★ | SVG флаги — мало МБ |
-| **Угадай мелодию (текст/ноты)** | P | Без аудио или короткие sfx | ★★ | Аудио жрёт МБ — осторожно |
-| **Брейн-ринг лайт** | D / P | Кто быстрее нажал | ★★ | Latency-sensitive |
-| **Кто я? (20 вопросов)** | T / P | Да/нет про тайную карту | ★ | |
-| **Fact or Cap** | D / T / P | Правда/вымысел факты | ★ | |
-
-**По числу игроков (Trivia)**
-
-- **Solo:** Гео-квиз тренировка, «вопросы дня»  
-- **2:** Дуэль квиз, Свой/Чужой  
-- **3:** Викторина, Кто я?  
-- **4+:** Викторина party, Брейн-ринг, Fact or Cap  
+| Game | Players | Mechanics | ★ | Notes |
+|------|---------|-----------|---|--------|
+| **Wordle-like** | S/D | Guess in 6 tries | ★ | Offline wordpack |
+| **Hangman** | S/D/T/P | Letters | ★ | |
+| **Anagrams** | S/D | Words from word | ★ | |
+| **Alias / Taboo-like** | D/T/P | Explain without roots | ★★ | Teams |
+| **Codenames-like** | P (4–8) | Grid associations | ★★ | Party hit |
+| **Boggle-like** | D/T/P | Letter grid timer | ★★ | |
 
 ---
 
-## 4. Партийные и социальные (Party / Social)
+## 3. Trivia / quiz
 
-*Главный жанр продукта. Jackbox-like без интернета.*
-
-| Игра | Игроки | Механика | ★ | Примечание |
-|------|--------|----------|---|------------|
-| **Бинго** | T / P | Хост тянет числа, отмечают | ★ | |
-| **Мафия / Werewolf** 🚀 | P (6–12) | Роли, день/ночь, голосование | ★★★ | Фазы + скрытые роли |
-| **Шпион** (Spyfall-like) | P (4–8) | Локация, вопросы, кто шпион | ★★ | |
-| **Impostor / Among-лайт (текст)** | P | Задания-кнопки + голосование | ★★★ | Без тяжёлой графики |
-| **Рисуй и угадывай** (Gartic-lite) | D / T / P | Canvas + чат/выбор | ★★★ | |
-| **История по кругу** | T / P | Каждый дописывает фразу | ★ | |
-| **Чемпион реакций** | T / P | Кто первым тапнул цвет/цель | ★★ | |
-| **Тосты / Never Have I Ever** | P | Социальные карточки | ★ | Family + 18+ паки |
-| **Аукцион / Цена права** | P | Ставки очками | ★★ | |
-| **Телефон / Испорченный телефон (рисунок→слово)** | P | Цепочка трансформаций | ★★★ | |
-
-**По числу игроков (Party)**
-
-- **Solo:** — (почти нет; см. мини-аркады)  
-- **2:** Рисуй-и-угадывай duel  
-- **3:** Бинго, История, Реакции  
-- **4+:** Мафия, Шпион, Бинго, Gartic-lite, Never Have I Ever, Телефон  
+| Game | Players | Mechanics | ★ | Notes |
+|------|---------|-----------|---|--------|
+| **Button quiz** 🚀 | T/P | 4 options → scores | ★★ | JSON question packs |
+| **True / false** | D/T/P | Binary | ★ | |
+| **Geo quiz** | S/D/P | Flags / capitals | ★ | SVG flags |
+| **Speed buzzer** | D/P | Fastest tap | ★★ | Latency-sensitive |
 
 ---
 
-## 5. Настольные классики (Board / Tabletop)
+## 4. Party / social
 
-*Знакомые правила = нулевое обучение.*
-
-| Игра | Игроки | Механика | ★ | Примечание |
-|------|--------|----------|---|------------|
-| **Крестики-нолики** 🚀 | D | 3×3 | ★ | Учебный dummy для core |
-| **Четыре в ряд** | D | Гравитация фишек | ★ | |
-| **Шашки** | D | Прыжки, дамки | ★★ | |
-| **Шахматы** | D | Полные правила | ★★★ | Соло vs AI — отдельный уровень |
-| **Нарды (короткие)** | D | Кости + движение | ★★★ | |
-| **Реверси / Othello** | D | Переворот фишек | ★★ | |
-| **Морской бой** | D | Скрытые сетки, выстрелы | ★★ | |
-| **Го (9×9)** | D | Территория | ★★★ | Упрощённое поле |
-| **Мельница (Nine Men's Morris)** | D | Постановка + взятие | ★★ | |
-| **Ludo / Пачиси / Человечки** | D / T / P (2–4) | Кости, бег по кругу | ★★ | |
-| **Змейки и лестницы** | D / T / P | Кости, удача | ★ | |
-| **Монополия-лайт** | P (2–4) | Упрощённая экономика | ★★★ | Осторожно с правилами/IP |
-| **Ticket to Ride-лайт / маршруты** | D / T / P | Карты+пути (своя механика) | ★★★ | Оригинальные правила |
-| **Carcassonne-лайт / тайлы** | D / T / P | Укладка тайлов | ★★★ | |
-
-**По числу игроков (Board)**
-
-- **Solo:** Шахматы vs AI, пасьянс-подобные (см. Cards)  
-- **2:** Крестики, 4 в ряд, Шашки, Шахматы, Реверси, Морской бой, Нарды, Мельница  
-- **3:** Ludo, Змейки, тайлы  
-- **4+:** Ludo, Змейки, Монополия-лайт, маршруты  
+| Game | Players | Mechanics | ★ | Notes |
+|------|---------|-----------|---|--------|
+| **Bingo** | T/P | Host draws numbers | ★ | |
+| **Mafia / Werewolf** | P (6–12) | Roles, day/night | ★★★ | |
+| **Spyfall-like** | P (4–8) | Location + spy | ★★ | |
+| **Draw & guess** | D/T/P | Canvas + chat | ★★★ | |
+| **Reaction champ** | T/P | First to tap target | ★★ | |
 
 ---
 
-## 6. Карточные (Cards)
+## 5. Board / tabletop
 
-*Мало графики, много реиграбельности. Идеальный размер пакета.*
-
-| Игра | Игроки | Механика | ★ | Примечание |
-|------|--------|----------|---|------------|
-| **Пасьянс «Косынка»** | S | Классика | ★★ | |
-| **Дурак** (подкидной) | D / T / P (2–6) | Русская классика | ★★★ | |
-| **Пьяница** | D | Сравнение карт | ★ | |
-| **Чёрный джек** (vs dealer) | S / T / P | Очки до 21 | ★★ | Хост = колода |
-| **Uno-like (своя колода)** | D / T / P | Цвета, спецкарты | ★★ | Без чужого IP — своё имя |
-| **Дурак переводной** | P | Вариант правил | ★★★ | |
-| **Memory на картах** | S / D / P | Пары | ★ | = Memory из Puzzle |
-| **Война** | D | Сравнение старшинства | ★ | |
-| **Pref-лайт / взятки упрощ.** | T | Взятки | ★★★ | |
-| **Своя «взрывная колода»** (exploding-like) | P | Дек-building light | ★★★ | Оригинальный дизайн |
-
-**По числу игроков (Cards)**
-
-- **Solo:** Косынка, BJ vs dealer  
-- **2:** Пьяница, Война, Дурак, Uno-like  
-- **3:** Дурак, Uno-like, Pref-лайт  
-- **4+:** Дурак, Uno-like, взрывная колода  
+| Game | Players | Mechanics | ★ | Notes |
+|------|---------|-----------|---|--------|
+| **Tic-tac-toe** 🚀 | D | 3×3 | ★ | MP protocol trainer |
+| **Connect Four** | D | Gravity columns | ★ | |
+| **Checkers** | D | Jumps | ★★ | |
+| **Chess** | D | Full rules | ★★★ | AI optional |
+| **Battleship** | D | Hidden grids | ★★ | |
+| **Reversi** | D | Flips | ★★ | |
+| **Ludo-like** | D/T/P | Dice race | ★★ | |
+| **Snakes & ladders** | D/T/P | Luck | ★ | |
 
 ---
 
-## 7. Аркады и экшен (Arcade / Action)
+## 6. Cards
 
-*Realtime по Wi‑Fi: учитывать задержку; предпочитать короткие раунды.*
-
-| Игра | Игроки | Механика | ★ | Примечание |
-|------|--------|----------|---|------------|
-| **Змейка** | S / D | Рост, стены | ★ | Duel: две змейки / who lasts |
-| **Тетрис-клон** | S / D | Падение фигур | ★★ | Duel: attack lines |
-| **Pong** | D | Отскок | ★★ | |
-| **Air Hockey** | D | Физика 2D | ★★★ | |
-| **Гонки top-down (мини)** | D / T / P | Круги, препятствия | ★★★ | |
-| **Bomberman-лайт** | D / T / P (2–4) | Бомбы, стены | ★★★ | |
-| **IO-арена лайт** (агар-стиль) | P | Рост шаров | ★★★ | |
-| **Платформер-забег** | S / D | Бег + прыжки, кто дальше | ★★★ | |
-| **Тир / тап-мишени** | S / D / P | Реакция | ★ | |
-| **Flappy-клон** | S / D | Тап-прыжок | ★ | |
-
-**По числу игроков (Arcade)**
-
-- **Solo:** Змейка, Тетрис, Flappy, Тир, Платформер  
-- **2:** Pong, Air Hockey, Тетрис duel, Змейка duel  
-- **3:** Гоночки, Bomberman  
-- **4+:** Bomberman, IO-арена, гонки, тир-party  
+| Game | Players | Mechanics | ★ | Notes |
+|------|---------|-----------|---|--------|
+| **Klondike solitaire** | S | Classic | ★★ | |
+| **Durak-like** | D/T/P | Regional classic | ★★★ | Original naming |
+| **War** | D | Rank compare | ★ | |
+| **Uno-like** | D/T/P | Colors + specials | ★★ | Original name |
 
 ---
 
-## 8. Стратегия и пошаговые (Strategy)
+## 7. Arcade / action
 
-| Игра | Игроки | Механика | ★ | Примечание |
-|------|--------|----------|---|------------|
-| **Крестики 5-в-ряд (Gomoku)** | D | Бесконечное/15×15 поле | ★★ | |
-| **Точки** | D | Захват областей | ★★ | |
-| **Risk-лайт / завоевание** | T / P (3–6) | Броски, территории | ★★★ | |
-| **Каркасонн-лайт** | D / T / P | Уже в Board | ★★★ | |
-| **Башни / tower draft** | D / T | Драфт карт, билд | ★★★ | |
-| **Морской бой++** (туман) | D | Уже в Board | ★★ | |
-| **Так-тик / блитц-стратегия** | D | Ходы с таймером | ★★ | |
-
-**По числу игроков (Strategy)**
-
-- **Solo:** головоломки-стратегии (пазлы)  
-- **2:** Gomoku, Точки, Шахматы  
-- **3–4+:** Risk-лайт, draft  
+| Game | Players | Mechanics | ★ | Notes |
+|------|---------|-----------|---|--------|
+| **Snake** | S/D | Grow | ★ | |
+| **Tetris-like** | S/D | Falling pieces | ★★ | |
+| **Pong** | D | Bounce | ★★ | |
+| **Pulse Race** ✅ | S (+AI) / P later | Top-down circuit | ★★ | Shipped |
+| **Bomberman-lite** | D/T/P | Bombs | ★★★ | |
+| **Flappy-like** | S/D | Tap jump | ★ | |
 
 ---
 
-## 9. Кооператив (Co-op)
+## 8. Sandbox
 
-*Все против игры, не друг против друга — важно для семьи.*
-
-| Игра | Игроки | Механика | ★ | Примечание |
-|------|--------|----------|---|------------|
-| **Совместный кроссворд / word hunt** | D / T / P | Общая цель | ★★ | |
-| **Кооп-квиз** (общие жизни) | D / T / P | Ошибки = −жизнь | ★★ | |
-| **Побег из комнаты (текстовый)** | D / T / P | Пазлы, коды | ★★★ | |
-| **Кооп-змейка / общий контроль** | D | Смешное управление | ★★ | |
-| **Пандемия-лайт** | T / P | Роли, тушить вспышки | ★★★ | Оригинальные правила |
+| Game | Players | Mechanics | ★ | Notes |
+|------|---------|-----------|---|--------|
+| **Rootwork** ✅ | S | Dig / place 2D | ★★ | Shipped; not Minecraft |
+| **Asteroid base** | S/D | Zero-g dig-build | ★★★ | Idea |
+| **Island parcel** | S/D/T | Top-down build | ★★ | Idea |
 
 ---
 
-## 10. Детские / family-simple
+## 9. Physics / hybrid
 
-| Игра | Игроки | Механика | ★ |
-|------|--------|----------|---|
-| **Найди пару (животные)** | S / D / T | Memory | ★ |
-| **Цвета и формы** | S | Сортировка | ★ |
-| **Простые крестики** | D | 3×3 | ★ |
-| **Кто первый нажал на …** | T / P | Реакция | ★ |
-| **Считалочка / очередь мини-игр** | P | Сборник 30-сек игр | ★★ |
+| Game | Players | Mechanics | ★ | Notes |
+|------|---------|-----------|---|--------|
+| **Comet** ✅ | S | Gravity wells | ★★ | Shipped neon |
+| **Comet Pixel** ✅ | S | Grid wells | ★★ | Variant |
 
 ---
 
-# Сводка по числу игроков
+## By player count (summary)
 
-## Solo (1)
+### Solo
+2048, Sudoku, Minesweeper, Wordle-like, Solitaire, Snake, Tetris-like, **Comet**, **Rootwork**, **Demo Tap**, Flappy-like, geo training.
 
-| Жанр | Игры |
-|------|------|
-| Puzzle | 2048, Судоку, Сапёр, Нонogram, Пятнашки, Танграм |
-| Word | Wordle, Виселица, Анаграммы |
-| Trivia | Гео-квиз |
-| Cards | Косынка, BJ |
-| Arcade | Змейка, Тетрис, Flappy, Тир, Платформер |
-| Board | Шахматы vs AI |
+### 2 players
+Tic-tac-toe, Connect Four, Checkers, Chess, Battleship, Pong, Wordle duel, Memory duel, Durak-like, Uno-like.
 
-## На 2 (Duel)
+### 3 players
+Quiz, Bingo, Memory, Ludo-like, Uno-like, reaction games.
 
-| Жанр | Игры |
-|------|------|
-| Board | Крестики, 4 в ряд, Шашки, Шахматы, Реверси, Морской бой, Нарды, Мельница, Gomoku |
-| Cards | Пьяница, Война, Дурак, Uno-like |
-| Arcade | Pong, Air Hockey, duel-Тетрис, duel-Змейка |
-| Word | Wordle duel, Балда, Alias 1v1 |
-| Puzzle | Memory, Maze race, 2048 race |
-| Party | Рисуй-угадывай |
-
-## На 3 (Trio)
-
-| Жанр | Игры |
-|------|------|
-| Trivia | Викторина, Кто я? |
-| Party | Бинго, История по кругу, Реакции |
-| Cards | Дурак, Uno-like |
-| Board | Ludo, Змейки |
-| Word | Буква→слова, Boggle |
-| Co-op | Кооп-квиз, escape |
-
-*Тройка — «неудобное» число: лучше игры с одновременным участием, не жёсткие 1v1.*
-
-## На 4 и более (Party)
-
-| Жанр | Игры |
-|------|------|
-| Party | Мафия, Шпион, Gartic-lite, Never Have I Ever, Телефон, Бинго |
-| Word | Codenames, Alias, Шляпа, Boggle |
-| Trivia | Викторина, Брейн-ринг |
-| Cards | Дурак, Uno-like, взрывная колода |
-| Board | Ludo, Монополия-лайт |
-| Arcade | Bomberman, IO-арена, гонки |
-| Co-op | Пандемия-лайт, escape room |
+### 4+
+Quiz, Codenames-like, Mafia, Spyfall-like, Bingo, Uno-like, Bomberman-lite, Alias-like.
 
 ---
 
-# Приоритеты реализации (предложение)
+## Implementation tiers
 
-## Tier 0 — доказать ядро (3 игры) 🚀
+### Tier 0 — prove the engine ✅ / next
+1. Solo static client ✅  
+2. Turn-based MP (tic-tac-toe) — recommended next  
+3. Party broadcast (quiz)  
 
-1. **Крестики-нолики** (2) — минимальный turn-based протокол  
-2. **2048** (1) — pure client / solo  
-3. **Викторина** (3–8) — broadcast + scoreboard  
+### Tier 1 — invite friends
+Connect Four, Memory, Wordle-like, Battleship, Codenames-like, Uno-like, Bingo  
 
-## Tier 1 — «можно звать друзей» (ещё ~7)
+### Tier 2 — depth
+Mafia, Durak-like, Checkers, Tetris-like, Pong, draw-guess, Bomberman-lite  
 
-4. Четыре в ряд  
-5. Memory  
-6. Wordle-клон  
-7. Морской бой  
-8. Codenames  
-9. Uno-like  
-10. Бинго  
-
-## Tier 2 — глубина каталога
-
-- Мафия, Шпион, Дурак, Шашки, Тетрис, Pong, Alias, Gartic-lite, Bomberman-лайт  
-
-## Tier 3 — «вау» и тяжёлая логика
-
-- Шахматы+AI, Нарды, Risk-лайт, IO-арена, Пандемия-лайт, escape room  
+### Tier 3 — wow / heavy logic
+Chess+AI, Risk-lite, escape room co-op  
 
 ---
 
-# Критерии отбора в релиз
+## Release criteria for a pack
 
-Игра попадает в сборник, если:
-
-1. **≤ 10 МБ** (цель: большинство &lt; 2 МБ).  
-2. Играбельна **большим пальцем** на телефоне.  
-3. Правила объясняются **&lt; 30 секунд** (или есть туториал на 1 экран).  
-4. Работает при **latency 50–150 ms** типичного Wi‑Fi (для realtime — прощение лагов).  
-5. **Нет зависимости** от внешних CDN/шрифтов/API.  
-6. **Family-friendly** по умолчанию (18+ — отдельный opt-in пак).  
-7. Нет нарушения чужих торговых марок в **названиях** (клоны — под своими именами).
+1. ≤ 10 MB (prefer most &lt; 2 MB).  
+2. Playable with a thumb on a phone.  
+3. Rules in &lt; 30 seconds (or one-screen tutorial).  
+4. Works with typical Wi‑Fi latency for its genre.  
+5. No external CDN/font/API at runtime.  
+6. Family-friendly by default.  
+7. No trademarked titles.
 
 ---
 
-# Механики (таксономия для фильтров в лобби)
+## Mechanics taxonomy (lobby filters)
 
-| Механика | Примеры |
-|----------|---------|
-| Turn-based | Шашки, Дурак, Codenames (ходы) |
-| Simultaneous | Викторина, Boggle |
-| Realtime action | Pong, Bomberman |
-| Hidden info | Морской бой, Мафия, Шпион |
-| Teams | Codenames, Alias |
-| Co-op | Escape, Пандемия-лайт |
-| Dexterity / reaction | Тир, Чемпион реакций |
-| Auction / bets | Аукцион |
-| Drawing | Gartic-lite |
-| Word input | Wordle, Балда |
-| Dice / RNG | Ludo, Змейки |
-| Solo puzzle | Судоку, 2048 |
-
----
-
-# Идеи паков (наборы)
-
-| Пак | Состав (примерно) |
-|-----|-------------------|
-| **Выживание / свет выключили** | Викторина, Мафия, Codenames, Бинго, Memory |
-| **Вдвоём** | 4 в ряд, Морской бой, Pong, Wordle duel, Шашки |
-| **Один дома** | 2048, Судоку, Косынка, Змейка, Wordle |
-| **Семья** | Ludo, Memory, Бинго, гео-квиз, Alias junior |
-| **Классика РФ** | Дурак, Виселица, Морской бой, Крестики, Балда |
+| Mechanic | Examples |
+|----------|----------|
+| Turn-based | Checkers, Durak-like, Codenames-like |
+| Simultaneous | Quiz, Boggle-like |
+| Realtime action | Pong, Bomberman-lite, Pulse Race |
+| Hidden info | Battleship, Mafia |
+| Teams | Codenames-like, Alias-like |
+| Co-op | Escape room lite |
+| Drawing | Draw & guess |
+| Word input | Wordle-like |
+| Dice / RNG | Ludo-like |
+| Solo puzzle | Sudoku, Comet |
+| Sandbox | Rootwork |
 
 ---
 
-# Открытые вопросы по каталогу
+## Pack bundles (ideas)
 
-1. Какой **минимальный набор** для первого релиза: 3, 5 или 10 игр?  
-2. Нужен ли **18+ пак** (взрослые карточки) с первого дня?  
-3. Делаем ли **оригинальные** правила или только «общественное достояние / свои клоны»?  
-4. Приоритет **party 4+** vs **duel 2** для вашего круга использования?  
-5. Язык контента: только RU словари или RU+EN?
+| Pack | Rough contents |
+|------|----------------|
+| Blackout survival | Quiz, Mafia, Codenames-like, Bingo, Memory |
+| Duo | Connect Four, Battleship, Pong, Wordle duel |
+| Solo | Comet, Sudoku, Solitaire, Snake, Wordle-like |
+| Family | Ludo-like, Memory, Bingo, geo quiz |
+| Classics (regional) | Durak-like, Hangman, Battleship, Tic-tac-toe |
 
 ---
 
-*Документ живой: правим список по мере playtest и ограничений размера/сети.*
+*Living document — update as playtests and size budgets evolve.*

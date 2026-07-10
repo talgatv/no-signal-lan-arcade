@@ -1,47 +1,38 @@
-# Python runtimes (portable) for OGH PC Host
+# Portable Python runtimes for OGH PC Host
 
-Хост написан на **чистом Python 3** (stdlib only, **без pip-пакетов**).  
-Нужен только интерпретатор.
+The host is pure **Python 3** (stdlib only — **no pip packages**).  
+You only need an interpreter.
 
-## Зачем эта папка
+## Why this folder exists
 
-Чтобы на Windows / Linux можно было:
+So Windows / Linux machines can:
 
-1. Скачать **официальный** portable/embeddable Python **рядом с проектом**  
-2. Запускать `start.bat` / `start.sh` **без** системной установки  
+1. Keep an **official** portable/embeddable Python **next to the project**  
+2. Run `start.bat` / `start.sh` **without** a system install  
 
-**В этой копии проекта runtime уже скачан** (`win64/`, `linux64/`) — можно копировать весь репо на флешку и работать без интернета.  
-См. [`../OFFLINE.md`](../OFFLINE.md).
+**In a full offline disk copy**, runtimes may already be present (`win64/`, `linux64/`).  
+See [../OFFLINE.md](../OFFLINE.md).
 
-В **git** крупные папки по умолчанию игнорируются (не раздувать историю). На диске для офлайн-пакета они **должны присутствовать**.
+Large trees are **gitignored** so the public GitHub repo stays small.  
+Use download scripts after `git clone`, or attach a Release zip.
 
-| Папка (после download) | Платформа |
-|------------------------|-----------|
+| Folder (after download) | Platform |
+|-------------------------|----------|
 | `win64/` | Windows x64 (embeddable package) |
-| `linux64/` | Linux x86_64 (official standalone build) |
-| `macos64/` | macOS (опционально; пока скрипт-заготовка) |
+| `linux64/` | Linux x86_64 (standalone stripped build) |
+| `macos64/` | Not bundled; use system Python |
 
-## Быстрый старт
+## Quick start
 
-### Уже есть Python 3.9+ в системе
-
-Ничего качать не нужно:
+### System Python 3.9+ already installed
 
 ```bash
 cd pc
-./start.sh          # Linux/macOS
-# или
-python3 host.py
+./start.sh
+# or: python3 host.py
 ```
 
-Windows:
-
-```bat
-cd pc
-start.bat
-```
-
-### Нет Python — скачать portable рядом
+### No system Python — download portable
 
 **Windows** (PowerShell):
 
@@ -61,49 +52,48 @@ cd ..
 ./start.sh
 ```
 
-**macOS** (если системного python3 нет):
+**macOS**:
 
 ```bash
-# Рекомендуется: brew install python3
-# или официальный installer с https://www.python.org/downloads/macos/
-./download_macos.sh   # пока подсказки + optional brew
+# brew install python3   OR  python.org installer
+./download_macos.sh   # prints guidance
 ```
 
-## Официальные источники
+## Official sources
 
-| OS | Откуда |
+| OS | Source |
 |----|--------|
 | Windows | https://www.python.org/downloads/windows/ — *Windows embeddable package (64-bit)* |
-| Linux | https://www.python.org/downloads/source/ или deadsnakes / distro packages; скрипт тянет standalone build |
+| Linux | python-build-standalone (indygreg) via `download_linux.sh` |
 | macOS | https://www.python.org/downloads/macos/ |
 
-Версия по умолчанию в скриптах: **3.12.x** (можно поменять переменную `PY_VERSION`).
+Default versions are pinned in the scripts / `VERSIONS.txt`.
 
-## Размер
+## Size (order of magnitude)
 
-| | Ориентир |
-|--|----------|
-| Embeddable Win | ~10–15 МБ архив, ~30–40 МБ распакованный |
-| Linux standalone | зависит от сборки, обычно десятки МБ |
-| **Node** для сравнения | часто больше и с npm-деревом |
+| | |
+|--|--|
+| Windows embeddable | ~10–15 MB zip, ~22 MB unpacked |
+| Linux stripped | ~20 MB archive, ~80 MB unpacked |
+| Node (comparison) | often larger with dependency trees |
 
-Мы **специально не** тащим Node.
+We intentionally avoid Node for the host.
 
-## Лицензия Python
+## License
 
-PSF License — можно распространять embeddable рядом с open-source приложением.  
-Соблюдайте LICENSE из дистрибутива Python (копируется при download).
+PSF License — redistributable with open-source apps.  
+Keep `LICENSE.txt` from each runtime tree when shipping offline zips.
 
-## Структура после download
+## Layout after download
 
-```
+```text
 pc/runtimes/
   README.md
+  VERSIONS.txt
   download_windows.ps1
   download_linux.sh
   download_macos.sh
   .gitignore
   win64/          # gitignored
   linux64/        # gitignored
-  macos64/        # gitignored
 ```

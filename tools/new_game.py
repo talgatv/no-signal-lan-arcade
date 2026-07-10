@@ -108,7 +108,6 @@ def main() -> int:
             },
             "instructions": {
                 "en": "Open via PC host lobby. Edit client/game.js to change rules.",
-                "ru": "Открой через лобби PC-хоста. Правила — в client/game.js.",
             },
             "authorId": None if args.author else "ogh-team",
             "authorInline": (

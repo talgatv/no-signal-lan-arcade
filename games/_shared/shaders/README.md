@@ -1,22 +1,22 @@
 # Shared shaders
 
-Фрагментные/вершинные исходники для экспериментов.
+Readable fragment/vertex sources for experiments.
 
-Сейчас основной runtime-шейдер **инлайнится** в `../js/ogh-shader-bg.js`  
-(чтобы игра открывалась одним static-server без fetch CORS к `.glsl`).
+The main runtime shader is **inlined** in `../js/ogh-shader-bg.js`  
+so games work on a static host without fetching `.glsl` (CORS / path issues).
 
-Здесь — читаемые копии для правок и будущих вариантов:
+This folder holds editable copies:
 
-| Файл | Идея |
+| File | Idea |
 |------|------|
-| `plasma-field.frag.glsl` | Неоновое поле + звёзды (как в OGHShaderBg) |
-| `grid-warp.frag.glsl` | Сетка «кибер» (заготовка) |
+| `plasma-field.frag.glsl` | Neon field + stars (as in OGHShaderBg) |
+| `grid-warp.frag.glsl` | Cyber grid (placeholder) |
 
-**Правило размера:** шейдеры короткие (десятки строк), `mediump`, без текстур.  
-Игры рисуют геймплей на **2D canvas поверх** shader-bg — так проще и легче.
+**Size rule:** short shaders (tens of lines), `mediump`, no textures.  
+Games draw gameplay on a **2D canvas above** the shader background — simpler and lighter.
 
-## Шрифты (рядом в `_shared`)
+## Fonts (sibling under `_shared`)
 
-Шрифты **не кладём внутрь `.glsl`** — они в [`../fonts/`](../fonts/)  
+Fonts do **not** go inside `.glsl` — they live in [`../fonts/`](../fonts/)  
 (Roboto, Open Sans, Noto Sans, Montserrat, JetBrains Mono, Press Start 2P).  
 CSS: [`../css/ogh-fonts.css`](../css/ogh-fonts.css).

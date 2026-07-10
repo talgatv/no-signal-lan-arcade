@@ -1,48 +1,48 @@
 # Roadmap
 
-Актуальный **план с LLM-задачами:** [LLM_DEVELOPMENT_PLAN.md](./LLM_DEVELOPMENT_PLAN.md)
+Detailed LLM task breakdown: [LLM_DEVELOPMENT_PLAN.md](./LLM_DEVELOPMENT_PLAN.md)
 
-## Фаза 0 — Документация и каталог ✅
+## Phase 0 — Docs, catalog, first games ✅
 
-- [x] README, VISION, CORE, ANDROID_STACK, MULTIPLAYER  
-- [x] Каталог JSON + SCHEMA  
-- [x] Игры: Comet, Comet Pixel, Rootwork, Pulse Race  
-- [x] PC host Python + offline runtimes on disk  
-- [x] План LLM-разработки  
-- [ ] Публичный GitHub + Pages  
+- [x] README, VISION, CORE, ANDROID_STACK, MULTIPLAYER (English)  
+- [x] Catalog JSON + SCHEMA  
+- [x] Games: Comet, Comet Pixel, Rootwork, Pulse Race, Demo Tap  
+- [x] PC host Python + offline runtime support  
+- [x] Contributor engine docs, templates, tools  
+- [x] Public GitHub: https://github.com/talgatv/no-signal-lan-arcade  
 
-## Фаза 1 — PC host + LAN multiplayer
+## Phase 1 — PC host + LAN multiplayer
 
 - [x] `pc/host.py` HTTP + WebSocket  
-- [x] Лобби `pc/www`  
+- [x] Lobby `pc/www` + catalog-driven library  
 - [ ] QR + copy IP  
-- [ ] Эталон turn-based MP (крестики / 4 в ряд)  
+- [ ] Turn-based MP reference (tic-tac-toe / connect four)  
 - [ ] Pulse Race online snapshot  
 - [ ] Trivia party  
 
-## Фаза 2 — Android host
+## Phase 2 — Android host
 
 - [ ] Gradle Compose skeleton  
-- [ ] Foreground service + WS/HTTP  
+- [ ] Foreground service + HTTP/WS  
 - [ ] QR + IP  
 - [ ] Demo games in assets  
 
-## Фаза 3 — Каталог v1 (~15–25 игр)
+## Phase 3 — Catalog v1 (~15–25 games)
 
-- [ ] Фильтры в лобби / catalog viewer  
-- [ ] Больше micro-игр (1 PR = 1 игра)  
-- [ ] i18n UN-6 в UI  
+- [ ] Lobby filters (genre / players / controls)  
+- [ ] More micro-games (1 PR = 1 game)  
+- [ ] UN-6 i18n in host UI  
 
-## Фаза 4 — Релиз
+## Phase 4 — Release polish
 
-- [ ] CI, SECURITY.md  
+- [ ] CI, security notes  
 - [ ] Offline Release zip (runtimes)  
 - [ ] Tag v0.1.0  
 
-## Метрики
+## Success metrics
 
-| Вехи | Критерий |
-|------|----------|
-| Demo friends | PC host + 2 телефона + 1 MP-игра |
-| Alpha | 10 игр, 2+ MP |
-| Beta | Android host + 20 игр |
+| Milestone | Criterion |
+|-----------|-----------|
+| Friends demo | PC host + 2 phones + 1 real MP game |
+| Alpha | 10 games, 2+ MP |
+| Beta | Android host + 20 games |

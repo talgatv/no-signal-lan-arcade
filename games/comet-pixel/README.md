@@ -1,19 +1,23 @@
 # Comet Pixel
 
-Пиксельная вариация [Comet](../comet/).
+Pixel-art variation of [Comet](../comet/).
 
 | | Comet | Comet Pixel |
 |--|-------|-------------|
-| Стиль | neon-vector + WebGL bg | low-res pixel, 12-color palette |
-| Колодцы | free place | **snap to 8px grid** |
-| Физика | smooth | чуть «тяжелее», clamp |
-| Каталог | `id: comet` | `id: comet-pixel`, `variantOf: comet` |
+| Style | neon-vector + WebGL bg | 160×224, limited palette |
+| Wells | free placement | **snap to 8px grid** |
+| Physics | smooth | slightly heavier |
+| Catalog | `id: comet` | `id: comet-pixel`, `variantOf: comet` |
 
-Семейство: **comet** → [`../catalog/families.json`](../catalog/families.json).
+Family: **comet** → [`../catalog/families.json`](../catalog/families.json).
 
-## Запуск
+## Difficulty
+
+Same model as Comet: more wells + slower comet on Easy; fewer wells + faster on Hard.
+
+## Run
 
 ```bash
-cd games && python3 -m http.server 8080
-# http://127.0.0.1:8080/comet-pixel/client/
+cd pc && ./start.sh
+# http://127.0.0.1:8080/games/comet-pixel/client/
 ```

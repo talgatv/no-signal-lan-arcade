@@ -1,68 +1,78 @@
-# Визия: Offline Games Hub
+# Vision: Offline Games Hub
 
-## Проблема
+**Also known as:** No-Signal LAN Arcade  
+**Repo:** https://github.com/talgatv/no-signal-lan-arcade
 
-Нет интернета / отключили свет / все в одной комнате — хочется **вместе** поиграть, а не в одиночные игры на своём телефоне. Классические настолки не всегда под рукой. Jackbox и аналоги требуют интернет и подписки.
+## Problem
 
-## Решение
+No internet, a power cut, or a room full of people — and you still want to **play together**, not each alone on a phone. Board games are not always at hand. Services like Jackbox need the cloud and often a subscription.
 
-Один телефон становится **игровым хабом**:
+## Solution
 
-1. Хост открывает приложение → стартует локальный сервер.  
-2. Остальные сканируют QR / вводят IP → браузер.  
-3. В лобби выбирают игру из сборника.  
-4. Играют; состояние синхронизируется через WebSocket по LAN.
+One device becomes a **local game hub**:
 
-## Сценарии использования
+1. Host starts the app/server (PC today, Android later).  
+2. Others scan a QR / open an IP in the browser.  
+3. Lobby → pick a game from the collection.  
+4. Play; state syncs over **LAN WebSocket** (no internet).
 
-### A. «Отключили свет»
-- Powerbank + 2–6 телефонов.  
-- Хост включает hotspot (или все в одной mesh/роутере на батарее).  
-- Партийные игры на 4+ человек, викторины, мафия.
+## Use cases
 
-### B. «В дороге / на даче»
-- 2–4 человека.  
-- Дуэли, настольные классики, кооператив.
+### A. Blackout party
+- Power bank + 2–6 phones.  
+- Host hotspot or a battery-powered router.  
+- Party games, trivia, social deduction.
 
-### C. «Детский / семейный вечер»
-- Простые правила, крупные кнопки, без токсичного контента.  
-- Пазлы, ходилки, memory, викторины «знаешь ли ты…».
+### B. Travel / cabin
+- 2–4 people.  
+- Duels, classics, co-op.
 
-### D. «Один играет, пока ждут»
-- Соло-режим без сети (или хост сам себе клиент).
+### C. Family night
+- Simple rules, large touch targets, no toxic content.  
+- Puzzles, roll-and-move, memory, kids’ quizzes.
 
-## Ограничения продукта
+### D. Solo while waiting
+- Solo packs offline, or host opens the lobby alone.
 
-| Ограничение | Значение |
-|-------------|----------|
-| Размер одной игры | ≤ 10 МБ |
-| Сеть | Только LAN / Wi‑Fi Direct / hotspot, без облака |
-| Клиент игрока | Современный мобильный браузер (Chrome, Safari, Firefox) |
-| Язык UI (MVP) | Русский; позже i18n |
-| Монетизация (MVP) | Нет — open source / бесплатно |
-| Возрастной контент | По умолчанию family-friendly; взрослые паки — опционально |
+## Product constraints
 
-## Не цели (out of scope на старте)
+| Constraint | Value |
+|------------|--------|
+| Max size per game pack | ≤ **10 MB** (aim ≪ 2 MB) |
+| Network | LAN / hotspot only — **no cloud** |
+| Player client | Modern mobile browser |
+| Host UI languages (goal) | UN set: en, zh, ru, es, ar, fr |
+| Monetization (MVP) | Free / open source |
+| Content default | Family-friendly; 18+ only as opt-in packs |
 
-- Онлайн-матчмейкинг и аккаунты  
-- 3D AAA, тяжёлые движки (Unity runtime и т.п.)  
-- Геймпад-only / только desktop  
-- Платные магазины внутри MVP  
-- Видеостриминг геймплея  
+## Out of scope (for now)
 
-## Критерии успеха MVP
+- Online matchmaking & accounts  
+- Heavy 3D engines (Unity runtime, etc.)  
+- Gamepad-only / desktop-only games as the default  
+- In-app purchase store in MVP  
+- Gameplay video streaming  
 
-1. Хост на Android (или desktop-прототип) поднимает сервер.  
-2. ≥ 2 устройства подключаются по Wi‑Fi.  
-3. В каталоге ≥ 3 игры: 1 соло, 1 на 2, 1 на 4+.  
-4. Переключение между играми без перезапуска сервера.  
-5. Ядро отделено: тот же core запускается на Linux/desktop.
+## MVP success criteria
 
-## Имя проекта (рабочие варианты)
+1. Host runs on **PC** (and later Android).  
+2. ≥ 2 devices join over Wi‑Fi.  
+3. ≥ 3 games: solo, 2-player path, party path.  
+4. Switch games without restarting the host process.  
+5. Same game packs work on any host that speaks the protocol.
 
-- **Offline Games Hub** (текущее)  
-- **LAN Party Pocket**  
-- **Hotspot Arcade**  
-- **Комната** / **Roomplay**  
+## Naming
 
-Финальное имя — позже; в коде пока `offline-games-hub` / `ogh`.
+| Name | Role |
+|------|------|
+| **Offline Games Hub** | Product / docs name |
+| **no-signal-lan-arcade** | GitHub repository |
+| `ogh` | Short code prefix |
+
+## Principles
+
+1. Offline is a feature, not a fallback.  
+2. Kilobytes are a design material.  
+3. Thin hosts; replaceable game packs.  
+4. Touch-first.  
+5. Open contribution: anyone can add a pack via catalog + PR.

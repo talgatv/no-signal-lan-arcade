@@ -1,108 +1,87 @@
-# Быстрый указатель: игры по числу участников
+# Quick index: games by player count
 
-Краткая выжимка из [CATALOG.md](./CATALOG.md). Удобно при выборе «нас N человек — во что играть».
+Extracted from [CATALOG.md](./CATALOG.md). Use when someone asks “we are N people — what do we play?”
 
----
-
-## 1 игрок (Solo)
-
-| Игра | Жанр | Длительность | Настроение |
-|------|------|--------------|------------|
-| 2048 | Puzzle | 5–15 мин | Расслабленно |
-| Судоку | Puzzle | 10–30 мин | Вдумчиво |
-| Сапёр | Puzzle | 5–15 мин | Напряжение |
-| Нонogram | Puzzle | 10–25 мин | Вдумчиво |
-| Пятнашки | Puzzle | 2–10 мин | Лёгко |
-| Wordle-клон | Word | 3–5 мин | Ежедневно |
-| Виселица | Word | 3–10 мин | Лёгко |
-| Косынка | Cards | 5–15 мин | Классика |
-| Змейка | Arcade | 2–10 мин | Рефлекс |
-| Тетрис-клон | Arcade | 5–15 мин | Рефлекс |
-| Flappy-клон | Arcade | 1–5 мин | «Ещё раз» |
-| Гео-квиз | Trivia | 5–15 мин | Учёба |
-| Шахматы vs AI | Board | 15–40 мин | Глубоко |
+Shipped titles are marked **(shipped)**.
 
 ---
 
-## 2 игрока (Duel)
+## 1 player (Solo)
 
-| Игра | Жанр | Длительность | Настроение |
-|------|------|--------------|------------|
-| Крестики-нолики | Board | 1–3 мин | Разминка |
-| Четыре в ряд | Board | 5–10 мин | Тактика |
-| Шашки | Board | 10–20 мин | Классика |
-| Шахматы | Board | 15–45 мин | Глубоко |
-| Реверси | Board | 10–20 мин | Тактика |
-| Морской бой | Board | 10–20 мин | Напряжение |
-| Gomoku (5 в ряд) | Strategy | 10–20 мин | Тактика |
-| Pong | Arcade | 3–8 мин | Экшен |
-| Air Hockey | Arcade | 3–8 мин | Экшен |
-| Тетрис duel | Arcade | 5–15 мин | Азарт |
-| Wordle duel | Word | 3–5 мин | Умный спор |
-| Балда | Word | 10–20 мин | Слова |
-| Memory duel | Puzzle | 5–10 мин | Внимание |
-| Пьяница / Война | Cards | 5–15 мин | Удача |
-| Дурак | Cards | 10–25 мин | Классика |
-| Uno-like | Cards | 10–20 мин | Весело |
-| 2048 race | Puzzle | 5–10 мин | Гонка |
+| Game | Genre | Length | Mood |
+|------|-------|--------|------|
+| Comet **(shipped)** | Physics puzzle | 5–20 min | Focus |
+| Comet Pixel **(shipped)** | Pixel physics | 5–20 min | Chunky |
+| Rootwork **(shipped)** | Sandbox | open | Dig & build |
+| Demo Tap **(shipped)** | Casual | 1 min | Template |
+| Pulse Race **(shipped)** | Racing + AI | 3–10 min | Reflex |
+| 2048 | Puzzle | 5–15 min | Chill |
+| Sudoku | Puzzle | 10–30 min | Deep |
+| Minesweeper | Puzzle | 5–15 min | Tension |
+| Wordle-like | Word | 3–5 min | Daily |
+| Solitaire | Cards | 5–15 min | Classic |
+| Snake / Tetris-like | Arcade | 2–15 min | Reflex |
 
 ---
 
-## 3 игрока (Trio)
+## 2 players (Duel)
 
-| Игра | Жанр | Длительность | Настроение |
-|------|------|--------------|------------|
-| Викторина | Trivia | 15–30 мин | Шум, смех |
-| Бинго | Party | 10–20 мин | Расслабленно |
-| Memory на троих | Puzzle | 10–15 мин | Спокойно |
-| Дурак | Cards | 15–30 мин | Классика |
-| Uno-like | Cards | 15–25 мин | Весело |
-| Ludo / человечки | Board | 20–40 мин | Удача |
-| Змейки и лестницы | Board | 15–30 мин | Удача |
-| История по кругу | Party | 10–20 мин | Креатив |
-| Буква → слова | Word | 10–15 мин | Темп |
-| Boggle | Word | 5–10 мин / раунд | Темп |
-| Кто я? | Trivia | 10–20 мин | Общение |
-| Кооп-квиз | Co-op | 15–25 мин | Вместе |
-| Реакции (кто первый) | Party | 5–10 мин | Адреналин |
+| Game | Genre | Length | Mood |
+|------|-------|--------|------|
+| Tic-tac-toe | Board | 1–3 min | Warm-up |
+| Connect Four | Board | 5–10 min | Tactics |
+| Checkers / Chess | Board | 10–45 min | Classic |
+| Battleship | Board | 10–20 min | Tension |
+| Pong | Arcade | 3–8 min | Action |
+| Wordle duel | Word | 3–5 min | Smart rivalry |
+| Memory duel | Puzzle | 5–10 min | Focus |
+| Uno-like / Durak-like | Cards | 10–25 min | Social |
 
 ---
 
-## 4+ игроков (Party)
+## 3 players (Trio)
 
-| Игра | Мин–макс | Жанр | Длительность | Настроение |
-|------|----------|------|--------------|------------|
-| Викторина | 3–12 | Trivia | 20–40 мин | Главный хит |
-| Codenames | 4–8 | Word | 15–30 мин | Команды |
-| Alias / Шляпа | 4–10 | Word | 20–40 мин | Крик, смех |
-| Мафия / Werewolf | 6–12 | Party | 30–60 мин | Драма |
-| Шпион (Spyfall) | 4–8 | Party | 10–20 мин | Подозрение |
-| Бинго | 3–16 | Party | 10–20 мин | Фон вечеринки |
-| Uno-like | 3–8 | Cards | 15–30 мин | Ссоры друзей |
-| Дурак | 2–6 | Cards | 20–40 мин | Классика |
-| Gartic-lite | 3–8 | Party | 20–40 мин | Рисунки |
-| Bomberman-лайт | 2–4 | Arcade | 5–15 мин | Хаос |
-| Ludo | 2–4 | Board | 30–45 мин | Семья |
-| Never Have I Ever | 4–12 | Party | 15–30 мин | Соц. |
-| Boggle / Балда | 3–8 | Word | 10–20 мин | Умно |
-| IO-арена | 4–8 | Arcade | 5–10 мин | Хаос |
-| Пандемия-лайт | 2–4 | Co-op | 30–45 мин | Кооп |
-| Телефон (рисунок) | 4–10 | Party | 20–40 мин | Угар |
+| Game | Genre | Length | Mood |
+|------|-------|--------|------|
+| Quiz | Trivia | 15–30 min | Loud fun |
+| Bingo | Party | 10–20 min | Chill |
+| Memory three-way | Puzzle | 10–15 min | Calm |
+| Uno-like | Cards | 15–25 min | Social |
+| Ludo-like | Board | 20–40 min | Luck |
+| Reaction games | Party | 5–10 min | Adrenaline |
+
+*Three is an awkward number — prefer simultaneous games over strict 1v1.*
 
 ---
 
-## Матрица «нас N человек»
+## 4+ players (Party)
 
-| N | Лучший старт | Запасной вариант | Спокойный вариант |
-|---|--------------|------------------|-------------------|
-| 1 | 2048 | Wordle / Судоку | Косынка |
-| 2 | Четыре в ряд | Морской бой | Wordle duel |
-| 3 | Викторина | Uno-like | Memory |
-| 4 | Codenames / Викторина | Uno-like | Бинго |
-| 5–6 | Codenames / Шпион | Викторина | Alias |
-| 7–8 | Мафия / Викторина | Шпион | Бинго |
-| 9–12 | Мафия / Викторина | Бинго | Never Have I Ever |
+| Game | Min–max | Genre | Length | Mood |
+|------|---------|-------|--------|------|
+| Quiz | 3–12 | Trivia | 20–40 min | Main event |
+| Codenames-like | 4–8 | Word | 15–30 min | Teams |
+| Alias / hat games | 4–10 | Word | 20–40 min | Laughs |
+| Mafia / Werewolf | 6–12 | Party | 30–60 min | Drama |
+| Spyfall-like | 4–8 | Party | 10–20 min | Suspicion |
+| Bingo | 3–16 | Party | 10–20 min | Background |
+| Uno-like | 3–8 | Cards | 15–30 min | Chaos |
+| Bomberman-lite | 2–4 | Arcade | 5–15 min | Chaos |
+| Pulse Race (online later) | 2–4 | Racing | 5–10 min | Competition |
 
 ---
 
-*Связано: полный каталог с жанрами и механиками — [CATALOG.md](./CATALOG.md).*
+## Matrix: we are N people
+
+| N | Best start | Backup | Chill option |
+|---|------------|--------|--------------|
+| 1 | Comet / Rootwork | Wordle-like / Sudoku | Solitaire |
+| 2 | Connect Four | Battleship | Wordle duel |
+| 3 | Quiz | Uno-like | Memory |
+| 4 | Codenames-like / Quiz | Uno-like | Bingo |
+| 5–6 | Codenames-like / Spy | Quiz | Alias-like |
+| 7–8 | Mafia / Quiz | Spyfall-like | Bingo |
+| 9–12 | Mafia / Quiz | Bingo | Never-have-I-ever cards |
+
+---
+
+*Full genre list: [CATALOG.md](./CATALOG.md). Shipped packs: [../../games/README.md](../../games/README.md).*

@@ -12,8 +12,7 @@ This project is **not** Unity. The “engine” is three small pieces:
 
 | I want to… | Go to |
 |------------|--------|
-| Add first solo game (English) | [docs/contributing/ADD_A_GAME.md](../docs/contributing/ADD_A_GAME.md) |
-| То же по-русски | [docs/contributing/ADD_A_GAME.ru.md](../docs/contributing/ADD_A_GAME.ru.md) |
+| Add first solo game | [docs/contributing/ADD_A_GAME.md](../docs/contributing/ADD_A_GAME.md) |
 | Multiplayer | [docs/contributing/ADD_MULTIPLAYER_GAME.md](../docs/contributing/ADD_MULTIPLAYER_GAME.md) |
 | API reference | [docs/contributing/ENGINE_API.md](../docs/contributing/ENGINE_API.md) |
 | Copy template | `games/_templates/solo` or `multiplayer` |

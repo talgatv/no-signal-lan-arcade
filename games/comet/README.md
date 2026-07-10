@@ -1,44 +1,46 @@
-# Comet (Комета)
+# Comet
 
-**Соло-аркада / физический пазл.** Направь комету в портал, ставя временные **гравитационные колодцы**.
+**Solo arcade / physics puzzle.** Guide a comet into the portal by placing temporary **gravity wells**.
 
-## Правила
+## Rules
 
-1. На старте / после поражения выбери **сложность** (бюджет гравиколодцев).  
-2. Комета летит по инерции (лёгкое трение).  
-3. **Тап / клик** — колодец (1 заряд). Ставь **впереди** по курсу, не прямо на комету.  
-4. Колодцы живут несколько секунд (дольше на Easy).  
-5. **Звёзды** = очки + ещё 1 заряд.  
-6. **Портал** (бирюза) = уровень пройден.  
-7. Красные дыры / стены / вылет = проигрыш.
+1. On start / after fail, pick **difficulty** (well budget + comet speed).  
+2. The comet coasts with light drag.  
+3. **Tap / click** to place a well (1 charge). Place **ahead** of the path, not on the comet.  
+4. Wells last a few seconds (longer on Easy).  
+5. **Stars** = points + 1 charge.  
+6. **Portal** (cyan) = level clear.  
+7. Red singularities / walls / leaving the map = fail.
 
-### Сложность → колодцы **и скорость**
+### Difficulty
 
 | | Easy | Normal | Hard |
 |--|------|--------|------|
-| Заряды | base×1.35 **+5** | base×1.15 **+2** | base |
-| Скорость кометы | **×0.72** | ×1.0 | **×1.28** |
+| Charges | base×1.35 **+5** | base×1.15 **+2** | base |
+| Comet speed | **×0.72** | ×1.0 | **×1.28** |
 | Max speed | 320 | 420 | 520 |
-| Жизнь колодца | ~4.6 с | ~3.6 с | ~2.9 с |
-| Тяга | сильнее | норма | чуть слабее |
+| Well life | ~4.6 s | ~3.6 s | ~2.9 s |
+| Pull strength | stronger | normal | slightly weaker |
 
-## Управление
+## Controls
 
-| Ввод | Действие |
-|------|----------|
-| Тап / ЛКМ | Поставить гравиколодец |
-| Space / кнопка | Рестарт уровня (после fail/win — с оверлея) |
+| Input | Action |
+|-------|--------|
+| Tap / LMB | Place gravity well |
+| Overlay buttons | Launch / retry / next level |
 
-## Зачем эта игра в экспериментах
+## Why this pack exists
 
-- Демонстрирует **shared shader background** + canvas gameplay.  
-- Тач-first, одна механика, много глубины.  
-- Размер крошечный (HTML/CSS/JS, без картинок).  
-- Легко добавить co-op позже (два игрока ставят колодцы).
+- Shared **shader background** + canvas gameplay.  
+- Touch-first, one mechanic, high skill ceiling.  
+- Tiny size (no bitmaps).  
+- Future co-op: two players place wells.
 
-## Запуск
+## Run
 
 ```bash
-cd games && python3 -m http.server 8080
-# http://127.0.0.1:8080/comet/client/
+cd pc && ./start.sh
+# http://127.0.0.1:8080/games/comet/client/
 ```
+
+Variant: [Comet Pixel](../comet-pixel/) (family `comet`).

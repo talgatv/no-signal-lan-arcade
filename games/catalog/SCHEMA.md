@@ -1,78 +1,74 @@
-# Каталог игр — схема данных
+# Game catalog — data schema
 
-Живой реестр всех игр, вариаций и «семейств».  
-**Сейчас:** JSON (git-friendly, читается лобби/инструментами без SQLite).  
-**Позже:** тот же смысл полей → SQLite на Android-хосте (`games.db`).
+Living registry of games, variants, families, and authors.  
+**Now:** JSON (git-friendly, no SQLite required).  
+**Later:** same fields → SQLite on Android (`games.db`).
 
-## Файлы
+## Files
 
-| Файл | Роль |
+| File | Role |
 |------|------|
-| [`games.json`](games.json) | Записи игр (основная «таблица» `games`) |
-| [`families.json`](families.json) | Семейства / франшизы механик |
-| [`authors.json`](authors.json) | Авторы (нормализация, без дублей email) |
-| [`SCHEMA.md`](SCHEMA.md) | Этот документ |
+| [`games.json`](games.json) | Game rows |
+| [`families.json`](families.json) | Mechanic / franchise families |
+| [`authors.json`](authors.json) | Normalized authors |
+| [`SCHEMA.md`](SCHEMA.md) | This document |
 
-Версия схемы: **1**. Поле `schemaVersion` в каждом корневом JSON.
+Schema version: **1**. Each root JSON has `schemaVersion`.
 
 ---
 
-## Таблица `games` (элемент массива `games`)
+## Table `games` (array element)
 
-| Поле | Тип | Обязательно | Описание |
-|------|-----|-------------|----------|
-| `id` | string | да | Уникальный slug: `comet`, `comet-pixel` |
-| `name` | string | да | Отображаемое имя (default locale) |
-| `names` | map locale→string | нет | Локализованные названия |
-| `tagline` | string | нет | Одна строка «о чём игра» |
-| `style` | string | да | Основной стиль рисовки (см. словарь ниже) |
-| `styles` | string[] | нет | Доп. теги стиля |
-| `genres` | string[] | да | Жанры |
-| `controls` | object | да | Тип управления (см. ниже) |
-| `parameters` | object | нет | Настраиваемые параметры игры (сложность, бюджет колодцев…) |
-| `tags` | string[] | нет | Свободные теги |
-| `instructions` | map locale→string | да | Как играть (коротко) |
-| `instructionsLong` | map locale→string | нет | Подробный гайд |
-| `authorId` | string \| null | нет | FK → `authors.id` |
-| `authorInline` | object \| null | нет | Если автора ещё нет в authors.json |
-| `dates.added` | ISO date | да | Дата добавления в каталог |
-| `dates.updated` | ISO date | нет | Последнее обновление записи |
-| `dates.released` | ISO date | нет | «Релиз» версии |
-| `familyId` | string \| null | нет | FK → `families.id` |
-| `variantOf` | string \| null | нет | `id` базовой игры, если это вариация |
-| `relatedIds` | string[] | нет | Похожие / того же семейства (двусторонне дублируем для удобства) |
-| `relationNote` | string | нет | «pixel reskin + grid wells» |
-| `players.min` | int | да | |
-| `players.max` | int | да | |
-| `players.solo` | bool | да | |
-| `entry` | string | да | Путь от `games/`: `comet/client/index.html` |
-| `manifest` | string | нет | Путь к manifest.json |
-| `version` | string | нет | semver пакета |
-| `sizeBudgetKb` | number | нет | Оценка / лимит |
-| `sizeMeasuredKb` | number | нет | Замер `du` |
-| `status` | enum | да | `idea` \| `wip` \| `experimental` \| `playable` \| `stable` \| `deprecated` |
-| `license` | string | нет | MIT, CC0, … |
-| `familyFriendly` | bool | да | |
-| `localeDefault` | string | нет | `en` |
-| `notes` | string | нет | Внутренние заметки для разработчиков |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | string | yes | Unique slug: `comet`, `demo-tap` |
+| `name` | string | yes | Display name (default locale) |
+| `names` | map locale→string | no | Localized titles |
+| `tagline` | string | no | One-line pitch |
+| `style` | string | yes | Primary art style (see dictionary) |
+| `styles` | string[] | no | Extra style tags |
+| `genres` | string[] | yes | Genres |
+| `controls` | object | yes | Input model (see below) |
+| `parameters` | object | no | Tunables (difficulty, etc.) |
+| `tags` | string[] | no | Free tags |
+| `instructions` | map locale→string | yes | How to play (short) |
+| `instructionsLong` | map locale→string | no | Longer guide |
+| `authorId` | string \| null | no | FK → `authors.id` |
+| `authorInline` | object \| null | no | Inline author if not in authors.json |
+| `dates.added` | ISO date | yes | Added to catalog |
+| `dates.updated` | ISO date | no | Last metadata edit |
+| `dates.released` | ISO date | no | Pack release |
+| `familyId` | string \| null | no | FK → families |
+| `variantOf` | string \| null | no | Base game id if this is a variant |
+| `relatedIds` | string[] | no | Related games |
+| `relationNote` | string | no | e.g. “pixel + grid wells” |
+| `players.min` | int | yes | |
+| `players.max` | int | yes | |
+| `players.solo` | bool | yes | |
+| `entry` | string | yes | Path from `games/`: `comet/client/index.html` |
+| `manifest` | string | no | Path to manifest.json |
+| `version` | string | no | semver |
+| `sizeBudgetKb` | number | no | Budget |
+| `sizeMeasuredKb` | number | no | Measured `du` |
+| `status` | enum | yes | `idea` \| `wip` \| `experimental` \| `playable` \| `stable` \| `deprecated` |
+| `license` | string | no | MIT, CC0, … |
+| `familyFriendly` | bool | yes | |
+| `localeDefault` | string | no | `en` |
+| `multiplayer` | object | no | MP metadata |
+| `notes` | string | no | Internal notes |
 
-### `authorInline` (если без `authors.json`)
+### `authorInline`
 
 ```json
 {
-  "name": "OGH Team",
+  "name": "Ada Lovelace",
   "email": null,
-  "site": null,
-  "links": [
-    { "label": "GitHub", "url": "https://..." }
-  ]
+  "site": "https://example.com",
+  "links": [{ "label": "GitHub", "url": "https://github.com/ada" }]
 }
 ```
 
-### `controls` — тип управления
-
-Разделение важно для лобби: на телефоне гостя **сенсор** — основной; на ноутбуке в той же LAN часто удобнее **клавиатура**.  
-**Геймпад пока не учитываем** (зарезервировано на потом).
+### `controls`
 
 ```json
 "controls": {
@@ -81,48 +77,31 @@
   "keyboard": "none",
   "mouse": "ok",
   "notes": {
-    "en": "Tap to place wells. Mouse click works the same.",
-    "ru": "Тап = колодец. Клик мыши — то же самое."
+    "en": "Tap to play."
   }
 }
 ```
 
-| Поле | Тип | Описание |
-|------|-----|----------|
-| `primary` | enum | Главный задуманный ввод: `touch` \| `mouse` \| `keyboard` \| `hybrid` |
-| `supported` | string[] | Все реально работающие способы из словаря ниже |
-| `keyboard` | enum | `none` — клавиш нет; `optional` — есть, но не обязательны; `required` — без клавы не поиграть |
-| `mouse` | enum | `none` \| `ok` \| `required` — мышь/трекпад как pointer (клик = тап часто `ok`) |
-| `notes` | map locale→string | опционально | Подсказка для карточки в лобби |
+| Field | Values |
+|-------|--------|
+| `primary` | `touch` \| `mouse` \| `keyboard` \| `hybrid` |
+| `supported` | list of device kinds |
+| `keyboard` | `none` \| `optional` \| `required` |
+| `mouse` | `none` \| `ok` \| `required` |
 
-#### Словарь устройств / способов (`supported` и смысл `primary`)
+**Gamepad** is reserved; do not use in rows yet.
 
-| id | Смысл | Типичные игры |
-|----|--------|----------------|
-| `touch` | Палец: tap, drag, multi-touch | Comet, викторина-кнопки, drawing |
-| `mouse` | Курсор: click, drag (десктоп/ноут) | То же, что touch, если hit-area крупные |
-| `keyboard` | Клавиши: WASD, стрелки, hotkeys | Змейка, тетрис, roguelike, typing |
-| `hybrid` | *(только как `primary`)* равноценно touch+keyboard | «табы или стрелки» |
+Lobby filter ideas:
 
-**Правила фильтра в лобби (рекомендация):**
+| Filter | Rule |
+|--------|------|
+| Phone-friendly | has `touch` and keyboard ≠ `required` |
+| Keyboard OK | keyboard is optional/required |
+| Hybrid | `primary` = hybrid or both touch + keyboard |
 
-| Фильтр | Условие |
-|--------|---------|
-| «Только телефон / сенсор» | `supported` содержит `touch` и `keyboard` ≠ `required` |
-| «Удобно с клавиатуры» | `keyboard` ∈ {`optional`,`required`} или `supported` содержит `keyboard` |
-| «Можно и так и так» | `primary` = `hybrid` или (есть `touch` и `keyboard` optional/required) |
+### `parameters`
 
-**Не путать:**
-
-- `mouse` ≈ pointer; на телефоне его нет, но **та же логика**, что touch, если игра tap-based.  
-- Игра «только WASD» → `primary: keyboard`, `keyboard: required`, `supported: ["keyboard"]` (touch UI нет).  
-- Игра «тап + опционально R = restart» → `primary: touch`, `keyboard: optional`.
-
-Геймпад (`gamepad`) — **не добавляем в записи**, пока явно не решим поддерживать.
-
-### `parameters` — тюнинг внутри игры
-
-Свободный объект: ключ = id параметра, значение = дескриптор.
+Free-form descriptors for in-game settings:
 
 ```json
 "parameters": {
@@ -130,78 +109,80 @@
     "type": "enum",
     "default": "normal",
     "options": ["easy", "normal", "hard"],
-    "affects": ["wellsPerLevel", "wellLifeSec"],
-    "labels": { "en": "Difficulty", "ru": "Сложность" }
-  },
-  "wellsPerLevel": {
-    "type": "derived",
-    "description": { "en": "…", "ru": "…" }
+    "affects": ["wellsPerLevel", "cometSpeedMult"]
   }
 }
 ```
 
-Типичные `type`: `enum` · `int` · `float` · `bool` · `derived` (вычисляется из других).
+Types: `enum` · `int` · `float` · `bool` · `derived` · `fixed`
 
-Для Comet: **Easy** даёт больше гравиколодцев и дольше их жизнь; **Hard** — минимум зарядов.
+### `multiplayer`
 
----
+```json
+"multiplayer": {
+  "status": "ready",
+  "protocol": "ogh-net-v1",
+  "notes": "Action relay; host-player optional authority"
+}
+```
 
-## Таблица `authors`
-
-| Поле | Тип | Описание |
-|------|-----|----------|
-| `id` | string | `ogh-team`, `ivan-ivanov` |
-| `name` | string | |
-| `email` | string \| null | Публичный контакт (опционально) |
-| `site` | string \| null | Основной сайт |
-| `links` | {label, url}[] | Соцсети, itch, GitHub… |
-| `notes` | string \| null | |
+`status`: `none` \| `planned` \| `ready-offline` \| `ready` \| `stable`
 
 ---
 
-## Таблица `families`
+## Table `authors`
 
-Семейство = одна **механика / фантазия**, разные стили или правила.
-
-| Поле | Тип | Описание |
-|------|-----|----------|
-| `id` | string | `comet` |
-| `name` | string | |
-| `names` | map | |
-| `description` | map locale→string | |
-| `gameIds` | string[] | Члены семейства |
-| `baseGameId` | string \| null | «каноничная» версия |
-| `dates.added` | ISO date | |
-
-**Пример:** `comet` (neon vector) + `comet-pixel` (pixel + snap) → family `comet`.
-
-Связи можно читать так:
-
-1. По `familyId` — все вариации.  
-2. По `variantOf` — дерево «форк от».  
-3. По `relatedIds` — произвольные «см. также».
+| Field | Type |
+|-------|------|
+| `id` | string |
+| `name` | string |
+| `email` | string \| null |
+| `site` | string \| null |
+| `links` | {label, url}[] |
+| `notes` | string \| null |
 
 ---
 
-## Словарь `style` (рисование)
+## Table `families`
 
-| id | Смысл |
-|----|--------|
-| `neon-vector` | Градиенты, glow, smooth canvas |
-| `pixel` | Низкое разрешение, nearest-neighbor, ограниченная палитра |
-| `pixel-hires` | Пиксель-арт на высоком canvas |
-| `flat-ui` | Плоский UI, shapes |
-| `ascii` | Текст / Unicode |
-| `minimal-line` | Контуры, monoline |
-| `hand-drawn` | Имитация скетча |
-| `shader-abstract` | Упор на fullscreen shader |
-| `photo-collage` | (избегаем — тяжело) |
+One **mechanic / fantasy**, multiple styles or rule variants.
+
+| Field | Type |
+|-------|------|
+| `id` | string |
+| `name` | string |
+| `names` | map |
+| `description` | map locale→string |
+| `gameIds` | string[] |
+| `baseGameId` | string \| null |
+| `dates.added` | ISO date |
+
+Example: family `comet` → `comet` + `comet-pixel`.
+
+Relations:
+
+1. `familyId` — all variants  
+2. `variantOf` — fork tree  
+3. `relatedIds` — “see also”
 
 ---
 
-## SQLite (миграция позже)
+## Art `style` dictionary
 
-Предлагаемые таблицы 1:1:
+| id | Meaning |
+|----|---------|
+| `neon-vector` | Gradients, glow, smooth canvas |
+| `pixel` | Low-res, nearest-neighbor, limited palette |
+| `pixel-hires` | Pixel art on high-res canvas |
+| `flat-ui` | Flat shapes |
+| `ascii` | Text / Unicode |
+| `minimal-line` | Monoline / sparse UI |
+| `hand-drawn` | Sketch look |
+| `shader-abstract` | Heavy fullscreen shader |
+
+---
+
+## SQLite migration sketch
 
 ```sql
 CREATE TABLE authors (
@@ -209,7 +190,7 @@ CREATE TABLE authors (
   name TEXT NOT NULL,
   email TEXT,
   site TEXT,
-  links_json TEXT,  -- JSON array
+  links_json TEXT,
   notes TEXT
 );
 
@@ -230,7 +211,7 @@ CREATE TABLE games (
   style TEXT NOT NULL,
   styles_json TEXT,
   genres_json TEXT NOT NULL,
-  controls_json TEXT NOT NULL,  -- { primary, supported, keyboard, mouse, notes }
+  controls_json TEXT NOT NULL,
   tags_json TEXT,
   instructions_json TEXT NOT NULL,
   instructions_long_json TEXT,
@@ -255,25 +236,26 @@ CREATE TABLE games (
   license TEXT,
   family_friendly INTEGER NOT NULL,
   locale_default TEXT,
+  multiplayer_json TEXT,
   notes TEXT
-);
-
-CREATE TABLE family_games (
-  family_id TEXT NOT NULL,
-  game_id TEXT NOT NULL,
-  PRIMARY KEY (family_id, game_id)
 );
 ```
 
-Скрипт импорта `json → sqlite` — когда появится Android host / CLI.
+JSON → SQLite import script: when Android host / CLI needs it.
 
 ---
 
-## Правила ведения
+## Maintenance rules
 
-1. Новый пакет игры → строка в `games.json` + при необходимости family.  
-2. Вариация стиля/механики = **новый `id`**, не перезапись.  
-3. `variantOf` указывает на канон; `relatedIds` симметричны по возможности.  
-4. Email автора только с согласия; иначе `null`.  
-5. Размер: после заметных правок обновлять `sizeMeasuredKb`.  
-6. Не класть бинарники в JSON — только метаданные и пути.
+1. New pack → row in `games.json` (+ family/author as needed).  
+2. Style/rule variants get a **new `id`**, not an overwrite.  
+3. Prefer symmetric `relatedIds`.  
+4. Publish author email only with consent.  
+5. Update `sizeMeasuredKb` after big asset changes.  
+6. Never store binaries inside JSON — paths only.
+
+## Validation
+
+```bash
+python3 tools/validate_catalog.py
+```

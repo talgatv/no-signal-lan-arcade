@@ -1,107 +1,99 @@
 # Games — web packs for Offline Games Hub
 
-Each game is a **folder pack** ≤ **10 MB** (aim ≪ 2 MB).  
-Players open games in a **browser** via the PC host.
+Each game is a **folder pack** ≤ **10 MB** (aim ≪ 2 MB, ultra badge &lt; 200 KB).  
+Players open games in a **browser** via the PC host (or future Android host).
 
 ## Add your game
 
-→ **[docs/contributing/ADD_A_GAME.md](../docs/contributing/ADD_A_GAME.md)** (beginner)  
-→ **[docs/contributing/ADD_A_GAME.ru.md](../docs/contributing/ADD_A_GAME.ru.md)** (русский)  
-→ **[ENGINE.md](./ENGINE.md)** (engine surface)  
-→ Templates: [`_templates/`](_templates/) · `python3 tools/new_game.py <id> --title "..."`
+| Resource | |
+|----------|--|
+| [Beginner guide](../docs/contributing/ADD_A_GAME.md) | Step-by-step |
+| [Multiplayer guide](../docs/contributing/ADD_MULTIPLAYER_GAME.md) | ogh-net |
+| [Engine map](./ENGINE.md) | Host + catalog + pack |
+| [Templates](_templates/) | Solo & multiplayer starters |
+| Scaffold | `python3 tools/new_game.py my-id --title "My Game"` |
+| Validate | `python3 tools/validate_catalog.py` |
 
-## Концепция
+## Concept
 
-### Философия «GTA в 10 МБ»
+### “GTA in 10 MB”
 
-- Максимум геймплея на килобайт.
-- Процедурная графика, SVG/canvas, минимум растров.
-- Без CDN, без React/Phaser «на весь бандл» по умолчанию.
-- Офлайн: всё в пакете игры + опционально `_shared/`.
+- Maximum gameplay per kilobyte.  
+- Procedural / vector / canvas art; minimal bitmaps.  
+- No CDN, no heavy default frameworks.  
+- Offline after install/copy.
 
-### Единый look & feel (OGH kit)
+### Shared look (OGH kit)
 
-Общие куски лежат в [`_shared/`](_shared/):
+Under [`_shared/`](_shared/):
 
-| Ресурс | Назначение |
-|--------|------------|
-| `css/ogh-base.css` | Цвета, типографика, кнопки, HUD, safe-area |
-| `css/ogh-fonts.css` | `@font-face` для локальных шрифтов |
-| `fonts/` | Roboto, Open Sans, Noto Sans, Montserrat, JetBrains Mono, Press Start 2P (OFL) |
-| `js/ogh-shader-bg.js` | Полноэкранный WebGL-фон (переиспользуемые шейдеры) |
-| `shaders/*.glsl` | Исходники fragment/vertex (читаются как текст / инлайн) |
-| `js/ogh-sfx.js` | Крошечные beep’ы через Web Audio (без mp3) |
-| `js/ogh-i18n.js` | Заготовка ключей UI (en/ru/…) |
+| Resource | Purpose |
+|----------|---------|
+| `css/ogh-base.css` | Colors, type, buttons, HUD |
+| `css/ogh-fonts.css` | Local OFL fonts |
+| `js/ogh-shader-bg.js` | Fullscreen WebGL backgrounds |
+| `js/ogh-sfx.js` | Tiny Web Audio beeps |
+| `js/ogh-net.js` | Multiplayer client |
 
-Игры **могут** работать и без `_shared` (копия критичного CSS), но для экспериментов удобнее relative `../_shared/...`.
+### Manifest
 
-Когда появится Android-сервер, shared можно монтировать как `/shared/*`, а игры — `/games/<id>/`.
+Every pack has `manifest.json` (id, players, genres, entry). See `catalog/SCHEMA.md`.
 
-### Манифест
+### Layout
 
-У каждой игры — `manifest.json` (id, игроки, размер, entry). См. пример в `comet/`.
-
-### Структура игры
-
-```
+```text
 games/<id>/
   manifest.json
   README.md
   client/
-    index.html    # точка входа для браузера
+    index.html
     ...
 ```
 
-## Реестр (JSON → позже SQLite)
+## Registry (JSON → SQLite later)
 
-Метаданные всех игр, авторов, семейств и вариаций:
+| File | Content |
+|------|---------|
+| [`catalog/SCHEMA.md`](catalog/SCHEMA.md) | Fields & relations |
+| [`catalog/games.json`](catalog/games.json) | Library rows |
+| [`catalog/families.json`](catalog/families.json) | Families / variants |
+| [`catalog/authors.json`](catalog/authors.json) | Authors |
 
-| Файл | Содержание |
-|------|------------|
-| [`catalog/SCHEMA.md`](catalog/SCHEMA.md) | Поля, связи, план SQLite |
-| [`catalog/games.json`](catalog/games.json) | Игры: стиль, жанр, инструкция, автор, даты, related… |
-| [`catalog/families.json`](catalog/families.json) | Семейства механик (Comet + pixel-вариация) |
-| [`catalog/authors.json`](catalog/authors.json) | Авторы (имя, email, сайт, ссылки) |
+**Variant** = new `id` + `variantOf` + shared `familyId`.  
+Example: `comet` ↔ `comet-pixel`.
 
-**Вариация** = отдельный `id` + `variantOf` + общий `familyId`.  
-Пример: `comet` ↔ `comet-pixel`.
+**Controls** (`controls` in catalog): `touch` / `mouse` / `keyboard`  
+(`primary`, `supported`, `keyboard: none|optional|required`). Gamepad later.
 
-**Управление** (`controls` в каталоге): `touch` / `mouse` / `keyboard`  
-(`primary`, `supported`, `keyboard: none|optional|required`). Геймпад пока не учитываем.  
-См. [catalog/SCHEMA.md](catalog/SCHEMA.md) → секция `controls`.
+## Installed packs
 
-## Установленные пакеты
-
-| ID | Название | Стиль | Управление | Игроки | Статус |
-|----|----------|-------|------------|--------|--------|
+| ID | Name | Style | Controls | Players | Status |
+|----|------|-------|----------|---------|--------|
 | [`comet`](comet/) | Comet | neon-vector | touch / mouse | 1 | ✅ |
 | [`comet-pixel`](comet-pixel/) | Comet Pixel | pixel + grid | touch / mouse | 1 | ✅ |
-| [`rootwork`](rootwork/) | Rootwork | pixel tiles · sandbox | touch / mouse / keys | 1 | ✅ |
-| [`pulse-race`](pulse-race/) | Pulse Race | neon top-down racing | touch / keys | 1–4* | ✅ |
+| [`rootwork`](rootwork/) | Rootwork | pixel sandbox | touch / mouse / keys | 1 | ✅ |
+| [`pulse-race`](pulse-race/) | Pulse Race | neon racing | touch / keys | 1–4* | ✅ |
+| [`demo-tap`](demo-tap/) | Demo Tap | template sample | touch / mouse | 1 | ✅ sample |
 
-\*Pulse Race: сейчас 1P+AI; LAN когда host WebSocket.
+\*Pulse Race: 1P+AI now; LAN path via ogh-net when host WS is used.
 
-**Мультиплеер:** [docs/architecture/MULTIPLAYER.md](../docs/architecture/MULTIPLAYER.md) · клиент [`_shared/js/ogh-net.js`](_shared/js/ogh-net.js)
+**Multiplayer docs:** [docs/architecture/MULTIPLAYER.md](../docs/architecture/MULTIPLAYER.md) · client [`_shared/js/ogh-net.js`](_shared/js/ogh-net.js)
 
-Идеи впрок: [../docs/games/CATALOG.md](../docs/games/CATALOG.md).
+Ideas backlog: [docs/games/CATALOG.md](../docs/games/CATALOG.md).
 
-## Как открыть локально
-
-Простой статический сервер из корня `games/` (нужны пути к `_shared`):
+## Local run
 
 ```bash
-cd games
-python3 -m http.server 8080
-# → http://127.0.0.1:8080/comet/client/
+cd pc && ./start.sh
+# lobby: http://127.0.0.1:8080/
+# direct: http://127.0.0.1:8080/games/<id>/client/
 ```
 
-Или открой `comet/client/index.html` — если браузер режет ES modules/file, используй сервер выше.
+## Rules for new packs
 
-## Правила для новых игр
-
-1. `manifest.json` + solo-playable client.  
-2. Тач + мышь.  
-3. Без внешних URL.  
-4. `du -sh` перед коммитом — уложиться в бюджет.  
-5. По возможности фон через `OGHShaderBg` (единый вайб «offline neon»).  
-6. Family-friendly по умолчанию.
+1. `manifest.json` + solo-playable client (or clear MP offline fallback).  
+2. Touch + mouse.  
+3. No external URLs at runtime.  
+4. `du -sh` before PR.  
+5. Prefer OGH shared kit for visual cohesion.  
+6. Family-friendly by default.

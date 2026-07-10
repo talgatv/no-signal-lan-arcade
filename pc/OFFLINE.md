@@ -1,27 +1,27 @@
-# Офлайн-пакет PC Host
+# Offline PC pack
 
-Этот проект рассчитан на работу **без интернета** после того, как всё лежит в папке (USB, LAN-копия, архив).
+This project is meant to work **without internet** once the folder is on disk (USB stick, LAN copy, archive).
 
-## Уже лежит рядом (скачано)
+## What should sit next to the host
 
-| Путь | Содержимое | ~размер |
-|------|------------|---------|
-| `runtimes/win64/` | CPython **3.12.8** embeddable (Windows x64) | ~22 МБ |
-| `runtimes/linux64/` | CPython **3.12.9** portable stripped (Linux x86_64) | ~80 МБ |
-| `runtimes/VERSIONS.txt` | Что именно скачано и когда | |
-| `host.py`, `www/` | Сервер и лобби | &lt; 1 МБ |
-| `../games/` | Игры + `_shared` (в т.ч. шрифты) | зависит от каталога |
+| Path | Contents | ~Size |
+|------|----------|--------|
+| `runtimes/win64/` | CPython **3.12.8** embeddable (Windows x64) | ~22 MB |
+| `runtimes/linux64/` | CPython **3.12.9** portable stripped (Linux x86_64) | ~80 MB |
+| `runtimes/VERSIONS.txt` | Provenance stamp | |
+| `host.py`, `www/` | Server + lobby | &lt; 1 MB |
+| `../games/` | Packs + `_shared` (fonts included) | depends |
 
-**macOS:** portable runtime не бандлится (codesign). На Mac нужен системный `python3` (один раз с флешки/python.org, потом offline).
+**macOS:** portable runtime is not bundled (codesign). Use system `python3` (install once from python.org or Homebrew; then offline).
 
-## Как запустить без сети
+## Run with no network
 
 ### Linux
 
 ```bash
 cd pc
 ./start.sh
-# использует ./runtimes/linux64/bin/python3 — интернет не нужен
+# uses ./runtimes/linux64/bin/python3 when present
 ```
 
 ### Windows
@@ -29,55 +29,62 @@ cd pc
 ```bat
 cd pc
 start.bat
-# использует runtimes\win64\python.exe
+# uses runtimes\win64\python.exe
 ```
 
-Телефоны — только **локальный Wi‑Fi / hotspot**, не интернет.
+Phones only need **local Wi‑Fi / hotspot**, not the public internet.
 
-## Передача «всего проекта» офлайн
+## Shipping the whole project offline
 
-Скопируйте **целиком** репозиторий / папку `OFFline_games_app`, включая:
+Copy the **entire** repository folder, including:
 
-```
+```text
 pc/runtimes/win64/
 pc/runtimes/linux64/
 games/
 ```
 
-Не выкидывайте `runtimes/*64` — без них на «чистой» Windows/Linux без системного Python хост не стартует.
+Do **not** delete `runtimes/*64` if recipients lack system Python.
 
-Пример архива:
+Example archive:
 
 ```bash
-# на машине с уже скачанными runtime:
 cd /path/to
-tar -czf OGH-offline.tar.gz OFFline_games_app \
+tar -czf OGH-offline.tar.gz no-signal-lan-arcade \
   --exclude='.git' \
   --exclude='**/__pycache__' \
   --exclude='**/node_modules'
 ```
 
+Or attach `offline-runtimes-win-linux.zip` on a **GitHub Release** (recommended for public clones).
+
 ## Git
 
-Крупные `win64/` / `linux64/` по умолчанию в **`.gitignore`**, чтобы не раздувать git.  
-Для **офлайн-раздачи** файлы всё равно должны быть на диске (они уже скачаны здесь).
+Large `win64/` / `linux64/` trees are **gitignored** by default so the public repo stays lean.  
+They may still exist on a developer disk for USB packs.
 
-Если нужно хранить runtime в git (монорепо на своём сервере) — уберите строки `win64/` `linux64/` из `runtimes/.gitignore`.
+To track them in a private monorepo, remove those lines from `runtimes/.gitignore`.
 
-## Если папок runtime нет
+## If runtime folders are missing
 
-Только тогда нужен интернет (один раз):
+Internet is needed **once**:
 
 ```bash
 cd pc/runtimes
-./download_linux.sh      # или download_windows.ps1
+./download_linux.sh       # or download_windows.ps1
 ```
 
-Скрипты **не качают повторно**, если `python` уже на месте.
+Scripts **skip download** when Python is already present.  
+Set `OGH_OFFLINE=1` to refuse network attempts.
 
-## Что не требует сети никогда
+## Always offline (no download ever)
 
-- Сами игры (статика)
-- Лобби
-- WebSocket между телефонами и ПК в LAN
-- Шрифты в `games/_shared/fonts/`
+- Game static files  
+- Lobby HTML  
+- LAN WebSocket between phones and PC  
+- Fonts under `games/_shared/fonts/`  
+
+## Contributor note
+
+You do **not** need runtimes to write a game pack — only to run the host.  
+CI and PR authors can use system Python 3.

@@ -166,14 +166,18 @@ OFFline_games_app/
 
 ## Documentation
 
+**Full index (English):** [docs/README.md](docs/README.md)
+
 | Doc | What you’ll find |
 |-----|------------------|
 | [Vision](docs/VISION.md) | Product intent, constraints, success criteria |
 | [Game catalog (ideas)](docs/games/CATALOG.md) | Genres, player counts, mechanics |
 | [Catalog schema](games/catalog/SCHEMA.md) | Metadata DB shape (JSON → SQLite later) |
 | [Core architecture](docs/architecture/CORE.md) | Host adapters, plugins |
+| [PC host architecture](docs/architecture/HOST_PC.md) | Python host design |
 | [Android stack](docs/architecture/ANDROID_STACK.md) | Kotlin/Compose host plan |
 | [Multiplayer](docs/architecture/MULTIPLAYER.md) | LAN model, protocol draft |
+| [Security](docs/SECURITY.md) | LAN trust model |
 | [Roadmap](docs/plans/ROADMAP.md) | Phases |
 | [**LLM development plan**](docs/plans/LLM_DEVELOPMENT_PLAN.md) | Epics, prompts, agent workflow |
 | [PC host](pc/README.md) | Run, ports, API |
@@ -213,8 +217,8 @@ Full agent-friendly plan: [`docs/plans/LLM_DEVELOPMENT_PLAN.md`](docs/plans/LLM_
 | Start here | |
 |------------|--|
 | **[CONTRIBUTING.md](CONTRIBUTING.md)** | Project rules + PR flow |
-| **[Add a game (beginner)](docs/contributing/ADD_A_GAME.md)** | Step-by-step English |
-| **[Добавить игру](docs/contributing/ADD_A_GAME.ru.md)** | То же по-русски |
+| **[Documentation index](docs/README.md)** | Full map of docs (English) |
+| **[Add a game (beginner)](docs/contributing/ADD_A_GAME.md)** | Step-by-step pack guide |
 | **[Multiplayer games](docs/contributing/ADD_MULTIPLAYER_GAME.md)** | ogh-net guide |
 | **[Engine API](docs/contributing/ENGINE_API.md)** | Manifest, URLs, net events |
 | **[Checklist](docs/contributing/CHECKLIST.md)** | Before you open a PR |

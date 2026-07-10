@@ -1,26 +1,26 @@
 # Pulse Race
 
-Неоновые **top-down гонки** по замкнутому треку.  
-Соло: ты + AI. Когда поднимется host WebSocket — та же игра через `OGHNet`.
+Neon **top-down racing** on a closed circuit.  
+Solo: you + AI. With PC host WebSocket, the same pack is multiplayer-ready via `OGHNet`.
 
-## Управление
+## Controls
 
-| Тач | Клавиши |
-|-----|---------|
-| Педаль газа (удерживать) | W / ↑ |
-| ← → поворот | A/D или ← → |
-| Тормоз | S / ↓ / Space |
+| Touch | Keys |
+|-------|------|
+| Hold gas | W / ↑ |
+| ← → steer | A/D or ← → |
+| Brake | S / ↓ / Space |
 
-## Мультиплеер
+## Multiplayer
 
-См. [docs/architecture/MULTIPLAYER.md](../../docs/architecture/MULTIPLAYER.md).
+See [docs/architecture/MULTIPLAYER.md](../../docs/architecture/MULTIPLAYER.md).
 
-- Сейчас: `OGHNet` в режиме **offline** (нет `/ws`).  
-- Позже: все открывают URL хоста → одна комната → snapshot машин.
+- Today: `OGHNet` often runs **offline** with AI if you only serve static files.  
+- With `pc/host.py`: clients join the same room; online snapshot is the next step.
 
-## Запуск
+## Run
 
 ```bash
-cd games && python3 -m http.server 8080
-# http://127.0.0.1:8080/pulse-race/client/
+cd pc && ./start.sh
+# http://127.0.0.1:8080/games/pulse-race/client/
 ```

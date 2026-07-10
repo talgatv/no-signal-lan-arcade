@@ -1,177 +1,152 @@
-# Android-стек (решение)
+# Android host stack (decision record)
 
-## Критерии выбора
+## Selection criteria
 
-1. **Очень лёгкий хост** — APK оболочки маленький; игры не раздувают base install.  
-2. **Мультиплатформа позже** — `android/` сейчас, desktop/iOS рядом, общее ядро.  
-3. **Языки ООН** с первого дня (i18n-ready).  
-4. **Знакомый DX** — как Dual: Kotlin + Compose.  
-5. **Игры = браузер** — любой телефон без установки APK.
-
----
-
-## Рекомендация (итог)
-
-| Слой | Стек | Зачем |
-|------|------|--------|
-| **Android host UI** | **Kotlin + Jetpack Compose + Material 3** | Как Dual: быстрый UI, Play Store, foreground service, QR |
-| **Локальный сервер** | **Kotlin** (минимальный HTTP + WebSocket, мало зависимостей) | Без Node/Chromium внутри APK — экономия десятков МБ |
-| **Лобби + игры (клиент)** | **HTML / CSS / vanilla JS** (canvas/SVG), без тяжёлых движков | Открывается в браузере гостей; ≤ 10 МБ на игру |
-| **Тексты UI хоста** | Android `res/values-XX/strings.xml` | Системный i18n, RTL (ar) из коробки |
-| **Тексты/словари игр** | JSON locale packs **по требованию** | Китайский словарь не лежит в каждой игре «на всякий» |
-| **Сборка Android** | Gradle, Version Catalog, minSdk 26, JDK 17 | Как Dual |
-
-**Не берём для хоста:** Flutter, React Native, Capacitor+WebView-app, Electron, встроенный Node — база слишком тяжёлая для философии «соревнование лёгкости».
-
-**Не берём для игр (по умолчанию):** Unity, Unreal, Godot export, Phaser «на весь бандл», большие texture packs.
+1. **Tiny host APK** — shell stays small; games must not force a fat base install.  
+2. **Multi-platform later** — same packs on PC and Android.  
+3. **UN languages** from day one (i18n-ready).  
+4. **Familiar DX** — Kotlin + Compose (as in Dual).  
+5. **Players use the browser** — guests never install the APK.
 
 ---
 
-## Структура репозитория (цель)
+## Decision summary
 
-```
-OFFline_games_app/
+| Layer | Stack | Why |
+|-------|--------|-----|
+| **Android host UI** | Kotlin + Jetpack Compose + Material 3 | Fast UI, Play Store, foreground service, QR |
+| **Local server** | Kotlin HTTP + WebSocket (minimal deps) | No Node/Chromium in the APK |
+| **Lobby + games** | HTML/CSS/vanilla JS | Any phone browser; ≤ 10 MB per pack |
+| **Host strings** | `res/values-XX/strings.xml` | System i18n + RTL for Arabic |
+| **Game dictionaries** | On-demand JSON locale packs | Don’t ship CJK word lists in every pack |
+| **Build** | Gradle Version Catalog, minSdk 26, JDK 17 | Matches Dual-class tooling |
+
+**Reject for host:** Flutter, React Native, Capacitor-as-shell, Electron, embedded Node.  
+**Reject for default games:** Unity / Unreal / full Godot export / huge texture packs.
+
+---
+
+## Target repository layout
+
+```text
+OFFline_games_app/   (no-signal-lan-arcade)
 ├── README.md
 ├── docs/
-├── android/                 # хост-приложение (Kotlin/Compose)
+├── android/                 # this host
 │   └── app/
-├── core/                    # общее: протокол, модели комнат (portable)
-│   └── ...                  # старт: Kotlin common или просто spec + shared assets
-├── web/                     # то, что раздаёт сервер браузерам
-│   ├── lobby/               # лобби (HTML)
-│   └── shared/              # общий CSS/JS kit (кнопки, i18n loader)
-├── games/                   # плагины-игры, каждая папка ≤ 10 МБ
-│   ├── tictactoe/
-│   ├── quiz/
-│   └── ...
-└── desktop/                 # позже: тот же серверный протокол
+├── pc/                      # Python host (shipping now)
+├── games/                   # web packs ≤ 10 MB
+└── ...
 ```
 
-Android-папка — **первый** platform host. Ядро и `games/` не привязаны к Android.
+`android/` is a **platform shell**. Game logic lives in `games/` HTML packs.
 
 ---
 
-## Почему не «весь dual-стек + Node внутри»
+## Why not “Dual + Node inside”
 
-| Вариант | Размер / сложность | Вердикт |
-|---------|-------------------|---------|
-| Compose + **встроенный Node/Bun** | +30–80 МБ, кошмар сборки | ❌ против «очень лёгких» |
-| Compose + **Capacitor** (UI=Web) | лишний WebView-runtime | ❌ UI хоста лучше native |
-| **Flutter** host | base APK заметно толще | ❌ для нашей философии |
-| **KMP + Compose Multiplatform** сразу | мощно, но дольше старт | ⏳ фаза 2–3, не блокер MVP |
-| **Compose + тонкий Kotlin server** | APK хоста реально **2–8 МБ** без игр | ✅ рекомендуется |
+| Option | Size / pain | Verdict |
+|--------|-------------|---------|
+| Compose + **embedded Node/Bun** | +30–80 MB, nasty builds | ❌ |
+| Compose + **Capacitor** host UI | Extra WebView weight | ❌ |
+| **Flutter** host | Heavier base APK | ❌ |
+| **KMP + Compose Multiplatform** day one | Strong later; slow start | ⏳ phase 2–3 |
+| **Compose + thin Kotlin server** | Host APK realistically **2–8 MB** without games | ✅ |
 
-Игры могут жить:
+Games may ship:
 
-- **в APK** как `assets/games/...` (несколько MVP-игр), или  
-- **как паки** (скачал один раз / скопировал с ПК) — base app остаётся крошечным.
+- inside APK `assets/games/...` (few demos), or  
+- as external packs — base app stays tiny.
 
-Философия: **«GTA в 10 МБ»** = процедурка, вектор, мало кадров анимации, свои правила, ноль фотореализма. Лимит 10 МБ — потолок; цель большинства игр — **&lt; 500 КБ–2 МБ**.
-
----
-
-## Сервер на Android (детали)
-
-Минимальные обязанности хоста:
-
-1. Слушать `0.0.0.0:PORT` (HTTP static + WebSocket).  
-2. Раздавать `web/lobby` + `games/<id>/`.  
-3. Держать комнаты / игроков / broadcast state.  
-4. Foreground service + уведомление «сервер запущен».  
-5. Экран: старт/стоп, IP, QR, язык UI, список установленных игр.
-
-**Зависимости — скупо:**
-
-- Coroutines  
-- Compose BOM (как Dual)  
-- Опционально: ZXing/QR **или** свой QR через tiny lib / системный share ссылки  
-- **Без** Room на MVP (состояние в RAM + DataStore для настроек)  
-- **Без** Vosk и прочих native SDK, пока не нужны  
-
-Реализация HTTP/WS:
-
-| Вариант | Плюсы | Минусы |
-|---------|-------|--------|
-| **A. Свой minimal server** (ServerSocket + ws handshake) | минимум МБ | больше кода |
-| **B. Ktor CIO** | удобный API | +размер |
-| **C. NanoHTTPD / tiny fork + свой WS** | баланс | поддержка |
-
-**MVP:** B или C — скорость разработки.  
-**Оптимизация размера:** при необходимости урезать до A.
+**Philosophy:** “GTA in 10 MB” = procedural/vector art, tiny assets, original rules.  
+10 MB is a **ceiling**; most packs should be **&lt; 500 KB–2 MB**.
 
 ---
 
-## i18n: языки ООН
+## Server duties on Android
 
-Официальные языки ООН (целевой набор):
+1. Listen `0.0.0.0:PORT` (HTTP + WebSocket).  
+2. Serve lobby + `/games/<id>/`.  
+3. Rooms / players / broadcast (same protocol as `pc/host.py`).  
+4. Foreground service + “server running” notification.  
+5. UI: start/stop, IP, QR, language, installed packs.
 
-| Код | Язык | Особенности |
-|-----|------|-------------|
-| `en` | English | default fallback |
-| `zh` | 中文 (简体) | CJK шрифты — **системные**, не бандлить Noto CJK в APK |
-| `ru` | Русский | |
-| `es` | Español | |
-| `ar` | العربية | **RTL** |
-| `fr` | Français | |
+**Sparse dependencies:** Coroutines, Compose BOM, optional QR lib, DataStore.  
+No Room required for MVP. No speech SDKs.
 
-### Правила лёгкости i18n
+| HTTP/WS approach | Pros | Cons |
+|------------------|------|------|
+| A. Custom ServerSocket + WS | Minimal MB | More code |
+| B. Ktor CIO | Nice API | +size |
+| C. NanoHTTPD + WS | Balance | Maintenance |
 
-1. **Хост:** только `strings.xml` + `LayoutDirection` для ar.  
-2. **Лобби/игры:** ключи `t('menu.play')` + файлы `locales/en.json`, `zh.json`, …  
-3. **Не вшивать** огромные словари (Scrabble/Wordle) во все языки сразу —  
-   `wordpacks/en.words.gz`, `wordpacks/zh.cedict-lite.gz` **подгружаются** с выбором языка комнаты.  
-4. **Шрифты:** UI-системные / один латинский variable font &lt; 100 КБ; CJK/Arabic — from device.  
-5. **Цифры и даты** — `locale`-aware, без лишних ICU-библиотек если хватает платформы.
+**MVP:** B or C. Shrink to A if needed.
 
 ---
 
-## Связь с Dual
+## i18n — UN languages
 
-Можно **копировать паттерны**, не код 1:1:
+| Code | Language | Notes |
+|------|----------|--------|
+| `en` | English | default |
+| `zh` | Chinese (Simplified) | system CJK fonts |
+| `ru` | Russian | |
+| `es` | Spanish | |
+| `ar` | Arabic | **RTL** |
+| `fr` | French | |
 
-- Gradle + Version Catalog + JDK 17  
-- Compose screens + ViewModel  
-- DataStore для «последний порт / язык / keep screen on»  
-- Тёмный «cinema» UI, крупные тач-зоны  
+Rules:
 
-Не тащить: Room-схему субтитров, Vosk, auto-sync.
+1. Host UI = `strings.xml` only.  
+2. Lobby/games = key-based JSON locales.  
+3. Huge word packs load **on demand** per room language.  
+4. Do not bundle full Noto CJK in the APK.
 
 ---
 
-## Сравнение стеков (шпаргалка)
+## Dual (reference app)
 
-| Стек host | Лёгкость | Скорость MVP | Порт на desktop | Знакомость (Dual) |
-|-----------|----------|--------------|-----------------|-------------------|
-| **Kotlin + Compose + Kotlin server** | ★★★★★ | ★★★★ | ★★★ (переписать shell) | ★★★★★ |
-| KMP + Compose Multiplatform | ★★★★ | ★★★ | ★★★★★ | ★★★★ |
+Copy **patterns**, not the subtitle codebase:
+
+- Gradle catalog, JDK 17, Compose, ViewModel, DataStore  
+- Dark high-contrast UI, large hit targets  
+
+Do **not** pull Vosk, Room subtitle schemas, etc.
+
+---
+
+## Stack comparison
+
+| Host stack | Lightness | MVP speed | Desktop port | Dual familiarity |
+|------------|-----------|-----------|--------------|------------------|
+| **Kotlin + Compose + Kotlin server** | ★★★★★ | ★★★★ | ★★★ | ★★★★★ |
+| KMP + CMP | ★★★★ | ★★★ | ★★★★★ | ★★★★ |
 | Flutter | ★★★ | ★★★★ | ★★★★ | ★★ |
-| Capacitor (Web host) | ★★ | ★★★★ | ★★★ | ★★ |
-| Go mobile + thin UI | ★★★★★ | ★★ | ★★★★ | ★ |
+| Capacitor web host | ★★ | ★★★★ | ★★★ | ★★ |
 
-**Выбор сейчас:** строка 1.  
-**Эволюция:** вынести модели/протокол в `core` (KMP), UI shell — platform-specific.
+**Choose row 1 now.** Evolve shared models into KMP later if useful.
 
 ---
 
-## Definition of lightweight
+## Size definition of done
 
-| Артефакт | Целевой размер (ориентир) |
-|----------|---------------------------|
-| Base APK (host, 0–2 demo games) | **&lt; 8–12 МБ** install, лучше меньше |
-| Одна игра (pack) | **жёсткий max 10 МБ**, цель **&lt; 2 МБ** |
-| «Шедевр минимализма» | **&lt; 200 КБ** — badge в каталоге |
-| Wordpack на язык | отдельно, gzip, не в base без нужды |
-
-Это и есть «соревнование»: не AAA, а **максимум геймплея на килобайт**.
+| Artifact | Target |
+|----------|--------|
+| Base APK (0–2 demo games) | **&lt; 8–12 MB** install |
+| One game pack | max **10 MB**, aim **&lt; 2 MB** |
+| Ultra badge | **&lt; 200 KB** |
+| Wordpack per language | separate gzip |
 
 ---
 
-## Открыто (не блокирует старт Android)
+## Open (non-blocking)
 
-1. Ktor vs nano-server — решить при первом spike «hello lobby in browser».  
-2. Игры в APK vs external packs — MVP: 2–3 в assets.  
-3. Имя пакета (`lol....` как Dual или новый id).
+1. Ktor vs nano server on first spike.  
+2. Assets vs external packs for demos.  
+3. Final `applicationId` package name.
 
----
+## Related
 
-*Связано: [CORE.md](./CORE.md), [VISION.md](../VISION.md).*
+- [CORE.md](./CORE.md)  
+- [../VISION.md](../VISION.md)  
+- [../../android/README.md](../../android/README.md)

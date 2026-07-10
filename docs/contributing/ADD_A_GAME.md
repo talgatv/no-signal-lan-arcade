@@ -171,8 +171,7 @@ Inside the `"games": [ ... ]` array, add an object (comma-separated).
     "mouse": "ok"
   },
   "instructions": {
-    "en": "Tap or click the button to score points.",
-    "ru": "Тап или клик по кнопке — очки."
+    "en": "Tap or click the button to score points."
   },
   "authorId": "ogh-team",
   "dates": { "added": "2026-07-10" },

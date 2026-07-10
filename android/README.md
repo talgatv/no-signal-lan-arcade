@@ -1,143 +1,140 @@
 # Android host
 
-Нативное **приложение-хост** для Offline-игр по локальной Wi‑Fi.
+Native **host app** for Offline Games Hub on local Wi‑Fi.
 
-Телефон с этим APK поднимает сервер. Остальные игроки заходят **через браузер** (отдельное приложение не нужно).
+A phone with this APK starts the server. Other players join with a **browser** (no guest APK).
 
-Код Android-проекта будет жить **в этой папке**. Сейчас здесь только описание; scaffold Gradle/Compose — следующий шаг.
-
----
-
-## Роль
-
-| Делает host | Не делает host |
-|-------------|----------------|
-| Старт / стоп локального HTTP + WebSocket | Рисовать сложный геймплей (это HTML-игры) |
-| Показ IP и QR для подключения | Облачный матчмейкинг |
-| Foreground service, чтобы сервер не убили | Тяжёлые 3D-движки |
-| Выбор языка UI, keep-screen-on | Установку APK на телефоны гостей |
-| Раздача лобби + game packs | |
+Code will live in this folder. Today: documentation only. Gradle/Compose scaffold is next.
 
 ---
 
-## Стек
+## Role
 
-Ориентир — [Double_subs / Dual](../../Double_subs): знакомый и лёгкий путь.
+| Host does | Host does not |
+|-----------|----------------|
+| Start / stop local HTTP + WebSocket | Draw complex gameplay (that is HTML) |
+| Show IP + QR | Cloud matchmaking |
+| Foreground service so the OS keeps the process | Force guests to install an app |
+| UI language, keep-screen-on | Ship a full Node runtime |
+| Serve lobby + game packs | |
+
+---
+
+## Stack
+
+Reference DX: Dual-class Kotlin apps (Compose, not Flutter).
 
 | | |
 |--|--|
-| Язык | **Kotlin** |
+| Language | **Kotlin** |
 | UI | **Jetpack Compose** + Material 3 |
-| Сборка | Gradle, Version Catalog |
-| minSdk / target | 26 / 36 (как Dual, уточним при scaffold) |
-| JDK | **17** (обязательно) |
-| Сеть | **Kotlin** HTTP + WebSocket (без Node внутри APK) |
-| Настройки | DataStore |
+| Build | Gradle Version Catalog |
+| minSdk / target | 26 / 36 (to confirm at scaffold) |
+| JDK | **17** required |
+| Networking | **Kotlin** HTTP + WebSocket (no Node in APK) |
+| Settings | DataStore |
 | i18n | `res/values-XX/strings.xml` |
 
-Подробности и сравнения стеков: [../docs/architecture/ANDROID_STACK.md](../docs/architecture/ANDROID_STACK.md).
+Details: [docs/architecture/ANDROID_STACK.md](../docs/architecture/ANDROID_STACK.md)
 
-### Языки UI (ООН)
+### Host UI languages (UN set)
 
-`en` · `zh` · `ru` · `es` · `ar` (RTL) · `fr`
+`en` · `zh` · `ru` · `es` · `ar` (RTL) · `fr`  
 
-Шрифты CJK / Arabic — **системные**, не бандлим Noto CJK в APK.
-
----
-
-## Цели по размеру
-
-Философия продукта: **соревнование очень лёгких игр**.
-
-| Артефакт | Ориентир |
-|----------|----------|
-| Base APK (оболочка, 0–2 demo-игры) | как можно меньше; цель порядка **&lt; 8–12 МБ** |
-| Одна игра (pack) | жёсткий max **10 МБ**, желательно **&lt; 2 МБ** |
-| Badge «ultra» | **&lt; 200 КБ** на игру |
-
-В APK не кладём: Node, Chromium, Flutter engine, Unity, огромные словари на все языки сразу.
+Use **system** CJK/Arabic fonts — do not bundle full Noto CJK.
 
 ---
 
-## Планируемая структура (после scaffold)
+## Size goals
 
-```
+Product philosophy: **maximum gameplay per kilobyte**.
+
+| Artifact | Target |
+|----------|--------|
+| Base APK (shell, 0–2 demos) | as small as possible; ~**&lt; 8–12 MB** |
+| One game pack | hard max **10 MB**, prefer **&lt; 2 MB** |
+| Ultra badge | **&lt; 200 KB** |
+
+Do not ship: Node, Chromium, Flutter engine, Unity, giant multilingual dictionaries in base.
+
+---
+
+## Planned structure (after scaffold)
+
+```text
 android/
-├── README.md                 ← вы здесь
+├── README.md                 ← you are here
 ├── settings.gradle.kts
 ├── build.gradle.kts
-├── gradle/
-│   └── libs.versions.toml
-├── gradlew, gradlew.bat
+├── gradle/libs.versions.toml
+├── gradlew
 └── app/
-    ├── build.gradle.kts
     └── src/main/
         ├── AndroidManifest.xml
         ├── java/.../         # Compose UI, service, server
-        ├── res/              # themes, strings (en/zh/ru/es/ar/fr)
-        └── assets/           # опционально: lobby + demo games
+        ├── res/              # themes, strings
+        └── assets/           # optional lobby + demo games
 ```
 
-Общие игры и веб-лобби в корне репо (`games/`, `web/`) — не дублировать логику; Android только **раздаёт** их с устройства (assets или external packs).
+Shared packs live in repo root `games/`. Android only **serves** them (assets or external packs).
 
 ---
 
-## Связь с остальным репо
+## Relation to the rest of the monorepo
 
-```
-OFFline_games_app/
-├── android/          ← ЭТОТ хост (Kotlin/Compose)
-├── docs/             ← визия, каталог игр, архитектура
-├── games/            ← (будет) web-плагины ≤ 10 МБ
-├── web/              ← (будет) лобби для браузера
-└── desktop/          ← позже, другой thin host
+```text
+no-signal-lan-arcade/
+├── android/     ← this host shell
+├── pc/          ← Python host (shipping now)
+├── docs/
+└── games/       ← web packs ≤ 10 MB
 ```
 
-- Каталог игр: [../docs/games/CATALOG.md](../docs/games/CATALOG.md)  
-- Ядро / протокол: [../docs/architecture/CORE.md](../docs/architecture/CORE.md)  
-- Корень: [../README.md](../README.md)
+- Catalog: [docs/games/CATALOG.md](../docs/games/CATALOG.md)  
+- Core: [docs/architecture/CORE.md](../docs/architecture/CORE.md)  
+- Root: [README.md](../README.md)
 
 ---
 
-## Сборка (когда появится проект)
+## Build (when scaffold exists)
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64   # или ваш JDK 17
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 cd android
 ./gradlew :app:assembleDebug
 # APK → app/build/outputs/apk/debug/
 ```
 
-Пока `./gradlew` здесь нет — папка только под документацию и будущий scaffold.
+There is no `gradlew` yet — docs only.
 
 ---
 
-## MVP экранов host
+## MVP screens
 
-1. **Home** — «Запустить сервер» / «Остановить»  
-2. **Running** — IP, порт, QR, число подключений, кнопка «открыть лобби у себя»  
-3. **Settings** — язык, порт, keep screen on  
-4. (Позже) список установленных game packs  
+1. **Home** — Start / Stop server  
+2. **Running** — IP, port, QR, connection count, “open lobby”  
+3. **Settings** — language, port, keep screen on  
+4. Later — installed pack list  
 
 ---
 
-## Статус
+## Status
 
 | | |
 |--|--|
-| Папка `android/` | ✅ есть |
-| README | ✅ этот файл |
-| Gradle / Compose skeleton | ⬜ не создан |
+| `android/` folder | ✅ |
+| This README | ✅ |
+| Gradle / Compose skeleton | ⬜ |
 | HTTP/WS server | ⬜ |
 | QR + foreground service | ⬜ |
 
 ---
 
-## Имя пакета (черновик)
+## Package name (draft)
 
-TBD. Варианты:
+TBD. Candidates:
 
-- `lol.offline.games` / `lol.lan.party`
-- `dev.<you>.offlinegames`
+- `dev.talgatv.nosignal`  
+- `lol.lan.arcade`  
 
-Зафиксируем при первом `build.gradle.kts`.
+Finalize with the first `build.gradle.kts`.
