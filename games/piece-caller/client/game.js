@@ -182,28 +182,14 @@ function closeWindowAndSpawn() {
 function spawnPiece(type) {
   const m = SHAPES[type].map((r) => r.slice());
   const x = ((COLS - m[0].length) / 2) | 0;
-  const y = -m.length + 1;
+  const y = 0;
+  if (collides(state.board, m, x, y)) {
+    endGame();
+    return;
+  }
   state.piece = { type, m, x, y };
   state.phase = 'falling';
   state.dropAcc = 0;
-  if (collides(state.board, m, x, y + (y < 0 ? 0 : 0))) {
-    // check with y adjusted
-  }
-  // top-out if cannot place at spawn
-  let sy = y;
-  while (sy < 0 && collides(state.board, m, x, sy)) sy++;
-  if (collides(state.board, m, x, Math.max(0, y))) {
-    // try y=0
-    if (collides(state.board, m, x, 0)) {
-      endGame();
-      return;
-    }
-  }
-  if (collides(state.board, state.piece.m, state.piece.x, state.piece.y)) {
-    // force visible check: if any filled cell overlaps or above
-    const testY = 0;
-    if (collides(state.board, m, x, testY)) endGame();
-  }
 }
 
 function lockPiece() {
