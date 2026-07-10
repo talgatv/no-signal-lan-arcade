@@ -207,6 +207,9 @@ Full agent-friendly plan: [`docs/plans/LLM_DEVELOPMENT_PLAN.md`](docs/plans/LLM_
 
 ## Contributing (human or LLM)
 
+**Everyone is welcome** — new games, host fixes, docs, translations.  
+Start here: **[CONTRIBUTING.md](CONTRIBUTING.md)**
+
 - Prefer **one game or one subsystem per change**.  
 - Update `games/catalog/games.json` when adding a pack.  
 - No CDNs. No new heavy frameworks without discussion.  
