@@ -34,6 +34,12 @@
 Power outages. Road trips. Cabins. Camping. Classrooms with blocked networks.  
 You still have phones, a laptop, and a power bank — but **no internet**.
 
+### Origin story
+
+The idea crystallized when the project author was **without power during the 2025 Los Angeles wildfires**.  
+The lights were out and the network was unreliable — but people were still together in a room, with charged phones and a need for something human: play, talk, pass the time.  
+**Offline Games Hub / No-Signal LAN Arcade** is built for that kind of night: one host on a battery, everyone else in a browser, no cloud required.
+
 **Offline Games Hub** turns one PC (later: phone) into a **local game server**:
 
 ```text

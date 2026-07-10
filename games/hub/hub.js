@@ -331,16 +331,42 @@ async function loadCatalog() {
     </p>`;
     return;
   }
+  // remove old banner if reloading
+  document.querySelectorAll('.hub-banner').forEach((n) => n.remove());
   if (roots.mode === 'games-root') {
-    // banner once
     const bar = document.createElement('p');
     bar.className = 'hub-banner';
     bar.innerHTML =
-      'Serving from <code>games/</code> static tree. For chat/programs & multiplayer use <code>cd pc && ./start.sh</code> → <code>/games/</code>';
+      '<strong>Limited mode:</strong> this is a plain folder server under <code>games/</code> ' +
+      '(e.g. port 8765). <strong>LAN Chat & programs are disabled</strong> here because they live in <code>programs/</code>.<br/>' +
+      'Fix: stop that server, run <code>cd pc && ./start.sh</code>, open ' +
+      '<code>http://127.0.0.1:8080/games/</code> — then open <strong>LAN Chat &amp; Radio</strong>.';
     grid.parentElement?.insertBefore(bar, grid);
   }
   renderGrid();
 }
+
+// About panel (default open on first visit)
+const aboutPanel = $('aboutPanel');
+const aboutKey = 'ogh_hub_about_collapsed';
+function syncAboutBtn() {
+  const collapsed = aboutPanel.hasAttribute('hidden');
+  $('btnAbout')?.classList.toggle('is-on', !collapsed);
+}
+if (localStorage.getItem(aboutKey) === '1') {
+  aboutPanel.setAttribute('hidden', '');
+}
+syncAboutBtn();
+$('btnAbout')?.addEventListener('click', () => {
+  if (aboutPanel.hasAttribute('hidden')) {
+    aboutPanel.removeAttribute('hidden');
+    localStorage.removeItem(aboutKey);
+  } else {
+    aboutPanel.setAttribute('hidden', '');
+    localStorage.setItem(aboutKey, '1');
+  }
+  syncAboutBtn();
+});
 
 // events
 $('btnProfile').addEventListener('click', openDrawer);

@@ -7,6 +7,10 @@
 
 No internet, a power cut, or a room full of people — and you still want to **play together**, not each alone on a phone. Board games are not always at hand. Services like Jackbox need the cloud and often a subscription.
 
+### Origin
+
+The project was sparked when the author experienced a **power outage during the 2025 Los Angeles wildfires**: devices still had charge, the grid and internet did not. A local Wi‑Fi arcade — one host, browser clients, no cloud — is the practical answer for blackouts and similar moments.
+
 ## Solution
 
 One device becomes a **local game hub**:

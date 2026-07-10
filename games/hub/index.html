@@ -18,11 +18,41 @@
         <p class="hub-sub">Sort · play · progress stays in <strong>your browser only</strong></p>
       </div>
     </div>
-    <button type="button" class="hub-profile-btn" id="btnProfile" aria-label="Open profile">
-      <img id="hdrAvatar" alt="" width="40" height="40" />
-      <span id="hdrName">Player</span>
-    </button>
+    <div class="hub-top-actions">
+      <button type="button" class="hub-link-btn" id="btnAbout">About</button>
+      <button type="button" class="hub-profile-btn" id="btnProfile" aria-label="Open profile">
+        <img id="hdrAvatar" alt="" width="40" height="40" />
+        <span id="hdrName">Player</span>
+      </button>
+    </div>
   </header>
+
+  <section class="hub-about" id="aboutPanel">
+    <h2>About this project</h2>
+    <p>
+      <strong>Offline Games Hub</strong> (No-Signal LAN Arcade) turns one computer into a
+      <em>local game server</em>. Friends join from any phone browser on the same Wi‑Fi —
+      no app install for guests, no accounts, no cloud. Play tiny games and utility programs
+      even when the internet is gone.
+    </p>
+    <p>
+      One host serves the library and multiplayer rooms. Progress and your profile stay
+      only in <strong>this browser</strong> (you can export them as a file). Anyone can
+      contribute a new game pack to the open-source collection.
+    </p>
+    <p class="hub-origin">
+      <strong>Origin.</strong> The idea took shape when the project author was left
+      <strong>without power during the 2025 Los Angeles wildfires</strong> — phones still
+      had charge, people were in the same room, but the grid and the net were gone.
+      A LAN arcade you can run from a laptop and a hotspot is built for exactly that moment:
+      blackouts, disasters, travel, and any night the signal fails.
+    </p>
+    <p class="hub-about-links">
+      <a href="https://github.com/talgatv/no-signal-lan-arcade">GitHub</a>
+      · <a href="/">LAN lobby</a>
+      · <a href="/docs/contributing/GAME_INTEGRATION_MANUAL.md">Add a game</a>
+    </p>
+  </section>
 
   <section class="hub-toolbar">
     <input type="search" id="search" placeholder="Search games…" autocomplete="off" />
