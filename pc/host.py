@@ -454,6 +454,9 @@ class OGHHandler(BaseHTTPRequestHandler):
     def _resolve_static(self, path: str) -> Optional[Path]:
         if path in ("/", "/index.html", "/lobby", "/lobby/"):
             return WWW_DIR / "index.html"
+        # Games hub (library + profile)
+        if path in ("/games", "/games/", "/library", "/library/"):
+            return CFG.games_dir / "hub" / "index.html"
         if path.startswith("/games/"):
             return safe_join(CFG.games_dir, path[len("/games/") :])
         if path.startswith("/shared/"):

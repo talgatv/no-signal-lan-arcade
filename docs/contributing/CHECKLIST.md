@@ -21,6 +21,7 @@ Copy into your PR description.
 
 - [ ] Can finish / retry a session alone
 - [ ] Tested via `pc/start.sh` → `http://127.0.0.1:8080/games/<id>/client/`
+- [ ] If you save progress: uses `OGHProfile` + readable `summary` ([SAVE_PROGRESS.md](./SAVE_PROGRESS.md))
 
 ## Multiplayer (if applicable)
 

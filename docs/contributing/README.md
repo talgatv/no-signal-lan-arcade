@@ -13,8 +13,11 @@ Solo and multiplayer both use the same shape; multiplayer also uses `ogh-net`.
 | **API reference** | [ENGINE_API.md](./ENGINE_API.md) | reference |
 | **Copy-paste checklist** | [CHECKLIST.md](./CHECKLIST.md) | 5 min |
 | **FAQ** | [FAQ.md](./FAQ.md) | when stuck |
+| **Save progress / profile** | [SAVE_PROGRESS.md](./SAVE_PROGRESS.md) | localStorage + export file |
 
 Official language of documentation: **English** ([docs index](../README.md)).
+
+**Player hub (library + profile):** open `/games/` on the host — sort games, set nickname/avatar, view progress, download/upload profile JSON (browser-only).
 
 ## Templates (copy these)
 

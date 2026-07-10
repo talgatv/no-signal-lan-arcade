@@ -154,16 +154,21 @@ See `pc/host.py` (`_dispatch`).
 
 ---
 
-## 4. Shared UI / audio / shaders
+## 4. Shared UI / audio / shaders / profile
 
 | Module | Export |
 |--------|--------|
 | `ogh-sfx.js` | `createOghSfx()` → `{ play, unlock }` |
 | `ogh-shader-bg.js` | `OGHShaderBg.mount(canvas)` |
+| `ogh-profile.js` | `OGHProfile` — local nickname, avatar, progress, export/import |
+| `ogh-avatars.js` | preset avatar SVGs |
 | `ogh-base.css` | CSS variables + utility classes |
 | `ogh-fonts.css` | `@font-face` local fonts |
 
 SFX names: `tap`, `place`, `pickup`, `win`, `die`, `tick`.
+
+**Progress / profile (browser-only):** [SAVE_PROGRESS.md](./SAVE_PROGRESS.md)  
+**Player library UI:** `/games/` or `/games/hub/`
 
 ---
 

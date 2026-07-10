@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Games — Offline Games Hub</title>
+  <link rel="stylesheet" href="../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="hub.css" />
+</head>
+<body class="hub-body ogh-font-ui">
+  <header class="hub-top">
+    <div class="hub-brand">
+      <a class="hub-logo" href="/">OGH</a>
+      <div>
+        <h1>Game library</h1>
+        <p class="hub-sub">Sort · play · progress stays in <strong>your browser only</strong></p>
+      </div>
+    </div>
+    <button type="button" class="hub-profile-btn" id="btnProfile" aria-label="Open profile">
+      <img id="hdrAvatar" alt="" width="40" height="40" />
+      <span id="hdrName">Player</span>
+    </button>
+  </header>
+
+  <section class="hub-toolbar">
+    <input type="search" id="search" placeholder="Search games…" autocomplete="off" />
+    <label class="hub-select">
+      Sort
+      <select id="sort">
+        <option value="name">Name A–Z</option>
+        <option value="name-desc">Name Z–A</option>
+        <option value="players">Max players</option>
+        <option value="genre">Genre</option>
+        <option value="recent">Recent progress</option>
+        <option value="style">Art style</option>
+      </select>
+    </label>
+    <label class="hub-select">
+      Players
+      <select id="filterPlayers">
+        <option value="any">Any</option>
+        <option value="1">Solo</option>
+        <option value="2">2+</option>
+        <option value="3">3+</option>
+        <option value="4">4+</option>
+      </select>
+    </label>
+    <label class="hub-check">
+      <input type="checkbox" id="filterMp" /> Multiplayer tags
+    </label>
+  </section>
+
+  <main class="hub-grid" id="grid" aria-live="polite">
+    <p class="hub-empty">Loading catalog…</p>
+  </main>
+
+  <footer class="hub-foot">
+    <a href="/">LAN lobby</a>
+    <a href="/docs/contributing/ADD_A_GAME.md">Add a game</a>
+    <a href="/docs/contributing/SAVE_PROGRESS.md">Save progress API</a>
+  </footer>
+
+  <!-- Profile drawer -->
+  <div class="hub-overlay" id="overlay" hidden>
+    <div class="hub-drawer" role="dialog" aria-labelledby="drawerTitle">
+      <header class="drawer-head">
+        <h2 id="drawerTitle">Your profile</h2>
+        <button type="button" class="hub-x" id="btnClose">✕</button>
+      </header>
+      <p class="drawer-note">
+        Nickname, avatar, and game progress are stored in <strong>this browser’s localStorage only</strong>.
+        Nothing is sent to the host server or the internet.
+      </p>
+
+      <label class="drawer-label">Nickname
+        <input id="nick" maxlength="24" />
+      </label>
+
+      <p class="drawer-label">Avatar presets</p>
+      <div class="avatar-grid" id="avatarGrid"></div>
+
+      <label class="drawer-label">Custom avatar
+        <input type="file" id="avatarFile" accept="image/*" />
+      </label>
+
+      <div class="drawer-actions">
+        <button type="button" class="hub-btn" id="btnSaveProfile">Save profile</button>
+      </div>
+
+      <h3 class="drawer-h3">Progress on this device</h3>
+      <ul class="prog-list" id="progList">
+        <li class="tag">No saved progress yet</li>
+      </ul>
+
+      <h3 class="drawer-h3">Backup profile</h3>
+      <p class="drawer-note">Download a JSON file, or restore one you saved earlier.</p>
+      <div class="drawer-actions row">
+        <button type="button" class="hub-btn primary" id="btnExport">Download profile</button>
+        <label class="hub-btn ghost file-label">
+          Upload profile
+          <input type="file" id="importFile" accept="application/json,.json" hidden />
+        </label>
+      </div>
+      <label class="hub-check drawer-check">
+        <input type="checkbox" id="importMerge" /> Merge with existing progress (else replace)
+      </label>
+      <p class="drawer-status" id="drawerStatus"></p>
+    </div>
+  </div>
+
+  <script type="module" src="hub.js"></script>
+</body>
+</html>

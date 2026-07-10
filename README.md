@@ -86,9 +86,18 @@ cd pc
 - **On the host:** [http://127.0.0.1:8080/](http://127.0.0.1:8080/)  
 - **On phones (same Wi‑Fi):** `http://<your-pc-lan-ip>:8080/`
 
-### 3. Connect → pick a game → play
+### 3. Open the game library (profile + progress)
 
-Lobby shows who’s in the room. Games load as static packs under `/games/...`.
+**http://127.0.0.1:8080/games/**
+
+- Browse & **sort** all catalog games  
+- Set **nickname** & **avatar** (presets or custom)  
+- See **local progress** per game  
+- **Download / upload** your profile JSON (browser storage only — never sent to the server)
+
+### 4. Connect → pick a game → play
+
+Lobby (`/`) is for LAN room presence. Games load as static packs under `/games/<id>/...`.
 
 > **Fully offline pack:** see [`pc/OFFLINE.md`](pc/OFFLINE.md).  
 > Portable Python under `pc/runtimes/` is gitignored (large) but lives on disk for USB copies.

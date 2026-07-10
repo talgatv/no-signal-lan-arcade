@@ -20,7 +20,9 @@ All project documentation is written in **English**.
 | [contributing/ENGINE_API.md](./contributing/ENGINE_API.md) | Manifests, URLs, OGHNet |
 | [contributing/CHECKLIST.md](./contributing/CHECKLIST.md) | PR checklist |
 | [contributing/FAQ.md](./contributing/FAQ.md) | Common questions |
+| [contributing/SAVE_PROGRESS.md](./contributing/SAVE_PROGRESS.md) | Local profile + progress API |
 | [../games/ENGINE.md](../games/ENGINE.md) | Short engine map |
+| [../games/hub/](../games/hub/) | In-browser game library + profile UI |
 
 ## Architecture
 
