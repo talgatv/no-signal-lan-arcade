@@ -11,6 +11,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/talgatv/no-signal-lan-arcade">GitHub</a> ·
   <a href="#quick-start">Quick start</a> ·
   <a href="#games">Games</a> ·
   <a href="#architecture">Architecture</a> ·
