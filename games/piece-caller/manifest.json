@@ -1,0 +1,29 @@
+{
+  "id": "piece-caller",
+  "name": "Piece Caller",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 2,
+  "maxPlayers": 2,
+  "supportsSolo": true,
+  "genres": ["arcade", "puzzle", "multiplayer"],
+  "tags": ["tetris-like", "asymmetric", "coop", "timing", "multiplayer"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Builder: move/rotate/drop. Caller: pick next piece only during the timing window."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "Host = Builder simulation; second player = Caller. Missed window → random piece."
+  }
+}

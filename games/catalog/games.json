@@ -561,6 +561,114 @@
         "wip"
       ],
       "notes": "User-owned compass program; scaffold when ready."
+    },
+    {
+      "id": "world-trail",
+      "name": "World Trail",
+      "tagline": "Offline world map · GPS · pins · LAN trails",
+      "style": "neon-vector",
+      "genres": [
+        "utility",
+        "casual"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "none",
+        "mouse": "ok",
+        "notes": {
+          "en": "Pan/zoom. Center on GPS. Place pins. Share on LAN.",
+          "ru": "Жесты — карта. Center — GPS. Pin — метка. LAN — друзья."
+        }
+      },
+      "instructions": {
+        "en": "Pan and zoom the world map. Allow GPS outdoors. Drop pins, record your trail, share with friends on the same host room. Without GPS, tap the map to simulate position. Map: Natural Earth (public domain).",
+        "ru": "Двигайте карту мира. На улице включите GPS. Ставьте точки, пишите след, делитесь в одной LAN-комнате. Без GPS — тап по карте = симуляция. Данные: Natural Earth (public domain)."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10"
+      },
+      "players": {
+        "min": 1,
+        "max": 8,
+        "solo": true
+      },
+      "entry": "world-trail/client/index.html",
+      "manifest": "world-trail/manifest.json",
+      "version": "0.1.0",
+      "status": "experimental",
+      "familyFriendly": true,
+      "tags": [
+        "multiplayer",
+        "map",
+        "gps",
+        "offline"
+      ],
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "Relay positions, trails, and pins"
+      }
+    },
+    {
+      "id": "piece-caller",
+      "name": "Piece Caller",
+      "kind": "game",
+      "tagline": "2P Tetris: one player calls pieces on a timer, the other stacks them.",
+      "style": "neon-vector",
+      "genres": [
+        "arcade",
+        "puzzle",
+        "multiplayer"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "keyboard",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Builder moves pieces. Caller picks only during the green timing window."
+        }
+      },
+      "instructions": {
+        "en": "Builder stacks like Tetris. Caller chooses the next piece only while the timing bar is open. Miss the window → random piece. Needs 2 players online (or solo practice both roles)."
+      },
+      "authorId": "ogh-team",
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10"
+      },
+      "players": {
+        "min": 2,
+        "max": 2,
+        "solo": true
+      },
+      "entry": "piece-caller/client/index.html",
+      "manifest": "piece-caller/manifest.json",
+      "version": "0.1.0",
+      "status": "experimental",
+      "familyFriendly": true,
+      "tags": [
+        "tetris-like",
+        "asymmetric",
+        "multiplayer",
+        "timing"
+      ],
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "Host=Builder sim; second=Caller picks"
+      }
     }
   ]
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Piece Caller — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="pc-body ogh-font-ui">
+  <header class="pc-top">
+    <a href="/games/">← Library</a>
+    <div>
+      <h1>Piece Caller</h1>
+      <p id="netLine" class="net">…</p>
+    </div>
+    <div class="role-pill" id="rolePill">—</div>
+  </header>
+
+  <div class="pc-layout">
+    <section class="board-col">
+      <div class="hud">
+        <span>Score <strong id="score">0</strong></span>
+        <span>Lines <strong id="lines">0</strong></span>
+        <span>Lv <strong id="level">1</strong></span>
+      </div>
+      <canvas id="board" width="300" height="600"></canvas>
+      <div class="builder-pad" id="builderPad">
+        <button type="button" data-act="left">←</button>
+        <button type="button" data-act="rot">↻</button>
+        <button type="button" data-act="right">→</button>
+        <button type="button" data-act="soft">↓</button>
+        <button type="button" data-act="hard" class="wide">DROP</button>
+      </div>
+    </section>
+
+    <section class="caller-col">
+      <h2>Caller</h2>
+      <p class="call-hint" id="callHint">Wait for the timing window…</p>
+      <div class="window-meter">
+        <div class="window-fill" id="windowFill"></div>
+      </div>
+      <p class="window-label" id="windowLabel">WINDOW CLOSED</p>
+      <div class="pieces" id="pieces"></div>
+      <p class="last" id="lastPick">Last: —</p>
+      <div class="overlay-start" id="startOverlay">
+        <p id="startBlurb">2 players: Builder stacks · Caller chooses pieces in time.</p>
+        <button type="button" class="start-btn" id="btnStart">Start / Ready</button>
+        <p class="tiny" id="startNote"></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="game-over" id="gameOver" hidden>
+    <h2 id="goTitle">Top out</h2>
+    <p id="goScore"></p>
+    <button type="button" id="btnAgain">Again</button>
+  </div>
+
+  <script type="module" src="game.js"></script>
+</body>
+</html>
