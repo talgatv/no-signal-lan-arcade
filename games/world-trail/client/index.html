@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>World Trail</title>
+    <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+    <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="ogh-font-ui wt-body">
+    <header class="wt-hud">
+      <div class="wt-hud-row">
+        <span id="netStatus" class="wt-pill offline">…</span>
+        <span id="coords" class="wt-coords">—</span>
+        <div id="compass" class="wt-compass" title="Compass">
+          <div id="compassNeedle" class="wt-compass-needle">▲</div>
+          <span class="wt-compass-n">N</span>
+        </div>
+      </div>
+      <div id="players" class="wt-players">solo</div>
+    </header>
+
+    <main class="wt-stage">
+      <canvas id="map" aria-label="World map"></canvas>
+      <div id="msg" class="wt-msg" hidden></div>
+      <div id="layerPanel" class="wt-layers" hidden>
+        <label><input type="checkbox" data-layer="land" checked /> Land</label>
+        <label><input type="checkbox" data-layer="rivers" checked /> Rivers / lakes</label>
+        <label><input type="checkbox" data-layer="roads" checked /> Major roads</label>
+        <label><input type="checkbox" data-layer="cities" checked /> Cities</label>
+        <label><input type="checkbox" data-layer="trails" checked /> Trails</label>
+        <label><input type="checkbox" data-layer="peers" checked /> Peers</label>
+      </div>
+    </main>
+
+    <footer class="wt-bar">
+      <button type="button" id="btnCenter" class="ogh-btn">Center</button>
+      <button type="button" id="btnPin" class="ogh-btn">Pin</button>
+      <button type="button" id="btnLayers" class="ogh-btn">Layers</button>
+      <button type="button" id="btnClearTrail" class="ogh-btn">Clear trail</button>
+      <button type="button" id="btnFit" class="ogh-btn">World</button>
+    </footer>
+
+    <p class="wt-attr">
+      Map data: Natural Earth (public domain) · GPS/compass use device sensors · LAN via OGH host
+    </p>
+
+    <script type="module" src="game.js"></script>
+  </body>
+</html>

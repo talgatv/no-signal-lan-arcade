@@ -1,0 +1,34 @@
+{
+  "id": "world-trail",
+  "name": "World Trail",
+  "version": "0.1.0",
+  "minPlayers": 1,
+  "maxPlayers": 8,
+  "supportsSolo": true,
+  "genres": ["utility", "casual"],
+  "tags": ["multiplayer", "map", "gps", "offline", "ogh-net"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "none",
+    "mouse": "ok",
+    "notes": {
+      "en": "Pan/zoom map. GPS + compass when available. Pin and share on LAN."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "Relay positions, trails, and pins over OGHNet"
+  },
+  "shared": [
+    "css/ogh-base.css",
+    "css/ogh-fonts.css",
+    "js/ogh-net.js",
+    "js/ogh-profile.js"
+  ]
+}
