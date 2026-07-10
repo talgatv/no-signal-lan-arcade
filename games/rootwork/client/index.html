@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#1a140c" />
+  <title>Rootwork — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="rw-body ogh-font-ui">
+  <div class="rw-root">
+    <canvas id="game" width="960" height="540"></canvas>
+
+    <div class="rw-hud">
+      <div class="rw-pill" id="hudMode">DIG</div>
+      <div class="rw-pill mono" id="hudPos">0,0</div>
+      <div class="rw-pill mono" id="hudDepth">depth 0</div>
+    </div>
+
+    <div class="rw-inv" id="inv" aria-label="Inventory"></div>
+
+    <!-- Touch controls -->
+    <div class="rw-pad" id="pad">
+      <div class="rw-stick-zone" id="stickZone">
+        <div class="rw-stick-base"><div class="rw-stick-knob" id="stickKnob"></div></div>
+      </div>
+      <div class="rw-actions">
+        <button type="button" class="rw-abtn" id="btnJump">⬆</button>
+        <button type="button" class="rw-abtn primary" id="btnMode">DIG</button>
+        <button type="button" class="rw-abtn" id="btnAct">◎</button>
+      </div>
+    </div>
+
+    <div class="rw-overlay" id="overlay">
+      <div class="rw-card">
+        <h1>ROOTWORK</h1>
+        <p>
+          Dig tunnels. Place rootwood. Find crystals for light.
+          Not Minecraft — a pocket burrow under the soil.
+        </p>
+        <ul class="rw-tips">
+          <li><strong>Dig</strong> — break soil & stone into inventory</li>
+          <li><strong>Place</strong> — put a selected block next to you</li>
+          <li>Touch stick · Jump · Mode · Action · or keyboard</li>
+        </ul>
+        <button type="button" class="rw-start" id="btnStart">Enter burrow</button>
+        <button type="button" class="rw-start ghost" id="btnNew">New world</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

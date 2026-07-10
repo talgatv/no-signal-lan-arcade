@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#1a1028" />
+  <title>Comet Pixel — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="pixel-body ogh-font-pixel">
+  <div class="ogh-root" id="root">
+    <header class="pixel-hud" id="hud">
+      <span id="hudLevel">L1</span>
+      <span id="hudDiff">NRM</span>
+      <span id="hudScore">*0</span>
+      <span id="hudWells">W3</span>
+    </header>
+
+    <main class="pixel-stage">
+      <canvas id="game" width="160" height="224"></canvas>
+    </main>
+
+    <p class="pixel-hint" id="hint">TAP = GRAVITY WELL (GRID)</p>
+
+    <div class="pixel-overlay" id="overlay">
+      <div class="pixel-card">
+        <h1 id="title">COMET<br />PIXEL</h1>
+        <p id="blurb">
+          GRID WELLS. GUIDE COMET.<br />
+          STARS = FUEL. RED = DEATH.<br />
+          CYAN GATE = WIN.
+        </p>
+        <div class="pixel-diff" id="diffBlock">
+          <div class="pixel-diff-label">DIFFICULTY / WELLS</div>
+          <div class="pixel-diff-row">
+            <button type="button" class="pixel-diff-btn" data-diff="easy">EASY</button>
+            <button type="button" class="pixel-diff-btn is-active" data-diff="normal">NRM</button>
+            <button type="button" class="pixel-diff-btn" data-diff="hard">HARD</button>
+          </div>
+          <p class="pixel-diff-preview" id="diffPreview">WELLS L1=? L2=?</p>
+        </div>
+        <button type="button" class="pixel-btn" id="btnStart">START</button>
+        <button type="button" class="pixel-btn" id="btnNext" hidden>NEXT</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

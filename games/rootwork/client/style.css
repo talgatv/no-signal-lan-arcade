@@ -1,0 +1,251 @@
+.rw-body {
+  background: #120e0a;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.rw-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#game {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #1a140c;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  cursor: crosshair;
+}
+
+.rw-hud {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.rw-pill {
+  background: rgba(20, 14, 10, 0.82);
+  border: 2px solid #5a4030;
+  color: #f0e0c8;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rw-pill.mono {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 12px;
+}
+
+#hudMode {
+  border-color: #c4a060;
+  color: #ffd166;
+}
+
+.rw-inv {
+  position: fixed;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 4;
+  padding: 6px;
+  background: rgba(12, 8, 6, 0.75);
+  border: 2px solid #3a2a1a;
+  border-radius: 12px;
+}
+
+.rw-slot {
+  width: 44px;
+  height: 44px;
+  border: 2px solid #4a3828;
+  border-radius: 8px;
+  background: #1e1610;
+  color: #f0e0c8;
+  font-size: 10px;
+  font-family: "JetBrains Mono", monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  gap: 2px;
+}
+
+.rw-slot .swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.4);
+}
+
+.rw-slot.is-sel {
+  border-color: #ffd166;
+  box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.35);
+}
+
+.rw-slot .cnt { font-size: 10px; line-height: 1; }
+
+/* Touch pad */
+.rw-pad {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.rw-stick-zone {
+  position: absolute;
+  left: 12px;
+  bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  width: 130px;
+  height: 130px;
+  pointer-events: auto;
+}
+
+.rw-stick-base {
+  width: 110px;
+  height: 110px;
+  margin: 10px;
+  border-radius: 50%;
+  background: rgba(40, 28, 18, 0.55);
+  border: 2px solid rgba(200, 160, 100, 0.35);
+  position: relative;
+}
+
+.rw-stick-knob {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 209, 102, 0.55);
+  border: 2px solid #c4a060;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.rw-actions {
+  position: absolute;
+  right: 12px;
+  bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.rw-abtn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #5a4030;
+  background: rgba(30, 22, 14, 0.8);
+  color: #f0e0c8;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.rw-abtn.primary {
+  border-color: #c4a060;
+  color: #ffd166;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.rw-abtn:active { transform: scale(0.96); }
+
+/* Overlay */
+.rw-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(8, 6, 4, 0.82);
+  backdrop-filter: blur(4px);
+}
+
+.rw-overlay[hidden] { display: none !important; }
+
+.rw-card {
+  width: min(400px, 100%);
+  background: #1e1610;
+  border: 3px solid #c4a060;
+  border-radius: 16px;
+  padding: 24px 20px;
+  color: #f0e0c8;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+}
+
+.rw-card h1 {
+  margin: 0 0 10px;
+  font-family: "Montserrat", "Roboto", sans-serif;
+  font-size: 1.75rem;
+  letter-spacing: 0.12em;
+  color: #ffd166;
+}
+
+.rw-card p {
+  margin: 0 0 12px;
+  color: #b8a890;
+  line-height: 1.45;
+  font-size: 0.95rem;
+}
+
+.rw-tips {
+  margin: 0 0 18px;
+  padding-left: 18px;
+  color: #a89880;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.rw-start {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 8px;
+  border: 2px solid #c4a060;
+  border-radius: 12px;
+  background: linear-gradient(160deg, rgba(196,160,96,0.25), rgba(80,50,20,0.4));
+  color: #ffd166;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rw-start.ghost {
+  border-color: #5a4030;
+  color: #b8a890;
+  background: transparent;
+}
+
+/* Hide on-screen pad on wide desktop with mouse preference — still useful on tablets */
+@media (min-width: 900px) and (pointer: fine) {
+  .rw-stick-zone { opacity: 0.35; }
+  .rw-actions { opacity: 0.45; }
+}

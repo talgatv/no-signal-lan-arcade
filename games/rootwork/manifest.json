@@ -1,0 +1,32 @@
+{
+  "id": "rootwork",
+  "name": "Rootwork",
+  "name_i18n": {
+    "en": "Rootwork",
+    "ru": "Корнедел",
+    "zh": "根脉",
+    "es": "Rootwork",
+    "ar": "Rootwork",
+    "fr": "Rootwork"
+  },
+  "version": "0.1.0",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["sandbox", "dig-build", "exploration"],
+  "tags": ["2d", "tiles", "underground", "touch", "experimental"],
+  "style": "pixel",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse", "keyboard"],
+    "keyboard": "optional",
+    "mouse": "ok"
+  },
+  "familyId": "rootwork",
+  "variantOf": null,
+  "estimatedSizeMb": 0.08,
+  "entry": { "client": "client/index.html" },
+  "orientation": "landscape",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js"]
+}

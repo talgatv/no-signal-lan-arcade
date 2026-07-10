@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "families": [
+    {
+      "id": "comet",
+      "name": "Comet",
+      "names": {
+        "en": "Comet",
+        "ru": "Комета"
+      },
+      "description": {
+        "en": "Guide a comet with temporary gravity wells. Collect stars, avoid singularities, reach the portal.",
+        "ru": "Направляй комету временными гравиколодцами. Звёзды, сингулярности, портал."
+      },
+      "baseGameId": "comet",
+      "gameIds": [
+        "comet",
+        "comet-pixel"
+      ],
+      "dates": {
+        "added": "2026-07-10"
+      }
+    },
+    {
+      "id": "rootwork",
+      "name": "Rootwork",
+      "names": {
+        "en": "Rootwork",
+        "ru": "Корнедел"
+      },
+      "description": {
+        "en": "2D underground dig-build sandbox. Burrow, place blocks, crystal light. Not Minecraft.",
+        "ru": "2D подземная песочница dig-build. Норы, блоки, свет кристаллов. Не Minecraft."
+      },
+      "baseGameId": "rootwork",
+      "gameIds": [
+        "rootwork"
+      ],
+      "dates": {
+        "added": "2026-07-10"
+      }
+    },
+    {
+      "id": "pulse-race",
+      "name": "Pulse Race",
+      "names": {
+        "en": "Pulse Race",
+        "ru": "Пульс-гонка"
+      },
+      "description": {
+        "en": "Top-down neon racing. Offline AI now; LAN via OGHNet when host WS exists.",
+        "ru": "Неоновые top-down гонки. Сейчас AI; LAN через OGHNet когда будет host WS."
+      },
+      "baseGameId": "pulse-race",
+      "gameIds": [
+        "pulse-race"
+      ],
+      "dates": {
+        "added": "2026-07-10"
+      }
+    }
+  ]
+}

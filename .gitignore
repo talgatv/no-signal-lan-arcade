@@ -1,0 +1,51 @@
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+*~
+*.swp
+.idea/
+.vscode/
+*.iml
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+.env
+*.egg-info/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+# --- Node (if ever) ---
+node_modules/
+npm-debug.log*
+
+# --- Android (future) ---
+local.properties
+*.jks
+*.keystore
+keystore.properties
+.gradle/
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# --- PC portable Python (large; keep on disk for offline USB, not in git) ---
+# Re-download: pc/runtimes/download_*.sh|ps1
+# Offline pack: copy folders next to repo or attach GitHub Release
+pc/runtimes/win64/
+pc/runtimes/linux64/
+pc/runtimes/macos64/
+pc/runtimes/*.zip
+pc/runtimes/*.tgz
+pc/runtimes/*.tar.gz
+
+# --- Logs / temp ---
+*.log
+*.tmp
+.cache/

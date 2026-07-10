@@ -1,0 +1,12 @@
+# Downloaded portable Pythons (large) — fetch via download_*.sh/ps1
+win64/
+linux64/
+macos64/
+*.tgz
+*.tar.gz
+*.zip
+*.pkg
+*.exe
+!download_windows.ps1
+!download_linux.sh
+!download_macos.sh

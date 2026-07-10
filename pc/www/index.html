@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080f" />
+  <title>OGH Lobby — Offline Games Hub</title>
+  <link rel="stylesheet" href="/games/_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="/games/_shared/css/ogh-base.css" />
+  <style>
+    body {
+      overflow: auto;
+      background: #07080f;
+      font-family: "Roboto", system-ui, sans-serif;
+      color: #e8ecff;
+      min-height: 100%;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 {
+      font-family: "Montserrat", "Roboto", sans-serif;
+      letter-spacing: 0.08em;
+      font-size: 1.6rem;
+      margin: 0 0 6px;
+      background: linear-gradient(120deg, #5ce1ff, #ff6bcb);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .sub { color: #8b93b8; margin: 0 0 20px; font-size: 0.95rem; line-height: 1.45; }
+    .panel {
+      background: #0e1020;
+      border: 1px solid rgba(92, 225, 255, 0.22);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .panel h2 { margin: 0 0 12px; font-size: 0.85rem; letter-spacing: 0.1em; color: #8b93b8; text-transform: uppercase; }
+    label { display: block; font-size: 13px; color: #8b93b8; margin-bottom: 4px; }
+    input, select {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(92, 225, 255, 0.28);
+      background: #161a30;
+      color: #e8ecff;
+      font-size: 16px;
+      font-family: inherit;
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+    .btn {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 12px;
+      border: 1px solid rgba(92, 225, 255, 0.45);
+      background: linear-gradient(160deg, rgba(92,225,255,0.18), rgba(255,107,203,0.1));
+      color: #e8ecff;
+      font-weight: 700;
+      font-size: 15px;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .btn.ghost { background: transparent; border-color: #3a4060; color: #8b93b8; }
+    .status {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      color: #5ce1ff;
+      margin: 8px 0 0;
+      word-break: break-all;
+    }
+    .status.err { color: #ff5c7a; }
+    .players { list-style: none; margin: 0; padding: 0; }
+    .players li {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 12px; margin-bottom: 6px;
+      background: #161a30; border-radius: 10px; border: 1px solid #2a3050;
+    }
+    .players .you { color: #5ce1ff; }
+    .tag { font-size: 11px; color: #8b93b8; }
+    .games { display: grid; gap: 10px; }
+    .game {
+      display: block; text-decoration: none; color: inherit;
+      padding: 14px 16px; border-radius: 12px;
+      background: #161a30; border: 1px solid rgba(92, 225, 255, 0.18);
+    }
+    .game:hover { border-color: rgba(92, 225, 255, 0.45); }
+    .game strong { display: block; margin-bottom: 4px; color: #e8ecff; }
+    .game span { font-size: 13px; color: #8b93b8; }
+    .mp { color: #5cffb0; font-size: 11px; margin-left: 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>OFFLINE GAMES HUB</h1>
+    <p class="sub">
+      PC host is running. Join from phones on the same Wi‑Fi.
+      WebSocket lobby · games stay light browser packs.
+    </p>
+
+    <div class="panel">
+      <h2>Your session</h2>
+      <div class="row">
+        <div>
+          <label for="name">Name</label>
+          <input id="name" maxlength="24" placeholder="Player" autocomplete="nickname" />
+        </div>
+        <div>
+          <label for="room">Room</label>
+          <input id="room" maxlength="32" value="main" />
+        </div>
+      </div>
+      <button type="button" class="btn" id="btnConnect">Connect to lobby</button>
+      <button type="button" class="btn ghost" id="btnReady" hidden>Ready</button>
+      <p class="status" id="status">Not connected</p>
+    </div>
+
+    <div class="panel">
+      <h2>Players in room</h2>
+      <ul class="players" id="players">
+        <li><span class="tag">Connect to see who is here</span></li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>Games</h2>
+      <div class="games" id="games">
+        <!-- filled by JS; links append ?name=&room= for ogh-net -->
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    const GAMES = [
+      { id: "pulse-race", title: "Pulse Race", blurb: "Neon top-down racing · AI offline · MP-ready", path: "/games/pulse-race/client/", mp: true },
+      { id: "comet", title: "Comet", blurb: "Gravity wells · solo puzzle-arcade", path: "/games/comet/client/", mp: false },
+      { id: "comet-pixel", title: "Comet Pixel", blurb: "Pixel variant · grid wells", path: "/games/comet-pixel/client/", mp: false },
+      { id: "rootwork", title: "Rootwork", blurb: "2D dig-build sandbox burrow", path: "/games/rootwork/client/", mp: false },
+    ];
+
+    const $ = (id) => document.getElementById(id);
+    const statusEl = $("status");
+    const playersEl = $("players");
+    let ws = null;
+    let me = { id: null, ready: false };
+
+    function qs() {
+      const name = encodeURIComponent($("name").value.trim() || "Player");
+      const room = encodeURIComponent($("room").value.trim() || "main");
+      return `name=${name}&room=${room}`;
+    }
+
+    function renderGames() {
+      $("games").innerHTML = GAMES.map((g) => `
+        <a class="game" href="${g.path}?${qs()}">
+          <strong>${g.title}${g.mp ? '<span class="mp">MP-ready</span>' : ""}</strong>
+          <span>${g.blurb}</span>
+        </a>
+      `).join("");
+    }
+
+    $("name").value = localStorage.getItem("ogh_name") || `P${Math.floor(Math.random() * 90 + 10)}`;
+    $("room").value = localStorage.getItem("ogh_room") || "main";
+    renderGames();
+    ["name", "room"].forEach((id) => {
+      $(id).addEventListener("input", () => {
+        localStorage.setItem("ogh_name", $("name").value);
+        localStorage.setItem("ogh_room", $("room").value);
+        renderGames();
+      });
+    });
+
+    function setStatus(text, err = false) {
+      statusEl.textContent = text;
+      statusEl.classList.toggle("err", err);
+    }
+
+    function renderPlayers(list) {
+      if (!list || !list.length) {
+        playersEl.innerHTML = "<li><span class='tag'>Empty room</span></li>";
+        return;
+      }
+      playersEl.innerHTML = list.map((p) => `
+        <li>
+          <span class="${p.id === me.id ? "you" : ""}">${p.name}${p.id === me.id ? " (you)" : ""}</span>
+          <span class="tag">${p.isHost ? "host · " : ""}${p.ready ? "ready" : "…"}</span>
+        </li>
+      `).join("");
+    }
+
+    $("btnConnect").addEventListener("click", () => {
+      if (ws && ws.readyState === 1) {
+        ws.close();
+        return;
+      }
+      const proto = location.protocol === "https:" ? "wss:" : "ws:";
+      const url = `${proto}//${location.host}/ws`;
+      setStatus(`Connecting ${url}…`);
+      try {
+        ws = new WebSocket(url);
+      } catch (e) {
+        setStatus(String(e), true);
+        return;
+      }
+      ws.onopen = () => {
+        $("btnConnect").textContent = "Disconnect";
+        $("btnReady").hidden = false;
+        ws.send(JSON.stringify({
+          v: 1,
+          type: "join",
+          name: $("name").value.trim() || "Player",
+          room: $("room").value.trim() || "main",
+          gameId: "lobby",
+        }));
+        setStatus(`Connected · ${url}`);
+      };
+      ws.onmessage = (ev) => {
+        let msg;
+        try { msg = JSON.parse(ev.data); } catch { return; }
+        if (msg.type === "hello") {
+          me.id = msg.playerId;
+          setStatus(`Connected as ${me.id} · room ${msg.room}${msg.isHost ? " · HOST" : ""}`);
+        }
+        if (msg.type === "lobby") renderPlayers(msg.players);
+        if (msg.type === "error") setStatus(msg.message || "error", true);
+      };
+      ws.onclose = () => {
+        $("btnConnect").textContent = "Connect to lobby";
+        $("btnReady").hidden = true;
+        setStatus("Disconnected");
+        renderPlayers([]);
+      };
+      ws.onerror = () => setStatus("WebSocket error", true);
+    });
+
+    $("btnReady").addEventListener("click", () => {
+      if (!ws || ws.readyState !== 1) return;
+      me.ready = !me.ready;
+      ws.send(JSON.stringify({ v: 1, type: "ready", value: me.ready }));
+      $("btnReady").textContent = me.ready ? "Unready" : "Ready";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-07-10",
+  "games": [
+    {
+      "id": "comet",
+      "name": "Comet",
+      "names": {
+        "en": "Comet",
+        "ru": "Комета",
+        "zh": "彗星",
+        "es": "Cometa",
+        "ar": "مذنب",
+        "fr": "Comète"
+      },
+      "tagline": "Bend gravity. Thread the needle. Reach the gate.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "smooth-canvas",
+        "shader-bg"
+      ],
+      "genres": [
+        "arcade",
+        "puzzle",
+        "physics"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "none",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap or click to place gravity wells. No keyboard.",
+          "ru": "Тап или клик — гравиколодец. Клавиатура не нужна."
+        }
+      },
+      "parameters": {
+        "difficulty": {
+          "type": "enum",
+          "default": "normal",
+          "options": [
+            "easy",
+            "normal",
+            "hard"
+          ],
+          "affects": [
+            "wellsPerLevel",
+            "cometSpeedMult",
+            "maxSpeed",
+            "wellLifeSec",
+            "wellStrength",
+            "hazardScale"
+          ],
+          "labels": {
+            "en": "Difficulty (wells + comet speed)",
+            "ru": "Сложность (колодцы + скорость кометы)"
+          }
+        },
+        "wellsPerLevel": {
+          "type": "derived",
+          "description": {
+            "en": "ceil(baseWells * mult) + bonus — Easy gives more charges",
+            "ru": "ceil(base * mult) + bonus — на Easy больше зарядов колодцев"
+          }
+        },
+        "cometSpeedMult": {
+          "type": "derived",
+          "description": {
+            "en": "Easy 0.72 · Normal 1.0 · Hard 1.28 — multiplies start velocity",
+            "ru": "Easy 0.72 · Normal 1.0 · Hard 1.28 — множитель стартовой скорости"
+          }
+        }
+      },
+      "tags": [
+        "gravity",
+        "touch",
+        "levels",
+        "solo",
+        "experimental"
+      ],
+      "instructions": {
+        "en": "Pick difficulty (wells budget). Tap to place gravity wells. Pull the comet into the cyan portal. Grab stars for points and extra wells. Avoid red singularities, walls, and the void beyond the screen.",
+        "ru": "Выбери сложность (сколько колодцев). Тап — гравиколодец. Доведи комету до портала. Звёзды = очки и заряды. Красные дыры, стены, вылет — проигрыш."
+      },
+      "instructionsLong": {
+        "en": "Wells last a few seconds and cost one charge. Stars restore a charge. Five levels of rising complexity. Solo only for now.",
+        "ru": "Колодцы живут несколько секунд и тратят заряд. Звёзды возвращают заряд. Пять уровней. Пока только соло."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10",
+        "released": "2026-07-10"
+      },
+      "familyId": "comet",
+      "variantOf": null,
+      "relatedIds": [
+        "comet-pixel"
+      ],
+      "relationNote": "Canonical smooth neon version of the Comet family.",
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "comet/client/index.html",
+      "manifest": "comet/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 19.5,
+      "status": "experimental",
+      "license": "TBD",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Uses games/_shared shader bg + sfx."
+    },
+    {
+      "id": "comet-pixel",
+      "name": "Comet Pixel",
+      "names": {
+        "en": "Comet Pixel",
+        "ru": "Комета Пиксель",
+        "zh": "像素彗星",
+        "es": "Cometa Pixel",
+        "ar": "مذنب بكسل",
+        "fr": "Comète Pixel"
+      },
+      "tagline": "Same gravity soul. Chunkier universe. Wells snap to the grid.",
+      "style": "pixel",
+      "styles": [
+        "pixel",
+        "limited-palette",
+        "nearest-neighbor",
+        "grid"
+      ],
+      "genres": [
+        "arcade",
+        "puzzle",
+        "physics"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "none",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap/click; wells snap to the pixel grid. No keyboard.",
+          "ru": "Тап/клик; колодцы липнут к сетке. Без клавиатуры."
+        }
+      },
+      "parameters": {
+        "difficulty": {
+          "type": "enum",
+          "default": "normal",
+          "options": [
+            "easy",
+            "normal",
+            "hard"
+          ],
+          "affects": [
+            "wellsPerLevel",
+            "cometSpeedMult",
+            "maxSpeed",
+            "wellLifeSec",
+            "wellStrength",
+            "hazardScale"
+          ],
+          "labels": {
+            "en": "Difficulty (wells + comet speed)",
+            "ru": "Сложность (колодцы + скорость кометы)"
+          }
+        },
+        "wellsPerLevel": {
+          "type": "derived",
+          "description": {
+            "en": "Same formula as Comet: more wells on Easy",
+            "ru": "Как у Comet: на Easy больше колодцев"
+          }
+        },
+        "cometSpeedMult": {
+          "type": "derived",
+          "description": {
+            "en": "Easy 0.72 · Normal 1.0 · Hard 1.28",
+            "ru": "Easy 0.72 · Normal 1.0 · Hard 1.28"
+          }
+        }
+      },
+      "tags": [
+        "gravity",
+        "touch",
+        "levels",
+        "solo",
+        "pixel-art",
+        "variant"
+      ],
+      "instructions": {
+        "en": "Pick difficulty for well charges. Same goal as Comet; wells snap to a tile grid. Stars refill wells.",
+        "ru": "Выбери сложность (заряды). Цель как у Comet; колодцы по сетке. Звёзды дают заряды."
+      },
+      "instructionsLong": {
+        "en": "Visual remake + light mechanic twist (grid-snapped wells, discrete collision feel). Counts as its own catalog entry and a variation of `comet`.",
+        "ru": "Ремейк в пикселях + лёгкий твист механики (колодцы по сетке). Отдельная запись каталога и вариация `comet`."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10",
+        "released": "2026-07-10"
+      },
+      "familyId": "comet",
+      "variantOf": "comet",
+      "relatedIds": [
+        "comet"
+      ],
+      "relationNote": "Pixel-art variation of Comet; wells snap to grid.",
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "comet-pixel/client/index.html",
+      "manifest": "comet-pixel/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 80,
+      "sizeMeasuredKb": 19.4,
+      "status": "experimental",
+      "license": "TBD",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Low-res framebuffer scaled with image-rendering: pixelated. No WebGL bg (pure pixel sky)."
+    },
+    {
+      "id": "rootwork",
+      "name": "Rootwork",
+      "names": {
+        "en": "Rootwork",
+        "ru": "Корнедел",
+        "zh": "根脉",
+        "es": "Rootwork",
+        "ar": "Rootwork",
+        "fr": "Rootwork"
+      },
+      "tagline": "Dig a burrow. Place rootwood. Light the dark with crystals.",
+      "style": "pixel",
+      "styles": [
+        "pixel",
+        "tiles",
+        "side-view"
+      ],
+      "genres": [
+        "sandbox",
+        "dig-build",
+        "exploration"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "On-screen stick + dig/place. Keyboard: A/D, Space, Tab, Q/E, 1–6, F place.",
+          "ru": "Стик на экране + dig/place. Клавиатура: A/D, Space, Tab, Q/E, 1–6, F."
+        }
+      },
+      "parameters": {
+        "worldSize": {
+          "type": "fixed",
+          "value": "128x72 tiles",
+          "description": {
+            "en": "Fixed burrow map",
+            "ru": "Фиксированная карта норы"
+          }
+        }
+      },
+      "tags": [
+        "2d",
+        "underground",
+        "solo",
+        "sandbox",
+        "experimental"
+      ],
+      "instructions": {
+        "en": "Move with stick or A/D, jump, switch DIG/PLACE. Dig soil and stone into inventory, place rootwood and crystals. Auto-saves. Shift+R new world.",
+        "ru": "Стик или A/D, прыжок, режим DIG/PLACE. Копай в инвентарь, строй rootwood и кристаллы. Автосейв. Shift+R — новый мир."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10",
+        "released": "2026-07-10"
+      },
+      "familyId": "rootwork",
+      "variantOf": null,
+      "relatedIds": [],
+      "relationNote": "Canonical Rootwork sandbox MVP (solo).",
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "rootwork/client/index.html",
+      "manifest": "rootwork/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 31.9,
+      "status": "experimental",
+      "license": "TBD",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "LAN shared world planned later."
+    },
+    {
+      "id": "pulse-race",
+      "name": "Pulse Race",
+      "names": {
+        "en": "Pulse Race",
+        "ru": "Пульс-гонка",
+        "zh": "脉冲赛车",
+        "es": "Pulse Race",
+        "ar": "Pulse Race",
+        "fr": "Pulse Race"
+      },
+      "tagline": "Neon circuit. Beat AI. LAN multiplayer-ready.",
+      "style": "neon-vector",
+      "styles": [
+        "neon",
+        "top-down",
+        "shader-bg"
+      ],
+      "genres": [
+        "racing",
+        "arcade",
+        "action"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "keyboard",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "On-screen gas/steer or WASD / arrows.",
+          "ru": "Педали на экране или WASD / стрелки."
+        }
+      },
+      "parameters": {
+        "aiCount": {
+          "type": "enum",
+          "options": [
+            "1",
+            "2",
+            "3"
+          ],
+          "default": "2"
+        },
+        "laps": {
+          "type": "enum",
+          "options": [
+            "2",
+            "3",
+            "5"
+          ],
+          "default": "3"
+        }
+      },
+      "tags": [
+        "racing",
+        "ai",
+        "multiplayer-ready",
+        "experimental"
+      ],
+      "instructions": {
+        "en": "Hold gas, steer left/right. Stay on the neon ring. Complete laps before AI. Offline now; uses OGHNet for future LAN.",
+        "ru": "Газ и поворот. Держись неонового кольца. Круги против AI. Сейчас offline; OGHNet для будущего LAN."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10",
+        "released": "2026-07-10"
+      },
+      "familyId": "pulse-race",
+      "variantOf": null,
+      "relatedIds": [],
+      "relationNote": "First racing title; multiplayer-ready via ogh-net.",
+      "players": {
+        "min": 1,
+        "max": 4,
+        "solo": true
+      },
+      "entry": "pulse-race/client/index.html",
+      "manifest": "pulse-race/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 80,
+      "sizeMeasuredKb": 19.4,
+      "status": "experimental",
+      "license": "TBD",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Requires host /ws for real multiplayer; offline AI works without server logic."
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#05060c" />
+  <title>Pulse Race — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="pr-body ogh-font-ui">
+  <canvas class="ogh-shader-canvas" id="bg"></canvas>
+  <div class="pr-wrap">
+    <header class="pr-hud">
+      <div class="pr-pill" id="hudLap">LAP <strong>1</strong>/3</div>
+      <div class="pr-pill" id="hudPos">P<strong>1</strong></div>
+      <div class="pr-pill mono" id="hudNet">OFFLINE</div>
+    </header>
+    <canvas id="game" width="360" height="640"></canvas>
+
+    <div class="pr-controls" id="controls">
+      <button type="button" class="pr-btn" id="btnLeft">◀</button>
+      <div class="pr-mid">
+        <button type="button" class="pr-btn gas" id="btnGas">GAS</button>
+        <button type="button" class="pr-btn brake" id="btnBrake">BRK</button>
+      </div>
+      <button type="button" class="pr-btn" id="btnRight">▶</button>
+    </div>
+  </div>
+
+  <div class="pr-overlay" id="overlay">
+    <div class="pr-card">
+      <h1>PULSE RACE</h1>
+      <p>Neon circuit. Beat the AI drones. Built for LAN multiplayer next.</p>
+      <label class="pr-row">AI rivals
+        <select id="aiCount">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+        </select>
+      </label>
+      <label class="pr-row">Laps
+        <select id="lapCount">
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="5">5</option>
+        </select>
+      </label>
+      <p class="pr-net" id="netBlurb">Network: checking…</p>
+      <button type="button" class="pr-start" id="btnStart">Race</button>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Comet — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <canvas class="ogh-shader-canvas" id="bg" aria-hidden="true"></canvas>
+
+    <header class="ogh-hud">
+      <div class="ogh-pill" id="hudLevel">Lvl <strong>1</strong></div>
+      <div class="ogh-pill" id="hudDiff">Easy</div>
+      <div class="ogh-pill" id="hudScore">★ <strong>0</strong></div>
+      <div class="ogh-pill" id="hudWells">◎ <strong>3</strong></div>
+    </header>
+
+    <main class="ogh-stage">
+      <canvas class="ogh-game-canvas" id="game" width="720" height="1000"></canvas>
+    </main>
+
+    <p class="ogh-hint" id="hint">Tap to place gravity wells · guide the comet to the portal</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card">
+        <h1 id="title">COMET</h1>
+        <p id="blurb">
+          Place gravity wells to bend the comet’s path.
+          Collect stars, avoid red singularities, reach the portal.
+        </p>
+        <div class="diff-block" id="diffBlock">
+          <div class="diff-label">Difficulty · gravity wells</div>
+          <div class="diff-row" role="group" aria-label="Difficulty">
+            <button type="button" class="diff-btn" data-diff="easy">Easy<br /><span>+wells · slow</span></button>
+            <button type="button" class="diff-btn is-active" data-diff="normal">Normal<br /><span>balanced</span></button>
+            <button type="button" class="diff-btn" data-diff="hard">Hard<br /><span>−wells · fast</span></button>
+          </div>
+          <p class="diff-preview" id="diffPreview">Wells on lvl 1: …</p>
+        </div>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart">Launch</button>
+        <button type="button" class="ogh-btn" id="btnNext" hidden>Next level</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

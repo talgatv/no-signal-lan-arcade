@@ -1,0 +1,35 @@
+{
+  "id": "comet",
+  "name": "Comet",
+  "name_i18n": {
+    "en": "Comet",
+    "ru": "Комета",
+    "zh": "彗星",
+    "es": "Cometa",
+    "ar": "مذنب",
+    "fr": "Comète"
+  },
+  "version": "0.1.0",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "puzzle", "physics"],
+  "tags": ["gravity", "touch", "levels", "experimental"],
+  "estimatedSizeMb": 0.05,
+  "entry": {
+    "client": "client/index.html"
+  },
+  "orientation": "any",
+  "familyFriendly": true,
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "none",
+    "mouse": "ok"
+  },
+  "familyId": "comet",
+  "variantOf": null,
+  "relatedIds": ["comet-pixel"],
+  "shared": ["css/ogh-base.css", "js/ogh-shader-bg.js", "js/ogh-sfx.js"]
+}

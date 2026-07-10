@@ -1,0 +1,42 @@
+{
+  "id": "pulse-race",
+  "name": "Pulse Race",
+  "name_i18n": {
+    "en": "Pulse Race",
+    "ru": "Пульс-гонка",
+    "zh": "脉冲赛车",
+    "es": "Pulse Race",
+    "ar": "Pulse Race",
+    "fr": "Pulse Race"
+  },
+  "version": "0.1.0",
+  "minPlayers": 1,
+  "maxPlayers": 4,
+  "supportsSolo": true,
+  "genres": ["racing", "arcade", "action"],
+  "tags": ["top-down", "touch", "ai", "multiplayer-ready"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok"
+  },
+  "familyId": "pulse-race",
+  "estimatedSizeMb": 0.06,
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": [
+    "css/ogh-base.css",
+    "css/ogh-fonts.css",
+    "js/ogh-sfx.js",
+    "js/ogh-shader-bg.js",
+    "js/ogh-net.js"
+  ],
+  "multiplayer": {
+    "status": "ready-offline",
+    "protocol": "ogh-net-v1",
+    "notes": "Offline: 1P + AI. Online when host WS is available."
+  }
+}

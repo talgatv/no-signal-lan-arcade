@@ -1,0 +1,182 @@
+/* OGH — shared base for ultra-light browser games */
+:root {
+  --ogh-bg: #07080f;
+  --ogh-bg-elevated: #0e1020;
+  --ogh-fg: #e8ecff;
+  --ogh-fg-dim: #8b93b8;
+  --ogh-accent: #5ce1ff;
+  --ogh-accent-2: #ff6bcb;
+  --ogh-good: #5cffb0;
+  --ogh-bad: #ff5c7a;
+  --ogh-warn: #ffd166;
+  /* Prefer local faces from ogh-fonts.css when linked; else system */
+  --ogh-font: "Roboto", "Open Sans", "Noto Sans", system-ui, "Segoe UI", sans-serif;
+  --ogh-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ogh-pixel: "Press Start 2P", monospace;
+  --ogh-display: "Montserrat", "Roboto", system-ui, sans-serif;
+  --ogh-radius: 14px;
+  --ogh-touch: 48px;
+  --ogh-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ogh-bg);
+  color: var(--ogh-fg);
+  font-family: var(--ogh-font);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  touch-action: none;
+}
+
+.ogh-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ogh-shader-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ogh-stage {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ogh-stage canvas.ogh-game-canvas {
+  display: block;
+  width: min(100vw, 100vh * 0.72);
+  height: min(100vh, 100vw / 0.72);
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 4px;
+}
+
+.ogh-hud {
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.ogh-hud > * { pointer-events: auto; }
+
+.ogh-pill {
+  background: rgba(10, 12, 24, 0.72);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(92, 225, 255, 0.22);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 14px;
+  color: var(--ogh-fg);
+  letter-spacing: 0.02em;
+}
+
+.ogh-pill strong {
+  color: var(--ogh-accent);
+  font-weight: 700;
+}
+
+.ogh-btn {
+  min-height: var(--ogh-touch);
+  min-width: var(--ogh-touch);
+  padding: 0 20px;
+  border: 1px solid rgba(92, 225, 255, 0.35);
+  border-radius: var(--ogh-radius);
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.18), rgba(255, 107, 203, 0.1));
+  color: var(--ogh-fg);
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ogh-btn:active { transform: scale(0.97); }
+.ogh-btn-primary {
+  border-color: rgba(92, 225, 255, 0.55);
+  box-shadow: 0 0 24px rgba(92, 225, 255, 0.15);
+}
+
+.ogh-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(4, 6, 14, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.ogh-overlay[hidden] { display: none !important; }
+
+.ogh-card {
+  width: min(420px, 100%);
+  background: var(--ogh-bg-elevated);
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  border-radius: 20px;
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.ogh-card h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(120deg, var(--ogh-accent), var(--ogh-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ogh-card p {
+  margin: 0 0 20px;
+  color: var(--ogh-fg-dim);
+  line-height: 1.45;
+  font-size: 0.95rem;
+}
+
+.ogh-card .ogh-btn { width: 100%; margin-top: 8px; }
+
+.ogh-hint {
+  position: fixed;
+  z-index: 2;
+  left: 50%;
+  bottom: calc(16px + var(--ogh-safe-bottom));
+  transform: translateX(-50%);
+  max-width: 92vw;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ogh-fg-dim);
+  pointer-events: none;
+}

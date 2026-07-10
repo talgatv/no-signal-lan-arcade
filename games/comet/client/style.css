@@ -1,0 +1,91 @@
+/* Comet-specific tweaks on top of ogh-base */
+body.ogh-font-ui,
+body.ogh-font-ui .ogh-card h1 {
+  font-family: "Roboto", var(--ogh-font);
+}
+
+.ogh-card h1 {
+  font-family: "Montserrat", "Roboto", sans-serif;
+  font-weight: 700;
+}
+
+.ogh-pill,
+.diff-preview {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 13px;
+}
+
+.ogh-game-canvas {
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow:
+    0 0 0 1px rgba(92, 225, 255, 0.12),
+    0 12px 40px rgba(0, 0, 0, 0.4);
+  cursor: crosshair;
+}
+
+#hudWells strong { color: #c4a0ff; }
+#hudScore strong { color: #ffd166; }
+#hudDiff { color: var(--ogh-accent); font-size: 13px; }
+
+.diff-block {
+  margin: 0 0 16px;
+  text-align: left;
+}
+
+.diff-label {
+  font-size: 12px;
+  color: var(--ogh-fg-dim);
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.diff-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.diff-btn {
+  min-height: 56px;
+  padding: 8px 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: rgba(8, 10, 22, 0.8);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1.25;
+}
+
+.diff-btn span {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ogh-fg-dim);
+}
+
+.diff-btn.is-active {
+  border-color: var(--ogh-accent);
+  background: rgba(92, 225, 255, 0.16);
+  box-shadow: 0 0 16px rgba(92, 225, 255, 0.12);
+}
+
+.diff-preview {
+  margin: 10px 0 0 !important;
+  font-size: 12px !important;
+  color: var(--ogh-accent) !important;
+}
+
+.diff-block[hidden],
+.diff-block.is-hidden {
+  display: none !important;
+}
+
+.ogh-hud {
+  flex-wrap: wrap;
+  gap: 8px;
+}

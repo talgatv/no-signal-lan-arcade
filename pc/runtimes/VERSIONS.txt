@@ -1,0 +1,21 @@
+OGH offline runtimes
+downloaded: 2026-07-10
+purpose: full offline transfer — no internet required to run host
+
+win64/
+  source: https://www.python.org/ftp/python/3.12.8/python-3.12.8-embed-amd64.zip
+  product: CPython 3.12.8 Windows embeddable (amd64)
+  size: ~22 MB on disk
+  entry: python.exe
+
+linux64/
+  source: python-build-standalone (indygreg)
+  asset: cpython-3.12.9+20250317-x86_64-unknown-linux-gnu-install_only_stripped.tar.gz
+  product: CPython 3.12.9
+  size: ~80 MB on disk
+  entry: bin/python3
+
+macos64/
+  not bundled — use system python3 / python.org installer once
+
+license: PSF License Agreement (see LICENSE.txt inside each runtime tree)
