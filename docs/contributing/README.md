@@ -8,12 +8,13 @@ Solo and multiplayer both use the same shape; multiplayer also uses `ogh-net`.
 
 | Level | Doc | Time |
 |-------|-----|------|
-| **Beginner — first solo game** | [ADD_A_GAME.md](./ADD_A_GAME.md) | 30–60 min |
+| **Full integration manual (recommended)** | [GAME_INTEGRATION_MANUAL.md](./GAME_INTEGRATION_MANUAL.md) | 45–90 min read |
+| **Beginner — short path** | [ADD_A_GAME.md](./ADD_A_GAME.md) | 30–60 min |
 | **Multiplayer game** | [ADD_MULTIPLAYER_GAME.md](./ADD_MULTIPLAYER_GAME.md) | +1–2 h |
+| **Save progress / profile** | [SAVE_PROGRESS.md](./SAVE_PROGRESS.md) | localStorage + export file |
 | **API reference** | [ENGINE_API.md](./ENGINE_API.md) | reference |
 | **Copy-paste checklist** | [CHECKLIST.md](./CHECKLIST.md) | 5 min |
 | **FAQ** | [FAQ.md](./FAQ.md) | when stuck |
-| **Save progress / profile** | [SAVE_PROGRESS.md](./SAVE_PROGRESS.md) | localStorage + export file |
 
 Official language of documentation: **English** ([docs index](../README.md)).
 

@@ -227,8 +227,10 @@ Full agent-friendly plan: [`docs/plans/LLM_DEVELOPMENT_PLAN.md`](docs/plans/LLM_
 |------------|--|
 | **[CONTRIBUTING.md](CONTRIBUTING.md)** | Project rules + PR flow |
 | **[Documentation index](docs/README.md)** | Full map of docs (English) |
-| **[Add a game (beginner)](docs/contributing/ADD_A_GAME.md)** | Step-by-step pack guide |
+| **[Game integration manual](docs/contributing/GAME_INTEGRATION_MANUAL.md)** | **Long guide: embed solo/MP games + saves** |
+| **[Add a game (short)](docs/contributing/ADD_A_GAME.md)** | Quick beginner path |
 | **[Multiplayer games](docs/contributing/ADD_MULTIPLAYER_GAME.md)** | ogh-net guide |
+| **[Save progress](docs/contributing/SAVE_PROGRESS.md)** | Profile + localStorage API |
 | **[Engine API](docs/contributing/ENGINE_API.md)** | Manifest, URLs, net events |
 | **[Checklist](docs/contributing/CHECKLIST.md)** | Before you open a PR |
 

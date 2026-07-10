@@ -18,10 +18,12 @@ Humans and AI agents are both welcome — same rules.
 ## Before you code
 
 1. Read [README.md](README.md) and [docs/VISION.md](docs/VISION.md).  
-2. **Add a game (beginners):** [docs/contributing/ADD_A_GAME.md](docs/contributing/ADD_A_GAME.md)  
-3. **Multiplayer games:** [docs/contributing/ADD_MULTIPLAYER_GAME.md](docs/contributing/ADD_MULTIPLAYER_GAME.md)  
-4. Engine index: [docs/contributing/README.md](docs/contributing/README.md) · [games/ENGINE.md](games/ENGINE.md)  
-5. Prefer **one focused change** per pull request.
+2. **Integrate a game (full manual):** [docs/contributing/GAME_INTEGRATION_MANUAL.md](docs/contributing/GAME_INTEGRATION_MANUAL.md)  
+3. **Short beginner path:** [docs/contributing/ADD_A_GAME.md](docs/contributing/ADD_A_GAME.md)  
+4. **Multiplayer:** [docs/contributing/ADD_MULTIPLAYER_GAME.md](docs/contributing/ADD_MULTIPLAYER_GAME.md)  
+5. **Local saves:** [docs/contributing/SAVE_PROGRESS.md](docs/contributing/SAVE_PROGRESS.md)  
+6. Engine index: [docs/contributing/README.md](docs/contributing/README.md) · [games/ENGINE.md](games/ENGINE.md)  
+7. Prefer **one focused change** per pull request.
 
 ### Fastest path
 

@@ -12,8 +12,10 @@ This project is **not** Unity. The “engine” is three small pieces:
 
 | I want to… | Go to |
 |------------|--------|
-| Add first solo game | [docs/contributing/ADD_A_GAME.md](../docs/contributing/ADD_A_GAME.md) |
+| **Full integration manual** | [docs/contributing/GAME_INTEGRATION_MANUAL.md](../docs/contributing/GAME_INTEGRATION_MANUAL.md) |
+| Add first solo game (short) | [docs/contributing/ADD_A_GAME.md](../docs/contributing/ADD_A_GAME.md) |
 | Multiplayer | [docs/contributing/ADD_MULTIPLAYER_GAME.md](../docs/contributing/ADD_MULTIPLAYER_GAME.md) |
+| Save progress | [docs/contributing/SAVE_PROGRESS.md](../docs/contributing/SAVE_PROGRESS.md) |
 | API reference | [docs/contributing/ENGINE_API.md](../docs/contributing/ENGINE_API.md) |
 | Copy template | `games/_templates/solo` or `multiplayer` |
 | Scaffold | `python3 tools/new_game.py my-id --title "My Game"` |

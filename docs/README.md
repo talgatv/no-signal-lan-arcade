@@ -15,7 +15,8 @@ All project documentation is written in **English**.
 | Doc | |
 |-----|--|
 | [contributing/README.md](./contributing/README.md) | Hub for pack authors |
-| [contributing/ADD_A_GAME.md](./contributing/ADD_A_GAME.md) | Beginner solo guide |
+| [contributing/GAME_INTEGRATION_MANUAL.md](./contributing/GAME_INTEGRATION_MANUAL.md) | **Long manual: integrate a game end-to-end** |
+| [contributing/ADD_A_GAME.md](./contributing/ADD_A_GAME.md) | Beginner solo guide (short) |
 | [contributing/ADD_MULTIPLAYER_GAME.md](./contributing/ADD_MULTIPLAYER_GAME.md) | Multiplayer packs |
 | [contributing/ENGINE_API.md](./contributing/ENGINE_API.md) | Manifests, URLs, OGHNet |
 | [contributing/CHECKLIST.md](./contributing/CHECKLIST.md) | PR checklist |
