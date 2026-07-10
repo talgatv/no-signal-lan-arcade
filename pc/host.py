@@ -415,6 +415,10 @@ class OGHHandler(BaseHTTPRequestHandler):
 
         # static
         file_path = self._resolve_static(path)
+        if file_path is not None and file_path.is_dir():
+            index = file_path / "index.html"
+            if index.is_file():
+                file_path = index
         if file_path is None or not file_path.is_file():
             self.send_error(404, "Not found")
             return
