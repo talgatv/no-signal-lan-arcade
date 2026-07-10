@@ -203,6 +203,10 @@ html {
   border-color: rgba(255, 209, 102, 0.45);
   color: #ffd166;
 }
+.hub-badge.warn {
+  border-color: rgba(255, 92, 122, 0.5);
+  color: #ff5c7a;
+}
 
 .hub-card p {
   margin: 0;

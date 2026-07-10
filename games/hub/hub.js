@@ -275,10 +275,11 @@ function renderGrid() {
           ${mp ? '<span class="hub-badge mp">MP</span>' : ''}
           ${hasProg ? '<span class="hub-badge prog">saved</span>' : ''}
           ${wip ? '<span class="hub-badge">WIP</span>' : ''}
+          ${brokenProg ? '<span class="hub-badge warn">needs full host</span>' : ''}
         </h2>
         <p>${escapeHtml(
           brokenProg
-            ? 'Open via OGH host (cd pc && ./start.sh) — programs need /programs/ route.'
+            ? 'Unavailable here: this page is only the games/ folder. Run: cd pc && ./start.sh → open http://127.0.0.1:8080/games/ then LAN Chat.'
             : blurb
         )}</p>
         <div class="hub-meta">
