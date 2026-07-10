@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080f" />
+  <title>About — Offline Games Hub</title>
+  <link rel="stylesheet" href="/games/_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="/games/_shared/css/ogh-base.css" />
+  <style>
+    html, body {
+      overflow: auto !important;
+      height: auto !important;
+      min-height: 100%;
+    }
+    body {
+      background: #07080f;
+      color: #e8ecff;
+      font-family: "Roboto", system-ui, sans-serif;
+      margin: 0;
+    }
+    .wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 24px 18px 48px;
+    }
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 22px;
+      font-size: 14px;
+    }
+    .nav a { color: #5ce1ff; text-decoration: none; }
+    h1 {
+      margin: 0 0 8px;
+      font-family: "Montserrat", "Roboto", sans-serif;
+      font-size: 1.75rem;
+      letter-spacing: 0.06em;
+      background: linear-gradient(120deg, #5ce1ff, #ff6bcb);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lead {
+      margin: 0 0 24px;
+      color: #8b93b8;
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+    h2 {
+      margin: 28px 0 10px;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5ce1ff;
+    }
+    p {
+      margin: 0 0 14px;
+      color: #b8c0d8;
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+    .origin {
+      margin: 20px 0;
+      padding: 16px 16px;
+      border-radius: 14px;
+      border-left: 3px solid #ff6bcb;
+      background: rgba(255, 107, 203, 0.07);
+      color: #d4d8ec;
+    }
+    .origin strong { color: #ff6bcb; }
+    ul {
+      margin: 0 0 16px;
+      padding-left: 1.2em;
+      color: #b8c0d8;
+      line-height: 1.55;
+    }
+    li { margin-bottom: 6px; }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(92, 225, 255, 0.4);
+      color: #e8ecff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      background: rgba(92, 225, 255, 0.1);
+    }
+    .links a.ghost {
+      background: transparent;
+      border-color: #3a4060;
+      color: #8b93b8;
+    }
+  </style>
+</head>
+<body class="ogh-font-ui">
+  <div class="wrap">
+    <nav class="nav">
+      <a href="/">← Lobby</a>
+      <a href="/games/">Library</a>
+      <a href="https://github.com/talgatv/no-signal-lan-arcade">GitHub</a>
+    </nav>
+
+    <h1>About the project</h1>
+    <p class="lead">
+      When the internet dies, the party doesn’t have to.
+    </p>
+
+    <h2>What it is</h2>
+    <p>
+      <strong>Offline Games Hub</strong> (No-Signal LAN Arcade) turns one computer into a
+      <em>local game server</em>. Friends join from any phone browser on the same Wi‑Fi —
+      no app install for guests, no accounts, no cloud.
+    </p>
+    <p>
+      The host serves a lobby, a library of tiny games and utility programs, and optional
+      multiplayer rooms. Your profile and progress stay only in <strong>this browser</strong>
+      (you can export them as a file). Anyone can contribute a new pack to the open-source collection.
+    </p>
+
+    <h2>How it works</h2>
+    <ul>
+      <li>One machine runs the PC host (<code>pc/start.sh</code>)</li>
+      <li>Everyone opens the host URL in a browser</li>
+      <li>Pick games, chat, or tools — even with no internet</li>
+    </ul>
+
+    <h2>Origin</h2>
+    <p class="origin">
+      <strong>How it started.</strong> The idea took shape when the project author was left
+      <strong>without power during the 2025 Los Angeles wildfires</strong>.
+      Phones still had charge; people were in the same room; the grid and the network were gone.
+      A LAN arcade you can run from a laptop and a hotspot is built for exactly that moment:
+      blackouts, disasters, travel, and any night the signal fails.
+    </p>
+
+    <h2>Open source</h2>
+    <p>
+      MIT licensed. Contribute games, programs, and docs on GitHub.
+      Lightweight packs (≤ 10&nbsp;MB each) and an offline-first design are core rules.
+    </p>
+
+    <div class="links">
+      <a href="/games/">Open library</a>
+      <a href="/">LAN lobby</a>
+      <a class="ghost" href="https://github.com/talgatv/no-signal-lan-arcade">GitHub repo</a>
+      <a class="ghost" href="/docs/contributing/GAME_INTEGRATION_MANUAL.md">Add a game</a>
+    </div>
+  </div>
+</body>
+</html>

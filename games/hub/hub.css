@@ -78,6 +78,8 @@ html {
 }
 
 .hub-link-btn {
+  display: inline-flex;
+  align-items: center;
   min-height: 40px;
   padding: 0 14px;
   border-radius: 999px;
@@ -88,9 +90,10 @@ html {
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
 }
-.hub-link-btn:hover,
-.hub-link-btn.is-on {
+.hub-link-btn:hover {
   color: #5ce1ff;
   border-color: rgba(92, 225, 255, 0.5);
 }

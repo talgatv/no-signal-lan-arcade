@@ -455,6 +455,8 @@ class OGHHandler(BaseHTTPRequestHandler):
     def _resolve_static(self, path: str) -> Optional[Path]:
         if path in ("/", "/index.html", "/lobby", "/lobby/"):
             return WWW_DIR / "index.html"
+        if path in ("/about", "/about/", "/about.html"):
+            return WWW_DIR / "about.html"
         # Games hub (library + profile) — also lists programs from catalog
         if path in (
             "/games",

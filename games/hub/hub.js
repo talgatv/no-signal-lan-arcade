@@ -346,28 +346,6 @@ async function loadCatalog() {
   renderGrid();
 }
 
-// About panel (default open on first visit)
-const aboutPanel = $('aboutPanel');
-const aboutKey = 'ogh_hub_about_collapsed';
-function syncAboutBtn() {
-  const collapsed = aboutPanel.hasAttribute('hidden');
-  $('btnAbout')?.classList.toggle('is-on', !collapsed);
-}
-if (localStorage.getItem(aboutKey) === '1') {
-  aboutPanel.setAttribute('hidden', '');
-}
-syncAboutBtn();
-$('btnAbout')?.addEventListener('click', () => {
-  if (aboutPanel.hasAttribute('hidden')) {
-    aboutPanel.removeAttribute('hidden');
-    localStorage.removeItem(aboutKey);
-  } else {
-    aboutPanel.setAttribute('hidden', '');
-    localStorage.setItem(aboutKey, '1');
-  }
-  syncAboutBtn();
-});
-
 // events
 $('btnProfile').addEventListener('click', openDrawer);
 $('btnClose').addEventListener('click', closeDrawer);
