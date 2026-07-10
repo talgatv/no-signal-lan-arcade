@@ -1,0 +1,65 @@
+.tpl-body {
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px;
+  background: #07080f;
+}
+
+.tpl-card {
+  width: min(360px, 100%);
+  background: #0e1020;
+  border: 1px solid rgba(92, 225, 255, 0.28);
+  border-radius: 20px;
+  padding: 28px 22px;
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+
+.tpl-card h1 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
+  background: linear-gradient(120deg, #5ce1ff, #ff6bcb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tpl-sub {
+  margin: 0 0 20px;
+  color: #8b93b8;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.tpl-score {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.tpl-score strong { color: #5ce1ff; }
+
+.tpl-btn {
+  width: 100%;
+  min-height: 56px;
+  border-radius: 14px;
+  border: 1px solid rgba(92, 225, 255, 0.5);
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.2), rgba(255, 107, 203, 0.12));
+  color: #e8ecff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.tpl-btn:active { transform: scale(0.98); }
+
+.tpl-hint {
+  margin: 18px 0 0;
+  font-size: 11px;
+  color: #5a6280;
+}

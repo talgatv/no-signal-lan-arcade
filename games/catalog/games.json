@@ -417,6 +417,53 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Requires host /ws for real multiplayer; offline AI works without server logic."
+    },
+    {
+      "id": "demo-tap",
+      "name": "Demo Tap",
+      "tagline": "Demo Tap — community game pack.",
+      "style": "minimal-line",
+      "genres": [
+        "casual",
+        "arcade"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "none",
+        "mouse": "ok"
+      },
+      "instructions": {
+        "en": "Open via PC host lobby. Edit client/game.js to change rules.",
+        "ru": "Открой через лобби PC-хоста. Правила — в client/game.js."
+      },
+      "authorId": null,
+      "authorInline": {
+        "name": "Scaffold Bot",
+        "email": null,
+        "site": null,
+        "links": []
+      },
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10"
+      },
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "demo-tap/client/index.html",
+      "manifest": "demo-tap/manifest.json",
+      "version": "0.1.0",
+      "status": "experimental",
+      "familyFriendly": true,
+      "tags": [
+        "beginner"
+      ]
     }
   ]
 }

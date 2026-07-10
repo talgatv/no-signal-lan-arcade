@@ -208,21 +208,35 @@ Full agent-friendly plan: [`docs/plans/LLM_DEVELOPMENT_PLAN.md`](docs/plans/LLM_
 
 ## Contributing (human or LLM)
 
-**Everyone is welcome** — new games, host fixes, docs, translations.  
-Start here: **[CONTRIBUTING.md](CONTRIBUTING.md)**
+**Everyone is welcome** — solo games, multiplayer packs, host fixes, translations.
+
+| Start here | |
+|------------|--|
+| **[CONTRIBUTING.md](CONTRIBUTING.md)** | Project rules + PR flow |
+| **[Add a game (beginner)](docs/contributing/ADD_A_GAME.md)** | Step-by-step English |
+| **[Добавить игру](docs/contributing/ADD_A_GAME.ru.md)** | То же по-русски |
+| **[Multiplayer games](docs/contributing/ADD_MULTIPLAYER_GAME.md)** | ogh-net guide |
+| **[Engine API](docs/contributing/ENGINE_API.md)** | Manifest, URLs, net events |
+| **[Checklist](docs/contributing/CHECKLIST.md)** | Before you open a PR |
+
+```bash
+# scaffold + register in library
+python3 tools/new_game.py my-cool-game --title "My Cool Game"
+python3 tools/new_game.py tap-arena --multiplayer --title "Tap Arena"
+python3 tools/validate_catalog.py
+```
+
+Templates: `games/_templates/solo` · `games/_templates/multiplayer`
 
 - Prefer **one game or one subsystem per change**.  
-- Update `games/catalog/games.json` when adding a pack.  
-- No CDNs. No new heavy frameworks without discussion.  
-- Keep each game under **10 MB** (aim far lower).  
-- Read the multiplayer & vision docs before networking work.
+- Catalog row required for lobby listing (`games/catalog/games.json`).  
+- No CDNs. Keep each game under **10 MB** (aim far lower).
 
 ```text
 Prompt starter for AI agents:
-  Read docs/VISION.md, docs/architecture/MULTIPLAYER.md,
-  docs/plans/LLM_DEVELOPMENT_PLAN.md — then implement ONE task from the plan.
+  Read docs/contributing/ADD_A_GAME.md and ENGINE_API.md,
+  then scaffold with tools/new_game.py and implement ONE game.
 ```
-
 ---
 
 ## License

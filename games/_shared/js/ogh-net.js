@@ -172,6 +172,15 @@ export const OGHNet = {
           emit('event', msg.payload ?? msg);
         } else if (msg.type === 'game:start') {
           emit('start', msg);
+        } else if (msg.type === 'game:action') {
+          // Convenience + raw
+          emit('action', {
+            action: msg.action,
+            payload: msg.payload,
+            from: msg.from,
+            t: msg.t,
+          });
+          emit('game:action', msg);
         } else {
           emit(msg.type, msg);
         }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>TEMPLATE_NAME — OGH MP</title>
+  <link rel="stylesheet" href="../../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="mp-body ogh-font-ui">
+  <main class="mp-card">
+    <h1>TEMPLATE_NAME</h1>
+    <p class="mp-sub">Multiplayer template · shared counter</p>
+
+    <div class="mp-pill" id="netStatus">connecting…</div>
+    <div class="mp-score">Room score: <strong id="score">0</strong></div>
+    <button type="button" class="mp-btn" id="btn">+1 for everyone</button>
+
+    <h2 class="mp-h2">Players</h2>
+    <ul class="mp-players" id="players"><li>…</li></ul>
+
+    <p class="mp-hint">
+      Open two browsers on the host URL with the same room.
+      Replace this counter with your game rules.
+    </p>
+  </main>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

@@ -367,6 +367,10 @@ def _on_disconnect(conn: WsConnection) -> None:
 
 
 def guess_type(path: Path) -> str:
+    if path.suffix.lower() in {".md", ".markdown"}:
+        return "text/markdown; charset=utf-8"
+    if path.suffix.lower() == ".json":
+        return "application/json; charset=utf-8"
     mime, _ = mimetypes.guess_type(str(path))
     return mime or "application/octet-stream"
 

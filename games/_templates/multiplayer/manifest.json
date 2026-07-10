@@ -1,0 +1,26 @@
+{
+  "id": "TEMPLATE_ID",
+  "name": "TEMPLATE_NAME",
+  "version": "0.1.0",
+  "minPlayers": 1,
+  "maxPlayers": 8,
+  "supportsSolo": true,
+  "genres": ["party", "casual"],
+  "tags": ["multiplayer", "template", "ogh-net"],
+  "style": "minimal-line",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok"
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "Shared counter via action relay; works offline alone"
+  },
+  "shared": ["css/ogh-base.css", "js/ogh-net.js", "js/ogh-sfx.js"]
+}

@@ -125,19 +125,19 @@
     </div>
 
     <div class="panel">
-      <h2>Games</h2>
+      <h2>Game library</h2>
+      <p class="sub" style="margin-bottom:12px;font-size:0.85rem">
+        Loaded from <code>games/catalog/games.json</code> — add a pack + catalog row and it appears here.
+        <a href="/docs/contributing/ADD_A_GAME.md" style="color:#5ce1ff">How to add a game</a>
+      </p>
       <div class="games" id="games">
-        <!-- filled by JS; links append ?name=&room= for ogh-net -->
+        <span class="tag">Loading catalog…</span>
       </div>
     </div>
   </div>
   <script type="module">
-    const GAMES = [
-      { id: "pulse-race", title: "Pulse Race", blurb: "Neon top-down racing · AI offline · MP-ready", path: "/games/pulse-race/client/", mp: true },
-      { id: "comet", title: "Comet", blurb: "Gravity wells · solo puzzle-arcade", path: "/games/comet/client/", mp: false },
-      { id: "comet-pixel", title: "Comet Pixel", blurb: "Pixel variant · grid wells", path: "/games/comet-pixel/client/", mp: false },
-      { id: "rootwork", title: "Rootwork", blurb: "2D dig-build sandbox burrow", path: "/games/rootwork/client/", mp: false },
-    ];
+    /** @type {Array<{id:string,title:string,blurb:string,path:string,mp:boolean,status:string}>} */
+    let GAMES = [];
 
     const $ = (id) => document.getElementById(id);
     const statusEl = $("status");
@@ -151,18 +151,62 @@
       return `name=${name}&room=${room}`;
     }
 
+    function entryToPath(entry) {
+      // entry like "comet/client/index.html" → "/games/comet/client/"
+      if (!entry) return "#";
+      let p = entry.replace(/index\.html$/i, "");
+      if (!p.startsWith("/")) p = "/games/" + p;
+      else p = "/games" + p;
+      if (!p.endsWith("/")) p += "/";
+      return p;
+    }
+
+    function isMp(g) {
+      if (g.multiplayer && g.multiplayer.status && g.multiplayer.status !== "none") return true;
+      const tags = g.tags || [];
+      if (tags.includes("multiplayer") || tags.includes("multiplayer-ready")) return true;
+      return (g.players && g.players.max > 1);
+    }
+
     function renderGames() {
+      if (!GAMES.length) {
+        $("games").innerHTML = "<span class='tag'>No games in catalog (or failed to load).</span>";
+        return;
+      }
       $("games").innerHTML = GAMES.map((g) => `
         <a class="game" href="${g.path}?${qs()}">
-          <strong>${g.title}${g.mp ? '<span class="mp">MP-ready</span>' : ""}</strong>
+          <strong>${g.title}${g.mp ? '<span class="mp">MP</span>' : ""}</strong>
           <span>${g.blurb}</span>
         </a>
       `).join("");
     }
 
+    async function loadCatalog() {
+      try {
+        const res = await fetch("/games/catalog/games.json", { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const list = (data.games || []).filter((g) => g.status !== "deprecated" && g.status !== "idea");
+        GAMES = list.map((g) => ({
+          id: g.id,
+          title: g.name || g.id,
+          blurb: g.tagline || (g.instructions && (g.instructions.en || Object.values(g.instructions)[0])) || "",
+          path: entryToPath(g.entry),
+          mp: isMp(g),
+          status: g.status || "",
+        }));
+        // Prefer playable-looking order: experimental last-ish, multiplayer first optional
+        GAMES.sort((a, b) => a.title.localeCompare(b.title));
+      } catch (e) {
+        console.warn(e);
+        GAMES = [];
+      }
+      renderGames();
+    }
+
     $("name").value = localStorage.getItem("ogh_name") || `P${Math.floor(Math.random() * 90 + 10)}`;
     $("room").value = localStorage.getItem("ogh_room") || "main";
-    renderGames();
+    loadCatalog();
     ["name", "room"].forEach((id) => {
       $(id).addEventListener("input", () => {
         localStorage.setItem("ogh_name", $("name").value);

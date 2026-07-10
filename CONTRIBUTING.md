@@ -18,9 +18,22 @@ Humans and AI agents are both welcome — same rules.
 ## Before you code
 
 1. Read [README.md](README.md) and [docs/VISION.md](docs/VISION.md).  
-2. For multiplayer: [docs/architecture/MULTIPLAYER.md](docs/architecture/MULTIPLAYER.md).  
-3. For game packs: [games/catalog/SCHEMA.md](games/catalog/SCHEMA.md) and [games/README.md](games/README.md).  
-4. Prefer **one focused change** per pull request.
+2. **Add a game (beginners):** [docs/contributing/ADD_A_GAME.md](docs/contributing/ADD_A_GAME.md)  
+   · [Русский](docs/contributing/ADD_A_GAME.ru.md)  
+3. **Multiplayer games:** [docs/contributing/ADD_MULTIPLAYER_GAME.md](docs/contributing/ADD_MULTIPLAYER_GAME.md)  
+4. Engine index: [docs/contributing/README.md](docs/contributing/README.md) · [games/ENGINE.md](games/ENGINE.md)  
+5. Prefer **one focused change** per pull request.
+
+### Fastest path
+
+```bash
+python3 tools/new_game.py my-cool-game --title "My Cool Game"
+# multiplayer:
+python3 tools/new_game.py my-mp-game --multiplayer --title "My MP Game"
+python3 tools/validate_catalog.py
+cd pc && ./start.sh
+# → http://127.0.0.1:8080/
+```
 
 ## Hard rules (please don’t break these)
 

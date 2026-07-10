@@ -1,7 +1,14 @@
-# Games — экспериментальные web-игры
+# Games — web packs for Offline Games Hub
 
-Каждая игра — **отдельный пакет** (папка) ≤ **10 МБ** (цель: ≪ 2 МБ, badge ultra &lt; 200 КБ).  
-Игроки открывают игру в **браузере** (с хоста по LAN или локально с диска).
+Each game is a **folder pack** ≤ **10 MB** (aim ≪ 2 MB).  
+Players open games in a **browser** via the PC host.
+
+## Add your game
+
+→ **[docs/contributing/ADD_A_GAME.md](../docs/contributing/ADD_A_GAME.md)** (beginner)  
+→ **[docs/contributing/ADD_A_GAME.ru.md](../docs/contributing/ADD_A_GAME.ru.md)** (русский)  
+→ **[ENGINE.md](./ENGINE.md)** (engine surface)  
+→ Templates: [`_templates/`](_templates/) · `python3 tools/new_game.py <id> --title "..."`
 
 ## Концепция
 

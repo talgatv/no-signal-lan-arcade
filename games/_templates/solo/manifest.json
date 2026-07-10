@@ -1,0 +1,21 @@
+{
+  "id": "TEMPLATE_ID",
+  "name": "TEMPLATE_NAME",
+  "version": "0.1.0",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["casual", "arcade"],
+  "tags": ["template", "beginner"],
+  "style": "minimal-line",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "none",
+    "mouse": "ok"
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "js/ogh-sfx.js"]
+}
