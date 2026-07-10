@@ -1,5 +1,9 @@
 /**
  * Games hub — library + local profile/progress UI
+ *
+ * Works with:
+ *  - OGH PC host:  http://host:8080/games/  or /games/hub/
+ *  - Static server from games/:  http://host:8765/hub/
  */
 import { OGHProfile, OGH_AVATAR_PRESETS } from '../_shared/js/ogh-profile.js';
 
@@ -12,8 +16,55 @@ const drawerStatus = $('drawerStatus');
 let catalog = [];
 let selectedAvatarId = OGHProfile.getProfile().avatarId;
 
+/** @type {{ mode: 'ogh'|'games-root', gamePrefix: string, programPrefix: string|null, catalogUrls: string[] }} */
+let roots = detectRoots();
+
+/**
+ * Detect how the hub is being served so catalog + links resolve correctly.
+ */
+function detectRoots() {
+  const path = location.pathname.replace(/\/+$/, '') || '/';
+  // OGH host maps /games → hub
+  if (
+    path === '/games' ||
+    path.endsWith('/games/hub') ||
+    path === '/library' ||
+    path === '/apps'
+  ) {
+    return {
+      mode: 'ogh',
+      gamePrefix: '/games/',
+      programPrefix: '/programs/',
+      catalogUrls: ['/games/catalog/games.json'],
+    };
+  }
+  // Static http.server from games/ directory → /hub
+  if (path.endsWith('/hub') || path === '/hub') {
+    return {
+      mode: 'games-root',
+      gamePrefix: '/',
+      programPrefix: null, // programs live outside games/ — need full host
+      catalogUrls: [
+        '/catalog/games.json',
+        '../catalog/games.json',
+        'catalog/games.json',
+      ],
+    };
+  }
+  // Fallback: try both styles
+  return {
+    mode: 'ogh',
+    gamePrefix: '/games/',
+    programPrefix: '/programs/',
+    catalogUrls: [
+      '/games/catalog/games.json',
+      '/catalog/games.json',
+      '../catalog/games.json',
+    ],
+  };
+}
+
 function qsPlay() {
-  // carry nickname into games for ogh-net display name
   const name = encodeURIComponent(OGHProfile.getNickname());
   const room = encodeURIComponent(localStorage.getItem('ogh_room') || 'main');
   return `name=${name}&room=${room}`;
@@ -23,10 +74,18 @@ function entryToPath(g) {
   const entry = typeof g === 'string' ? g : g?.entry;
   if (!entry) return '#';
   const kind = (typeof g === 'object' && g?.kind) || 'game';
-  const root = kind === 'program' ? '/programs/' : '/games/';
   let p = String(entry).replace(/index\.html$/i, '');
-  if (p.startsWith('/')) return p.endsWith('/') ? p : p + '/';
-  p = root + p;
+  if (p.startsWith('/')) return p.endsWith('/') ? p : `${p}/`;
+
+  if (kind === 'program') {
+    if (!roots.programPrefix) {
+      // Served only under games/ static tree — cannot reach programs/
+      return '#program-needs-ogh-host';
+    }
+    p = roots.programPrefix + p;
+  } else {
+    p = roots.gamePrefix + p;
+  }
   if (!p.endsWith('/')) p += '/';
   return p;
 }
@@ -204,8 +263,12 @@ function renderGrid() {
       const players = g.players ? `${g.players.min}–${g.players.max}` : '?';
       const blurb = g.tagline || g.instructions?.en || '';
       const wip = g.status === 'wip';
+      const brokenProg = path === '#program-needs-ogh-host';
+      const href =
+        wip || brokenProg ? '#' : `${path}?${qsPlay()}`;
+      const disabled = wip || brokenProg;
       return `
-      <a class="hub-card ${wip ? 'is-wip' : ''}" href="${wip ? '#' : path + '?' + qsPlay()}" ${wip ? 'aria-disabled="true"' : ''}>
+      <a class="hub-card ${disabled ? 'is-wip' : ''}" href="${href}" ${disabled ? 'aria-disabled="true"' : ''}>
         <h2>
           ${escapeHtml(g.name || g.id)}
           ${isProg ? '<span class="hub-badge">APP</span>' : ''}
@@ -213,7 +276,11 @@ function renderGrid() {
           ${hasProg ? '<span class="hub-badge prog">saved</span>' : ''}
           ${wip ? '<span class="hub-badge">WIP</span>' : ''}
         </h2>
-        <p>${escapeHtml(blurb)}</p>
+        <p>${escapeHtml(
+          brokenProg
+            ? 'Open via OGH host (cd pc && ./start.sh) — programs need /programs/ route.'
+            : blurb
+        )}</p>
         <div class="hub-meta">
           <span>${escapeHtml(genres || g.style || '')}</span>
           <span>${players}p</span>
@@ -223,17 +290,53 @@ function renderGrid() {
     .join('');
 }
 
+async function fetchFirstJson(urls) {
+  const errors = [];
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) {
+        errors.push(`${url} → HTTP ${res.status}`);
+        continue;
+      }
+      return await res.json();
+    } catch (e) {
+      errors.push(`${url} → ${e.message || e}`);
+    }
+  }
+  throw new Error(errors.join('; ') || 'no catalog URL worked');
+}
+
 async function loadCatalog() {
+  roots = detectRoots();
   try {
-    const res = await fetch('/games/catalog/games.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error(String(res.status));
-    const data = await res.json();
+    const data = await fetchFirstJson(roots.catalogUrls);
     catalog = data.games || [];
+    if (!catalog.length) {
+      grid.innerHTML =
+        '<p class="hub-empty">Catalog loaded but is empty. Add packs to games/catalog/games.json</p>';
+      return;
+    }
   } catch (e) {
-    console.warn(e);
+    console.warn('[hub] catalog load failed', e);
     catalog = [];
-    grid.innerHTML = '<p class="hub-empty">Could not load catalog. Is the PC host running?</p>';
+    grid.innerHTML = `<p class="hub-empty">
+      Could not load game catalog.<br/><br/>
+      <strong>Recommended:</strong> run the OGH host, not a bare http.server:<br/>
+      <code style="color:#5ce1ff">cd pc && ./start.sh</code><br/>
+      then open <code style="color:#5ce1ff">http://127.0.0.1:8080/games/</code>
+      <br/><br/>
+      <span style="font-size:12px;color:#5a6280">${escapeHtml(String(e.message || e))}</span>
+    </p>`;
     return;
+  }
+  if (roots.mode === 'games-root') {
+    // banner once
+    const bar = document.createElement('p');
+    bar.className = 'hub-banner';
+    bar.innerHTML =
+      'Serving from <code>games/</code> static tree. For chat/programs & multiplayer use <code>cd pc && ./start.sh</code> → <code>/games/</code>';
+    grid.parentElement?.insertBefore(bar, grid);
   }
   renderGrid();
 }

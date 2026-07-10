@@ -456,7 +456,18 @@ class OGHHandler(BaseHTTPRequestHandler):
         if path in ("/", "/index.html", "/lobby", "/lobby/"):
             return WWW_DIR / "index.html"
         # Games hub (library + profile) — also lists programs from catalog
-        if path in ("/games", "/games/", "/library", "/library/", "/apps", "/apps/"):
+        if path in (
+            "/games",
+            "/games/",
+            "/games/hub",
+            "/games/hub/",
+            "/hub",
+            "/hub/",
+            "/library",
+            "/library/",
+            "/apps",
+            "/apps/",
+        ):
             return CFG.games_dir / "hub" / "index.html"
         if path.startswith("/games/"):
             return safe_join(CFG.games_dir, path[len("/games/") :])

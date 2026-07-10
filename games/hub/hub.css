@@ -1,5 +1,12 @@
+/* Override ogh-base overflow:hidden so the library can scroll */
+html {
+  height: auto !important;
+  overflow: auto !important;
+}
+
 .hub-body {
-  overflow: auto;
+  overflow: auto !important;
+  height: auto !important;
   min-height: 100%;
   background: #07080f;
   color: #e8ecff;
@@ -7,6 +14,19 @@
   touch-action: manipulation;
   user-select: none;
 }
+
+.hub-banner {
+  max-width: 1100px;
+  margin: 0 auto 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 209, 102, 0.35);
+  background: rgba(255, 209, 102, 0.08);
+  color: #ffd166;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.hub-banner code { color: #5ce1ff; }
 
 .hub-top {
   display: flex;
