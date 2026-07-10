@@ -82,10 +82,15 @@ When the lights come back, you can still use it — because local is faster, pri
 
 ```bash
 cd pc
-./start.sh          # Linux — uses bundled runtimes/linux64 if present
+./start.sh              # Linux — uses bundled runtimes/linux64 if present
+./start.sh --https      # self-signed HTTPS so phones can use mic / sensors
 # Windows:  start.bat
-# or:       python3 host.py --port 8080
+#           start.bat --https
+# or:       python3 host.py --port 8080 --https
 ```
+
+> **Phones + microphone / compass:** use `--https`, then open `https://PC_IP:8080/`  
+> and accept the certificate warning once. Details: [`pc/HTTPS.md`](pc/HTTPS.md).
 
 ### 2. Open the lobby
 

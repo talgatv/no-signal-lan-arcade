@@ -2,3 +2,4 @@ __pycache__/
 *.py[cod]
 *.log
 .ruff_cache/
+.certs/

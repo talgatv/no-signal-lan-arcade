@@ -3,8 +3,9 @@
 Lightweight **LAN server** for Offline Games Hub, written in **Python 3** (standard library only).
 
 - Serves packs from `../games/`
-- Lobby: `http://IP:8080/`
+- Lobby: `http://IP:8080/` (or `https://` with `--https`)
 - WebSocket: `ws://IP:8080/ws` (rooms, ready, `game:action` / `game:state` relay)
+- **Phone GPS / sensors:** run with TLS: `./start.sh --https` then open `https://IP:8080/` and accept the self-signed certificate once.
 - **No Node, no pip, no npm**
 - **Offline-capable:** portable Python under `runtimes/win64` and `runtimes/linux64` when present
 
@@ -27,8 +28,10 @@ pc/
 
 ```bash
 cd pc
-./start.sh
-# or: python3 host.py --port 8080
+./start.sh                 # plain HTTP
+./start.sh --https         # self-signed TLS for phones (mic, compass, GPS)
+./start.sh --https-regen   # remake cert after Wi‑Fi IP change
+# or: python3 host.py --port 8080 --https
 ```
 
 ### Windows
@@ -36,7 +39,10 @@ cd pc
 ```bat
 cd pc
 start.bat
+start.bat --https
 ```
+
+Phone sensors / push-to-talk radio usually need HTTPS — see **[HTTPS.md](HTTPS.md)**.
 
 ### Bundled Python (offline)
 

@@ -10,6 +10,7 @@ No pip. No Node. Run with any Python 3.9+.
 
   python3 host.py
   python3 host.py --port 8080 --bind 0.0.0.0
+  python3 host.py --https          # self-signed TLS for phones (mic, sensors, GPS)
 """
 
 from __future__ import annotations
@@ -22,7 +23,9 @@ import mimetypes
 import os
 import re
 import socket
+import ssl
 import struct
+import subprocess
 import sys
 import threading
 import time
@@ -539,10 +542,143 @@ def local_ips() -> List[str]:
     return ips
 
 
+def _openssl_available() -> bool:
+    try:
+        subprocess.run(
+            ["openssl", "version"],
+            check=True,
+            capture_output=True,
+        )
+        return True
+    except (FileNotFoundError, subprocess.CalledProcessError, OSError):
+        return False
+
+
+def ensure_self_signed_certs(ips: List[str], *, force: bool = False) -> Tuple[Path, Path]:
+    """
+    Create (or reuse) a self-signed cert for LAN HTTPS.
+
+    Mobile browsers treat plain http://LAN_IP as an *insecure* context, so
+    microphone, motion sensors, and geolocation often fail. Self-signed TLS
+    ("fake HTTPS") restores a secure context after the user accepts the warning.
+
+    Requires `openssl` on PATH (stdlib Python cannot mint certs alone).
+    """
+    cert_dir = PC_DIR / ".certs"
+    cert_dir.mkdir(parents=True, exist_ok=True)
+    cert_path = cert_dir / "cert.pem"
+    key_path = cert_dir / "key.pem"
+    stamp_path = cert_dir / "san.stamp"
+
+    san_parts = ["DNS:localhost", "IP:127.0.0.1"]
+    for ip in ips:
+        if ip not in ("127.0.0.1", "::1"):
+            san_parts.append(f"IP:{ip}")
+    # also common local names
+    san_parts.append("DNS:ogh.local")
+    san = ",".join(dict.fromkeys(san_parts))  # dedupe, keep order
+    stamp = hashlib.sha256(san.encode("utf-8")).hexdigest()[:16]
+
+    reuse = (
+        not force
+        and cert_path.is_file()
+        and key_path.is_file()
+        and stamp_path.is_file()
+        and stamp_path.read_text(encoding="utf-8").strip() == stamp
+    )
+    if reuse:
+        return cert_path, key_path
+
+    if not _openssl_available():
+        raise RuntimeError(
+            "openssl not found — install OpenSSL to use --https "
+            "(Linux: apt install openssl · macOS: usually preinstalled · "
+            "Windows: Git for Windows / Win64 OpenSSL)"
+        )
+
+    # openssl config via -addext (OpenSSL 1.1.1+)
+    cmd = [
+        "openssl",
+        "req",
+        "-x509",
+        "-newkey",
+        "rsa:2048",
+        "-keyout",
+        str(key_path),
+        "-out",
+        str(cert_path),
+        "-days",
+        "825",
+        "-nodes",
+        "-subj",
+        "/CN=ogh-local/O=Offline Games Hub/C=XX",
+        "-addext",
+        f"subjectAltName={san}",
+    ]
+    print(f"  Generating self-signed TLS cert (SAN: {san})")
+    print(f"  → {cert_dir}")
+    try:
+        subprocess.run(cmd, check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as e:
+        # Older openssl without -addext: fallback config file
+        conf = cert_dir / "openssl.cnf"
+        conf.write_text(
+            "[req]\n"
+            "distinguished_name=req_distinguished_name\n"
+            "x509_extensions=v3_req\n"
+            "prompt=no\n"
+            "[req_distinguished_name]\n"
+            "CN=ogh-local\n"
+            "O=Offline Games Hub\n"
+            "[v3_req]\n"
+            f"subjectAltName={san}\n",
+            encoding="utf-8",
+        )
+        cmd2 = [
+            "openssl",
+            "req",
+            "-x509",
+            "-newkey",
+            "rsa:2048",
+            "-keyout",
+            str(key_path),
+            "-out",
+            str(cert_path),
+            "-days",
+            "825",
+            "-nodes",
+            "-config",
+            str(conf),
+        ]
+        try:
+            subprocess.run(cmd2, check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e2:
+            err = (e2.stderr or e.stderr or str(e2)).strip()
+            raise RuntimeError(f"openssl failed: {err}") from e2
+
+    stamp_path.write_text(stamp + "\n", encoding="utf-8")
+    # Convenience copy for phones that can install a CA/cert file
+    try:
+        (cert_dir / "ogh-lan.crt").write_bytes(cert_path.read_bytes())
+    except OSError:
+        pass
+    return cert_path, key_path
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="OGH PC Host — LAN game server")
     parser.add_argument("--host", "--bind", dest="bind", default="0.0.0.0")
     parser.add_argument("--port", type=int, default=8080)
+    parser.add_argument(
+        "--https",
+        action="store_true",
+        help="Serve TLS with a self-signed cert (phones: mic, sensors, GPS).",
+    )
+    parser.add_argument(
+        "--https-regen",
+        action="store_true",
+        help="Force regenerate TLS cert (use after Wi‑Fi IP change).",
+    )
     parser.add_argument(
         "--games",
         type=Path,
@@ -559,21 +695,56 @@ def main() -> int:
         print(f"ERROR: www dir missing: {WWW_DIR}", file=sys.stderr)
         return 1
 
+    ips = local_ips()
+    use_https = bool(args.https or args.https_regen)
+    scheme = "https" if use_https else "http"
+    ws_scheme = "wss" if use_https else "ws"
+
     httpd = ThreadingHTTPServer((args.bind, args.port), OGHHandler)
     # Allow re-bind quickly after restart
     httpd.allow_reuse_address = True
 
-    ips = local_ips()
+    cert_path: Optional[Path] = None
+    if use_https:
+        try:
+            cert_path, key_path = ensure_self_signed_certs(
+                ips, force=bool(args.https_regen)
+            )
+        except Exception as e:
+            print(f"ERROR: cannot enable HTTPS: {e}", file=sys.stderr)
+            return 1
+        ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+        ctx.load_cert_chain(certfile=str(cert_path), keyfile=str(key_path))
+        httpd.socket = ctx.wrap_socket(httpd.socket, server_side=True)
+
     print("=" * 56)
     print("  OGH PC Host  ·  Python stdlib  ·  no Node")
+    if use_https:
+        print("  TLS     : ON (self-signed / “fake HTTPS” for LAN)")
+        print("  Why     : phones need secure context for mic · sensors · GPS")
     print("=" * 56)
     print(f"  Games : {CFG.games_dir}")
-    print(f"  Lobby : http://127.0.0.1:{args.port}/")
-    print(f"  WS    : ws://127.0.0.1:{args.port}/ws")
+    print(f"  Lobby : {scheme}://127.0.0.1:{args.port}/")
+    print(f"  WS    : {ws_scheme}://127.0.0.1:{args.port}/ws")
     print()
     print("  Open on phones (same Wi‑Fi):")
     for ip in ips:
-        print(f"    http://{ip}:{args.port}/")
+        print(f"    {scheme}://{ip}:{args.port}/")
+    if use_https:
+        print()
+        print("  First visit: browser warns “Not secure / certificate”.")
+        print("  Android Chrome: Advanced → Proceed to <ip> (unsafe)")
+        print("  iPhone Safari: Show details → visit this website")
+        print("  After that: mic / compass / GPS can work in the page.")
+        if cert_path:
+            print(f"  Cert file (optional install): {cert_path}")
+        print("  Docs: pc/HTTPS.md")
+    else:
+        print()
+        print("  Phone mic / sensors often need:")
+        print("    ./start.sh --https")
+        print("  See pc/HTTPS.md")
     print()
     print("  Ctrl+C to stop")
     print("=" * 56)
