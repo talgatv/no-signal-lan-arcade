@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">离线游戏中心</string>
+    <string name="notif_channel_name">游戏主机</string>
+    <string name="notif_title">离线游戏中心正在运行</string>
+    <string name="notif_text">访客请在浏览器中打开 http://&lt;本机IP&gt;:%1$d/</string>
+    <string name="home_tagline">启动本地游戏服务器。同一 Wi-Fi 下的访客可用任意浏览器加入——无需安装应用。</string>
+    <string name="home_start">开始托管</string>
+    <string name="settings_title">设置</string>
+    <string name="running_title">托管中</string>
+    <string name="running_no_ip">尚未检测到 Wi-Fi 网络。请连接热点或路由器，列表会自动刷新。</string>
+    <string name="running_open_lobby">在本机打开大厅</string>
+    <string name="running_hotspot_hint">要让其他人加入，请打开本机的 Wi-Fi 热点(或连接路由器)，然后让他们打开上面的地址之一。</string>
+    <string name="running_hotspot_button">打开热点设置</string>
+    <string name="running_stop">停止托管</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_port">端口</string>
+    <string name="settings_port_hint">1024–65535 之间，默认 8080。</string>
+    <string name="settings_keep_screen_on">托管时保持屏幕常亮</string>
+    <string name="settings_back">返回</string>
+</resources>

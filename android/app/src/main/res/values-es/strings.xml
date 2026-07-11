@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Centro de Juegos Offline</string>
+    <string name="notif_channel_name">Host de juegos</string>
+    <string name="notif_title">El Centro de Juegos Offline está en ejecución</string>
+    <string name="notif_text">Invitados: abran http://&lt;IP de este teléfono&gt;:%1$d/ en un navegador</string>
+    <string name="home_tagline">Inicia un servidor de juegos local. Los invitados se conectan desde cualquier navegador en la misma red Wi-Fi, sin instalar ninguna app.</string>
+    <string name="home_start">Empezar a hospedar</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="running_title">Hospedando</string>
+    <string name="running_no_ip">Aún no se detecta una red Wi-Fi. Conéctate a un punto de acceso o router; esta lista se actualiza automáticamente.</string>
+    <string name="running_open_lobby">Abrir la sala en este teléfono</string>
+    <string name="running_hotspot_hint">Para que otros se unan, activa el punto de acceso Wi-Fi de este teléfono (o conéctate a un router) y pídeles que abran una de las direcciones de arriba.</string>
+    <string name="running_hotspot_button">Abrir ajustes de punto de acceso</string>
+    <string name="running_stop">Detener hospedaje</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_port">Puerto</string>
+    <string name="settings_port_hint">Entre 1024 y 65535; 8080 por defecto.</string>
+    <string name="settings_keep_screen_on">Mantener la pantalla encendida mientras hospedas</string>
+    <string name="settings_back">Atrás</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Centre de Jeux Hors-Ligne</string>
+    <string name="notif_channel_name">Hôte de jeu</string>
+    <string name="notif_title">Le Centre de Jeux Hors-Ligne est actif</string>
+    <string name="notif_text">Invités : ouvrez http://&lt;IP de ce téléphone&gt;:%1$d/ dans un navigateur</string>
+    <string name="home_tagline">Démarrez un serveur de jeu local. Les invités rejoignent depuis n\'importe quel navigateur sur le même Wi-Fi, sans installer d\'application.</string>
+    <string name="home_start">Démarrer l\'hébergement</string>
+    <string name="settings_title">Paramètres</string>
+    <string name="running_title">Hébergement en cours</string>
+    <string name="running_no_ip">Aucun réseau Wi-Fi détecté pour l\'instant. Connectez-vous à un point d\'accès ou un routeur ; cette liste se met à jour automatiquement.</string>
+    <string name="running_open_lobby">Ouvrir le lobby sur ce téléphone</string>
+    <string name="running_hotspot_hint">Pour que d\'autres puissent rejoindre, activez le point d\'accès Wi-Fi de ce téléphone (ou connectez-vous à un routeur), puis demandez-leur d\'ouvrir l\'une des adresses ci-dessus.</string>
+    <string name="running_hotspot_button">Ouvrir les paramètres du point d\'accès</string>
+    <string name="running_stop">Arrêter l\'hébergement</string>
+    <string name="settings_language">Langue</string>
+    <string name="settings_port">Port</string>
+    <string name="settings_port_hint">Entre 1024 et 65535, 8080 par défaut.</string>
+    <string name="settings_keep_screen_on">Garder l\'écran allumé pendant l\'hébergement</string>
+    <string name="settings_back">Retour</string>
+</resources>
