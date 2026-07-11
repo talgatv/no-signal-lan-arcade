@@ -1,0 +1,27 @@
+{
+  "id": "penguin-fling",
+  "name": "Penguin Fling",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "physics", "casual"],
+  "tags": ["solo", "experimental", "physics", "arcade"],
+  "style": "cartoon-winter",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Drag back from the penguin like a slingshot, then release to launch. Keyboard alternative: hold Space to charge power, Up/Down to set angle, release Space to launch.",
+      "ru": "Тяни пингвина назад, как рогатку, и отпускай для запуска. Клавиатура: держи Space для набора силы, стрелки Вверх/Вниз — угол, отпусти Space для запуска."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Real projectile-motion flight (gravity + per-attempt random wind) with angular velocity for visible tumble, then a coefficient-of-restitution bounce phase (each skip shorter than the last) that hands off into a low-friction exponential-decay slide phase once vertical energy dies down — see client/physics.js, kept pure/DOM-free so it's directly steppable from a test harness. A gentle procedural terrain (small bumps + one ramp zone whose rendered geometry IS its collision geometry) adds variety; the ramp can convert slide speed into a genuine secondary arc. Four distance-marker flags award bonus points if the final resting position lands in their zone. No bundled image or audio assets: the whole cartoon winter scene (yeti, penguin, ice, flags) is Canvas 2D paths/gradients, and sound reuses games/_shared/js/ogh-sfx.js (extended with thwack/boing/whoosh/land patterns in the same oscillator-sweep style as its existing 'screech'). Best distance persists via OGHProfile, same convention as games/pop-the-bugs."
+}

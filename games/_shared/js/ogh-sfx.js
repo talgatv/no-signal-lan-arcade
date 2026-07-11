@@ -36,6 +36,13 @@ export function createOghSfx() {
     die: () => tone(220, 0.28, 'sawtooth', 0.04, 60),
     tick: () => tone(880, 0.02, 'square', 0.02),
     screech: () => tone(920, 0.22, 'sawtooth', 0.035, 480),
+    // Added for games/penguin-fling — launch/bounce/slide/land cues, same
+    // plain-oscillator-sweep approach as `screech` above (a tone sweep
+    // approximating a textured sound, not a sample).
+    thwack: () => { tone(150, 0.1, 'triangle', 0.09, 55); tone(720, 0.03, 'square', 0.035); },
+    boing: () => tone(210, 0.16, 'sine', 0.055, 380),
+    whoosh: () => tone(600, 0.5, 'sine', 0.03, 140),
+    land: () => tone(120, 0.14, 'sine', 0.05, 65),
   };
 
   return {

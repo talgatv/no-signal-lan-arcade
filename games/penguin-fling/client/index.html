@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#8fd3ff" />
+  <title>Penguin Fling — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="pf-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="pf-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="pf-hud" role="status">
+        <div class="ogh-pill" id="hudWind"><span class="pf-wind-arrow" id="windArrow" aria-hidden="true">➜</span> <strong id="windVal">0.0</strong></div>
+        <div class="ogh-pill" id="hudBest"><span aria-hidden="true">★</span> <strong id="bestVal">0</strong> m</div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- The scene (yeti, penguin, flight arc, ice course, ramp, flags) is
+         spatial gameplay drawn in fixed world space, never mirrored under
+         RTL — dir="ltr" is deliberate and must stay, same reasoning as
+         games/neon-drift's canvas (see i18n.js header comment). -->
+    <main class="ogh-stage pf-stage">
+      <canvas class="ogh-game-canvas" id="game" width="720" height="1000" dir="ltr"></canvas>
+    </main>
+
+    <p class="ogh-hint" id="hint">Drag back from the penguin, then let go!</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card pf-card" id="startCard">
+        <h1 data-i18n="title">Penguin Fling</h1>
+        <p data-i18n="blurb">Drag back from the penguin like a slingshot, then let go. Watch it arc, skip across the ice, and glide to a stop. Land on a flag for a bonus!</p>
+        <p class="pf-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Play</button>
+      </div>
+
+      <div class="ogh-card pf-card" id="resultCard" hidden>
+        <h1 data-i18n="resultTitle">Nice throw!</h1>
+        <p class="pf-final-distance" id="finalDistanceLine"></p>
+        <p class="pf-new-best" id="newBestLine" hidden data-i18n="newBestLine">New best distance!</p>
+        <p class="pf-bonus-line" id="bonusLine" hidden></p>
+        <p class="pf-comparison" id="comparisonLine"></p>
+        <p class="pf-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="throwAgainBtn">Throw again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

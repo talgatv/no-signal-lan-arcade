@@ -1437,6 +1437,89 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "World flags & capitals quiz + reference atlas over all 195 countries (193 UN member states + Holy See/Vatican City and the State of Palestine, the standard 'complete list of countries' scope). Three quiz modes (flag->country, country->capital, flag->capital) with same-region distractors, 15-question scored rounds (best per mode via OGHProfile), an optional region filter, and a searchable/region-filterable Atlas giving every country an info card. All 195 flags are hand-written inline SVG built from geometric primitives (stripes/cross/star/crescent/sun/Union-Jack helpers) — no bundled image assets and no runtime network calls; ~64 flags with intricate heraldry render the correct base field/colours/layout with a simplified or omitted emblem, marked \"detail\":\"simplified\" in the data. Country display names are localized to all six UN languages from data/countries.json; capital names are English (documented fallback). countries.json (~208 KB) is the bulk of the size. Arabic UI is RTL but flags and the country grid are not mirrored."
+    },
+    {
+      "id": "penguin-fling",
+      "name": "Penguin Fling",
+      "names": {
+        "en": "Penguin Fling",
+        "ru": "Пингвин-бросок",
+        "zh": "企鹅大甩飞",
+        "es": "Pingüino Volador",
+        "ar": "قذف البطريق",
+        "fr": "Lancer de Manchot"
+      },
+      "tagline": "Fling a penguin off a friendly yeti — real bounce-and-slide ice physics.",
+      "style": "cartoon-winter",
+      "styles": [
+        "cartoon",
+        "vector",
+        "gradient-shading",
+        "parallax"
+      ],
+      "genres": [
+        "arcade",
+        "physics",
+        "casual"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "keyboard",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Drag back from the penguin like a slingshot, then release to launch. Keyboard alternative: hold Space to charge power, Up/Down to set angle, release Space to launch.",
+          "ru": "Тяни пингвина назад, как рогатку, и отпускай для запуска. Клавиатура: держи Space для набора силы, стрелки Вверх/Вниз — угол, отпусти Space для запуска.",
+          "zh": "像弹弓一样向后拖拽企鹅，然后松手发射。键盘替代方案：按住空格键蓄力，方向键上/下设置角度，松开空格键发射。",
+          "es": "Arrastra hacia atrás desde el pingüino como un tirachinas y suelta para lanzar. Alternativa de teclado: mantén Espacio para cargar potencia, flechas arriba/abajo para el ángulo, suelta Espacio para lanzar.",
+          "ar": "اسحب البطريق للخلف كأنه مقلاع، ثم أفلته للإطلاق. بديل لوحة المفاتيح: اضغط مطولاً على مسافة لشحن القوة، الأسهم لأعلى/لأسفل لضبط الزاوية، أفلت مسافة للإطلاق.",
+          "fr": "Tirez le manchot vers l'arrière comme une fronde, puis relâchez pour lancer. Alternative clavier : maintenez Espace pour charger la puissance, flèches haut/bas pour l'angle, relâchez Espace pour lancer."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "physics",
+        "arcade",
+        "slingshot",
+        "winter"
+      ],
+      "instructions": {
+        "en": "Drag back from the penguin like a slingshot — power comes from how far you pull, angle from the direction — then let go to launch. Watch it fly in a real physics arc, bounce across the ice a few times with each skip shorter than the last, then glide to a stop. Land on a flag for bonus points. Score is total distance traveled; your best distance is saved locally. Keyboard alternative: hold Space to charge power, arrows to set angle.",
+        "ru": "Тяни пингвина назад, как из рогатки — сила зависит от того, насколько далеко ты тянешь, угол — от направления, — затем отпусти для запуска. Смотри, как он летит по настоящей физической дуге, скачет по льду (каждый скачок короче предыдущего), а затем скользит до остановки. Попади во флажок ради бонусных очков. Счёт — общая пройденная дистанция; лучший результат сохраняется локально. Клавиатура: держи Space для набора силы, стрелки — угол.",
+        "zh": "像弹弓一样把企鹅向后拉——力度取决于你拉多远，角度取决于方向——然后松手发射。看它沿着真实的物理抛物线飞行，在冰面上弹跳几次（每次弹跳都比上一次短），然后滑行到停下。落在旗子上可获得奖励分。得分是总飞行距离；最佳记录会保存在本地。键盘替代方案：按住空格键蓄力，方向键设置角度。",
+        "es": "Arrastra hacia atrás desde el pingüino como un tirachinas — la potencia depende de cuánto tires, el ángulo de la dirección — y suelta para lanzar. Míralo volar en un arco físico real, rebotar sobre el hielo varias veces (cada rebote más corto que el anterior) y luego deslizarse hasta detenerse. Cae sobre una bandera para puntos de bono. La puntuación es la distancia total recorrida; tu mejor distancia se guarda localmente. Alternativa de teclado: mantén Espacio para cargar potencia, flechas para el ángulo.",
+        "ar": "اسحب للخلف من البطريق كأنه مقلاع — القوة من مقدار السحب، والزاوية من الاتجاه — ثم أفلته للإطلاق. شاهده يطير في قوس فيزيائي حقيقي، يرتد فوق الجليد عدة مرات (كل ارتداد أقصر من السابق)، ثم ينزلق حتى يتوقف. اهبط على علم لكسب نقاط إضافية. النتيجة هي إجمالي المسافة المقطوعة؛ يُحفظ أفضل مسافة محليًا. بديل لوحة المفاتيح: اضغط مطولاً على مسافة لشحن القوة، والأسهم لضبط الزاوية.",
+        "fr": "Tirez vers l'arrière depuis le manchot comme une fronde — la puissance dépend de la distance tirée, l'angle de la direction — puis lâchez pour lancer. Regardez-le voler selon un arc physique réel, rebondir sur la glace plusieurs fois (chaque rebond plus court que le précédent), puis glisser jusqu'à l'arrêt. Atterrissez sur un drapeau pour des points bonus. Le score est la distance totale parcourue ; votre meilleure distance est sauvegardée localement. Alternative clavier : maintenez Espace pour charger la puissance, flèches pour l'angle."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "penguin-fling/client/index.html",
+      "manifest": "penguin-fling/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 10000,
+      "sizeMeasuredKb": 89.6,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Real projectile-motion flight (gravity + per-attempt random wind) with angular velocity for a visible tumble, then a coefficient-of-restitution bounce phase (each skip shorter than the last) that hands off into a low-friction exponential-decay slide phase once vertical energy dies down — see client/physics.js, kept pure/DOM-free so it's directly steppable from a test harness (window.OGH_PENGUIN_FLING), same idea as games/neon-drift's physics.js split. Procedural terrain (small bumps + one ramp zone whose rendered geometry IS its collision geometry, so it can never visually mismatch) adds variety; clearing the ramp converts slide speed into a genuine secondary arc. Four distance-marker flags award bonus points when the final resting position lands in their zone; best distance persists via OGHProfile, same convention as games/pop-the-bugs. Deliberate style exception for this hub (like games/paint-xp): a bright cartoon winter scene instead of the usual neon-vector look, still built entirely from Canvas 2D paths/gradients — no bitmap image assets. Sound reuses games/_shared/js/ogh-sfx.js, extended with thwack/boing/whoosh/land patterns in the same oscillator-sweep style as its existing 'screech' (added by games/neon-drift)."
     }
   ]
 }
