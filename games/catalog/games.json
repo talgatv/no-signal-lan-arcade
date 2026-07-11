@@ -1168,6 +1168,87 @@
         "safety",
         "offline"
       ]
+    },
+    {
+      "id": "pop-the-bugs",
+      "name": "Pop the Bugs",
+      "names": {
+        "en": "Pop the Bugs",
+        "ru": "Прихлопни жука",
+        "zh": "拍虫子",
+        "es": "Revienta Bichos",
+        "ar": "اضرب الحشرة",
+        "fr": "Tape la Bestiole"
+      },
+      "tagline": "Whack-a-mole reaction game — good bugs, a red trap, and a rare golden bonus.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "grid"
+      ],
+      "genres": [
+        "arcade",
+        "reaction",
+        "casual"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "none",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap/click a bug the instant it pops up. Avoid the red trap bug. No keyboard.",
+          "ru": "Тапай/кликай жука сразу как он появился. Избегай красного жука-ловушки. Клавиатура не нужна.",
+          "zh": "虫子一冒出来就点击/触摸它。避开红色陷阱虫。无需键盘。",
+          "es": "Toca/haz clic en el bicho en cuanto aparezca. Evita el bicho trampa rojo. Sin teclado.",
+          "ar": "اضغط/انقر الحشرة فور ظهورها. تجنب الحشرة الحمراء الخادعة (الفخ). بلا لوحة مفاتيح.",
+          "fr": "Touchez/cliquez la bestiole dès qu'elle apparaît. Évitez la bestiole piège rouge. Pas de clavier."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "arcade",
+        "reaction",
+        "reflex",
+        "whack-a-mole"
+      ],
+      "instructions": {
+        "en": "Tap bugs the instant they pop up in the grid to score. The red trap bug costs you points — leave it alone. A rare golden bug is worth a big bonus. One 60-second timed round; difficulty ramps up as you go.",
+        "ru": "Тапай жуков сразу как они появились в сетке — это очки. Красный жук-ловушка отнимает очки, его лучше не трогать. Редкий золотой жук даёт крупный бонус. Один раунд на 60 секунд; сложность растёт по ходу игры.",
+        "zh": "虫子一在格子里冒出来就点击得分。红色陷阱虫会倒扣分——别碰它。稀有的金虫能拿到大奖励分。一局 60 秒计时；难度会随时间逐渐提高。",
+        "es": "Toca los bichos en cuanto aparezcan en la cuadrícula para sumar puntos. El bicho trampa rojo te resta puntos — no lo toques. Un raro bicho dorado vale un gran bono. Una ronda cronometrada de 60 segundos; la dificultad sube según avanza la partida.",
+        "ar": "اضغط الحشرات فور ظهورها في الشبكة لتسجيل نقاط. الحشرة الحمراء الخادعة تخصم نقاطًا — اتركها وشأنها. الحشرة الذهبية النادرة تمنحك مكافأة كبيرة. جولة واحدة محسوبة بالوقت مدتها 60 ثانية؛ الصعوبة تزداد كلما تقدمت اللعبة.",
+        "fr": "Touchez les bestioles dès qu'elles apparaissent dans la grille pour marquer des points. La bestiole piège rouge vous fait perdre des points — laissez-la tranquille. Une rare bestiole dorée vaut un gros bonus. Une manche chronométrée de 60 secondes ; la difficulté augmente au fil de la partie."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "pop-the-bugs/client/index.html",
+      "manifest": "pop-the-bugs/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 49.5,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Single RAF loop drives every bug's idle/up/popped/escaped lifecycle (no per-bug setTimeout), so 'Play again' always resets cleanly. Bugs are inline SVG shapes (round/friendly vs spiky/hostile silhouette) with a CSS neon-glow filter — no bundled image or audio assets. High score persists via OGHProfile (games/_shared/js/ogh-profile.js), same convention as games/demo-tap and games/piece-caller."
     }
   ]
 }
