@@ -1,0 +1,27 @@
+{
+  "id": "solitaire",
+  "name": "Klondike Solitaire",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["card", "puzzle", "classic"],
+  "tags": ["solo", "experimental", "card-game", "classic"],
+  "style": "classic-card-table",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Drag a card (or a run) to a valid pile, or tap a card to select it then tap a destination. Tap the stock to draw. Ctrl+Z/U undo, N new game.",
+      "ru": "Перетащи карту (или серию карт) на подходящую стопку, либо тапни карту для выбора, затем тапни место назначения. Тапни колоду, чтобы открыть карту. Ctrl+Z/U — отмена, N — новая игра."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js"],
+  "notes": "Deliberate style exception for this hub (like games/paint-xp and games/penguin-fling): a felt-green classic-card-table look instead of the usual neon-vector theme, fitting for a traditional card game. All 52 cards are plain DOM elements (rounded-rect face, corner rank+suit, center suit-glyph watermark, or a CSS-pattern back) built from the actual Unicode suit glyphs (U+2660/2665/2666/2663) — no bundled image assets. The board is a fixed logical-pixel layout scaled as a whole via CSS transform to always fit the viewport without scrolling (same 'virtual viewport' idea as games/comet's canvas sizing, applied to a DOM subtree), with per-column card-reveal offsets that shrink dynamically so a column can never overflow its budget regardless of card count. Drag uses Pointer Events (not HTML5 DnD) so mouse and touch behave identically; tap-to-select-then-tap-to-place is a full alternative. Undo is whole-state-snapshot based (structuredClone, capped at 200 steps). Foundations are a one-way sink during normal play (no drag-back-to-tableau; Undo reverses a foundation placement) — see README for the full simplification list. Draw-1 and draw-3 stock modes are both supported (toggle in the header)."
+}

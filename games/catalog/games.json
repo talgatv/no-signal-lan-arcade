@@ -1520,6 +1520,87 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Real projectile-motion flight (gravity + per-attempt random wind) with angular velocity for a visible tumble, then a coefficient-of-restitution bounce phase (each skip shorter than the last) that hands off into a low-friction exponential-decay slide phase once vertical energy dies down — see client/physics.js, kept pure/DOM-free so it's directly steppable from a test harness (window.OGH_PENGUIN_FLING), same idea as games/neon-drift's physics.js split. Procedural terrain (small bumps + one ramp zone whose rendered geometry IS its collision geometry, so it can never visually mismatch) adds variety; clearing the ramp converts slide speed into a genuine secondary arc. Four distance-marker flags award bonus points when the final resting position lands in their zone; best distance persists via OGHProfile, same convention as games/pop-the-bugs. Deliberate style exception for this hub (like games/paint-xp): a bright cartoon winter scene instead of the usual neon-vector look, still built entirely from Canvas 2D paths/gradients — no bitmap image assets. Sound reuses games/_shared/js/ogh-sfx.js, extended with thwack/boing/whoosh/land patterns in the same oscillator-sweep style as its existing 'screech' (added by games/neon-drift)."
+    },
+    {
+      "id": "solitaire",
+      "name": "Klondike Solitaire",
+      "names": {
+        "en": "Klondike Solitaire",
+        "ru": "Косынка",
+        "zh": "纸牌接龙",
+        "es": "Solitario Klondike",
+        "ar": "سوليتير كلوندايك",
+        "fr": "Solitaire Klondike"
+      },
+      "tagline": "Classic Klondike patience — deal, draw, and build every suit up to King.",
+      "style": "classic-card-table",
+      "styles": [
+        "felt-table",
+        "classic-playing-cards",
+        "tabletop"
+      ],
+      "genres": [
+        "card",
+        "puzzle",
+        "classic"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Drag a card (or run) to a pile, or tap to select then tap a destination. Tap the stock to draw.",
+          "ru": "Перетащи карту (или серию) на стопку, либо тапни для выбора и тапни место. Тапни колоду, чтобы открыть карту.",
+          "zh": "拖动一张牌（或一组）到目标堆，或点击选中后再点击目标位置。点击牌堆翻牌。",
+          "es": "Arrastra una carta (o una serie) a una pila, o toca para seleccionar y luego toca el destino. Toca el mazo para robar.",
+          "ar": "اسحب ورقة (أو سلسلة) إلى كومة، أو اضغط للتحديد ثم اضغط الوجهة. اضغط الحزمة للسحب.",
+          "fr": "Glissez une carte (ou une série) vers une pile, ou touchez pour sélectionner puis touchez la destination. Touchez la pioche pour piocher."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "card-game",
+        "classic",
+        "solitaire",
+        "klondike"
+      ],
+      "instructions": {
+        "en": "Classic Klondike Solitaire. Deal seven cascading tableau columns from a shuffled 52-card deck, tap the stock to draw (draw-1 or draw-3, your choice), and build all four foundations up from Ace to King by suit to win. Tableau columns build downward in alternating colors; only a King can start an empty column. Drag a card or a valid run with your finger or mouse, or tap to select then tap a destination — both work everywhere. Undo and New game are always one tap away, and an Auto-finish button appears once the rest of the game is a sure thing.",
+        "ru": "Классическая Косынка (Klondike). Раскладка из семи колонок от перетасованной колоды из 52 карт; тапни колоду, чтобы открывать карты (по 1 или по 3 — выбирай сам), и собери все четыре фундамента по масти от туза до короля, чтобы выиграть. В раскладе карты кладутся по убыванию с чередованием цвета; пустую колонку может занять только король. Перетаскивай карту или подходящую серию пальцем или мышью, либо тапни для выбора, а затем тапни место назначения — работает везде. Отмена и новая игра всегда под рукой, а когда до победы остаётся только дособрать очевидное, появляется кнопка автозавершения.",
+        "zh": "经典克朗代克接龙。从洗好的52张牌中发出七列层叠的牌列；点击牌堆翻牌（每次1张或3张，随你选择），把四组基础堆按花色从A收集到K即可获胜。牌列按降序交替颜色摆放；只有K才能填入空列。用手指或鼠标拖动一张牌或一组合法的连续牌，或者先点击选中再点击目标位置——两种方式随处可用。撤销和新游戏始终触手可及，当胜利已成定局时会出现自动完成按钮。",
+        "es": "Solitario Klondike clásico. Reparte siete columnas escalonadas desde una baraja de 52 cartas barajada; toca el mazo para robar (una o tres cartas, tú eliges) y construye los cuatro cimientos de As a Rey por palo para ganar. Las columnas del tablero se construyen hacia abajo alternando colores; solo un Rey puede empezar una columna vacía. Arrastra una carta o una serie válida con el dedo o el ratón, o toca para seleccionar y luego toca un destino — ambos funcionan en todas partes. Deshacer y Nueva partida están siempre a un toque, y aparece un botón de auto-terminar en cuanto el resto de la partida es cosa segura.",
+        "ar": "لعبة الصبر الكلاسيكية كلوندايك. وزّع سبعة أعمدة متتالية من مجموعة أوراق مكوّنة من 52 ورقة مخلوطة؛ اضغط الحزمة للسحب (ورقة واحدة أو ثلاث، اختر بنفسك)، وابنِ الأساسات الأربعة من الآس إلى الملك حسب نوع الورق للفوز. تُبنى أعمدة الرصيف تنازليًا بتناوب الألوان؛ لا يمكن ملء عمود فارغ إلا بملك. اسحب ورقة أو سلسلة صالحة بإصبعك أو بالفأرة، أو اضغط للتحديد ثم اضغط الوجهة — كلتا الطريقتين تعملان في كل مكان. التراجع واللعبة الجديدة متاحان دومًا بلمسة واحدة، ويظهر زر الإنهاء التلقائي بمجرد أن يصبح باقي اللعبة مضمونًا.",
+        "fr": "Solitaire Klondike classique. Distribuez sept colonnes en cascade à partir d'un jeu de 52 cartes mélangées ; touchez la pioche pour piocher (1 ou 3 cartes, à vous de choisir), puis construisez les quatre fondations de l'As au Roi par couleur pour gagner. Les colonnes du tableau se construisent en descendant en alternant les couleurs ; seul un Roi peut occuper une colonne vide. Glissez une carte ou une série valide au doigt ou à la souris, ou touchez pour sélectionner puis touchez une destination — les deux fonctionnent partout. Annuler et Nouvelle partie sont toujours à portée d'un tap, et un bouton Terminer auto apparaît dès que la fin de la partie est jouée d'avance."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "solitaire/client/index.html",
+      "manifest": "solitaire/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 52.9,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Deliberate style exception for this hub (like games/paint-xp and games/penguin-fling): a felt-green classic-card-table look instead of the usual neon-vector theme. All 52 cards are plain DOM elements (corner rank+suit, center suit-glyph watermark, real Unicode suit glyphs U+2660/2665/2666/2663, CSS-pattern backs) — no bundled image assets. The board is a fixed logical-pixel layout scaled as a whole via CSS transform to fit any viewport without scrolling (games/comet's canvas-sizing idea applied to a DOM subtree), with dynamically-shrinking per-column card offsets so a column can never overflow regardless of card count. Drag uses Pointer Events (not HTML5 DnD, for equal mouse/touch behavior); tap-to-select-then-tap-to-place is a full alternative, sharing the same rules.js move-legality code as drag. Undo is whole-state-snapshot based, capped at 200 steps. Foundations are a one-way sink during normal play (documented simplification — Undo reverses a foundation placement instead). Auto-finish uses the standard 'no hidden cards left' greedy-completion heuristic. RTL (Arabic) mirrors header/hint/win-overlay chrome only; the board's spatial layout (#board dir=\"ltr\") never mirrors, same precedent as games/pop-the-bugs and games/music-synth."
     }
   ]
 }
