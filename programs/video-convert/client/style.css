@@ -110,6 +110,7 @@ html {
   border-color: var(--ogh-accent);
   background: rgba(92, 225, 255, 0.08);
 }
+.drop[hidden], .meta[hidden] { display: none !important; }
 .drop .pick { width: 100%; max-width: 320px; }
 .drop-hint { margin: 0; color: var(--ogh-fg-dim); font-size: 14px; }
 .drop-sub { margin: 0; color: #5a6a80; font-size: 11px; line-height: 1.4; max-width: 360px; }
