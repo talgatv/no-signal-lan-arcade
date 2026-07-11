@@ -1681,6 +1681,173 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Deliberate style exception for this hub (like games/solitaire, games/paint-xp, games/penguin-fling): a lacquered jade-and-gold tile-table look instead of the usual neon-vector theme. Every tile is plain DOM: a rounded-rect ivory button with the real Unicode Mahjong Tiles glyph (U+1F000-U+1F021) as its text content — no bundled image assets — confirmed legible in-environment (including the font's own red tint on the center dragon) before committing to this approach over hand-drawn SVG faces. The 5-layer stepped-pyramid board (60/40/24/8/4 tiles = 136 total = 68 pairs) sits on a half-tile-unit coordinate grid; a tile is free iff no higher-layer tile overlaps its footprint and at least one same-layer left/right neighbor is absent. Board generation guarantees solvability by construction (repeatedly remove any 2 currently-free tiles from the full active set until empty; the recorded order is by definition a valid full clearing sequence, and assigning matching type labels to the resulting pairs afterward can never break that), verified both by direct replay and by an independent randomized greedy-match solver across many freshly-generated boards. Shuffle re-runs the identical generator restricted to whatever tiles are still in play, so it's always solvable again immediately, including from a genuine forced deadlock — not just a naive in-place type shuffle, which could easily produce another unsolvable state. Board geometry is a fixed logical-pixel layout scaled as a whole via CSS transform to fit any viewport without scrolling (games/comet's canvas-sizing idea / games/solitaire's .sol-board pattern, applied to this board's own tile buttons). Tap-to-select-then-tap-to-match only (no drag needed for this genre); Hint highlights one genuinely valid free pair, Undo replays the full match history in reverse. RTL (Arabic) mirrors header/hint/win/deadlock chrome only — the board itself never mirrors, same precedent as games/solitaire and games/pop-the-bugs."
+    },
+    {
+      "id": "tic-tac-toe",
+      "name": "Tic-Tac-Toe",
+      "names": {
+        "en": "Tic-Tac-Toe",
+        "ru": "Крестики-нолики",
+        "zh": "井字棋",
+        "es": "Tres en raya",
+        "ar": "إكس أو",
+        "fr": "Morpion"
+      },
+      "tagline": "The classic 3x3 grid — beat an unbeatable AI, pass the device, or play LAN.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "flat-ui"
+      ],
+      "genres": [
+        "classic",
+        "strategy",
+        "puzzle"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap/click an empty square to place your mark. Squares are focusable buttons, so Tab + Enter/Space also works.",
+          "ru": "Тапни/кликни по пустой клетке, чтобы поставить метку. Клетки — обычные кнопки, поэтому Tab + Enter/Space тоже работает.",
+          "zh": "点击空格放置你的棋子。格子是可聚焦的按钮，因此 Tab + Enter/空格 也可以使用。",
+          "es": "Toca/haz clic en una casilla vacía para colocar tu marca. Las casillas son botones enfocables, así que Tab + Enter/Espacio también funciona.",
+          "ar": "اضغط/انقر على مربع فارغ لوضع علامتك. المربعات أزرار قابلة للتركيز، لذا يعمل أيضًا Tab ثم Enter/مسافة.",
+          "fr": "Touchez/cliquez une case vide pour placer votre marque. Les cases sont des boutons focalisables, donc Tab + Entrée/Espace fonctionne aussi."
+        }
+      },
+      "tags": [
+        "solo",
+        "two-player",
+        "ai",
+        "multiplayer",
+        "classic",
+        "family-friendly"
+      ],
+      "instructions": {
+        "en": "The classic 3x3 grid game, three ways to play. vs AI: challenge a minimax AI with three difficulties — Unbeatable always plays the mathematically optimal move and can never lose (worst case, a draw); Easy and Medium occasionally substitute a random move so casual or younger players have a real chance. Pass & Play: two players share one device, tapping in turn. LAN Multiplayer: open the same room on two devices over Wi-Fi via the PC host — the first to join is X, the second is O, moves relay instantly. A running score (X/O/Draws) is kept across rounds in whichever mode you're in.",
+        "ru": "Классические крестики-нолики на поле 3x3, три способа игры. Против ИИ: сразись с ИИ на основе минимакс-поиска с тремя уровнями сложности — «Непобедимый» всегда играет математически оптимальный ход и не может проиграть (в худшем случае — ничья); «Лёгкий» и «Средний» иногда делают случайный ход, давая шанс выиграть казуальным и юным игрокам. По очереди: два игрока делят одно устройство, тапая по очереди. LAN-мультиплеер: открой одну комнату на двух устройствах по Wi-Fi через PC-хост — первый подключившийся играет за X, второй — за O, ходы передаются мгновенно. Счёт (X/O/Ничьи) ведётся весь текущий режим.",
+        "zh": "经典3x3井字棋，三种玩法。人机对战：挑战基于极小化极大算法的人工智能，共三档难度——「无敌」始终采用数学上最优的走法，绝不会输（最差是平局）；「简单」和「中等」会偶尔走随机步，让休闲玩家和小朋友也有机会获胜。轮流游玩：两名玩家共用一台设备，轮流点击。局域网联机：通过PC主机在同一Wi-Fi下的两台设备打开同一房间——先加入者执X，后加入者执O，落子即时同步。无论处于哪种模式，比分（X/O/平局）都会在本模式内持续累计。",
+        "es": "El clásico juego de tablero 3x3, con tres formas de jugar. Contra la IA: enfréntate a una IA basada en minimax con tres niveles de dificultad — «Invencible» siempre juega el movimiento matemáticamente óptimo y nunca puede perder (en el peor caso, empata); «Fácil» y «Media» a veces hacen un movimiento aleatorio, dando una oportunidad real a jugadores casuales o más jóvenes. Por turnos: dos jugadores comparten un dispositivo, tocando por turnos. Multijugador LAN: abre la misma sala en dos dispositivos por Wi-Fi a través del host de PC — el primero en unirse juega con X, el segundo con O, y los movimientos se transmiten al instante. Se mantiene un marcador (X/O/Empates) durante todas las rondas del modo actual.",
+        "ar": "لعبة إكس أو الكلاسيكية على شبكة 3×3، بثلاث طرق للعب. ضد الذكاء الاصطناعي: تحدَّ ذكاءً اصطناعيًا يعتمد على خوارزمية Minimax بثلاثة مستويات صعوبة — «لا يُقهر» يلعب دائمًا الحركة المثلى رياضيًا ولا يمكن أن يخسر أبدًا (في أسوأ الأحوال تعادل)؛ أما «سهل» و«متوسط» فيلعبان أحيانًا حركة عشوائية لإعطاء اللاعبين العاديين أو الصغار فرصة حقيقية للفوز. بالتناوب: يتشارك لاعبان جهازًا واحدًا بالتناوب. لعب جماعي عبر LAN: افتح نفس الغرفة على جهازين عبر Wi-Fi من خلال مضيف الـPC — أول من ينضم يلعب بـX، والثاني بـO، وتُنقل الحركات فورًا. تُحفظ النتيجة (X/O/تعادل) طوال بقائك في نفس الوضع.",
+        "fr": "Le classique jeu de morpion 3x3, avec trois façons d'y jouer. Contre l'IA : affrontez une IA basée sur l'algorithme minimax avec trois niveaux de difficulté — « Invincible » joue toujours le coup mathématiquement optimal et ne peut jamais perdre (au pire, match nul) ; « Facile » et « Moyen » jouent parfois un coup aléatoire, laissant une vraie chance aux joueurs occasionnels ou plus jeunes. Chacun son tour : deux joueurs partagent un appareil, en touchant chacun leur tour. Multijoueur LAN : ouvrez le même salon sur deux appareils via le Wi-Fi grâce à l'hôte PC — le premier arrivé joue X, le second O, et les coups sont relayés instantanément. Un score (X/O/Nuls) est conservé pendant toute la durée du mode en cours."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 2,
+        "solo": true
+      },
+      "entry": "tic-tac-toe/client/index.html",
+      "manifest": "tic-tac-toe/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 80,
+      "sizeMeasuredKb": 40.4,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "AI is a plain (unpruned) minimax over the full game tree with depth-adjusted scoring, so 'Unbeatable' always plays optimally and therefore never loses (worst case, a draw) — 'Easy'/'Medium' occasionally substitute a random legal move instead, gated by a difficulty table that 'Unbeatable' never consults, so the never-loses guarantee can't be silently weakened by future tuning. LAN multiplayer reuses the games/piece-caller OGHNet pattern (net.send('move', ...) / net.on('action', ...)); the receiving side re-derives whose turn it should be from its own board rather than trusting the sender, so a stale/duplicate relayed message can't desync the two boards, and it gracefully falls back to local pass-and-play when no host is reachable. Board is a fixed logical-pixel grid scaled as a whole via CSS transform (games/solitaire's fitBoard() pattern) so it always fits without scrolling. RTL (Arabic) mirrors header/menu/result chrome only; the 3x3 board itself never mirrors (#board dir=\"ltr\"), same precedent as games/solitaire and games/mahjong.",
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "First joiner = X, second = O; moves relay as a tiny {index, mark} payload. Also fully playable offline (vs AI or local pass-and-play); LAN mode degrades to local pass-and-play automatically when no host is reachable."
+      }
+    },
+    {
+      "id": "memory-match",
+      "name": "Memory Match",
+      "names": {
+        "en": "Memory Match",
+        "ru": "Найди пару",
+        "zh": "记忆配对",
+        "es": "Memorama",
+        "ar": "لعبة الذاكرة",
+        "fr": "Jeu de mémoire"
+      },
+      "tagline": "Classic concentration — flip two cards, find every pair, pick your theme.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "flat-ui"
+      ],
+      "genres": [
+        "puzzle",
+        "classic",
+        "casual"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap/click two cards to flip them and find a matching pair.",
+          "ru": "Тапни/кликни по двум карточкам, чтобы открыть их и найти пару.",
+          "zh": "点击两张卡牌将其翻开，找出相同的一对。",
+          "es": "Toca/haz clic en dos cartas para voltearlas y encontrar una pareja.",
+          "ar": "اضغط/انقر على بطاقتين لقلبهما والعثور على زوج متطابق.",
+          "fr": "Touchez/cliquez deux cartes pour les retourner et trouver une paire."
+        }
+      },
+      "tags": [
+        "solo",
+        "memory",
+        "concentration",
+        "classic",
+        "family-friendly"
+      ],
+      "instructions": {
+        "en": "Pick a grid size — 4x4 (8 pairs), 6x4 (12 pairs), or 6x6 (18 pairs) — and a card theme — Shapes (plain CSS shapes in a color rotation), Animals or Tiles (Unicode emoji / mahjong glyphs), or Letters — then flip two cards at a time to find every matching pair. Matches stay face-up; mismatches flip back after a brief pause. The result screen shows your move count and elapsed time, with a local best-score note per grid size.",
+        "ru": "Выбери размер поля — 4x4 (8 пар), 6x4 (12 пар) или 6x6 (18 пар) — и тему карточек: «Фигуры» (простые CSS-фигуры в цветовой ротации), «Животные» или «Плитки» (Unicode-эмодзи / плитки маджонга) либо «Буквы» — затем открывай по две карточки, чтобы найти все пары. Совпавшие карточки остаются открытыми; несовпавшие переворачиваются обратно после паузы. На экране результата — число ходов, затраченное время и отметка о локальном рекорде для этого размера поля.",
+        "zh": "选择场地大小——4x4（8对）、6x4（12对）或6x6（18对）——以及卡牌主题：「图形」（颜色轮换的简单CSS图形）、「动物」或「麻将牌」（Unicode表情符号/麻将牌符号），或「字母」——然后每次翻开两张卡牌，找出所有配对。配对成功的卡牌保持翻开；未配对的卡牌短暂停顿后翻回背面。结算画面会显示你的步数和用时，并标注该场地大小下的本地最佳纪录。",
+        "es": "Elige un tamaño de tablero — 4x4 (8 pares), 6x4 (12 pares) o 6x6 (18 pares) — y un tema de cartas: «Formas» (formas CSS sencillas con rotación de color), «Animales» o «Fichas» (emojis Unicode / fichas de mahjong), o «Letras» — luego voltea dos cartas a la vez para encontrar todas las parejas. Las parejas encontradas quedan boca arriba; las que no coinciden se voltean de nuevo tras una breve pausa. La pantalla de resultado muestra tus movimientos y el tiempo transcurrido, con una nota de mejor marca local por tamaño de tablero.",
+        "ar": "اختر حجم اللوحة — 4×4 (8 أزواج) أو 6×4 (12 زوجًا) أو 6×6 (18 زوجًا) — وموضوع البطاقات: «أشكال» (أشكال CSS بسيطة بتناوب الألوان)، أو «حيوانات» أو «قطع الماهجونغ» (رموز يونيكود التعبيرية / رموز الماهجونغ)، أو «حروف» — ثم اقلب بطاقتين في كل مرة للعثور على جميع الأزواج. تبقى الأزواج المتطابقة مكشوفة؛ وتُقلب غير المتطابقة مرة أخرى بعد وقفة قصيرة. تعرض شاشة النتيجة عدد حركاتك والوقت المنقضي، مع ملاحظة عن أفضل رقم قياسي محلي لكل حجم لوحة.",
+        "fr": "Choisissez une taille de plateau — 4x4 (8 paires), 6x4 (12 paires) ou 6x6 (18 paires) — et un thème de cartes : « Formes » (formes CSS simples avec rotation de couleurs), « Animaux » ou « Tuiles » (emojis Unicode / tuiles de mahjong), ou « Lettres » — puis retournez deux cartes à la fois pour trouver toutes les paires. Les paires trouvées restent face visible ; les paires incorrectes se retournent après une courte pause. L'écran de résultat affiche votre nombre de coups et le temps écoulé, avec une mention de meilleur score local par taille de plateau."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "memory-match/client/index.html",
+      "manifest": "memory-match/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 80,
+      "sizeMeasuredKb": 37.8,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Three grid sizes (4x4/8 pairs, 6x4/12 pairs, 6x6/18 pairs) and four card themes (Shapes — plain CSS clip-path shapes in a 3-color rotation; Animals and Tiles — Unicode emoji / the games/mahjong Mahjong Tiles glyph block; Letters — plain bold text), each with 24 curated symbols so even the largest grid never runs short. No image assets anywhere. A round is rebuilt from scratch (fresh shuffle, fresh DOM grid) on every New game / Play again, so there's never leftover state between rounds. Board is a fixed logical-pixel grid, recomputed per grid size and scaled as a whole via CSS transform (games/solitaire's fitBoard() pattern) so it always fits without scrolling. Tracks moves and elapsed time, plus a local best-moves/best-time per grid size via OGHProfile. RTL (Arabic) mirrors header/setup/result chrome only; the card grid itself never mirrors (#board dir=\"ltr\"), same precedent as games/solitaire and games/tic-tac-toe. Solo only — no networking, by design."
     }
   ]
 }

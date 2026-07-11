@@ -1,0 +1,32 @@
+{
+  "id": "tic-tac-toe",
+  "name": "Tic-Tac-Toe",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 2,
+  "supportsSolo": true,
+  "genres": ["classic", "strategy", "puzzle"],
+  "tags": ["solo", "two-player", "ai", "multiplayer", "classic", "family-friendly"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse", "keyboard"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap/click an empty square to place your mark. Squares are focusable buttons, so Tab + Enter/Space also works.",
+      "ru": "Тапни/кликни по пустой клетке, чтобы поставить метку. Клетки — обычные кнопки, поэтому Tab + Enter/Space тоже работает."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "First joiner = X, second = O; moves relay over the host WebSocket (tiny {index, mark} payload). Also supports offline vs-AI (minimax) and same-device pass-and-play; LAN mode degrades to local pass-and-play automatically when no host is reachable."
+  },
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-net.js", "js/ogh-profile.js", "js/ogh-sfx.js"],
+  "notes": "Classic 3x3 grid. AI is a plain (unpruned) minimax over the full game tree with depth-adjusted scoring (10-depth / depth-10), so it always prefers the fastest win and slowest loss; 'unbeatable' difficulty always plays the minimax-optimal move (ties broken at random for variety, never affecting the guarantee) and therefore never loses — worst case it draws. 'easy'/'medium' occasionally substitute a random legal move instead, gated by a difficulty table that 'unbeatable' never consults, so casual/younger players have a fair chance. LAN multiplayer reuses the games/piece-caller OGHNet pattern (net.send('move', ...) / net.on('action', ...)); the receiving side re-derives whose turn it should be from its own board rather than trusting the sender, so a stale/duplicate relayed message can't desync the two boards. Board is a fixed logical-pixel grid scaled as a whole via CSS transform (games/solitaire's fitBoard() pattern) so it always fits without scrolling. RTL (Arabic) mirrors header/menu/result chrome only; the 3x3 board itself never mirrors (#board dir=\"ltr\"), same precedent as games/solitaire and games/mahjong."
+}

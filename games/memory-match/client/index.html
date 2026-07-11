@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Memory Match — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="mm-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="mm-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="mm-hud" role="status">
+        <div class="ogh-pill" id="hudMoves" data-i18n-title="movesLabel" title="Moves"><span aria-hidden="true">↷</span> <strong id="movesVal">0</strong></div>
+        <div class="ogh-pill" id="hudTime" data-i18n-title="timeLabel" title="Time"><span aria-hidden="true">⏱</span> <strong id="timeVal">00:00</strong></div>
+        <div class="ogh-pill" id="hudPairs" data-i18n-title="pairsLabel" title="Pairs"><span aria-hidden="true">♦</span> <strong id="pairsVal">0/8</strong></div>
+      </div>
+      <div class="mm-actions">
+        <button type="button" class="ogh-btn" id="btnNewGame" data-i18n="newGameBtn">New game</button>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnChangeSetup" data-i18n="changeSetupBtn">Change setup</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <main class="ogh-stage mm-stage">
+      <!-- dir="ltr" is deliberate and must stay: the card grid is a fixed
+           spatial layout (card 0 is always physically top-left), not prose
+           — it must never mirror under an RTL UI language (e.g. Arabic),
+           same precedent as games/solitaire's #board and
+           games/tic-tac-toe's #board. -->
+      <div class="mm-board" id="board" dir="ltr"></div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Tap two cards to find a matching pair.</p>
+
+    <!-- Setup: grid size + theme picker — shown at launch and via "Change setup" -->
+    <div class="ogh-overlay" id="setupOverlay">
+      <div class="ogh-card mm-setup-card">
+        <h1 data-i18n="setupTitle">Memory Match</h1>
+        <p data-i18n="setupSub">Pick a grid size and a card theme.</p>
+
+        <p class="mm-group-label" data-i18n="gridSizeLabel">Grid size</p>
+        <div class="mm-choice-row" id="gridChoices">
+          <button type="button" class="ogh-btn choice-btn" data-grid="easy" data-i18n="gridEasyBtn">4×4 (8 pairs)</button>
+          <button type="button" class="ogh-btn choice-btn" data-grid="medium" data-i18n="gridMediumBtn">6×4 (12 pairs)</button>
+          <button type="button" class="ogh-btn choice-btn" data-grid="hard" data-i18n="gridHardBtn">6×6 (18 pairs)</button>
+        </div>
+
+        <p class="mm-group-label" data-i18n="themeLabel">Theme</p>
+        <div class="mm-choice-row mm-theme-row" id="themeChoices">
+          <button type="button" class="ogh-btn choice-btn" data-theme="shapes" data-i18n="themeShapesBtn">Shapes</button>
+          <button type="button" class="ogh-btn choice-btn" data-theme="animals" data-i18n="themeAnimalsBtn">Animals</button>
+          <button type="button" class="ogh-btn choice-btn" data-theme="letters" data-i18n="themeLettersBtn">Letters</button>
+          <button type="button" class="ogh-btn choice-btn" data-theme="tiles" data-i18n="themeTilesBtn">Tiles</button>
+        </div>
+
+        <button type="button" class="ogh-btn ogh-btn-primary mm-start-btn" id="btnStart" data-i18n="startBtn">Start</button>
+      </div>
+    </div>
+
+    <!-- Win overlay -->
+    <div class="ogh-overlay" id="resultOverlay" hidden>
+      <div class="ogh-card">
+        <h1 data-i18n="winTitle">You found them all!</h1>
+        <p id="resultStatsLine"></p>
+        <p id="resultBestLine" class="mm-best-line"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
