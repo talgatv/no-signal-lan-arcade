@@ -34,6 +34,27 @@ android {
     buildFeatures { compose = true }
 }
 
+val repoRoot = rootDir.parentFile!!
+
+val syncWebAssets by tasks.registering(Sync::class) {
+    into(layout.projectDirectory.dir("src/main/assets/web"))
+
+    listOf("comet", "comet-pixel", "demo-tap", "piece-caller", "pulse-race", "rootwork", "hub", "catalog")
+        .forEach { name -> from(repoRoot.resolve("games/$name")) { into("games/$name") } }
+
+    from(repoRoot.resolve("games/_shared")) {
+        into("games/_shared")
+        exclude("fonts/**")
+    }
+
+    listOf("lan-chat", "video-convert")
+        .forEach { name -> from(repoRoot.resolve("programs/$name")) { into("programs/$name") } }
+
+    from(repoRoot.resolve("pc/www")) { into("www") }
+}
+
+tasks.named("preBuild") { dependsOn(syncWebAssets) }
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.activity.compose)
