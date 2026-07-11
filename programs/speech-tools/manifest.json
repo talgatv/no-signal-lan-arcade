@@ -1,0 +1,27 @@
+{
+  "id": "speech-tools",
+  "name": "Speech Tools",
+  "version": "0.1.0",
+  "kind": "program",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["utility", "accessibility"],
+  "tags": ["program", "speech", "tts", "stt", "accessibility", "offline"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "ok",
+    "mouse": "ok",
+    "notes": {
+      "en": "Type text and tap Play to hear it, or tap Start listening and speak to see live transcription.",
+      "ru": "Введи текст и нажми Play, чтобы услышать его, или нажми Start listening и говори — текст появится вживую."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css"],
+  "notes": "Two browser-native speech tools. Text-to-Speech (SpeechSynthesis) uses voices installed on this device and works fully offline. Speech-to-Text (SpeechRecognition) requires a secure context (HTTPS or localhost) for microphone access, and in most browsers also routes audio through a cloud recognition service — so it is not guaranteed to work without an internet connection even once the secure-context requirement is met."
+}

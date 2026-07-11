@@ -835,6 +835,59 @@
         "offline"
       ],
       "notes": "Single <video> element plays both video and audio-only files locally via object URLs. No transcoding — supported formats depend entirely on the browser's native decoder (see Video Convert for that)."
+    },
+    {
+      "id": "speech-tools",
+      "name": "Speech Tools",
+      "kind": "program",
+      "tagline": "Text-to-speech and speech-to-text, right in your browser. No uploads.",
+      "style": "neon-vector",
+      "genres": [
+        "utility",
+        "accessibility"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "ok",
+        "mouse": "ok",
+        "notes": {
+          "en": "Type text and tap Play to hear it, or tap Start listening and speak to see live transcription.",
+          "ru": "Введи текст и нажми Play, чтобы услышать его, или нажми Start listening и говори — текст появится вживую."
+        }
+      },
+      "instructions": {
+        "en": "Two panels: Text → Speech reads your typed text aloud using voices installed on this device (fully offline, with rate/pitch/volume controls). Speech → Text listens through the microphone and transcribes live. Speech-to-text needs a secure connection (HTTPS or localhost) and, in most browsers, an internet connection for its cloud recognition service — text-to-speech has neither limitation.",
+        "ru": "Две панели: «Текст → Речь» озвучивает введённый текст голосами, установленными на устройстве (полностью офлайн, с настройкой скорости, тона и громкости). «Речь → Текст» слушает через микрофон и распознаёт речь вживую. Распознаванию речи нужно защищённое соединение (HTTPS или localhost) и обычно интернет для облачного распознавания — синтез речи работает без этих ограничений."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11"
+      },
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "speech-tools/client/index.html",
+      "manifest": "speech-tools/manifest.json",
+      "version": "0.1.0",
+      "status": "experimental",
+      "familyFriendly": true,
+      "tags": [
+        "program",
+        "speech",
+        "tts",
+        "stt",
+        "accessibility",
+        "offline"
+      ],
+      "notes": "Uses native SpeechSynthesis (offline, OS/browser voices) and SpeechRecognition (needs HTTPS/localhost, and in most browsers also an internet connection for cloud recognition)."
     }
   ]
 }
