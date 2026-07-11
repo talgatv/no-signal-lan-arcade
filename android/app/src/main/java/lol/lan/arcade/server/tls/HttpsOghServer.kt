@@ -16,6 +16,8 @@ import java.util.concurrent.Executors
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLServerSocket
 
+private const val KEEP_ALIVE_TIMEOUT_MS = 15_000
+
 /**
  * Same protocol and content-serving logic as [lol.lan.arcade.server.OghServer] (plain HTTP via
  * Ktor CIO), but hand-rolled over a raw [SSLServerSocket]. Ktor's CIO engine has no server-side
@@ -26,6 +28,12 @@ import javax.net.ssl.SSLServerSocket
  * framework-agnostic [Hub]/[Dispatcher]/[ContentRoots]/[RouteResolver] core as the plain-HTTP
  * path — only the transport (and the hand-written HTTP/1.1 + WebSocket framing that transport
  * needs) differs.
+ *
+ * Serves multiple requests per TCP connection (HTTP/1.1 keep-alive) rather than one-and-close:
+ * a TLS handshake is real cryptographic work plus extra round trips, and a page with several
+ * assets (HTML, CSS, a few JS files) previously paid that cost once *per asset* — the actual
+ * cause of pages loading "noticeably slowly" over HTTPS, found by reading this file, not by
+ * guessing. Plain HTTP (Ktor CIO) was never affected; only this hand-rolled path needed it.
  */
 class HttpsOghServer(
     private val port: Int,
@@ -67,17 +75,25 @@ class HttpsOghServer(
 
     private fun handleConnection(socket: Socket) {
         try {
+            socket.soTimeout = KEEP_ALIVE_TIMEOUT_MS
             val input = socket.getInputStream()
             val output = BufferedOutputStream(socket.getOutputStream())
-            val request = HttpRequestParser.parse(input) ?: return
 
-            if (request.path == "/ws" && request.header("upgrade")?.lowercase() == "websocket") {
-                handleWebSocketUpgrade(request, input, output)
-            } else {
-                handleHttp(request, output)
+            while (true) {
+                val request = HttpRequestParser.parse(input) ?: break
+
+                if (request.path == "/ws" && request.header("upgrade")?.lowercase() == "websocket") {
+                    handleWebSocketUpgrade(request, input, output)
+                    break // WS upgrade owns the connection from here; never returns to the HTTP loop
+                }
+
+                val keepAlive = request.header("connection")?.lowercase() != "close"
+                handleHttp(request, output, keepAlive)
+                if (!keepAlive) break
             }
         } catch (e: Exception) {
-            // one bad connection must not take down the accept loop
+            // one bad connection (or an idle keep-alive connection timing out) must not take
+            // down the accept loop
         } finally {
             try {
                 socket.close()
@@ -109,50 +125,60 @@ class HttpsOghServer(
         }
     }
 
-    private fun handleHttp(request: HttpRequest, output: OutputStream) {
+    private fun handleHttp(request: HttpRequest, output: OutputStream, keepAlive: Boolean) {
         if (request.path == "/api/health") {
-            respondJson(output, """{"ok":true,"rooms":${hub.roomCounts().size},"v":1}""")
+            respondJson(output, """{"ok":true,"rooms":${hub.roomCounts().size},"v":1}""", keepAlive)
             return
         }
         if (request.path == "/api/rooms") {
             val body = hub.roomCounts().entries.joinToString(",", "{", "}") { (id, n) -> "${jsonString(id)}:$n" }
-            respondJson(output, """{"rooms":$body}""")
+            respondJson(output, """{"rooms":$body}""", keepAlive)
             return
         }
         if (request.path in RouteResolver.HUB_REDIRECT_PATHS) {
-            respondRedirect(output, "/games/hub/")
+            respondRedirect(output, "/games/hub/", keepAlive)
             return
         }
 
         val resolved = RouteResolver.resolve(request.path)
         val loaded = contentRoots.load(resolved.root, resolved.relativePath)
         if (loaded == null) {
-            respondNotFound(output)
+            respondNotFound(output, keepAlive)
         } else {
-            respondBytes(output, 200, "OK", loaded.bytes, guessContentTypeString(loaded.matchedPath))
+            respondBytes(output, 200, "OK", loaded.bytes, guessContentTypeString(loaded.matchedPath), keepAlive)
         }
     }
 
-    private fun respondBytes(output: OutputStream, status: Int, reason: String, bytes: ByteArray, contentType: String) {
+    private fun respondBytes(
+        output: OutputStream,
+        status: Int,
+        reason: String,
+        bytes: ByteArray,
+        contentType: String,
+        keepAlive: Boolean,
+    ) {
         val header = "HTTP/1.1 $status $reason\r\n" +
             "Content-Type: $contentType\r\n" +
             "Content-Length: ${bytes.size}\r\n" +
             "Cache-Control: no-cache\r\n" +
             "Access-Control-Allow-Origin: *\r\n" +
-            "Connection: close\r\n\r\n"
+            "Connection: ${if (keepAlive) "keep-alive" else "close"}\r\n\r\n"
         output.write(header.toByteArray(StandardCharsets.US_ASCII))
         output.write(bytes)
         output.flush()
     }
 
-    private fun respondJson(output: OutputStream, json: String) =
-        respondBytes(output, 200, "OK", json.toByteArray(StandardCharsets.UTF_8), "application/json; charset=utf-8")
+    private fun respondJson(output: OutputStream, json: String, keepAlive: Boolean) =
+        respondBytes(output, 200, "OK", json.toByteArray(StandardCharsets.UTF_8), "application/json; charset=utf-8", keepAlive)
 
-    private fun respondNotFound(output: OutputStream) =
-        respondBytes(output, 404, "Not Found", "Not found".toByteArray(StandardCharsets.UTF_8), "text/plain; charset=utf-8")
+    private fun respondNotFound(output: OutputStream, keepAlive: Boolean) =
+        respondBytes(output, 404, "Not Found", "Not found".toByteArray(StandardCharsets.UTF_8), "text/plain; charset=utf-8", keepAlive)
 
-    private fun respondRedirect(output: OutputStream, location: String) {
-        val header = "HTTP/1.1 302 Found\r\nLocation: $location\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
+    private fun respondRedirect(output: OutputStream, location: String, keepAlive: Boolean) {
+        val header = "HTTP/1.1 302 Found\r\n" +
+            "Location: $location\r\n" +
+            "Content-Length: 0\r\n" +
+            "Connection: ${if (keepAlive) "keep-alive" else "close"}\r\n\r\n"
         output.write(header.toByteArray(StandardCharsets.US_ASCII))
         output.flush()
     }

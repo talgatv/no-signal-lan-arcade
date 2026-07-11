@@ -94,6 +94,32 @@ class HttpsOghServerTest {
     }
 
     @Test
+    fun `reuses one TLS connection for multiple requests (keep-alive)`() {
+        // Regression test for the real slowness a user reported: every asset on a page was
+        // paying for a brand-new TLS handshake because the server closed the connection after
+        // one response. A single handshake (one connect + startHandshake) followed by three
+        // sequential requests on the same socket is the actual proof this is fixed.
+        startServer(
+            "web/games/a/index.html" to "AAA",
+            "web/games/b/index.html" to "BBBB",
+            "web/games/c/index.html" to "CCCCC",
+        )
+        // Exactly one socket, one handshake, for all three requests below — the point of the test.
+        val socket = trustAllClientSocket()
+        socket.startHandshake()
+
+        val bodies = listOf("/games/a/index.html", "/games/b/index.html", "/games/c/index.html").map { path ->
+            socket.outputStream.write("GET $path HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n".toByteArray(StandardCharsets.US_ASCII))
+            socket.outputStream.flush()
+            val (status, body) = readHttpResponse(socket.inputStream)
+            assertEquals(200, status)
+            body
+        }
+        assertEquals(listOf("AAA", "BBBB", "CCCCC"), bodies)
+        socket.close()
+    }
+
+    @Test
     fun `serves static content over the real TLS connection`() {
         startServer("web/www/index.html" to "<html>LOBBY</html>")
         val socket = trustAllClientSocket()
