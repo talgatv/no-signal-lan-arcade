@@ -1111,6 +1111,63 @@
         "protocol": "ogh-net-v1",
         "notes": "Full-mesh WebRTC: signaling (SDP/ICE) and small media-state messages over the host WebSocket relay; camera/mic tracks transfer directly browser-to-browser, never through the host"
       }
+    },
+    {
+      "id": "flashlight",
+      "name": "Flashlight",
+      "kind": "program",
+      "tagline": "A plain white screen at full brightness — the classic phone-flashlight trick — plus an SOS blink mode.",
+      "style": "minimal-line",
+      "genres": [
+        "utility",
+        "tool"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap Turn on to fill the screen with bright white light; tap anywhere on the lit screen to turn it off. Tap SOS to blink the international Morse SOS pattern instead — a small Stop SOS button stays reachable while it runs.",
+          "ru": "Нажмите «Включить», чтобы залить экран ярким белым светом; коснитесь экрана, чтобы выключить. Нажмите SOS, чтобы мигать сигналом SOS азбукой Морзе — во время сигнала остаётся доступна маленькая кнопка «Остановить SOS»."
+        }
+      },
+      "instructions": {
+        "en": "Tap \"Turn on\" to fill the screen with maximum-brightness white light — the classic phone-flashlight trick, using your screen instead of a real torch. Tap anywhere on the lit screen to turn it off. Tap \"SOS\" instead to blink the international Morse SOS pattern (··· −−− ···) at a fixed, safe rate; a small \"Stop SOS\" button stays visible in a corner so you can stop it anytime, and tapping anywhere works too. This can't change your device's actual screen-brightness setting — turn that up yourself for the brightest effect. While the light or SOS is on, the page tries to keep the screen from timing out, where the browser supports it.",
+        "ru": "Нажмите «Включить», чтобы залить экран ярким белым светом на максимальной яркости — классический трюк с фонариком из телефона, использующий экран вместо настоящей вспышки. Коснитесь экрана в любом месте, чтобы выключить. Вместо этого нажмите «SOS», чтобы мигать международным сигналом SOS азбукой Морзе (··· −−− ···) с фиксированной безопасной частотой; в углу остаётся маленькая кнопка «Остановить SOS», так что вы можете остановить сигнал в любой момент, а также сработает касание в любом месте экрана. Это не меняет настоящую настройку яркости экрана вашего устройства — увеличьте её самостоятельно для максимального эффекта. Пока горит свет или идёт сигнал SOS, страница старается не давать экрану гаснуть — там, где это поддерживает браузер.",
+        "zh": "点击“打开”，让屏幕以最大亮度充满白光——这是经典的手机手电筒把戏，用屏幕代替真正的闪光灯。轻触已点亮的屏幕上任意位置即可关闭。也可以点击“SOS”，以固定的安全频率闪烁国际摩尔斯电码 SOS 信号（··· −−− ···）；角落会保留一个小小的“停止 SOS”按钮，随时都能停止信号，触碰屏幕任意位置同样有效。这不会改变设备实际的屏幕亮度设置——请自行调高亮度以获得最佳效果。灯光或 SOS 开启期间，只要浏览器支持，页面就会尽量防止屏幕自动熄灭。",
+        "es": "Toca «Encender» para llenar la pantalla de luz blanca al máximo brillo — el truco clásico de linterna del móvil, usando tu pantalla en lugar de un flash real. Toca en cualquier parte de la pantalla encendida para apagarla. Toca «SOS» en su lugar para parpadear el patrón internacional SOS en morse (··· −−− ···) a un ritmo fijo y seguro; un pequeño botón «Detener SOS» permanece visible en una esquina para que puedas detenerlo cuando quieras, y tocar en cualquier parte también funciona. Esto no cambia el ajuste real de brillo de tu dispositivo — súbelo tú mismo para el mejor efecto. Mientras la luz o el SOS estén activos, la página intenta evitar que la pantalla se apague por inactividad, cuando el navegador lo permite.",
+        "ar": "اضغط «تشغيل» لملء الشاشة بضوء أبيض بأقصى سطوع — الحيلة الكلاسيكية لمصباح الهاتف، باستخدام شاشتك بدلاً من فلاش حقيقي. المس أي مكان في الشاشة المضاءة لإطفائها. أو اضغط «SOS» ليومض بنمط SOS الدولي بشفرة مورس (··· −−− ···) بمعدل ثابت وآمن؛ يبقى زر صغير «إيقاف SOS» ظاهرًا في إحدى الزوايا لتتمكن من إيقافه في أي وقت، كما أن اللمس في أي مكان يعمل أيضًا. هذا لا يغيّر إعداد سطوع الشاشة الفعلي لجهازك — ارفعه بنفسك للحصول على أفضل تأثير. أثناء تشغيل الضوء أو إشارة SOS، تحاول الصفحة منع الشاشة من الانطفاء التلقائي، متى ما كان المتصفح يدعم ذلك.",
+        "fr": "Touchez « Allumer » pour remplir l'écran de lumière blanche à luminosité maximale — l'astuce classique de lampe torche du téléphone, qui utilise votre écran à la place d'un vrai flash. Touchez n'importe où sur l'écran allumé pour l'éteindre. Touchez plutôt « SOS » pour faire clignoter le signal SOS international en morse (··· −−− ···) à un rythme fixe et sûr ; un petit bouton « Arrêter SOS » reste visible dans un coin pour que vous puissiez l'arrêter à tout moment, et toucher n'importe où fonctionne aussi. Ceci ne modifie pas le réglage réel de luminosité de votre appareil — augmentez-la vous-même pour un meilleur effet. Tant que la lumière ou le SOS est actif, la page essaie d'empêcher l'écran de se mettre en veille, quand le navigateur le permet."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11"
+      },
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "flashlight/client/index.html",
+      "manifest": "flashlight/manifest.json",
+      "version": "0.1.0",
+      "status": "experimental",
+      "familyFriendly": true,
+      "tags": [
+        "program",
+        "flashlight",
+        "light",
+        "torch",
+        "sos",
+        "safety",
+        "offline"
+      ]
     }
   ]
 }
