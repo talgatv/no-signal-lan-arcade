@@ -1929,6 +1929,76 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Pseudo-3D perspective renderer (render.js): lanes drawn as trapezoids narrowing toward a horizon, sprites scaled by depth, camera rides with the player — not a flat top-down grid. Difficulty is a pure function of stage number (road.js's stageParams()): lane count grows every stage up to a cap, while speed/density/truck-mix keep climbing indefinitely beyond that (endless). Collision is checked every frame against explicit vehicle hitboxes; a short move tween is purely cosmetic and never grants invulnerability. No bundled image or audio assets — canvas vector shapes with a neon glow, sound reuses games/_shared/js/ogh-sfx.js (extended with 'hop'/'honk'). Best distance persists via OGHProfile, same convention as games/pop-the-bugs."
+    },
+    {
+      "id": "mini-golf",
+      "name": "Mini Golf",
+      "names": {
+        "en": "Mini Golf",
+        "ru": "Мини-гольф",
+        "zh": "迷你高尔夫",
+        "es": "Minigolf",
+        "ar": "الغولف المصغر",
+        "fr": "Mini-Golf"
+      },
+      "tagline": "Top-down mini-golf with real rolling physics — drag back to putt, bounce off walls, dodge sand and water, and sink the cup in as few strokes as you can.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "top-down",
+        "physics-based"
+      ],
+      "genres": [
+        "sports",
+        "physics",
+        "puzzle"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": ["touch", "mouse"],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Press near the ball and drag back like a slingshot, then release to putt — power comes from how far you pull (capped), direction from the pull angle. Works the same with mouse or touch. Enter/Space activates the current overlay button (start round / next hole / play again).",
+          "ru": "Нажми рядом с мячом и оттяни его назад, как рогатку, затем отпусти для удара — сила зависит от того, насколько далеко ты оттянул (с пределом), направление — от угла оттяжки. Мышь и тач работают одинаково. Enter/Space активирует текущую кнопку экрана (начать раунд / следующая лунка / играть снова)."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "sports",
+        "physics",
+        "mini-golf"
+      ],
+      "instructions": {
+        "en": "Press near the ball and drag back like a slingshot, then let go to putt — power comes from how far you pull, direction from the angle. The ball rolls and slows with real rolling friction, bounces off walls at a proper reflection angle, bogs down fast in sand, and a splash into water resets it with a 1-stroke penalty. Get the ball into the cup at a reasonable speed to sink the hole — a fast putt can roll right past it. 9 holes with real par, a running total score, and a full scorecard at the end. Solo, no installs, nothing saved between rounds.",
+        "ru": "Нажми рядом с мячом и оттяни его назад, как рогатку, затем отпусти для удара — сила зависит от того, насколько далеко ты оттянул, направление — от угла. Мяч катится и замедляется по настоящей физике качения, отскакивает от стен под правильным углом отражения, резко вязнет в песке, а всплеск в воду возвращает его назад со штрафом в 1 удар. Чтобы забить лунку, мяч должен попасть в неё на не слишком высокой скорости — быстрый удар может просто проскочить мимо. 9 лунок с настоящим паром, общий счёт по ходу раунда и полная карточка результатов в конце. Соло, без установки, между раундами ничего не сохраняется."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "mini-golf/client/index.html",
+      "manifest": "mini-golf/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 85.2,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Top-down 2D mini-golf: 9 hand-authored holes (straight, dogleg-right, wide-open bumper field, sand gauntlet, water crossing with a marked drop zone, single-blade windmill, a Z-shaped double dogleg, a sliding gate, and a grand-finale hole combining sand/water/a 4-blade windmill), each with its own par and tee/cup. physics.js is a pure, DOM-free simulation (canvas-pixel units, no camera): exponential rolling friction (much stronger inside sand zones), proper circle-vs-wall reflection (angle of incidence = angle of reflection about the contact normal, scaled by a restitution factor so bounces lose energy), water zones that reset the ball with a 1-stroke penalty, and cup capture that requires both proximity AND a low-enough speed so a fast putt can legitimately skip over the hole. Moving obstacles (rotating windmill blades, a sliding gate) are walls parameterized by a monotonic game-clock that keeps advancing while the player is still aiming, so timing a shot around them is part of the puzzle; their instantaneous contact velocity (via finite difference) is folded into the bounce so a sweeping blade can genuinely knock the ball, not just push it. Strokes are tracked per hole against par (with real-golf scoring terms — eagle/birdie/par/bogey), a running total tracks the whole round, and a final scorecard table lists every hole with a 'Play again' reset. No bundled image or audio assets: the whole course (fairway, walls, sand, water, cup, ball, moving obstacles) is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js (extended with 'bounce'/'splash' patterns; the shot and sink cues reuse penguin-fling's 'thwack' and the existing 'win' chime)."
     }
   ]
 }

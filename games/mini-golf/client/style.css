@@ -1,0 +1,219 @@
+/* Mini Golf — neon-vector page chrome on top of ogh-base.css's shared
+   structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card,
+   .ogh-btn, .ogh-pill, .ogh-hint). Palette stays the hub default dark
+   neon-vector look (no :root override, unlike games/penguin-fling's
+   deliberate cartoon exception) — this file only adds the header/lang-
+   switch/toast/scorecard layout, mirroring games/cross-the-road's and
+   games/penguin-fling's header pattern (a normal-flow header that takes
+   real layout space, not a position:fixed overlay like games/comet's,
+   so the HUD never sits on top of the course near the top of the canvas).
+   The whole course (fairway, walls, sand, water, cup, ball, moving
+   obstacles) is rendered as Canvas 2D vector shapes with a neon glow —
+   no bitmap assets. */
+
+:root {
+  --mg-water: #35b5ff;
+  --mg-water-deep: #1668a8;
+}
+
+.mg-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills + language switch.                    */
+/* ------------------------------------------------------------------ */
+.mg-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 10px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.mg-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.mg-hud .ogh-pill {
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+
+#hudHole { color: var(--ogh-accent); }
+#hudStrokes { color: var(--ogh-warn); }
+#hudTotal { color: var(--ogh-good); }
+#hudTotal.is-over { color: var(--ogh-bad); }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas — uses the shared auto-sizing .ogh-game-canvas rule as-is     */
+/* (no custom width/height override needed): the stage is a flex:1     */
+/* item, so the canvas's max-width/max-height:100% clamp from           */
+/* ogh-base.css already shrinks it to whatever room remains below the   */
+/* real-flow header above and above the fixed hint at the bottom.       */
+/* ------------------------------------------------------------------ */
+.ogh-game-canvas {
+  background: #060a08;
+  cursor: grab;
+  touch-action: none;
+}
+.ogh-game-canvas.is-dragging { cursor: grabbing; }
+
+/* ------------------------------------------------------------------ */
+/* Toast — brief "Splash! +1 stroke" style message, independent of the  */
+/* persistent aim hint below it so the two never fight over the same    */
+/* text node. Fixed above .ogh-hint; fades via opacity transition.      */
+/* ------------------------------------------------------------------ */
+.mg-toast {
+  position: fixed;
+  z-index: 3;
+  left: 50%;
+  bottom: calc(58px + var(--ogh-safe-bottom));
+  transform: translateX(-50%);
+  max-width: 92vw;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(10, 12, 24, 0.85);
+  border: 1px solid rgba(255, 92, 122, 0.4);
+  color: #ffd9df;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.mg-toast.is-on { opacity: 1; }
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards: hole-complete + final scorecard.                      */
+/* ------------------------------------------------------------------ */
+.mg-hole-name {
+  margin: -4px 0 10px !important;
+  font-size: 13px !important;
+  color: var(--ogh-fg-dim) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.mg-hole-line {
+  font-size: 1.15rem !important;
+  font-weight: 800;
+  color: var(--ogh-fg) !important;
+  font-family: var(--ogh-mono);
+}
+
+.mg-hole-term {
+  font-size: 14px !important;
+  font-weight: 700;
+  color: var(--ogh-accent) !important;
+}
+
+.mg-scorecard-card {
+  width: min(480px, 100%);
+}
+
+.mg-scorecard-wrap {
+  overflow-x: auto;
+  margin: 0 0 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.18);
+}
+
+.mg-scorecard {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--ogh-mono);
+  font-size: 12.5px;
+}
+
+.mg-scorecard th,
+.mg-scorecard td {
+  padding: 7px 8px;
+  text-align: center;
+  border-bottom: 1px solid rgba(92, 225, 255, 0.12);
+  white-space: nowrap;
+}
+
+.mg-scorecard thead th {
+  color: var(--ogh-fg-dim);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  background: rgba(92, 225, 255, 0.06);
+}
+
+.mg-scorecard tbody td:first-child {
+  text-align: left;
+  color: var(--ogh-fg-dim);
+}
+
+.mg-scorecard tfoot td {
+  border-bottom: none;
+  border-top: 1px solid rgba(92, 225, 255, 0.25);
+  font-weight: 800;
+  color: var(--ogh-fg);
+}
+
+.mg-scorecard td.is-under { color: var(--ogh-good); }
+.mg-scorecard td.is-over { color: var(--ogh-bad); }
+
+.mg-final-total {
+  font-size: 1.05rem !important;
+  font-weight: 800;
+  color: var(--ogh-fg) !important;
+  font-family: var(--ogh-mono);
+}
+
+@media (max-width: 380px) {
+  .back { font-size: 12px; }
+  .mg-hud .ogh-pill { font-size: 11px; padding: 5px 8px; }
+}

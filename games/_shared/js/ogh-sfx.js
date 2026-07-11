@@ -52,6 +52,18 @@ export function createOghSfx() {
     // traffic flavor, not tied to collision.
     hop: () => { tone(430, 0.045, 'triangle', 0.045, 640); setTimeout(() => tone(760, 0.035, 'triangle', 0.03), 35); },
     honk: () => { tone(340, 0.09, 'square', 0.05); setTimeout(() => tone(270, 0.11, 'square', 0.045), 70); },
+    // Added for games/mini-golf — wall-bounce and water-hazard cues. Putt
+    // and sink feedback deliberately reuse existing patterns instead of
+    // adding more: `thwack` (penguin-fling's launch cue) already reads as a
+    // clean putter strike, and `win`'s ascending chime already reads as
+    // "success" for sinking the cup. `bounce` is a short percussive knock
+    // (kept brief since a single shot can trigger several in a row off
+    // walls/obstacles) and `splash` is a soft descending sweep plus a small
+    // higher droplet tick — the hub's first "water" sound, so unlike the
+    // two reused patterns above there was no existing wet/splashy cue to
+    // borrow.
+    bounce: () => tone(300, 0.05, 'triangle', 0.06, 150),
+    splash: () => { tone(260, 0.22, 'sine', 0.05, 70); setTimeout(() => tone(900, 0.035, 'sine', 0.025), 90); },
   };
 
   return {
