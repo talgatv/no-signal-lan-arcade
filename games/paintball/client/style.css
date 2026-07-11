@@ -1,0 +1,270 @@
+/* Paintball — neon-vector page chrome on top of ogh-base.css's shared
+   structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card,
+   .ogh-btn, .ogh-pill, .ogh-hint). Palette stays the hub default dark
+   neon-vector look (no :root override), same convention as games/billiards
+   and games/mini-golf. This file adds the header/HUD/lang-switch layout, a
+   LANDSCAPE override of the shared auto-sizing canvas rule (a shooting-
+   gallery arena reads best wide, ~5:3, the same "opposite of the default
+   portrait 720x1000" situation as games/billiards' pool table — see that
+   file's comment for why the sizing formula below deliberately does NOT
+   reuse ogh-base.css's min()-based formula), the ammo-pip/reload-bar HUD
+   widget, the start-screen target-type legend, and a brief red screen
+   flash on a civilian hit (same retrigger-by-class technique as
+   games/cross-the-road's crash flash). The whole arena (backdrop, lane
+   covers, target silhouettes, paint splats, crosshair) is rendered as
+   Canvas 2D vector shapes with a neon glow — no bitmap assets. */
+
+.pb-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills + reload button + language switch.     */
+/* ------------------------------------------------------------------ */
+.pb-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 10px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.pb-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.pb-hud .ogh-pill {
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#hudWave strong { color: var(--ogh-accent); }
+#hudScore strong { color: var(--ogh-warn); }
+#hudStrikes strong { color: var(--ogh-fg-dim); }
+#hudStrikes.is-danger strong,
+#hudStrikes.is-danger span { color: var(--ogh-bad); }
+
+/* ------------------------------------------------------------------ */
+/* Ammo pips + reload progress — bullet dots that empty as you fire,    */
+/* swapped for a "Reloading…" label + progress bar while state.reloading*/
+/* is true (game.js toggles [hidden] on each, never CSS display alone,  */
+/* per ogh-base.css's [hidden]{display:none!important} convention).     */
+/* ------------------------------------------------------------------ */
+.pb-ammo-pips {
+  display: inline-flex;
+  gap: 2.5px;
+}
+
+.pb-pip {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ogh-accent);
+  box-shadow: 0 0 4px rgba(92, 225, 255, 0.7);
+  display: inline-block;
+}
+
+.pb-pip.is-spent {
+  background: rgba(139, 147, 184, 0.25);
+  box-shadow: none;
+}
+
+.pb-reload-label {
+  color: var(--ogh-warn);
+  font-weight: 700;
+}
+
+.pb-reload-bar {
+  width: 46px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(139, 147, 184, 0.25);
+  overflow: hidden;
+  display: inline-block;
+}
+
+.pb-reload-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--ogh-warn);
+  transition: width 60ms linear;
+}
+
+.pb-reload-btn {
+  min-height: 40px;
+  min-width: 40px;
+  width: 40px;
+  padding: 0;
+  border-radius: 999px;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas — landscape override (~1.667:1, matches the 1000x600 arena     */
+/* game.js/render.js draw). Selector deliberately repeats ogh-base.css's */
+/* own `.ogh-stage canvas.ogh-game-canvas` (not just `.ogh-game-canvas`) */
+/* to MATCH its specificity — see games/billiards' style.css for the     */
+/* full reasoning (a single-class selector here would lose the cascade   */
+/* to that more specific shared rule regardless of load order, silently  */
+/* keeping the shared PORTRAIT sizing and squashing this landscape       */
+/* canvas). Sizing relies on the canvas's own intrinsic aspect ratio      */
+/* (width=1000/height=600 content attributes) via the standard           */
+/* replaced-element auto-sizing algorithm, same as games/billiards —     */
+/* deliberately not ogh-base.css's independently-computed min()-times-   */
+/* two-formulas approach, which that file's comment explains can desync  */
+/* whenever the stage's real available height is less than 100vh.        */
+/* ------------------------------------------------------------------ */
+.ogh-stage canvas.ogh-game-canvas {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background: #060a08;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Civilian-hit flash — brief full-stage red pulse, same retrigger-by-  */
+/* class technique as games/cross-the-road's .ctr-stage.is-flash.        */
+/* ------------------------------------------------------------------ */
+.pb-stage.is-flash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 92, 122, 0.35);
+  pointer-events: none;
+  animation: pb-flash 0.4s ease-out forwards;
+}
+
+@keyframes pb-flash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Start-screen target-type legend — shape AND color both distinguish    */
+/* each swatch (the civilian swatch is a rounded square, not a circle,   */
+/* echoing render.js's "shape, not just color" choice for that target).  */
+/* ------------------------------------------------------------------ */
+.pb-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 14px;
+  margin: 0 0 16px;
+  text-align: left;
+}
+
+.pb-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--ogh-fg-dim);
+}
+
+.pb-swatch {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pb-swatch-grunt { border-color: var(--ogh-accent); }
+.pb-swatch-ace { border-color: var(--ogh-warn); }
+.pb-swatch-civilian { border-color: var(--ogh-good); border-radius: 4px; }
+.pb-swatch-crate { border-color: #ff9d4d; }
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards: start / wave-clear / results.                         */
+/* ------------------------------------------------------------------ */
+.pb-card h1 {
+  font-family: "Montserrat", "Roboto", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.pb-best-line {
+  margin: 0 0 14px !important;
+  font-size: 13px !important;
+  color: var(--ogh-fg-dim) !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  min-height: 1em;
+}
+
+.pb-wave-clear-line,
+.pb-results-line {
+  margin: 0 0 8px !important;
+  font-size: 1rem !important;
+  font-weight: 700;
+  color: #e8ecff !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+
+.pb-new-best {
+  margin: 0 0 10px !important;
+  font-size: 13px !important;
+  font-weight: 700;
+  color: var(--ogh-warn) !important;
+}
+
+@media (max-width: 380px) {
+  .back { font-size: 12px; }
+  .pb-hud .ogh-pill { font-size: 11px; padding: 5px 8px; }
+  .pb-reload-btn { width: 36px; min-width: 36px; min-height: 36px; font-size: 16px; }
+  .pb-legend { grid-template-columns: 1fr; }
+}

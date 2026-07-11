@@ -2154,6 +2154,82 @@
         "protocol": "ogh-net-v1",
         "notes": "Current drawer owns the round: holds the secret word (never broadcast in cleartext until reveal), streams stroke-segment messages every other client replays live, validates guesses locally, and ends the round with one round-end message carrying reveal + score deltas + next drawer. Host only starts the session; turn order derived from the roster. Needs 2+ players, no solo mode."
       }
+    },
+    {
+      "id": "paintball",
+      "name": "Paintball",
+      "names": {
+        "en": "Paintball",
+        "ru": "Пейнтбол",
+        "zh": "彩弹射击",
+        "es": "Paintball",
+        "ar": "حرب الطلاء",
+        "fr": "Paintball"
+      },
+      "tagline": "Fixed-camera lightgun-style paintball gallery — aim, fire, reload, and never hit a civilian across 8 escalating waves.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "parallax"
+      ],
+      "genres": [
+        "arcade",
+        "shooter",
+        "reaction"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Move the mouse (or drag a finger) to aim the crosshair, click or tap to fire. The magazine holds 7 shots and auto-reloads when empty; the reload button (or R) tops it up early too. Space/Enter also fires at the current aim point.",
+          "ru": "Двигай мышью (или веди пальцем), чтобы навести прицел, клик или тап — выстрел. В магазине 7 патронов, перезарядка запускается автоматически при опустошении; кнопка перезарядки (или R) пополняет магазин досрочно. Пробел/Enter тоже стреляют в текущую точку прицеливания."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "arcade",
+        "shooter",
+        "lightgun"
+      ],
+      "instructions": {
+        "en": "Aim with your mouse or finger and fire before targets duck away — a fixed-camera paintball shooting gallery across 8 escalating waves. Regular targets score points, small fast bonus targets score more, ammo crates refill your 7-round magazine instantly — but never hit the civilian with hands raised: it costs points and a strike, and 3 strikes ends the run on the spot. Firing empties your magazine in 7 shots, then a brief reload locks you out — reload early with the header button or R if you'd rather not run dry mid-wave. Clear all 8 waves (or get struck out early) to see your score, accuracy, and waves survived; your best score is saved locally.",
+        "ru": "Целься мышью или пальцем и стреляй, пока мишени не спрятались — тир с пейнтболом и фиксированной камерой на 8 нарастающих по сложности волн. Обычные цели дают очки, маленькие быстрые бонусные цели — больше очков, ящики с патронами мгновенно пополняют магазин на 7 патронов — но никогда не стреляй в мирного с поднятыми руками: это стоит очков и штрафа, а 3 штрафа сразу завершают забег. Магазин истощается за 7 выстрелов, после чего короткая перезарядка блокирует стрельбу — перезаряжайся заранее кнопкой в шапке или клавишей R, если не хочешь остаться без патронов посреди волны. Пройди все 8 волн (или вылети раньше из-за штрафов), чтобы увидеть счёт, точность и число пройденных волн; лучший счёт сохраняется локально.",
+        "zh": "用鼠标或手指瞄准，趁目标还没躲开时开枪——这是一个固定视角的彩弹射击场，共 8 波难度递增的关卡。普通目标得分，体型小、速度快的稀有奖励目标得分更多，弹药箱能瞬间补满你 7 发的弹夹——但千万别打到举起双手的平民：这会扣分并记一次警告，累计 3 次警告将立即结束本局。弹匣打光 7 发后会短暂装弹，此时无法开火——如果不想在波次中途弹尽粮绝，可提前用头部按钮或 R 键装弹。通关全部 8 波（或因警告过多提前出局）后可查看得分、命中率和通过的波数；最高分会保存在本地。",
+        "es": "Apunta con el ratón o el dedo y dispara antes de que los blancos se escondan — una galería de tiro de paintball con cámara fija a lo largo de 8 oleadas cada vez más difíciles. Los blancos normales dan puntos, los blancos de bonificación (pequeños y rápidos) dan más, las cajas de munición recargan al instante tu cargador de 7 balas — pero nunca le dispares al civil con las manos en alto: cuesta puntos y una falta, y 3 faltas terminan la partida de inmediato. El cargador se vacía en 7 disparos y luego una breve recarga te bloquea — recarga antes con el botón de la cabecera o con R si no quieres quedarte sin balas a mitad de oleada. Supera las 8 oleadas (o cae antes por acumular faltas) para ver tu puntuación, precisión y oleadas superadas; tu mejor puntuación se guarda localmente.",
+        "ar": "صوّب بالماوس أو إصبعك واطلق النار قبل أن تختفي الأهداف — ميدان رماية بالطلاء بزاوية كاميرا ثابتة عبر 8 موجات تزداد صعوبة تدريجيًا. الأهداف العادية تمنحك نقاطًا، والأهداف الصغيرة السريعة النادرة تمنحك المزيد، وصناديق الذخيرة تملأ فورًا مخزنك المكوّن من 7 طلقات — لكن لا تُصب أبدًا المدني الرافع يديه: فذلك يكلفك نقاطًا وإنذارًا، و3 إنذارات تنهي الجولة على الفور. يُفرغ المخزن بعد 7 طلقات، ثم تمنعك إعادة تذخير قصيرة من إطلاق النار — أعد التذخير مبكرًا عبر الزر العلوي أو مفتاح R إن أردت تفادي نفاد الذخيرة في منتصف الموجة. اجتز الموجات الثماني كلها (أو اخرج مبكرًا بسبب الإنذارات) لترى نتيجتك ودقتك وعدد الموجات التي اجتزتها؛ تُحفظ أفضل نتيجة محليًا.",
+        "fr": "Visez à la souris ou au doigt et tirez avant que les cibles ne se cachent — un stand de tir au paintball à caméra fixe sur 8 vagues de difficulté croissante. Les cibles normales rapportent des points, les cibles bonus (petites et rapides) en rapportent plus, les caisses de munitions rechargent instantanément votre chargeur de 7 balles — mais ne touchez jamais le civil aux mains levées : cela coûte des points et une faute, et 3 fautes terminent la partie immédiatement. Le chargeur se vide en 7 tirs, puis un court rechargement vous bloque — rechargez à l'avance avec le bouton d'en-tête ou la touche R si vous ne voulez pas tomber à sec en pleine vague. Terminez les 8 vagues (ou soyez éliminé plus tôt pour trop de fautes) pour voir votre score, votre précision et le nombre de vagues terminées ; votre meilleur score est sauvegardé localement."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "paintball/client/index.html",
+      "manifest": "paintball/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 74.5,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Fixed-camera lightgun-style shooting gallery, not a scrolling/3D game: a flat canvas scene with 3 static depth lanes (far/mid/near) that shrink in scale and spread toward the horizon for a trapezoidal depth cue, same 'flat scene scaled by distance' trick as games/cross-the-road's render.js applied to static rows instead of a receding road. Targets pop up from behind a lane's cover band (clipped rise/fall animation) at one of 15 fixed slots; four types share one weighted spawn table (targets.js's TARGET_TYPES/waveParams): 'grunt' (common, scores), 'ace' (rare, smaller, faster, drifts sideways while up, scores more), 'civilian' (hands-up silhouette + a small flag — shape, not just color, marks it 'don't shoot' for accessibility; hitting it penalizes score AND adds a strike, 3 strikes ends the run immediately), and 'crate' (instant ammo refill). Difficulty is a pure function of wave index (targets.js's waveParams(), directly inspectable/diffable, same convention as games/cross-the-road's stageParams and games/pop-the-bugs' rampAt): spawn interval, visible duration, max concurrent targets, and the civilian/ace mix all ramp across 8 waves. Firing is hitscan (Pointer Events unify mouse/touch aim+fire, same convention as games/billiards) from a 7-round magazine with a 1.3s reload, auto-triggered on empty or available on demand. Paint splats are randomized irregular blobs (smoothed polygons + scattered droplets) that pop in over ~150-200ms then bake once onto a persistent offscreen canvas layer (cleared each wave) so the per-frame draw list never grows unbounded. No bundled image or audio assets: the whole arena is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js (extended with 'pop'/'splat' patterns; reload/wave-clear/penalty cues reuse existing 'whoosh'/'land'/'win'/'die'). Best score persists via OGHProfile, same convention as games/pop-the-bugs and games/cross-the-road. window.OGH_PAINTBALL exposes live state, waveParams(n), jumpToWave(n), and a forceSpawn(slotIndex, type) test hook for driving real pointer-event hit-testing at a deterministic target position."
     }
   ]
 }

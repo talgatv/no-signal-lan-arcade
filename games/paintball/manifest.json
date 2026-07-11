@@ -1,0 +1,27 @@
+{
+  "id": "paintball",
+  "name": "Paintball",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "shooter", "reaction"],
+  "tags": ["solo", "experimental", "arcade", "shooter", "lightgun"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Move the mouse (or drag a finger) to aim the crosshair, click or tap to fire. The magazine holds 7 shots and auto-reloads when empty; the reload button (or R) tops it up early too. Space/Enter also fires at the current aim point.",
+      "ru": "Двигай мышью (или веди пальцем), чтобы навести прицел, клик или тап — выстрел. В магазине 7 патронов, перезарядка запускается автоматически при опустошении; кнопка перезарядки (или R) пополняет магазин досрочно. Пробел/Enter тоже стреляют в текущую точку прицеливания."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "landscape",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Fixed-camera lightgun-style shooting gallery, not a scrolling/3D game: a flat canvas scene with 3 static depth lanes (far/mid/near) that shrink in scale and spread toward the horizon for a trapezoidal depth cue, same 'flat scene scaled by distance' trick as games/cross-the-road's render.js applied to static rows instead of a receding road. Targets pop up from behind a lane's cover band (clipped rise/fall animation) at one of 15 fixed slots; four types share one weighted spawn table (targets.js's TARGET_TYPES/waveParams): 'grunt' (common, scores), 'ace' (rare, smaller, faster, drifts sideways while up, scores more), 'civilian' (hands-up silhouette + a small flag — shape, not just color, marks it 'don't shoot' for accessibility; hitting it penalizes score AND adds a strike, 3 strikes ends the run immediately), and 'crate' (instant ammo refill). Difficulty is a pure function of wave index (targets.js's waveParams(), directly inspectable/diffable, same convention as games/cross-the-road's stageParams and games/pop-the-bugs' rampAt): spawn interval, visible duration, max concurrent targets, and the civilian/ace mix all ramp across 8 waves. Firing is hitscan (Pointer Events unify mouse/touch aim+fire, same convention as games/billiards) from a 7-round magazine with a 1.3s reload, auto-triggered on empty or available on demand. Paint splats are randomized irregular blobs (smoothed polygons + scattered droplets) that pop in over ~150-200ms then bake once onto a persistent offscreen canvas layer (cleared each wave) so the per-frame draw list never grows unbounded. No bundled image or audio assets: the whole arena is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js (extended with 'pop'/'splat' patterns; reload/wave-clear/penalty cues reuse existing 'whoosh'/'land'/'win'/'die'). Best score persists via OGHProfile, same convention as games/pop-the-bugs and games/cross-the-road. window.OGH_PAINTBALL exposes live state, waveParams(n), jumpToWave(n), and a forceSpawn(slotIndex, type) test hook for driving real pointer-event hit-testing at a deterministic target position."
+}

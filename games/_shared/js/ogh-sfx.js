@@ -76,6 +76,20 @@ export function createOghSfx() {
     // rack / winning a match, not a new pattern of its own).
     clack: () => tone(1500, 0.035, 'square', 0.05, 900),
     pocket: () => { tone(500, 0.05, 'sine', 0.05, 220); setTimeout(() => tone(140, 0.12, 'sine', 0.06, 90), 40); },
+    // Added for games/paintball — marker-fire and paint-impact cues. Reload
+    // and wave-clear/penalty feedback deliberately reuse existing patterns
+    // instead of adding more (`whoosh`/`land` already read as a pull-back-
+    // and-seat reload, `win`/`die` already read as clear/penalty, `pickup`
+    // already reads as a resource grab for the ammo-crate refill); `pop`
+    // and `splat` are the two genuinely new sounds this genre needs. `pop`
+    // is a short, high, fast-downward-sliding square blip (a pneumatic
+    // marker shot) kept brief since a full magazine can fire in quick
+    // succession. `splat` is a soft low sine thud with a quick downward
+    // slide plus a faint high tick, reading as a wet paint impact rather
+    // than a hard collision (contrast with `bounce`/`clack`, which are
+    // deliberately harder/sharper for rigid-object hits elsewhere).
+    pop: () => tone(720, 0.045, 'square', 0.045, 260),
+    splat: () => { tone(190, 0.09, 'sine', 0.06, 70); setTimeout(() => tone(850, 0.025, 'sine', 0.02), 25); },
   };
 
   return {
