@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Flags & Capitals — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="fq-body ogh-font-ui">
+  <header class="fq-top">
+    <a class="fq-back" href="/games/">← <span data-i18n="back">Library</span></a>
+    <div class="fq-title-wrap">
+      <h1 class="fq-title" data-i18n="title">Flags & Capitals</h1>
+    </div>
+    <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="title"></div>
+  </header>
+
+  <nav class="fq-nav" id="nav" role="tablist">
+    <button type="button" class="fq-nav-btn is-on" id="navQuiz" data-view="quiz" role="tab" data-i18n="navQuiz">Quiz</button>
+    <button type="button" class="fq-nav-btn" id="navReference" data-view="reference" role="tab" data-i18n="navReference">Atlas</button>
+  </nav>
+
+  <main class="fq-main" id="main">
+    <!-- ===================== QUIZ ===================== -->
+    <section class="fq-view" id="viewQuiz">
+
+      <!-- setup -->
+      <div class="fq-panel fq-setup" id="quizSetup">
+        <p class="fq-tagline" data-i18n="tagline">A world quiz.</p>
+        <h2 class="fq-h2" data-i18n="chooseMode">Choose a quiz mode</h2>
+        <div class="fq-modes" id="modeList">
+          <button type="button" class="fq-mode is-on" data-mode="flag-country">
+            <span class="fq-mode-name" data-i18n="modeFlagCountry">Flag → Country</span>
+            <span class="fq-mode-desc" data-i18n="modeFlagCountryDesc"></span>
+          </button>
+          <button type="button" class="fq-mode" data-mode="country-capital">
+            <span class="fq-mode-name" data-i18n="modeCountryCapital">Country → Capital</span>
+            <span class="fq-mode-desc" data-i18n="modeCountryCapitalDesc"></span>
+          </button>
+          <button type="button" class="fq-mode" data-mode="flag-capital">
+            <span class="fq-mode-name" data-i18n="modeFlagCapital">Flag → Capital</span>
+            <span class="fq-mode-desc" data-i18n="modeFlagCapitalDesc"></span>
+          </button>
+        </div>
+        <label class="fq-field">
+          <span data-i18n="regionLabel">Region</span>
+          <select id="setupRegion" class="fq-select"></select>
+        </label>
+        <button type="button" class="ogh-btn ogh-btn-primary fq-start" id="btnStart" data-i18n="startBtn">Start quiz</button>
+      </div>
+
+      <!-- play -->
+      <div class="fq-panel fq-play" id="quizPlay" hidden>
+        <div class="fq-play-hud">
+          <span class="ogh-pill" id="qProgress">—</span>
+          <span class="ogh-pill" id="qScore">★ 0</span>
+        </div>
+        <p class="fq-prompt" id="qPrompt">—</p>
+        <div class="fq-flag-stage" id="qFlagStage" hidden></div>
+        <div class="fq-country-stage" id="qCountryStage" hidden></div>
+        <div class="fq-options" id="qOptions" dir="ltr"></div>
+        <p class="fq-feedback" id="qFeedback" aria-live="polite"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary fq-next" id="btnNext" hidden data-i18n="nextBtn">Next</button>
+      </div>
+
+      <!-- results -->
+      <div class="fq-panel fq-results" id="quizResults" hidden>
+        <h2 class="fq-h2" data-i18n="roundOver">Round complete!</h2>
+        <p class="fq-score-big"><span data-i18n="youScored">You scored</span></p>
+        <p class="fq-score-num" id="rScore">0</p>
+        <p class="fq-score-sub" id="rSub">—</p>
+        <p class="fq-newbest" id="rNewBest" hidden data-i18n="newBest">New best!</p>
+        <p class="fq-best-line" id="rBest">—</p>
+        <div class="fq-results-btns">
+          <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="playAgainBtn">Play again</button>
+          <button type="button" class="ogh-btn" id="btnChangeMode" data-i18n="changeModeBtn">Change mode</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ATLAS / REFERENCE ===================== -->
+    <section class="fq-view" id="viewReference" hidden>
+      <div class="fq-ref-controls">
+        <input type="search" class="fq-search" id="refSearch" data-i18n-placeholder="searchPlaceholder" autocomplete="off" />
+        <select id="refRegion" class="fq-select"></select>
+        <span class="fq-ref-count" id="refCount">—</span>
+      </div>
+      <div class="fq-ref-grid" id="refGrid" dir="ltr"></div>
+      <p class="fq-noresults" id="refNoResults" hidden data-i18n="noResults">No countries found.</p>
+    </section>
+  </main>
+
+  <!-- country detail overlay -->
+  <div class="fq-overlay" id="detailOverlay" hidden>
+    <div class="fq-detail-card" id="detailCard" role="dialog" aria-modal="true">
+      <button type="button" class="fq-close" id="btnCloseDetail" data-i18n-aria="closeBtn">✕</button>
+      <div class="fq-detail-flag" id="detailFlag"></div>
+      <h2 class="fq-detail-name" id="detailName">—</h2>
+      <p class="fq-detail-native" id="detailNative"></p>
+      <dl class="fq-detail-facts" id="detailFacts"></dl>
+      <p class="fq-detail-note" id="detailNote" hidden></p>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+/* Flags & Capitals — neon-vector world quiz + atlas.
+   Built on ogh-base.css tokens (.ogh-btn/.ogh-pill, colors, radius). Unlike the
+   fixed-viewport games in this hub, both views here (a 195-country reference
+   browser and a multi-question quiz) are naturally scrolling content, so we
+   override ogh-base.css's `overflow:hidden; touch-action:none; height:100%`.
+   IMPORTANT (see task CSS note): html becomes the scroll container while BODY
+   stays overflow:visible, otherwise position:sticky (used by .fq-ref-controls)
+   breaks because sticky would resolve against body and body never overflows. */
+html {
+  height: auto;
+  min-height: 100%;
+  overflow: auto;
+  touch-action: manipulation;
+}
+.fq-body {
+  overflow: visible;
+  min-height: 100%;
+  height: auto;
+  touch-action: manipulation;
+  user-select: none;
+  display: block;
+  --fq-top-h: 52px;
+}
+
+/* The UA `[hidden]{display:none}` loses a same-specificity source-order tiebreak
+   to author rules that set display:flex/grid — force it to win everywhere. */
+[hidden] { display: none !important; }
+
+/* ------------------------------------------------------------------ */
+/* Header (sticky) + nav                                               */
+/* ------------------------------------------------------------------ */
+.fq-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px 12px;
+  flex-wrap: nowrap;
+  min-height: var(--fq-top-h);
+  padding: 8px 12px;
+  background: rgba(7, 8, 15, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+.fq-back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.fq-title-wrap { flex: 1 1 auto; min-width: 0; text-align: center; }
+.fq-title {
+  margin: 0;
+  font-size: clamp(15px, 3.6vw, 20px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: linear-gradient(120deg, var(--ogh-accent), var(--ogh-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+.lang-btn {
+  min-height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lang-btn.is-on { color: var(--ogh-bg); background: var(--ogh-accent); border-color: var(--ogh-accent); }
+
+.fq-nav {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 10px 12px 4px;
+}
+.fq-nav-btn {
+  min-height: 40px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.28);
+  background: rgba(14, 16, 32, 0.6);
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fq-nav-btn.is-on {
+  color: var(--ogh-fg);
+  border-color: rgba(92, 225, 255, 0.6);
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.2), rgba(255, 107, 203, 0.12));
+  box-shadow: 0 0 18px rgba(92, 225, 255, 0.14);
+}
+
+.fq-main { padding: 12px 14px calc(28px + var(--ogh-safe-bottom)); }
+.fq-view { max-width: 760px; margin: 0 auto; }
+.fq-error { text-align: center; color: var(--ogh-bad); padding: 40px; }
+
+/* ------------------------------------------------------------------ */
+/* Flag SVG — never mirrored (own coordinate system); rounded frame     */
+/* ------------------------------------------------------------------ */
+.flag-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  background: #0b0d18;
+}
+
+/* ------------------------------------------------------------------ */
+/* Quiz — setup                                                        */
+/* ------------------------------------------------------------------ */
+.fq-panel { animation: fq-fade 0.18s ease-out; }
+@keyframes fq-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.fq-tagline { text-align: center; color: var(--ogh-fg-dim); margin: 4px 0 18px; font-size: 14px; }
+.fq-h2 { text-align: center; font-size: 1.05rem; margin: 0 0 14px; color: var(--ogh-fg); }
+
+.fq-modes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.fq-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: start;
+  padding: 14px 16px;
+  border-radius: var(--ogh-radius);
+  border: 1px solid rgba(92, 225, 255, 0.2);
+  background: rgba(14, 16, 32, 0.55);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  cursor: pointer;
+}
+.fq-mode.is-on {
+  border-color: var(--ogh-accent);
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.16), rgba(255, 107, 203, 0.08));
+  box-shadow: 0 0 20px rgba(92, 225, 255, 0.12);
+}
+.fq-mode-name { font-weight: 700; font-size: 15px; }
+.fq-mode-desc { font-size: 12.5px; color: var(--ogh-fg-dim); }
+
+.fq-field { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; font-size: 14px; color: var(--ogh-fg-dim); }
+.fq-select {
+  flex: 1 1 auto;
+  max-width: 60%;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.28);
+  background: var(--ogh-bg-elevated);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 14px;
+}
+.fq-start { width: 100%; }
+
+/* ------------------------------------------------------------------ */
+/* Quiz — play                                                         */
+/* ------------------------------------------------------------------ */
+.fq-play-hud { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.fq-play-hud .ogh-pill { font-size: 13px; }
+#qScore strong, #qScore { font-variant-numeric: tabular-nums; }
+
+.fq-prompt { text-align: center; font-size: 1.05rem; font-weight: 600; margin: 2px 0 14px; line-height: 1.4; }
+.fq-flag-stage {
+  width: min(320px, 80vw);
+  margin: 0 auto 18px;
+}
+.fq-flag-stage .flag-svg {
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+.fq-country-stage {
+  text-align: center;
+  font-size: clamp(1.4rem, 6vw, 2.1rem);
+  font-weight: 800;
+  margin: 6px 0 20px;
+  color: var(--ogh-accent);
+  letter-spacing: 0.01em;
+}
+
+.fq-options { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.fq-option {
+  min-height: var(--ogh-touch);
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: rgba(14, 16, 32, 0.6);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.12s, background 0.12s;
+}
+.fq-option:active { transform: scale(0.99); }
+.fq-option:disabled { cursor: default; }
+.fq-option.is-correct {
+  border-color: var(--ogh-good);
+  background: rgba(92, 255, 176, 0.18);
+  color: var(--ogh-good);
+}
+.fq-option.is-wrong {
+  border-color: var(--ogh-bad);
+  background: rgba(255, 92, 122, 0.16);
+  color: var(--ogh-bad);
+}
+
+.fq-feedback { text-align: center; min-height: 22px; margin: 12px 0 6px; font-size: 14px; font-weight: 700; }
+.fq-feedback.is-pos { color: var(--ogh-good); font-size: 1.4rem; }
+.fq-feedback.is-neg { color: var(--ogh-warn); }
+.fq-next { width: 100%; margin-top: 6px; }
+
+/* ------------------------------------------------------------------ */
+/* Quiz — results                                                      */
+/* ------------------------------------------------------------------ */
+.fq-results { text-align: center; padding-top: 12px; }
+.fq-score-big { color: var(--ogh-fg-dim); margin: 6px 0 0; }
+.fq-score-num {
+  font-size: 3.6rem;
+  font-weight: 800;
+  margin: 4px 0;
+  font-family: var(--ogh-mono);
+  background: linear-gradient(120deg, var(--ogh-accent), var(--ogh-accent-2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.fq-score-sub { color: var(--ogh-fg-dim); margin: 0 0 12px; font-size: 14px; }
+.fq-newbest { color: var(--ogh-warn); font-weight: 800; text-shadow: 0 0 10px rgba(255, 209, 102, 0.5); margin: 6px 0; }
+.fq-best-line { color: var(--ogh-fg-dim); font-family: var(--ogh-mono); font-size: 13px; margin: 4px 0 22px; }
+.fq-results-btns { display: flex; flex-direction: column; gap: 10px; max-width: 340px; margin: 0 auto; }
+
+/* ------------------------------------------------------------------ */
+/* Atlas / reference                                                   */
+/* ------------------------------------------------------------------ */
+.fq-ref-controls {
+  position: sticky;
+  top: var(--fq-top-h);
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 2px;
+  margin-bottom: 6px;
+  background: rgba(7, 8, 15, 0.92);
+  backdrop-filter: blur(8px);
+}
+.fq-search {
+  flex: 1 1 180px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.28);
+  background: var(--ogh-bg-elevated);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 14px;
+}
+.fq-ref-controls .fq-select { flex: 0 1 160px; max-width: none; }
+.fq-ref-count { flex: 0 0 auto; font-size: 12.5px; color: var(--ogh-fg-dim); font-variant-numeric: tabular-nums; }
+
+.fq-ref-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ogh-accent);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 16px 2px 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(92, 225, 255, 0.14);
+}
+.fq-ref-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 10px;
+}
+.fq-ref-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.14);
+  background: rgba(14, 16, 32, 0.5);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  cursor: pointer;
+  content-visibility: auto;
+  contain-intrinsic-size: 92px;
+}
+.fq-ref-card:active { transform: scale(0.98); }
+.fq-ref-flag { display: block; width: 100%; }
+.fq-ref-flag .flag-svg { border: 1px solid rgba(255, 255, 255, 0.12); }
+.fq-ref-name { font-size: 12px; line-height: 1.25; text-align: center; color: var(--ogh-fg); }
+.fq-noresults { text-align: center; color: var(--ogh-fg-dim); padding: 40px 10px; }
+
+/* ------------------------------------------------------------------ */
+/* Country detail overlay                                              */
+/* ------------------------------------------------------------------ */
+.fq-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(4, 6, 14, 0.78);
+  backdrop-filter: blur(6px);
+}
+.fq-detail-card {
+  position: relative;
+  width: min(420px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--ogh-bg-elevated);
+  border: 1px solid rgba(92, 225, 255, 0.28);
+  border-radius: 18px;
+  padding: 22px 20px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.fq-close {
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: rgba(10, 12, 24, 0.7);
+  color: var(--ogh-fg);
+  font-size: 15px;
+  cursor: pointer;
+}
+.fq-detail-flag { width: min(280px, 72vw); margin: 6px auto 14px; }
+.fq-detail-flag .flag-svg { border: 1px solid rgba(92, 225, 255, 0.25); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
+.fq-detail-name { margin: 0 0 2px; font-size: 1.4rem; font-weight: 800; }
+.fq-detail-native { margin: 0 0 16px; color: var(--ogh-fg-dim); font-size: 13px; }
+.fq-detail-facts { display: grid; grid-template-columns: 1fr; gap: 0; margin: 0; text-align: start; }
+.fq-fact {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 9px 2px;
+  border-top: 1px solid rgba(92, 225, 255, 0.12);
+  font-size: 14px;
+}
+.fq-fact dt { color: var(--ogh-fg-dim); margin: 0; flex: 0 0 auto; }
+.fq-fact dd { margin: 0; text-align: end; font-weight: 600; }
+.fq-detail-note {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: var(--ogh-warn);
+  font-style: italic;
+}
+
+/* Wider layout: two-column options + roomier grid */
+@media (min-width: 560px) {
+  .fq-options { grid-template-columns: 1fr 1fr; }
+}

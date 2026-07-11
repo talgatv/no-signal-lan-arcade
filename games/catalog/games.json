@@ -1353,6 +1353,90 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Closed centripetal Catmull-Rom spline circuit (client/track.js) sampled into a 400-point arc-length lookup table, chase camera + minimap, circle-based car-car collision, and a velocity-vs-facing-angle drift model (tire smoke, skid marks, screech sfx, speed boost on exit) shared by the player and AI alike. AI steers an apex-biased line with corner braking and mild field-average rubber-banding rather than following the raw centerline. Requires host /ws for real multiplayer; offline AI works without server logic."
+    },
+    {
+      "id": "flags-quiz",
+      "name": "Flags & Capitals",
+      "names": {
+        "en": "Flags & Capitals",
+        "ru": "Флаги и столицы",
+        "zh": "国旗与首都",
+        "es": "Banderas y capitales",
+        "ar": "الأعلام والعواصم",
+        "fr": "Drapeaux et capitales"
+      },
+      "tagline": "Name every flag and capital — a quiz and atlas of all 195 countries.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "svg-flags",
+        "quiz",
+        "atlas"
+      ],
+      "genres": [
+        "quiz",
+        "trivia",
+        "geography",
+        "educational"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap an answer option; in the Atlas tap a country card for its info sheet. Keyboard optional (Esc closes a card).",
+          "ru": "Тапай вариант ответа; в Атласе тапай карточку страны для справки. Клавиатура опциональна (Esc закрывает карточку).",
+          "zh": "点击答案选项；在图鉴中点击国家卡片查看资料。可选键盘（Esc 关闭卡片）。",
+          "es": "Toca una opción de respuesta; en el Atlas toca una tarjeta de país para su ficha. Teclado opcional (Esc cierra la ficha).",
+          "ar": "اضغط خيار الإجابة؛ في الأطلس اضغط بطاقة الدولة لعرض المعلومات. لوحة المفاتيح اختيارية (Esc يغلق البطاقة).",
+          "fr": "Touchez une option de réponse ; dans l'Atlas, touchez une carte de pays pour sa fiche. Clavier optionnel (Échap ferme une fiche)."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "quiz",
+        "geography",
+        "educational",
+        "trivia",
+        "flags"
+      ],
+      "instructions": {
+        "en": "A world geography quiz over all 195 countries. Pick one of three modes — flag→country, country→capital, or flag→capital — and answer 15 multiple-choice questions whose wrong options come from the same region so you can't guess by elimination. A results screen shows your score, accuracy, and best. A separate searchable Atlas gives every country an info card (flag, capital, population, area, languages, currency). All 195 flags are hand-coded SVG.",
+        "ru": "Викторина по географии мира по всем 195 странам. Один из трёх режимов — флаг→страна, страна→столица или флаг→столица — 15 вопросов с вариантами из того же региона, так что угадать методом исключения не выйдет. Экран итогов показывает счёт, точность и рекорд. Отдельный Атлас с поиском даёт справку по каждой стране (флаг, столица, население, площадь, языки, валюта). Все 195 флагов — рисованный SVG.",
+        "zh": "涵盖全部 195 个国家的世界地理问答。三种模式任选其一——国旗→国家、国家→首都、国旗→首都——每轮 15 道选择题，干扰项来自同一地区，无法靠排除法猜。结束画面显示得分、正确率与最高分。另有可搜索的图鉴，为每个国家提供资料卡（国旗、首都、人口、面积、语言、货币）。全部 195 面国旗均为手绘 SVG。",
+        "es": "Un concurso de geografía mundial sobre los 195 países. Elige uno de tres modos —bandera→país, país→capital o bandera→capital— y responde 15 preguntas de opción múltiple cuyas opciones erróneas vienen de la misma región, así no se adivina por eliminación. Una pantalla final muestra tu puntuación, precisión y récord. Un Atlas con búsqueda ofrece una ficha de cada país (bandera, capital, población, superficie, idiomas, moneda). Las 195 banderas son SVG dibujado a mano.",
+        "ar": "مسابقة جغرافيا عالمية تشمل كل الدول الـ195. اختر أحد ثلاثة أنماط — العلم←الدولة، الدولة←العاصمة، أو العلم←العاصمة — وأجب عن 15 سؤال اختيار من متعدد تأتي خياراتها الخاطئة من المنطقة نفسها فلا يمكن التخمين بالاستبعاد. تُظهر شاشة النتائج نتيجتك ودقتك وأفضل رقم. أطلس قابل للبحث يقدّم بطاقة لكل دولة (العلم، العاصمة، السكان، المساحة، اللغات، العملة). كل الأعلام الـ195 مرسومة يدويًا بصيغة SVG.",
+        "fr": "Un quiz de géographie mondiale sur les 195 pays. Choisissez l'un des trois modes — drapeau→pays, pays→capitale ou drapeau→capitale — et répondez à 15 questions à choix multiple dont les mauvaises options viennent de la même région, impossible de deviner par élimination. Un écran de résultats affiche votre score, votre précision et votre record. Un Atlas consultable donne une fiche pour chaque pays (drapeau, capitale, population, superficie, langues, monnaie). Les 195 drapeaux sont des SVG dessinés à la main."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "flags-quiz/client/index.html",
+      "manifest": "flags-quiz/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 300,
+      "sizeMeasuredKb": 257.4,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "World flags & capitals quiz + reference atlas over all 195 countries (193 UN member states + Holy See/Vatican City and the State of Palestine, the standard 'complete list of countries' scope). Three quiz modes (flag->country, country->capital, flag->capital) with same-region distractors, 15-question scored rounds (best per mode via OGHProfile), an optional region filter, and a searchable/region-filterable Atlas giving every country an info card. All 195 flags are hand-written inline SVG built from geometric primitives (stripes/cross/star/crescent/sun/Union-Jack helpers) — no bundled image assets and no runtime network calls; ~64 flags with intricate heraldry render the correct base field/colours/layout with a simplified or omitted emblem, marked \"detail\":\"simplified\" in the data. Country display names are localized to all six UN languages from data/countries.json; capital names are English (documented fallback). countries.json (~208 KB) is the bulk of the size. Arabic UI is RTL but flags and the country grid are not mirrored."
     }
   ]
 }
