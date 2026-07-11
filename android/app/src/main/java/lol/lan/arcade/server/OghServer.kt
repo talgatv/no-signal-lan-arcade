@@ -23,30 +23,7 @@ import kotlinx.serialization.json.put
 
 private const val MAX_WS_FRAME_BYTES = 2L * 1024 * 1024 // PTT clips base64-encode up to ~900 KB text (lan-chat MAX_B64)
 
-internal fun guessContentType(path: String): ContentType {
-    val ext = path.substringAfterLast('.', "").lowercase()
-    return when (ext) {
-        "html", "htm" -> ContentType.Text.Html
-        "js", "mjs" -> ContentType("text", "javascript")
-        "css" -> ContentType.Text.CSS
-        "json" -> ContentType.Application.Json
-        "md", "markdown" -> ContentType("text", "markdown")
-        "svg" -> ContentType.Image.SVG
-        "png" -> ContentType.Image.PNG
-        "jpg", "jpeg" -> ContentType.Image.JPEG
-        "gif" -> ContentType.Image.GIF
-        "ico" -> ContentType("image", "x-icon")
-        "woff" -> ContentType("font", "woff")
-        "woff2" -> ContentType("font", "woff2")
-        "ttf" -> ContentType("font", "ttf")
-        "wasm" -> ContentType("application", "wasm")
-        "mp3" -> ContentType.Audio.MPEG
-        "wav" -> ContentType("audio", "wav")
-        "webm" -> ContentType("video", "webm")
-        "txt" -> ContentType.Text.Plain
-        else -> ContentType.Application.OctetStream
-    }
-}
+internal fun guessContentType(path: String): ContentType = ContentType.parse(guessContentTypeString(path))
 
 /** Registers the WebSocket plugin and all HTTP/WS routes on [Application]. Shared by
  *  production (OghServer.start) and tests (OghServerRouteTest), so both exercise the
