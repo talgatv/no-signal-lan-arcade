@@ -1,0 +1,27 @@
+{
+  "id": "billiards",
+  "name": "Billiards",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 2,
+  "supportsSolo": true,
+  "genres": ["sports", "physics", "puzzle"],
+  "tags": ["solo", "experimental", "sports", "physics", "pool"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Press near the cue ball and drag back like a slingshot, then release to shoot — power comes from how far you pull (capped), direction from the pull angle. Works the same with mouse or touch. When you have ball-in-hand (after an opponent's foul or scratch), tap anywhere else on the table first to relocate the cue ball, then grab it to aim. All overlay buttons are plain, keyboard-focusable buttons (Tab + Enter/Space).",
+      "ru": "Нажми рядом с битком и оттяни его назад, как рогатку, затем отпусти для удара — сила зависит от того, насколько далеко ты оттянул (с пределом), направление — от угла оттяжки. Мышь и тач работают одинаково. Когда у тебя биток в руке (после фола или свояка соперника), сначала коснись любого места на столе, чтобы переставить биток, затем возьми его для прицеливания. Все кнопки экрана — обычные фокусируемые с клавиатуры кнопки (Tab + Enter/Space)."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js"],
+  "notes": "Top-down 8-ball pool on a 6-pocket rectangular table (4 corners + 2 side-middles). physics.js is a pure, DOM-free simulation (canvas-pixel units, no camera), fixed-substepped (8 per frame) so a full-power break can't tunnel through the tightly-packed rack: constant-deceleration rolling friction (a real ball decelerates at roughly constant force, not exponentially, so every shot comes to an exact stop in finite time), simple axis-flip cushion bounces scaled by a restitution factor for energy loss, and textbook equal-mass elastic ball-ball collisions — velocity is decomposed into normal/tangential components at the moment of contact, the normal components are exactly swapped (restitution = 1.0 exactly, so momentum AND kinetic energy are both conserved along that axis), tangential components pass through untouched. Pocketing requires proximity to a pocket center AND a low-enough speed (a very fast, off-center shot can rattle the jaws and stay in play). rules.js layers the standard 8-ball turn structure on top: open table until a player's first legal pocket assigns them solids/stripes, a foul (no ball hit, wrong group hit first, or a scratch) passes the turn and gives the incoming player ball-in-hand (tap the table to relocate the cue ball before aiming), potting your own group keeps your turn, and pocketing the 8-ball wins if your group is already fully cleared (loses immediately otherwise, including scratching on the 8). A scratch always respots the cue ball to the kitchen (or the nearest open spot) rather than removing it. Solo practice mode uses the same physics with no turn/foul structure at all — just an open table and a 'New Rack' button. Local pass-and-play only (no real-time LAN sync attempted — a continuously-simulated multi-body physics scene is a much harder cross-device sync problem than this hub's turn-based/discrete-message games, so two players share one device and alternate). No bundled image or audio assets: the whole table (felt, rails, pockets, balls, cue aim guideline) is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js (extended with 'clack'/'pocket' patterns; the cue-strike and cushion-bounce cues reuse the existing 'thwack' and 'bounce')."
+}

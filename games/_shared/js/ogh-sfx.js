@@ -64,6 +64,18 @@ export function createOghSfx() {
     // borrow.
     bounce: () => tone(300, 0.05, 'triangle', 0.06, 150),
     splash: () => { tone(260, 0.22, 'sine', 0.05, 70); setTimeout(() => tone(900, 0.035, 'sine', 0.025), 90); },
+    // Added for games/billiards — ball-ball and pocket cues. The cue-strike
+    // and rail-bounce sounds deliberately reuse existing patterns instead of
+    // adding more (`thwack` already reads as a clean strike, `bounce` already
+    // reads as a knock off a hard boundary); `clack` and `pocket` are the two
+    // genuinely new sounds this genre needs. `clack` is a very short, sharp,
+    // high square-wave click (two hard balls meeting) — kept brief since a
+    // single break can trigger many in quick succession. `pocket` is a
+    // quick high blip sliding into a soft low thud, reading as "dropped
+    // into a hole" (paired with the existing `win` chime for clearing a
+    // rack / winning a match, not a new pattern of its own).
+    clack: () => tone(1500, 0.035, 'square', 0.05, 900),
+    pocket: () => { tone(500, 0.05, 'sine', 0.05, 220); setTimeout(() => tone(140, 0.12, 'sine', 0.06, 90), 40); },
   };
 
   return {

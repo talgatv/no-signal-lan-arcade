@@ -1999,6 +1999,79 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Top-down 2D mini-golf: 9 hand-authored holes (straight, dogleg-right, wide-open bumper field, sand gauntlet, water crossing with a marked drop zone, single-blade windmill, a Z-shaped double dogleg, a sliding gate, and a grand-finale hole combining sand/water/a 4-blade windmill), each with its own par and tee/cup. physics.js is a pure, DOM-free simulation (canvas-pixel units, no camera): exponential rolling friction (much stronger inside sand zones), proper circle-vs-wall reflection (angle of incidence = angle of reflection about the contact normal, scaled by a restitution factor so bounces lose energy), water zones that reset the ball with a 1-stroke penalty, and cup capture that requires both proximity AND a low-enough speed so a fast putt can legitimately skip over the hole. Moving obstacles (rotating windmill blades, a sliding gate) are walls parameterized by a monotonic game-clock that keeps advancing while the player is still aiming, so timing a shot around them is part of the puzzle; their instantaneous contact velocity (via finite difference) is folded into the bounce so a sweeping blade can genuinely knock the ball, not just push it. Strokes are tracked per hole against par (with real-golf scoring terms — eagle/birdie/par/bogey), a running total tracks the whole round, and a final scorecard table lists every hole with a 'Play again' reset. No bundled image or audio assets: the whole course (fairway, walls, sand, water, cup, ball, moving obstacles) is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js (extended with 'bounce'/'splash' patterns; the shot and sink cues reuse penguin-fling's 'thwack' and the existing 'win' chime)."
+    },
+    {
+      "id": "billiards",
+      "name": "Billiards",
+      "names": {
+        "en": "Billiards",
+        "ru": "Бильярд",
+        "zh": "桌球",
+        "es": "Billar",
+        "ar": "البلياردو",
+        "fr": "Billard"
+      },
+      "tagline": "Top-down 8-ball pool with real physics — drag back to shoot, pocket your balls before the 8-ball.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "top-down",
+        "physics-based"
+      ],
+      "genres": [
+        "sports",
+        "physics",
+        "puzzle"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Press near the cue ball and drag back like a slingshot, then release to shoot — power comes from how far you pull (capped), direction from the pull angle. Works the same with mouse or touch. When you have ball-in-hand, tap anywhere else on the table first to relocate the cue ball, then grab it to aim.",
+          "ru": "Нажми рядом с битком и оттяни его назад, как рогатку, затем отпусти для удара — сила зависит от того, насколько далеко ты оттянул (с пределом), направление — от угла оттяжки. Мышь и тач работают одинаково. Когда биток в руке, сначала коснись любого места на столе, чтобы переставить биток, затем возьми его для прицеливания."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "sports",
+        "physics",
+        "pool"
+      ],
+      "instructions": {
+        "en": "Drag back from the cue ball like a slingshot, then let go to shoot — power comes from how far you pull, direction from the angle. Balls collide with real elastic physics, bounce off the rails, and roll to a stop with rolling friction. Solo Practice: no turns, just sink balls and reset the rack anytime. 2-Player 8-Ball: pass the device back and forth — the first legal pocket assigns you solids or stripes, fouls (missing every ball, hitting the wrong group first, or scratching) give the other player ball-in-hand, and you win by clearing your group and then legally pocketing the 8-ball (pocketing it early or on a foul loses instantly).",
+        "ru": "Оттяни биток назад, как рогатку, и отпусти для удара — сила зависит от того, насколько далеко ты оттянул, направление — от угла. Шары сталкиваются по настоящей упругой физике, отскакивают от бортов и катятся до остановки с учётом трения качения. Соло-тренировка: без очерёдности, просто забивай шары и в любой момент можно пересобрать треугольник. 8-ball на двоих: передавайте устройство по очереди — первый чистый забитый шар определяет твою группу (простые или полосатые), фолы (промах мимо всех шаров, удар не по своей группе первым или свояк) дают сопернику биток в руке, а победа — за тем, кто очистит свою группу и затем правильно забьёт восьмой шар (забить его раньше времени или при фоле — мгновенное поражение)."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 2,
+        "solo": true
+      },
+      "entry": "billiards/client/index.html",
+      "manifest": "billiards/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 73.2,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Top-down 8-ball pool on a 6-pocket rectangular table. physics.js is a pure, DOM-free, fixed-substepped simulation: constant-deceleration rolling friction, axis-flip cushion bounces with restitution < 1, and textbook equal-mass elastic ball-ball collisions (normal velocity components exactly swapped, restitution = 1.0, tangential components untouched — momentum AND energy conserved along the collision normal). Pocketing requires proximity plus a low-enough speed (or a near-dead-center hit), and a scratch always respots the cue ball rather than removing it. rules.js layers standard 8-ball turn structure on top: open table until the first legal pocket assigns solids/stripes, fouls pass the turn and grant ball-in-hand, potting your own group keeps your turn, and the 8-ball wins or instantly loses the game depending on whether your group was already clear. Solo Practice mode skips all turn/foul logic. Local pass-and-play only — no real-time LAN physics sync attempted. No bundled image or audio assets: the whole table is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js (extended with 'clack'/'pocket' patterns)."
     }
   ]
 }
