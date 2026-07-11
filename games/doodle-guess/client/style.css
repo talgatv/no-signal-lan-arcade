@@ -1,0 +1,402 @@
+/* Doodle Guess — neon-vector chrome on top of ogh-base.css's shared shell
+   (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card, .ogh-btn, .ogh-pill).
+   Palette stays the hub default dark neon look (no :root override).
+
+   Layout note (see the task's CRITICAL CSS note): ogh-base.css pins
+   html/body to overflow:hidden/height:100%, correct for a fixed-viewport
+   canvas game. The drawing canvas here stays fixed and fully visible; the
+   ONLY scrollable regions are the guess feed and (if it overflows) the
+   scoreboard — each a nested `overflow:auto` element inside the fixed page
+   shell, never the page itself. The canvas keeps `touch-action:none` so
+   drawing gestures don't pan the page. */
+
+.dg-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+.dg-root {
+  height: 100%;
+  min-height: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                              */
+/* ------------------------------------------------------------------ */
+.dg-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px 6px;
+  border-bottom: 1px solid rgba(92, 225, 255, 0.12);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.dg-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+.dg-hud .ogh-pill {
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+  max-width: 60vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#hudWord .dg-blanks {
+  letter-spacing: 0.14em;
+  color: var(--ogh-accent);
+}
+#hudTime.dg-urgent strong { color: var(--ogh-bad); }
+
+.dg-net {
+  font-size: 11px;
+  font-family: var(--ogh-mono);
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  max-width: 46vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dg-net.online { color: var(--ogh-good); border: 1px solid rgba(92, 255, 176, 0.3); }
+.dg-net.offline { color: var(--ogh-warn); border: 1px solid rgba(255, 209, 102, 0.3); }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Main split: canvas stage (flex) + side panel                        */
+/* ------------------------------------------------------------------ */
+.dg-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+.dg-stage-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dg-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Canvas is a replaced element with intrinsic 800x600 (4:3); max-*:100%
+   scales it down preserving ratio to fill the space the header/tools/side
+   leave — no explicit width math needed (same idea as games/mini-golf). */
+.dg-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  background: #0e1220;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.2);
+  box-shadow: 0 0 30px rgba(92, 225, 255, 0.08);
+  touch-action: none;
+  cursor: default;
+}
+.dg-canvas.is-drawer { cursor: crosshair; }
+
+/* Centered note over the canvas while a drawer is choosing a word, and the
+   brief "guessed it!" flash. */
+.dg-choosing {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 84%;
+  text-align: center;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: rgba(10, 12, 24, 0.86);
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  color: var(--ogh-fg);
+  font-size: 15px;
+  font-weight: 600;
+  pointer-events: none;
+}
+.dg-choosing.dg-flash {
+  border-color: rgba(92, 255, 176, 0.6);
+  color: var(--ogh-good);
+  font-size: 20px;
+  font-weight: 800;
+  box-shadow: 0 0 40px rgba(92, 255, 176, 0.25);
+}
+
+/* ------------------------------------------------------------------ */
+/* Drawer toolbar                                                      */
+/* ------------------------------------------------------------------ */
+.dg-tools {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--ogh-bg-elevated);
+  border: 1px solid rgba(92, 225, 255, 0.16);
+}
+.dg-colors, .dg-brushes { display: flex; gap: 6px; align-items: center; }
+.dg-color {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: var(--c);
+  cursor: pointer;
+  padding: 0;
+}
+.dg-color.is-on {
+  border-color: var(--ogh-fg);
+  box-shadow: 0 0 0 2px var(--ogh-accent);
+}
+.dg-brush {
+  width: 34px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.dg-brush.is-on { border-color: var(--ogh-accent); background: rgba(92, 225, 255, 0.14); }
+.dg-brush-dot { background: var(--ogh-fg); border-radius: 50%; display: block; }
+.dg-tool-btn {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dg-tool-btn.is-on { border-color: var(--ogh-accent-2); background: rgba(255, 107, 203, 0.14); }
+.dg-tool-btn.dg-clear { margin-left: auto; color: var(--ogh-bad); border-color: rgba(255, 92, 122, 0.35); }
+
+/* ------------------------------------------------------------------ */
+/* Side panel: scoreboard + feed + guess form                          */
+/* ------------------------------------------------------------------ */
+.dg-side {
+  flex: 0 0 300px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dg-side-title {
+  margin: 0 0 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ogh-fg-dim);
+  font-weight: 700;
+}
+.dg-scores {
+  flex: 0 0 auto;
+  max-height: 34%;
+  overflow: auto;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--ogh-bg-elevated);
+  border: 1px solid rgba(92, 225, 255, 0.16);
+}
+.dg-score-list { list-style: none; margin: 0; padding: 0; }
+.dg-score-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 13.5px;
+  border-bottom: 1px solid rgba(92, 225, 255, 0.08);
+}
+.dg-score-list li:last-child { border-bottom: none; }
+.dg-score-list li.is-you .dg-sc-name { color: var(--ogh-accent); font-weight: 700; }
+.dg-sc-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dg-sc-pts { font-family: var(--ogh-mono); font-weight: 700; white-space: nowrap; }
+.dg-pts-suffix { color: var(--ogh-fg-dim); font-size: 10px; font-weight: 400; }
+.dg-tag {
+  margin-inline-start: 6px;
+  font-size: 9.5px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+.dg-tag.dg-you { background: rgba(92, 225, 255, 0.2); color: var(--ogh-accent); }
+.dg-tag.dg-draw { background: rgba(255, 209, 102, 0.2); color: var(--ogh-warn); }
+
+.dg-feed-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px 6px;
+  border-radius: 12px;
+  background: var(--ogh-bg-elevated);
+  border: 1px solid rgba(92, 225, 255, 0.16);
+}
+.dg-feed {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 4px;
+}
+.dg-msg {
+  font-size: 13px;
+  line-height: 1.35;
+  word-break: break-word;
+}
+.dg-msg-who { color: var(--ogh-fg-dim); font-weight: 700; margin-inline-end: 6px; }
+.dg-msg.mine .dg-msg-who { color: var(--ogh-accent); }
+.dg-sys { color: var(--ogh-fg-dim); font-style: italic; font-size: 12px; }
+.dg-sys.dg-correct { color: var(--ogh-good); font-style: normal; font-weight: 700; }
+
+.dg-guess {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 6px;
+}
+.dg-guess.is-off { opacity: 0.5; }
+.dg-guess-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 15px;
+}
+.dg-guess-input:disabled { cursor: not-allowed; }
+.dg-guess-btn { flex: 0 0 auto; padding: 0 16px; font-size: 14px; }
+
+/* ------------------------------------------------------------------ */
+/* Overlays: start / choose / reveal                                   */
+/* ------------------------------------------------------------------ */
+.dg-mode-pick { display: flex; gap: 8px; margin: 4px 0 6px; }
+.dg-mode-btn {
+  flex: 1 1 0;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.dg-mode-btn.is-on {
+  border-color: var(--ogh-accent);
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.22), rgba(255, 107, 203, 0.12));
+}
+.dg-mode-desc { margin: 0 0 14px; font-size: 12.5px; color: var(--ogh-fg-dim); min-height: 1.2em; }
+.dg-start-note { margin: 12px 0 0; font-size: 12.5px; color: var(--ogh-warn); min-height: 1.1em; }
+
+.dg-word-big {
+  margin: 6px 0 14px !important;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--ogh-accent) !important;
+  letter-spacing: 0.02em;
+}
+.dg-new-word { width: auto !important; margin: 0 auto 6px; display: inline-flex; }
+.dg-choose-label { margin: 0 0 12px !important; font-size: 13px; color: var(--ogh-fg-dim) !important; }
+.dg-secret-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 18px;
+  text-align: center;
+}
+.dg-reveal-word { margin: 0 0 8px !important; font-size: 1.05rem; color: var(--ogh-fg-dim) !important; }
+.dg-reveal-word strong { color: var(--ogh-accent); font-size: 1.5rem; }
+.dg-reveal-line { margin: 0 0 12px !important; font-weight: 700; color: var(--ogh-fg) !important; }
+.dg-next-in { margin: 0 !important; font-size: 12.5px; color: var(--ogh-fg-dim) !important; }
+
+/* ------------------------------------------------------------------ */
+/* Narrow / portrait: stack canvas over the side panel                 */
+/* ------------------------------------------------------------------ */
+@media (max-width: 760px) {
+  .dg-main { flex-direction: column; gap: 8px; padding: 8px; }
+  .dg-stage-wrap { flex: 1 1 55%; }
+  .dg-side { flex: 1 1 45%; flex-direction: column; }
+  .dg-scores { max-height: 30%; }
+  .dg-net { max-width: 40vw; }
+}
+
+@media (max-width: 420px) {
+  .dg-hud .ogh-pill { font-size: 11px; padding: 5px 8px; max-width: 52vw; }
+  .dg-color { width: 22px; height: 22px; }
+}

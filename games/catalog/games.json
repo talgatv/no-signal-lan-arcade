@@ -2072,6 +2072,88 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Top-down 8-ball pool on a 6-pocket rectangular table. physics.js is a pure, DOM-free, fixed-substepped simulation: constant-deceleration rolling friction, axis-flip cushion bounces with restitution < 1, and textbook equal-mass elastic ball-ball collisions (normal velocity components exactly swapped, restitution = 1.0, tangential components untouched — momentum AND energy conserved along the collision normal). Pocketing requires proximity plus a low-enough speed (or a near-dead-center hit), and a scratch always respots the cue ball rather than removing it. rules.js layers standard 8-ball turn structure on top: open table until the first legal pocket assigns solids/stripes, fouls pass the turn and grant ball-in-hand, potting your own group keeps your turn, and the 8-ball wins or instantly loses the game depending on whether your group was already clear. Solo Practice mode skips all turn/foul logic. Local pass-and-play only — no real-time LAN physics sync attempted. No bundled image or audio assets: the whole table is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js (extended with 'clack'/'pocket' patterns)."
+    },
+    {
+      "id": "doodle-guess",
+      "name": "Doodle Guess",
+      "names": {
+        "en": "Doodle Guess",
+        "ru": "Рисуй и угадывай",
+        "zh": "你画我猜",
+        "es": "Dibuja y Adivina",
+        "ar": "ارسم وخمّن",
+        "fr": "Dessine et Devine"
+      },
+      "tagline": "LAN draw-and-guess party game — one draws a live canvas, everyone else races to type the word.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "freehand"
+      ],
+      "genres": [
+        "party",
+        "drawing",
+        "multiplayer"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "ok",
+        "mouse": "ok",
+        "notes": {
+          "en": "The drawer draws with touch or mouse (palette, brush size, eraser, clear). Everyone else types guesses into the text box, so a keyboard (on-screen or physical) is needed to guess.",
+          "ru": "Художник рисует пальцем или мышью (палитра, толщина кисти, ластик, очистка). Остальные печатают догадки в поле ввода — для угадывания нужна клавиатура (экранная или обычная)."
+        }
+      },
+      "tags": [
+        "multiplayer",
+        "experimental",
+        "party",
+        "drawing",
+        "lan",
+        "family-friendly"
+      ],
+      "instructions": {
+        "en": "A LAN draw-and-guess party game (like Pictionary/Skribbl) for 2-8 players on the same Wi-Fi. On your turn you draw on a live canvas that everyone else watches reconstruct stroke-by-stroke in real time; the others race to type the word into a shared guess feed, and the first correct guess ends the round and scores. Two modes share the same engine: Word Bank deals you a random word from a bank of 112 concretely-drawable concepts (translated into all 6 UN languages, so a correct guess counts in any of them), while Your Word lets you secretly type your own word to draw. Either way, only you ever see the word until the round-end reveal. The faster someone guesses the more they score, and the drawer earns a bonus whenever their doodle gets guessed. An 8-colour palette, 3 brush sizes, an eraser and a Clear button that clears everyone's canvas in sync; a running scoreboard is kept across the whole session. Needs at least 2 players (a drawer and a guesser) - open it on another device or browser tab in the same room.",
+        "ru": "Party-игра «рисуй и угадывай» по локальной сети (как Pictionary/Skribbl) для 2-8 игроков в одной сети Wi-Fi. В свой ход ты рисуешь на живом холсте, а остальные в реальном времени видят, как штрих за штрихом появляется рисунок; они наперегонки печатают слово в общей ленте догадок, и первый верный ответ завершает раунд и приносит очки. Два режима на одном движке: «Банк слов» выдаёт случайное слово из банка на 112 понятных для рисования понятий (переведён на все 6 языков ООН, поэтому верный ответ засчитывается на любом из них), а «Своё слово» позволяет тайно вписать собственное слово. В любом случае слово видишь только ты — до раскрытия в конце раунда. Чем быстрее кто-то угадывает, тем больше очков, а художник получает бонус, когда его рисунок угадывают. Палитра из 8 цветов, 3 толщины кисти, ластик и кнопка «Очистить», синхронно очищающая холст у всех; общий счёт ведётся всю сессию. Нужно минимум 2 игрока (художник и угадывающий) — открой игру на другом устройстве или во вкладке в той же комнате.",
+        "zh": "局域网「你画我猜」派对游戏（类似 Pictionary/Skribbl），供同一 Wi-Fi 下的 2-8 名玩家游玩。轮到你时，你在实时画布上作画，其他人会同步看到画面一笔一笔地重现；大家争相在共享的猜测栏里打出词语，第一个猜对的人结束本回合并得分。两种模式共用同一套引擎：「词库」从 112 个易于描绘的概念词库中随机发一个词（已翻译成全部 6 种联合国语言，用任意一种猜对都算数），而「自定词语」让你秘密输入自己要画的词。无论哪种，词语只有你能看到，直到回合结束才揭晓。猜得越快得分越高，画者的画被猜中时也能获得奖励。8 色调色板、3 种笔刷粗细、橡皮擦，以及会同步清空所有人画布的「清空」按钮；整局游戏都会保留累计计分板。至少需要 2 名玩家（一名画者和一名猜者）——在同一房间的另一台设备或浏览器标签页打开即可。",
+        "es": "Un juego de fiesta de dibujar y adivinar por red local (tipo Pictionary/Skribbl) para 2-8 jugadores en la misma red Wi-Fi. En tu turno dibujas en un lienzo en vivo que los demás ven reconstruirse trazo a trazo en tiempo real; ellos compiten por escribir la palabra en un chat de respuestas compartido, y el primer acierto termina la ronda y puntúa. Dos modos comparten el mismo motor: Banco de palabras te reparte una palabra al azar de un banco de 112 conceptos fáciles de dibujar (traducidos a los 6 idiomas de la ONU, así que un acierto vale en cualquiera de ellos), y Tu palabra te deja escribir en secreto tu propia palabra. En ambos casos, solo tú ves la palabra hasta que se revela al final de la ronda. Cuanto más rápido se adivina, más se puntúa, y quien dibuja gana un bonus cuando adivinan su dibujo. Paleta de 8 colores, 3 grosores de pincel, goma y un botón Borrar que limpia el lienzo de todos a la vez; se mantiene un marcador acumulado durante toda la sesión. Necesita al menos 2 jugadores (quien dibuja y quien adivina): ábrelo en otro dispositivo o pestaña en la misma sala.",
+        "ar": "لعبة جماعية للرسم والتخمين عبر الشبكة المحلية (مثل Pictionary/Skribbl) لعدد 2-8 لاعبين على شبكة Wi-Fi نفسها. في دورك ترسم على لوحة حية يشاهدها الجميع وهي تُعاد خطوة بخطوة في الوقت الحقيقي؛ ويتسابق الآخرون لكتابة الكلمة في ساحة تخمين مشتركة، وأول تخمين صحيح ينهي الجولة ويسجّل النقاط. يشترك الوضعان في المحرك نفسه: «بنك الكلمات» يوزّع كلمة عشوائية من بنك يضم 112 مفهومًا سهل الرسم (مترجمة إلى لغات الأمم المتحدة الست، فالتخمين الصحيح يُحتسب بأيٍّ منها)، بينما «كلمتك» يتيح لك كتابة كلمتك الخاصة سرًّا. في الحالتين، تراها أنت وحدك حتى الكشف عند نهاية الجولة. كلما خمّن أحدهم أسرع زادت نقاطه، ويحصل الراسم على مكافأة عندما تُخمَّن رسمته. لوحة ألوان من 8 ألوان، و3 أحجام للفرشاة، وممحاة، وزر «مسح» يمسح لوحة الجميع دفعة واحدة؛ وتُحفظ لوحة نتائج تراكمية طوال الجلسة. تحتاج إلى لاعبين اثنين على الأقل (راسم ومخمِّن) — افتحها على جهاز أو تبويب آخر في الغرفة نفسها.",
+        "fr": "Un jeu festif de dessin et devinettes en réseau local (façon Pictionary/Skribbl) pour 2 à 8 joueurs sur le même Wi-Fi. À ton tour, tu dessines sur une toile en direct que les autres voient se reconstruire trait par trait en temps réel ; ils se dépêchent de taper le mot dans un fil de réponses partagé, et la première bonne réponse termine la manche et marque. Deux modes partagent le même moteur : Banque de mots te distribue un mot au hasard parmi 112 concepts faciles à dessiner (traduits dans les 6 langues de l'ONU, si bien qu'une bonne réponse compte dans n'importe laquelle), tandis que Ton mot te laisse taper en secret ton propre mot. Dans les deux cas, toi seul vois le mot jusqu'à sa révélation en fin de manche. Plus on devine vite, plus on marque, et le dessinateur gagne un bonus dès que son dessin est deviné. Palette de 8 couleurs, 3 tailles de pinceau, une gomme et un bouton Effacer qui vide la toile de tout le monde d'un coup ; un score cumulé est conservé sur toute la session. Il faut au moins 2 joueurs (un dessinateur et un devineur) — ouvre-le sur un autre appareil ou onglet dans le même salon."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 2,
+        "max": 8,
+        "solo": false
+      },
+      "entry": "doodle-guess/client/index.html",
+      "manifest": "doodle-guess/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 200,
+      "sizeMeasuredKb": 87.6,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "LAN draw-and-guess built on the shared OGHNet room relay (same pattern as programs/lan-chat and games/piece-caller). No central authority beyond 'the current drawer owns the round': turn order is derived deterministically from the roster (players sorted by id) so every client agrees on the drawer; the host only starts the session and names the first drawer. The drawer captures Pointer Events into small stroke-segment batches ({c,s,pts,newStroke}, flushed ~every 45ms or 20 points) broadcast via net.send('stroke', ...); every other client replays them onto a read-only canvas with pixel-identical primitives (round-capped segments between integer backing-space points), so remote canvases reconstruct the drawing live without ever sending a whole-canvas image. WORD SECRECY is a real correctness property: the secret word lives only in the drawer's client; the only word-shaped value on the wire before the reveal is its character length (for the underscore hint), and the concept index is never broadcast in Word Bank mode - the plaintext word appears once, inside the round-end reveal. The drawer (the only client that knows the word) validates guesses locally: case-insensitive with light Levenshtein typo tolerance, and in Word Bank mode accepts the same concept in any of the 6 languages (words.json is concept-indexed) so mixed-language rooms work. Round ends on the first correct guess or a 75s timeout (drawer is the timer authority; each client computes the deadline from local receipt time to sidestep clock skew). Scoring: correct guesser gets 50 + up to 50 scaled by time remaining, drawer gets +25 when someone guesses; identical round-end deltas are applied on every client so scoreboards stay in sync. Word bank: client/data/words.json, 112 family-friendly concretely-drawable concepts translated across all 6 UN languages, concept-indexed. No bundled image/audio assets: Canvas 2D freehand surface (8-colour palette, 3 brush sizes, eraser, synced clear) and sound reuses games/_shared/js/ogh-sfx.js. RTL (Arabic) mirrors header/side-panel/overlay chrome only; the drawing canvas is never mirrored (dir=\"ltr\", ctx.direction='ltr'). Experimental: no mid-round late-join canvas replay (a player joining mid-round sees the drawing from that point on), and turn sequencing assumes the current drawer stays connected through their round.",
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "Current drawer owns the round: holds the secret word (never broadcast in cleartext until reveal), streams stroke-segment messages every other client replays live, validates guesses locally, and ends the round with one round-end message carrying reveal + score deltas + next drawer. Host only starts the session; turn order derived from the roster. Needs 2+ players, no solo mode."
+      }
     }
   ]
 }
