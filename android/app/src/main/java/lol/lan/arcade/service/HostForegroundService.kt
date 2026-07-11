@@ -14,10 +14,8 @@ import lol.lan.arcade.MainActivity
 import lol.lan.arcade.R
 import lol.lan.arcade.net.NetworkUtils
 import lol.lan.arcade.server.ContentRoots
-import lol.lan.arcade.server.OghServer
+import lol.lan.arcade.server.NettyOghServer
 import lol.lan.arcade.server.RunningHostServer
-import lol.lan.arcade.server.tls.HttpsOghServer
-import lol.lan.arcade.server.tls.TlsCertProvider
 import java.io.IOException
 
 class HostForegroundService : Service() {
@@ -48,12 +46,12 @@ class HostForegroundService : Service() {
                     }
                 },
             )
-            server = if (useHttps) {
-                val sslContext = TlsCertProvider.sslContext(NetworkUtils.localIpv4Addresses())
-                HttpsOghServer(port = port, contentRoots = contentRoots, sslContext = sslContext)
-            } else {
-                OghServer(port = port, contentRoots = contentRoots)
-            }
+            server = NettyOghServer(
+                port = port,
+                contentRoots = contentRoots,
+                useHttps = useHttps,
+                ipAddresses = NetworkUtils.localIpv4Addresses(),
+            )
             server?.start()
         }
         acquireWakeLock()

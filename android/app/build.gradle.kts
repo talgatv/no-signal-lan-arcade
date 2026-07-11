@@ -32,6 +32,16 @@ android {
     }
     kotlinOptions { jvmTarget = "17" }
     buildFeatures { compose = true }
+
+    // Netty ships its own META-INF/INDEX.LIST (a JVM jar-indexing hint, unused by
+    // Android's own class loading) in multiple sub-artifacts; Android's resource
+    // merger refuses to silently pick one, so it must be dropped explicitly.
+    packaging {
+        resources {
+            excludes += "META-INF/INDEX.LIST"
+            excludes += "META-INF/io.netty.versions.properties"
+        }
+    }
 }
 
 val repoRoot = rootDir.parentFile!!
@@ -55,6 +65,24 @@ val syncWebAssets by tasks.registering(Sync::class) {
 
 tasks.named("preBuild") { dependsOn(syncWebAssets) }
 
+// jansi is ktor-server-netty's *optional* dependency for ANSI console colors on a JVM
+// server's terminal output — no terminal on Android, and Netty's own code guards its
+// absence, so it's dead weight only. A per-dependency exclude{} block on the
+// version-catalog accessor silently failed to apply here, so excluding at the
+// configuration level instead, which reliably does.
+//
+// Deliberately NOT excluding netty-transport-native-{epoll,kqueue} here even though
+// their actual native .so/.jnilib binaries can never load on Android: Ktor's own
+// NettyApplicationEngine.getChannelClass() references io.netty.channel.kqueue.KQueue
+// unconditionally (not behind a try/catch) as part of choosing an event-loop group on
+// *every* engine stop, not just on unsupported platforms — a real NoClassDefFoundError
+// reproduced in NettyOghServerTest when this was excluded, which would have crashed
+// HostForegroundService.onDestroy() on-device. Keeping these costs some APK size (see
+// the size note in NettyOghServer.kt) in exchange for a server that actually stops.
+configurations.all {
+    exclude(group = "org.fusesource.jansi", module = "jansi")
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.activity.compose)
@@ -76,6 +104,7 @@ dependencies {
 
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.cio)
+    implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.websockets)
     implementation(libs.ktor.network.tls.certificates)
 

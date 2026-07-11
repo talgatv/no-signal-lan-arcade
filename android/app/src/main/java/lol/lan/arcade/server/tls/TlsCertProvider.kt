@@ -11,7 +11,7 @@ import javax.net.ssl.KeyManagerFactory
 import javax.net.ssl.SSLContext
 
 internal const val TLS_CERT_ALIAS = "ogh-host"
-private const val PASSWORD = "ogh-local"
+internal const val TLS_CERT_PASSWORD = "ogh-local"
 
 /**
  * Generates a fresh self-signed TLS certificate covering the given LAN IPs, matching how
@@ -29,7 +29,7 @@ object TlsCertProvider {
     fun sslContext(ipAddresses: List<String>): SSLContext {
         val keyStore = buildServerKeyStore(ipAddresses)
         val kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
-        kmf.init(keyStore, PASSWORD.toCharArray())
+        kmf.init(keyStore, TLS_CERT_PASSWORD.toCharArray())
         val ctx = SSLContext.getInstance("TLS")
         ctx.init(kmf.keyManagers, null, null)
         return ctx
@@ -41,7 +41,7 @@ object TlsCertProvider {
         val addresses = resolveAddresses(ipAddresses)
         return buildKeyStore {
             certificate(TLS_CERT_ALIAS) {
-                password = PASSWORD
+                password = TLS_CERT_PASSWORD
                 hash = HashAlgorithm.SHA256
                 sign = SignatureAlgorithm.RSA
                 keySizeInBits = 2048
