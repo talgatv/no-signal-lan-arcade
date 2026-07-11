@@ -35,6 +35,7 @@ export function createOghSfx() {
     win: () => { tone(523, 0.1); setTimeout(() => tone(659, 0.1), 90); setTimeout(() => tone(784, 0.16), 180); },
     die: () => tone(220, 0.28, 'sawtooth', 0.04, 60),
     tick: () => tone(880, 0.02, 'square', 0.02),
+    screech: () => tone(920, 0.22, 'sawtooth', 0.035, 480),
   };
 
   return {

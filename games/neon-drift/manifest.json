@@ -1,0 +1,38 @@
+{
+  "id": "neon-drift",
+  "name": "Neon Drift",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 4,
+  "supportsSolo": true,
+  "genres": ["racing", "arcade", "action"],
+  "tags": ["top-down", "touch", "ai", "multiplayer-ready", "drift", "circuit", "arcade"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "On-screen gas/steer/brake or W/A/S/D and arrow keys.",
+      "ru": "Педали и руль на экране или W/A/S/D и стрелки."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": [
+    "css/ogh-base.css",
+    "css/ogh-fonts.css",
+    "js/ogh-sfx.js",
+    "js/ogh-shader-bg.js",
+    "js/ogh-net.js"
+  ],
+  "multiplayer": {
+    "status": "ready-offline",
+    "protocol": "ogh-net-v1",
+    "notes": "Offline: 1P + AI. Online when host WS is available."
+  },
+  "notes": "Real circuit built from a closed centripetal Catmull-Rom spline (straights, a sweeping right-hander, a hairpin, a chicane, a long left-hander) instead of pulse-race's plain ellipse. Chase camera + minimap, circle-based car-car collision, a velocity-vs-facing-angle drift model with tire smoke/skid marks/speed boost on exit, and apex-biased rubber-banded AI. See README.md for the full breakdown."
+}

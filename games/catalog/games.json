@@ -1249,6 +1249,110 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Single RAF loop drives every bug's idle/up/popped/escaped lifecycle (no per-bug setTimeout), so 'Play again' always resets cleanly. Bugs are inline SVG shapes (round/friendly vs spiky/hostile silhouette) with a CSS neon-glow filter — no bundled image or audio assets. High score persists via OGHProfile (games/_shared/js/ogh-profile.js), same convention as games/demo-tap and games/piece-caller."
+    },
+    {
+      "id": "neon-drift",
+      "name": "Neon Drift",
+      "names": {
+        "en": "Neon Drift",
+        "ru": "Неоновый Дрифт",
+        "zh": "霓虹漂移",
+        "es": "Drift de Neón",
+        "ar": "درفت نيون",
+        "fr": "Drift Néon"
+      },
+      "tagline": "Real circuit, drifting, and contact racing — not another oval.",
+      "style": "neon-vector",
+      "styles": [
+        "neon",
+        "top-down",
+        "shader-bg"
+      ],
+      "genres": [
+        "racing",
+        "arcade",
+        "action"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "keyboard",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "On-screen gas/steer/brake or WASD / arrow keys. Hard steer at speed to drift.",
+          "ru": "Педали и руль на экране или WASD / стрелки. Резкий поворот на скорости — дрифт.",
+          "zh": "屏幕油门/转向/刹车按钮，或 WASD / 方向键。高速急打方向即可漂移。",
+          "es": "Gas/dirección/freno en pantalla o WASD / flechas. Gira fuerte a velocidad para derrapar.",
+          "ar": "أزرار الوقود/التوجيه/الكبح على الشاشة أو WASD / الأسهم. لف حاد بسرعة يعني درفت.",
+          "fr": "Gaz/direction/frein à l'écran ou WASD / flèches. Braquez fort à vitesse pour dériver."
+        }
+      },
+      "parameters": {
+        "aiCount": {
+          "type": "enum",
+          "options": [
+            "1",
+            "2",
+            "3"
+          ],
+          "default": "2"
+        },
+        "laps": {
+          "type": "enum",
+          "options": [
+            "2",
+            "3",
+            "5"
+          ],
+          "default": "3"
+        }
+      },
+      "tags": [
+        "racing",
+        "drift",
+        "circuit",
+        "arcade",
+        "ai",
+        "collision",
+        "multiplayer-ready",
+        "experimental"
+      ],
+      "instructions": {
+        "en": "Hold gas, steer through a real circuit — sweeping right-hander, hairpin, chicane, long left-hander. Drift corners (hard steer at speed) for a speed boost and leave skid marks; bump rivals off their line. Offline vs AI now, uses OGHNet for future LAN.",
+        "ru": "Держи газ и проходи настоящую трассу — свипер, шпилька, шикана, длинный левый поворот. Дрифти в поворотах (резкий руль на скорости) ради ускорения и следов на асфальте; толкай соперников с траектории. Сейчас offline против AI, OGHNet — для будущего LAN.",
+        "zh": "踩住油门，穿越真正的赛道——大扫弯、发夹弯、连续弯、长左弯。高速急打方向漂移过弯可获得加速并留下胎痕；冲撞对手让他们偏离路线。现在离线对战AI，OGHNet预留未来局域网联机。",
+        "es": "Mantén el gas y recorre un circuito de verdad — curva rápida, horquilla, chicane, curva larga a la izquierda. Derrapa en las curvas (gira fuerte a velocidad) para ganar impulso y dejar marcas de neumático; golpea a tus rivales fuera de su línea. Ahora offline contra la IA, listo para LAN futuro vía OGHNet.",
+        "ar": "أمسك دواسة الوقود واعبر حلبة حقيقية — منعطف سريع، منعطف حاد، شيكين، منعطف يساري طويل. ادرِفت في المنحنيات (لف حاد بسرعة) لتكسب دفعة سرعة وتترك آثار إطارات؛ ادفع منافسيك خارج مسارهم. الآن أوفلاين ضد الذكاء الاصطناعي، وجاهزة مستقبلاً للشبكة المحلية عبر OGHNet.",
+        "fr": "Maintenez le gaz et parcourez un vrai circuit — virage rapide, épingle, chicane, long virage à gauche. Dérivez dans les virages (braquez fort à vitesse) pour gagner un boost et laisser des traces de pneus ; poussez vos rivaux hors de leur trajectoire. Hors ligne contre l'IA pour l'instant, prêt pour un futur LAN via OGHNet."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 4,
+        "solo": true
+      },
+      "entry": "neon-drift/client/index.html",
+      "manifest": "neon-drift/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 120,
+      "sizeMeasuredKb": 67.9,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Closed centripetal Catmull-Rom spline circuit (client/track.js) sampled into a 400-point arc-length lookup table, chase camera + minimap, circle-based car-car collision, and a velocity-vs-facing-angle drift model (tire smoke, skid marks, screech sfx, speed boost on exit) shared by the player and AI alike. AI steers an apex-biased line with corner braking and mild field-average rubber-banding rather than following the raw centerline. Requires host /ws for real multiplayer; offline AI works without server logic."
     }
   ]
 }

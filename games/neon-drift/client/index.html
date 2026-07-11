@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#05060c" />
+  <title>Neon Drift — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="nd-body ogh-font-ui">
+  <canvas class="ogh-shader-canvas" id="bg"></canvas>
+  <div class="nd-wrap">
+    <header class="nd-hud">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="nd-pills">
+        <div class="nd-pill" id="hudLap">LAP <strong>1</strong>/3</div>
+        <div class="nd-pill" id="hudPos">P<strong>1</strong></div>
+        <div class="nd-pill" id="hudSpeed"><strong>0</strong></div>
+        <div class="nd-pill mono" id="hudNet">OFFLINE</div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- The game canvas is a fixed-scale chase-camera view of the world;
+         it must never mirror under RTL (spatial gameplay, not text). game.js
+         also explicitly sets ctx.direction='ltr' after getting the 2D
+         context, because Canvas2D's text-rendering `direction` defaults to
+         "inherit" from the element's CSS direction — without the explicit
+         override, an RTL page could silently flip textAlign/fillText
+         positioning for anything drawn on canvas (HUD/minimap labels,
+         countdown), same risk category as the music-synth piano bug. -->
+    <canvas id="game" width="380" height="680" dir="ltr"></canvas>
+
+    <div class="nd-controls" id="controls" dir="ltr">
+      <button type="button" class="nd-btn" id="btnLeft" aria-label="Steer left">◀</button>
+      <div class="nd-mid">
+        <button type="button" class="nd-btn gas" id="btnGas" data-i18n="gasLabel">GAS</button>
+        <button type="button" class="nd-btn brake" id="btnBrake" data-i18n="brakeLabel">BRK</button>
+      </div>
+      <button type="button" class="nd-btn" id="btnRight" aria-label="Steer right">▶</button>
+    </div>
+  </div>
+
+  <div class="nd-overlay" id="overlay">
+    <div class="nd-card" id="startCard">
+      <h1 data-i18n="title">Neon Drift</h1>
+      <p data-i18n="blurb">A real circuit — hairpin, chicane, sweepers. Drift corners for a speed boost, bump rivals off your line.</p>
+      <label class="nd-row"><span data-i18n="aiLabel">AI rivals</span>
+        <select id="aiCount">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+        </select>
+      </label>
+      <label class="nd-row"><span data-i18n="lapsLabel">Laps</span>
+        <select id="lapCount">
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="5">5</option>
+        </select>
+      </label>
+      <p class="nd-net" id="netBlurb" data-i18n="netChecking">Network: checking…</p>
+      <button type="button" class="nd-start" id="btnStart" data-i18n="startBtn">Race</button>
+    </div>
+
+    <div class="nd-card" id="finishCard" hidden>
+      <h1 data-i18n="finishTitle">Race over</h1>
+      <p class="nd-final-line" id="finishLine"></p>
+      <p class="nd-standings-label" data-i18n="standingsLabel">Standings</p>
+      <ol class="nd-standings" id="standingsList"></ol>
+      <p class="nd-net" id="finishNetBlurb"></p>
+      <button type="button" class="nd-start" id="btnAgain" data-i18n="againBtn">Race again</button>
+    </div>
+  </div>
+
+  <script type="module" src="game.js"></script>
+</body>
+</html>

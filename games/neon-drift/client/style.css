@@ -1,0 +1,306 @@
+/* Neon Drift — canvas-game-shell layout, mirrors games/pulse-race/client/
+   style.css's structure (fixed viewport, HUD overlay, touch buttons) plus
+   the lang-switch/back-link pattern from games/pop-the-bugs/client/
+   style.css. ogh-base.css's `overflow: hidden; touch-action: none;` on
+   html/body is exactly what this needs already — not overridden here. */
+
+.nd-body {
+  background: #05060c;
+  overflow: hidden;
+  touch-action: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.nd-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#game {
+  width: min(100vw, 460px);
+  height: min(78vh, 760px);
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(92, 225, 255, 0.2), 0 12px 40px rgba(0, 0, 0, 0.45);
+  image-rendering: auto;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills + language switch.                    */
+/* ------------------------------------------------------------------ */
+.nd-hud {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.nd-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+  pointer-events: none;
+}
+
+.nd-pill {
+  background: rgba(8, 10, 22, 0.8);
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  border-radius: 999px;
+  padding: 6px 11px;
+  color: #e8ecff;
+  font-size: 12.5px;
+  font-weight: 600;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.nd-pill.mono {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 10.5px;
+  color: #8b93b8;
+}
+
+.nd-pill strong { color: #5ce1ff; }
+#hudPos strong { color: #ffd166; }
+#hudSpeed strong { color: #5cffb0; }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+  pointer-events: auto;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Touch controls — deliberately forced LTR regardless of document dir: */
+/* left/right steer buttons are a spatial control mapping (left button  */
+/* steers left), not text, and must never swap sides under RTL. Same    */
+/* risk category as games/music-synth's `.pk-piano { direction: ltr }`. */
+/* ------------------------------------------------------------------ */
+.nd-controls {
+  position: fixed;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  left: 0;
+  right: 0;
+  z-index: 4;
+  display: flex;
+  direction: ltr;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 0 12px;
+}
+
+.nd-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  border: 2px solid rgba(92, 225, 255, 0.35);
+  background: rgba(12, 16, 32, 0.85);
+  color: #e8ecff;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+}
+
+.nd-mid { display: flex; flex-direction: column; gap: 8px; }
+
+.nd-btn.gas {
+  width: 100px;
+  height: 64px;
+  border-color: rgba(92, 255, 176, 0.5);
+  color: #5cffb0;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+}
+
+.nd-btn.brake {
+  width: 100px;
+  height: 48px;
+  border-color: rgba(255, 92, 122, 0.45);
+  color: #ff5c7a;
+  font-size: 12px;
+}
+
+.nd-btn:active, .nd-btn.is-down {
+  transform: scale(0.96);
+  background: rgba(92, 225, 255, 0.15);
+}
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards (start / finish)                                      */
+/* ------------------------------------------------------------------ */
+.nd-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(4, 6, 14, 0.78);
+  backdrop-filter: blur(6px);
+  overflow-y: auto;
+}
+
+.nd-overlay[hidden] { display: none !important; }
+
+.nd-card {
+  width: min(380px, 100%);
+  background: #0e1020;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  border-radius: 18px;
+  padding: 24px 20px;
+  text-align: center;
+  color: #e8ecff;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  margin: auto;
+}
+
+.nd-card[hidden] { display: none !important; }
+
+.nd-card h1 {
+  margin: 0 0 8px;
+  font-family: "Montserrat", "Roboto", sans-serif;
+  letter-spacing: 0.1em;
+  font-size: 1.5rem;
+  background: linear-gradient(120deg, #5ce1ff, #ff6bcb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nd-card p {
+  margin: 0 0 14px;
+  color: #8b93b8;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.nd-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 14px;
+  color: #c8d0f0;
+}
+
+.nd-row select {
+  background: #161a30;
+  color: #e8ecff;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: inherit;
+}
+
+.nd-net {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px !important;
+  color: #5ce1ff !important;
+}
+
+.nd-start {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 12px;
+  border: 1px solid rgba(92, 225, 255, 0.5);
+  border-radius: 12px;
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.2), rgba(255, 107, 203, 0.12));
+  color: #e8ecff;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.nd-final-line {
+  font-size: 1.15rem !important;
+  font-weight: 800;
+  color: #e8ecff !important;
+  font-family: var(--ogh-mono);
+}
+
+.nd-standings-label {
+  margin: 0 0 4px !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5ce1ff !important;
+}
+
+.nd-standings {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  font-family: var(--ogh-mono);
+  font-size: 13px;
+  text-align: left;
+  direction: ltr; /* finishing order is data, not prose — keep row layout stable */
+}
+
+.nd-standings li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+.nd-standings li.is-player {
+  background: rgba(92, 225, 255, 0.12);
+  color: #5ce1ff;
+}
+
+@media (max-width: 380px) {
+  .back { font-size: 12px; }
+  .nd-pill { font-size: 11px; padding: 5px 9px; }
+}
