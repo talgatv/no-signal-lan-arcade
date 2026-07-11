@@ -1,0 +1,356 @@
+/* Music Synth — neon theme on top of ogh-base.css.
+   Fixed-viewport, non-scrolling layout: html/body keep ogh-base's default
+   overflow:hidden / touch-action:none (correct for a piano — we don't want
+   drag gestures on the keys to scroll or pinch-zoom the page), so none of
+   the html/body overflow overrides used by scrolling pages are needed here.
+   Everything is sized to fit inside .ogh-root via flex rows + one flexible
+   stage, see ADD_A_GAME docs / games/comet for the same pattern. */
+
+body.ms-body {
+  background:
+    radial-gradient(1100px 560px at 85% -10%, rgba(92, 225, 255, 0.10), transparent 60%),
+    radial-gradient(900px 480px at 0% 0%, rgba(255, 107, 203, 0.08), transparent 55%),
+    var(--ogh-bg);
+}
+
+.ogh-root { display: flex; flex-direction: column; }
+
+/* ---------------------------------------------------------------------- */
+/* Header                                                                  */
+/* ---------------------------------------------------------------------- */
+.ms-top {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+.ms-top .back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.ms-top .titles { flex: 1; min-width: 140px; }
+.ms-top h1 {
+  margin: 0;
+  font-size: 1rem;
+  font-family: var(--ogh-display);
+  letter-spacing: 0.03em;
+  background: linear-gradient(120deg, var(--ogh-accent), var(--ogh-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ms-top .sub {
+  margin: 1px 0 0;
+  font-size: 10.5px;
+  font-family: var(--ogh-mono);
+  color: var(--ogh-fg-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lang-switch { display: flex; gap: 4px; flex-wrap: wrap; }
+.lang-btn {
+  min-height: 26px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Instrument selector                                                    */
+/* ---------------------------------------------------------------------- */
+.ms-instruments {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 12px 0;
+}
+.ms-inst-btn {
+  flex: 1 1 88px;
+  min-height: 38px;
+  padding: 0 10px;
+  border-radius: 11px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: rgba(14, 16, 32, 0.55);
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ms-inst-btn.is-on {
+  color: var(--ogh-bg);
+  background: linear-gradient(120deg, var(--ogh-accent), var(--ogh-accent-2));
+  border-color: transparent;
+  box-shadow: 0 0 14px rgba(92, 225, 255, 0.25);
+}
+.ms-inst-btn:active { transform: scale(0.97); }
+
+/* ---------------------------------------------------------------------- */
+/* Octave / volume / reverb controls                                      */
+/* ---------------------------------------------------------------------- */
+.ms-controls {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+}
+.ms-oct-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(14, 16, 32, 0.55);
+  border: 1px solid rgba(92, 225, 255, 0.2);
+  border-radius: 11px;
+  padding: 4px 6px;
+}
+.ms-ctrl-btn {
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: rgba(92, 225, 255, 0.1);
+  color: var(--ogh-fg);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+.ms-ctrl-btn:active { transform: scale(0.94); }
+.ms-oct-readout {
+  min-width: 34px;
+  text-align: center;
+  font-family: var(--ogh-mono);
+  font-size: 13px;
+  color: var(--ogh-accent);
+}
+
+.ms-slider {
+  flex: 1 1 130px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--ogh-fg-dim);
+  letter-spacing: 0.02em;
+}
+.ms-slider span {
+  flex: 0 0 auto;
+  min-width: 44px;
+  text-transform: uppercase;
+}
+.ms-slider input[type='range'] { flex: 1; min-width: 0; }
+
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  outline: none;
+  cursor: pointer;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ogh-fg);
+  border: 2px solid var(--ogh-accent);
+  cursor: pointer;
+  margin-top: -1px;
+}
+input[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ogh-fg);
+  border: 2px solid var(--ogh-accent);
+  cursor: pointer;
+}
+input[type='range']::-moz-range-track {
+  height: 5px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Stage / piano                                                          */
+/* ---------------------------------------------------------------------- */
+.ms-stage {
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 4px 8px 2px;
+  min-height: 120px;
+}
+
+.pk-piano {
+  /* Force LTR regardless of document dir: pitch order (low->high, left->right)
+     is a fixed musical convention and must never mirror for RTL languages
+     (matches the dir="ltr" on this element in index.html). Without this,
+     `direction: rtl` inherited from <html dir="rtl"> would reverse the
+     .pk-whites flex row AND flip the meaning of the black keys' `left`
+     offsets, silently mirroring the whole keyboard. */
+  direction: ltr;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #05060c;
+  box-shadow:
+    0 0 0 1px rgba(92, 225, 255, 0.14),
+    0 12px 34px rgba(0, 0, 0, 0.45);
+  touch-action: none;
+  user-select: none;
+}
+
+.pk-whites {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+
+.pk-key {
+  position: relative;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.06s ease, background 0.09s ease;
+}
+
+.pk-white {
+  flex: 1 1 0;
+  min-width: 0;
+  background: linear-gradient(180deg, #f4f5fb 0%, #dfe0ea 100%);
+  border-left: 1px solid rgba(0, 0, 0, 0.28);
+  border-bottom: 3px solid rgba(0, 0, 0, 0.32);
+  border-radius: 0 0 6px 6px;
+  box-shadow: inset 0 -10px 14px -6px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 6px;
+  z-index: 1;
+}
+.pk-white:first-child { border-left: none; }
+.pk-white.is-down {
+  background: linear-gradient(180deg, #bfe6ff 0%, #7fc3fb 100%);
+  transform: translateY(2px);
+}
+
+.pk-blacks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  pointer-events: none;
+}
+.pk-black {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(180deg, #2a2a38 0%, #0a0a11 100%);
+  border: 1px solid #000;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.55);
+  pointer-events: auto;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 5px;
+}
+.pk-black.is-down {
+  background: linear-gradient(180deg, #3f7fc4 0%, #1c3f6b 100%);
+  transform: translateY(2px);
+}
+
+/* "still ringing" glow — instant on, CSS-transition fade tied to each
+   voice's real decay time (see ringFade() in app.js). Lives on a separate
+   child so it never fights the instant press/release transform above. */
+.pk-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 20%, rgba(92, 225, 255, 0.65), transparent 70%);
+  transition: opacity 0.15s ease-out;
+}
+.pk-glow.is-lit { opacity: 1; }
+
+.pk-label {
+  font-family: var(--ogh-mono);
+  font-size: 10px;
+  color: rgba(20, 24, 40, 0.55);
+  pointer-events: none;
+}
+.pk-black .pk-label { color: rgba(220, 230, 255, 0.6); }
+
+.pk-sub {
+  font-family: var(--ogh-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--ogh-accent-2);
+  opacity: 0.8;
+  pointer-events: none;
+}
+.pk-black .pk-sub { color: var(--ogh-accent); }
+
+/* ---------------------------------------------------------------------- */
+/* Footer hint — normal flow (NOT a fixed overlay): the piano fills the
+   stage edge-to-edge, so a fixed-position hint would sit on top of the
+   bottom row of keys. A plain flex-flow line just claims its own sliver
+   of height instead. */
+/* ---------------------------------------------------------------------- */
+.ms-hint {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 4px 12px calc(4px + var(--ogh-safe-bottom));
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--ogh-fg-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  .ms-top .sub { display: none; }
+  .ms-inst-btn { flex-basis: 30%; font-size: 12px; }
+  .ms-slider span { min-width: 0; }
+}
+
+@media (max-height: 480px) {
+  .ms-top .sub { display: none; }
+  .ms-top, .ms-instruments, .ms-controls { padding-top: 5px; padding-bottom: 5px; }
+  .ms-hint { display: none; }
+}

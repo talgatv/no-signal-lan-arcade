@@ -888,6 +888,87 @@
         "offline"
       ],
       "notes": "Uses native SpeechSynthesis (offline, OS/browser voices) and SpeechRecognition (needs HTTPS/localhost, and in most browsers also an internet connection for cloud recognition)."
+    },
+    {
+      "id": "music-synth",
+      "name": "Music Synth",
+      "names": {
+        "en": "Music Synth",
+        "ru": "Синтезатор",
+        "zh": "音乐合成器",
+        "es": "Sintetizador",
+        "ar": "آلة التركيب الموسيقي",
+        "fr": "Synthétiseur"
+      },
+      "tagline": "A playable synth keyboard — piano, kalimba, organ, bells, lead, bass. Zero samples.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "flat-ui"
+      ],
+      "genres": [
+        "arcade",
+        "music",
+        "sandbox"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse",
+          "keyboard"
+        ],
+        "keyboard": "ok",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap/click keys, or play A S D F G H J K (white) · W E T Y U (black) · Z/X shifts octave.",
+          "ru": "Тап/клик по клавишам, либо A S D F G H J K (белые) · W E T Y U (чёрные) · Z/X — смена октавы.",
+          "zh": "点击/触摸琴键，或用 A S D F G H J K（白键）· W E T Y U（黑键）· Z/X 切换八度演奏。",
+          "es": "Toca/haz clic en las teclas, o usa A S D F G H J K (blancas) · W E T Y U (negras) · Z/X cambia de octava.",
+          "ar": "اضغط/انقر المفاتيح، أو اعزف بـ A S D F G H J K (بيضاء) · W E T Y U (سوداء) · Z/X لتغيير الأوكتاف.",
+          "fr": "Touchez/cliquez les touches, ou jouez avec A S D F G H J K (blanches) · W E T Y U (noires) · Z/X change d'octave."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "music",
+        "instrument",
+        "web-audio"
+      ],
+      "instructions": {
+        "en": "Play the on-screen keyboard with touch, mouse, or your computer keyboard (A S D F G H J K for white keys, W E T Y U for black keys, Z/X to shift octaves). Switch between six procedurally synthesized instruments — Piano, Kalimba, Organ, Bells, Lead, and Bass — with the instrument row at the top. Kalimba and Bells are plucked/struck: once triggered they ring out fully, just like a real kalimba tine, regardless of how long you hold the key.",
+        "ru": "Играй на клавиатуре на экране пальцем, мышью или компьютерной клавиатурой (A S D F G H J K — белые клавиши, W E T Y U — чёрные, Z/X — смена октавы). Переключай шесть процедурно синтезированных инструментов — пианино, калимбу, орган, колокольчики, лид и бас — в верхнем ряду. Калимба и колокольчики — щипковые/ударные: раз запущенные, они звучат до конца, как настоящая пластина калимбы, независимо от того, как долго зажата клавиша.",
+        "zh": "用触摸、鼠标或电脑键盘演奏屏幕上的键盘（白键 A S D F G H J K，黑键 W E T Y U，Z/X 切换八度）。在顶部的乐器栏中切换六种程序化合成的乐器——钢琴、卡林巴琴、管风琴、钟琴、主音和贝斯。卡林巴琴和钟琴是拨奏/敲击类乐器：一旦触发就会完整地响到尾声，就像真正的卡林巴琴片一样，与按键时长无关。",
+        "es": "Toca el teclado en pantalla con el dedo, el ratón o tu teclado de ordenador (A S D F G H J K para las teclas blancas, W E T Y U para las negras, Z/X para cambiar de octava). Cambia entre seis instrumentos sintetizados de forma procedural — piano, kalimba, órgano, campanas, lead y bajo — con la fila de instrumentos de arriba. Kalimba y Campanas son de pulsación/percusión: una vez disparadas suenan hasta el final, como una lámina real de kalimba, sin importar cuánto mantengas la tecla.",
+        "ar": "اعزف على لوحة المفاتيح الظاهرة على الشاشة باللمس أو الفأرة أو لوحة مفاتيح الكمبيوتر (A S D F G H J K للمفاتيح البيضاء، W E T Y U للسوداء، Z/X لتغيير الأوكتاف). بدّل بين ستة آلات موسيقية مُصنَّعة إجرائيًا — بيانو وكاليمبا وأرغن وأجراس وليد وباص — من صف الآلات في الأعلى. الكاليمبا والأجراس آلات قرع/نقر: بمجرد قرعها تصدر صوتها كاملًا حتى النهاية، تمامًا مثل شريحة الكاليمبا الحقيقية، بغض النظر عن مدة الضغط على المفتاح.",
+        "fr": "Jouez sur le clavier à l'écran au doigt, à la souris ou avec votre clavier d'ordinateur (A S D F G H J K pour les touches blanches, W E T Y U pour les noires, Z/X pour changer d'octave). Basculez entre six instruments synthétisés de façon procédurale — piano, kalimba, orgue, cloches, lead et basse — dans la rangée d'instruments en haut. Kalimba et Cloches sont pincés/frappés : une fois déclenchés, ils sonnent jusqu'au bout, comme une vraie lamelle de kalimba, quelle que soit la durée pendant laquelle vous maintenez la touche."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "music-synth/client/index.html",
+      "manifest": "music-synth/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 84,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Six procedurally synthesized instrument voices (OscillatorNode/GainNode/BiquadFilterNode graphs) — no bundled audio samples. Kalimba/Bells are trigger-and-decay (percussive, ignore note-off); Piano/Organ/Lead/Bass sustain while held. Includes a procedural convolution reverb (generated impulse response, no IR file)."
     }
   ]
 }

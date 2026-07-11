@@ -1,0 +1,27 @@
+{
+  "id": "music-synth",
+  "name": "Music Synth",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "music", "sandbox"],
+  "tags": ["solo", "experimental", "music", "instrument", "web-audio"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse", "keyboard"],
+    "keyboard": "ok",
+    "mouse": "ok",
+    "notes": {
+      "en": "White keys A S D F G H J K, black keys W E T Y U. Z/X shift octave.",
+      "ru": "Белые клавиши A S D F G H J K, чёрные — W E T Y U. Z/X — смена октавы."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css"],
+  "notes": "Procedural Web Audio synthesis only — no sample files. Six instrument voices (piano, kalimba, organ, bells, lead, bass), each a distinct oscillator/filter/envelope recipe. Kalimba and bells are trigger-and-decay (percussive); the rest sustain while held."
+}
