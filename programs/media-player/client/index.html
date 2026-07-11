@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Media Player — OGH</title>
+  <link rel="stylesheet" href="/games/_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="/games/_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="mp-body ogh-font-ui">
+  <header class="mp-top">
+    <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+    <div class="titles">
+      <h1 data-i18n="title">Media Player</h1>
+      <p class="sub" data-i18n="tagline">Private · in-browser · no uploads</p>
+    </div>
+    <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+  </header>
+
+  <!-- Pick / drop -->
+  <section id="dropZone" class="drop">
+    <button type="button" class="ogh-btn ogh-btn-primary pick" id="pickBtn" data-i18n="pickBtn">Choose file(s)</button>
+    <p class="drop-hint" data-i18n="dropHint">or drag &amp; drop here</p>
+    <p class="drop-sub" data-i18n="dropSub">Video or audio — plays whatever your browser can decode, processed locally, never uploaded</p>
+    <input id="fileInput" type="file" accept="video/*,audio/*" multiple hidden />
+  </section>
+
+  <!-- Player -->
+  <main id="player" class="player" hidden>
+    <div class="stage-wrap" id="stageWrap">
+      <div class="stage" id="stage">
+        <video id="mediaEl" playsinline preload="metadata"></video>
+
+        <div class="audio-placeholder" id="audioPlaceholder" hidden>
+          <canvas id="vizCanvas" class="viz-canvas"></canvas>
+          <div class="note-glyph" aria-hidden="true">♪</div>
+          <p class="ph-name" id="phName"></p>
+        </div>
+
+        <div class="error-banner" id="errorBanner" hidden>
+          <p id="errorText"></p>
+          <button type="button" class="mini" id="errorDismiss" data-i18n="errorDismiss">Dismiss</button>
+        </div>
+      </div>
+
+      <div class="controls-bar" id="controlsBar">
+        <div class="seek-row">
+          <span class="time cur" id="curTime">0:00</span>
+          <input type="range" id="seekBar" class="seek" min="0" max="0" step="0.1" value="0" disabled data-i18n-title="seekTitle" />
+          <span class="time dur" id="durTime">0:00</span>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="ctrl-btn" id="prevBtn" disabled data-i18n-title="prevTitle">⏮</button>
+          <button type="button" class="ctrl-btn big" id="playBtn" disabled>▶</button>
+          <button type="button" class="ctrl-btn" id="nextBtn" disabled data-i18n-title="nextTitle">⏭</button>
+          <button type="button" class="ctrl-btn toggle" id="loopBtn">🔁</button>
+          <div class="volume-group">
+            <button type="button" class="ctrl-btn" id="muteBtn">🔊</button>
+            <input type="range" id="volumeBar" class="volume" min="0" max="1" step="0.01" value="1" data-i18n-title="volumeTitle" />
+          </div>
+          <select id="rateSelect" class="ctrl rate" data-i18n-title="rateTitle"></select>
+          <button type="button" class="ctrl-btn" id="fullscreenBtn">⛶</button>
+        </div>
+        <p class="kbd-hint" id="kbdHint" data-i18n="kbdHint">Space play/pause · ←/→ seek 5s · ↑/↓ volume · F fullscreen · M mute</p>
+      </div>
+    </div>
+
+    <section class="playlist card" id="playlistSection">
+      <div class="playlist-head">
+        <h2 data-i18n="playlistHeading">Playlist</h2>
+        <button type="button" class="mini" id="addMoreBtn" data-i18n="addMoreBtn">+ Add files</button>
+      </div>
+      <ul id="playlistEl" class="playlist-list"></ul>
+    </section>
+  </main>
+
+  <!-- shared hidden input for per-row "attach subtitles" -->
+  <input id="subtitleInput" type="file" accept=".vtt,text/vtt" hidden />
+
+  <div id="toast" class="toast"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

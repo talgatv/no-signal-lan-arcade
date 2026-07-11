@@ -1,0 +1,521 @@
+/* Media Player — neon theme, mobile-first. Uses ogh-base.css design tokens. */
+
+/* ogh-base.css locks touch-action:none / overflow:hidden on <html> for
+   fixed-viewport canvas games. This page is a scrolling document (stage +
+   controls + a playlist that can run longer than the viewport), so the root
+   element needs its own override too — touch-action is computed as the
+   intersection of an element's value and every ancestor's, so overriding
+   only .mp-body (the <body>) cannot "re-open" scrolling that <html> still
+   blocks. Keep this in sync with the .mp-body override below. */
+html {
+  height: auto;
+  min-height: 100%;
+  overflow: auto;
+  touch-action: manipulation;
+}
+
+.mp-body {
+  /* NOT overflow:auto here on purpose. If both html and body are their own
+     scroll containers, the sticky header (a child of body, position:sticky)
+     anchors to body's scroll position — but body's own scrollTop never
+     moves (html is the element that actually scrolls, see the html rule
+     above), so the header gets carried off-screen with the rest of body
+     instead of staying pinned. Leaving body's overflow visible makes html
+     the sole real scroll container, which sticky correctly finds. */
+  overflow: visible;
+  min-height: 100%;
+  height: auto;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(92, 225, 255, 0.10), transparent 60%),
+    radial-gradient(900px 500px at 0% 0%, rgba(255, 107, 203, 0.08), transparent 55%),
+    var(--ogh-bg);
+  color: var(--ogh-fg);
+  font-family: var(--ogh-font);
+  touch-action: manipulation;
+  user-select: none;
+  padding-bottom: calc(40px + var(--ogh-safe-bottom));
+}
+
+/* header */
+.mp-top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(7, 8, 15, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.titles { flex: 1; min-width: 160px; }
+.titles h1 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-family: var(--ogh-display);
+  letter-spacing: 0.04em;
+  background: linear-gradient(120deg, var(--ogh-accent), var(--ogh-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.sub {
+  margin: 2px 0 0;
+  font-size: 11px;
+  font-family: var(--ogh-mono);
+  color: var(--ogh-fg-dim);
+}
+
+/* language switcher */
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.lang-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* drop zone */
+.drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 10vh auto 0;
+  padding: 40px 22px;
+  max-width: 560px;
+  border: 2px dashed rgba(92, 225, 255, 0.3);
+  border-radius: 22px;
+  background: rgba(14, 16, 32, 0.5);
+  text-align: center;
+  transition: border-color .15s, background .15s;
+}
+.drop.drag {
+  border-color: var(--ogh-accent);
+  background: rgba(92, 225, 255, 0.08);
+}
+/* UA [hidden] loses to a same-specificity author class rule on source
+   order — .drop sets display:flex above, so an explicit override is
+   required or the "hidden" drop zone stays visible. */
+.drop[hidden] { display: none !important; }
+.drop .pick { width: 100%; max-width: 320px; }
+.drop-hint { margin: 0; color: var(--ogh-fg-dim); font-size: 14px; }
+.drop-sub { margin: 0; color: #5a6a80; font-size: 11px; line-height: 1.4; max-width: 360px; }
+
+/* whole-page drag feedback (files can be dropped even after the playlist
+   view is showing, not just on the initial drop zone) */
+.mp-body.is-dragging #dropZone {
+  border-color: var(--ogh-accent);
+  background: rgba(92, 225, 255, 0.08);
+}
+.mp-body.is-dragging #stageWrap {
+  outline: 2px dashed var(--ogh-accent);
+  outline-offset: 4px;
+  border-radius: 14px;
+}
+
+/* player */
+.player {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 14px 14px 0;
+}
+
+.stage-wrap {
+  position: relative;
+}
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(92, 225, 255, 0.2);
+}
+.stage video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+.audio-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background:
+    linear-gradient(135deg, rgba(92, 225, 255, 0.18), rgba(255, 107, 203, 0.14)),
+    var(--ogh-bg-elevated);
+}
+.audio-placeholder[hidden] { display: none !important; }
+.viz-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.note-glyph {
+  position: relative;
+  z-index: 1;
+  font-size: 56px;
+  line-height: 1;
+  opacity: 0.9;
+  color: var(--ogh-accent);
+  text-shadow: 0 0 28px rgba(92, 225, 255, 0.55);
+}
+.ph-name {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0 16px;
+  max-width: 88%;
+  font-size: 13px;
+  color: var(--ogh-fg-dim);
+  text-align: center;
+  word-break: break-all;
+}
+
+.error-banner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  background: rgba(7, 8, 15, 0.92);
+}
+.error-banner[hidden] { display: none !important; }
+.error-banner p {
+  margin: 0;
+  color: #ffb3c0;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 480px;
+}
+
+/* controls */
+.controls-bar {
+  margin-top: 10px;
+  padding: 10px 14px 14px;
+  border-radius: 16px;
+  background: var(--ogh-bg-elevated);
+  border: 1px solid rgba(92, 225, 255, 0.14);
+}
+.seek-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.time {
+  font-family: var(--ogh-mono);
+  font-size: 11px;
+  color: var(--ogh-fg-dim);
+  min-width: 38px;
+  text-align: center;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.btn-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.ctrl-btn {
+  min-height: 40px;
+  min-width: 40px;
+  padding: 0 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.28);
+  background: rgba(92, 225, 255, 0.06);
+  color: var(--ogh-fg);
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
+  line-height: 1;
+}
+.ctrl-btn:active { transform: scale(0.95); }
+.ctrl-btn.big {
+  min-height: 48px;
+  min-width: 48px;
+  font-size: 20px;
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.22), rgba(255, 107, 203, 0.14));
+  border-color: rgba(92, 225, 255, 0.5);
+}
+.ctrl-btn.toggle.is-on {
+  background: var(--ogh-accent);
+  color: var(--ogh-bg);
+  border-color: var(--ogh-accent);
+}
+.ctrl-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+.volume-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+select.rate.ctrl {
+  min-height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.28);
+  background: #141c28;
+  color: var(--ogh-fg);
+  padding: 0 8px;
+  font-size: 13px;
+  font-family: inherit;
+}
+.kbd-hint {
+  margin: 10px 0 0;
+  font-size: 11px;
+  color: #5a6a80;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* range inputs (seek + volume) — flat track, custom thumb, JS paints the
+   played/buffered gradient directly onto the seek bar's background */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  outline: none;
+  cursor: pointer;
+  min-width: 0;
+}
+input[type="range"].volume { flex: none; width: 72px; height: 5px; }
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ogh-fg);
+  border: 2px solid var(--ogh-accent);
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ogh-fg);
+  border: 2px solid var(--ogh-accent);
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: transparent;
+}
+input[type="range"]:disabled { opacity: 0.4; cursor: default; }
+
+/* fullscreen: keep the video + custom controls together so controls stay
+   usable in fullscreen instead of only the bare <video> filling the screen */
+#stageWrap:fullscreen {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  background: #000;
+  padding: 0;
+}
+#stageWrap:-webkit-full-screen {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  background: #000;
+  padding: 0;
+}
+#stageWrap:fullscreen .stage,
+#stageWrap:-webkit-full-screen .stage {
+  flex: 1;
+  min-height: 0;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+#stageWrap:fullscreen .controls-bar,
+#stageWrap:-webkit-full-screen .controls-bar {
+  border-radius: 0;
+}
+
+/* playlist */
+.card {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--ogh-bg-elevated);
+  border: 1px solid rgba(92, 225, 255, 0.14);
+}
+.playlist-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.playlist-head h2 {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ogh-fg-dim);
+}
+.mini {
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: rgba(92, 225, 255, 0.06);
+  color: var(--ogh-fg);
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.mini:active { transform: scale(0.97); }
+
+.playlist-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pl-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+}
+.pl-row.is-current {
+  border-color: rgba(92, 225, 255, 0.5);
+  background: rgba(92, 225, 255, 0.08);
+}
+.pl-row.has-error { border-color: rgba(255, 92, 122, 0.45); }
+.pl-idx {
+  font-family: var(--ogh-mono);
+  font-size: 11px;
+  color: var(--ogh-fg-dim);
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.pl-row.is-current .pl-idx { color: var(--ogh-accent); }
+.pl-info { flex: 1; min-width: 0; }
+.pl-name {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ogh-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pl-meta {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: var(--ogh-fg-dim);
+  font-family: var(--ogh-mono);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+.pl-cc-badge {
+  color: var(--ogh-accent);
+  font-weight: 700;
+}
+.pl-warn { color: var(--ogh-warn); }
+.pl-error-text {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: #ffb3c0;
+}
+.pl-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.pl-btn {
+  min-height: 34px;
+  min-width: 34px;
+  border-radius: 9px;
+  border: 1px solid rgba(92, 225, 255, 0.2);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.pl-btn:active { transform: scale(0.95); }
+.pl-btn.remove { color: #ff8ba0; border-color: rgba(255, 92, 122, 0.3); }
+
+/* toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + var(--ogh-safe-bottom));
+  transform: translate(-50%, 20px);
+  max-width: 90vw;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--ogh-bg-elevated);
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  color: var(--ogh-fg);
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  z-index: 50;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.err { border-color: var(--ogh-bad); color: #ffb3c0; }
+
+@media (max-width: 540px) {
+  .volume-group .volume { width: 56px; }
+  .kbd-hint { display: none; }
+}

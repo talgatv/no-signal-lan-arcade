@@ -781,6 +781,60 @@
         "protocol": "ogh-net-v1",
         "notes": "Signaling (SDP/ICE) over the host WebSocket relay; file bytes transfer directly browser-to-browser via WebRTC DataChannel, never through the host"
       }
+    },
+    {
+      "id": "media-player",
+      "name": "Media Player",
+      "kind": "program",
+      "tagline": "Private in-browser media player — plays your local video/audio files. No uploads.",
+      "style": "neon-vector",
+      "genres": [
+        "utility",
+        "media"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "ok",
+        "mouse": "ok",
+        "notes": {
+          "en": "Pick or drop files to build a playlist, tap a track to play it. Space=play/pause, arrows=seek/volume, F=fullscreen, M=mute.",
+          "ru": "Выбери или перетащи файлы — получится плейлист, нажми на трек, чтобы включить. Пробел — пауза, стрелки — перемотка/громкость, F — полный экран, M — без звука."
+        }
+      },
+      "instructions": {
+        "en": "Choose or drop one or more video/audio files to build a playlist. Tap a track to play it — custom controls give you play/pause, seek, volume, playback speed, loop, fullscreen, and next/prev. Attach an external .vtt subtitle file per track if you have one. Everything plays straight from your device — nothing is uploaded.",
+        "ru": "Выбери или перетащи одно или несколько видео/аудио — получится плейлист. Нажми на трек, чтобы включить: play/pause, перемотка, громкость, скорость, повтор, полный экран, вперёд/назад. К каждому треку можно прикрепить внешние субтитры .vtt. Всё воспроизводится прямо с устройства — ничего не загружается."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10"
+      },
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "media-player/client/index.html",
+      "manifest": "media-player/manifest.json",
+      "version": "0.1.0",
+      "status": "experimental",
+      "familyFriendly": true,
+      "tags": [
+        "program",
+        "media",
+        "player",
+        "video",
+        "audio",
+        "playlist",
+        "offline"
+      ],
+      "notes": "Single <video> element plays both video and audio-only files locally via object URLs. No transcoding — supported formats depend entirely on the browser's native decoder (see Video Convert for that)."
     }
   ]
 }
