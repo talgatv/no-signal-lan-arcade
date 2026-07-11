@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-07-10",
+  "updated": "2026-07-11",
   "games": [
     {
       "id": "comet",
@@ -969,6 +969,86 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Six procedurally synthesized instrument voices (OscillatorNode/GainNode/BiquadFilterNode graphs) — no bundled audio samples. Kalimba/Bells are trigger-and-decay (percussive, ignore note-off); Piano/Organ/Lead/Bass sustain while held. Includes a procedural convolution reverb (generated impulse response, no IR file)."
+    },
+    {
+      "id": "paint-xp",
+      "name": "Paint XP",
+      "names": {
+        "en": "Paint XP",
+        "ru": "Пэйнт XP",
+        "zh": "画图 XP",
+        "es": "Paint XP",
+        "ar": "الرسام XP",
+        "fr": "Paint XP"
+      },
+      "tagline": "A classic Windows XP-styled MS Paint clone — pencil, brush, shapes, fill, and a real primary/secondary color convention.",
+      "style": "win-xp-classic",
+      "styles": [
+        "skeuomorphic",
+        "retro",
+        "flat-ui"
+      ],
+      "genres": [
+        "creative",
+        "sandbox",
+        "art"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Left click/tap draws with the foreground color; right click (or long-press a swatch) sets/uses the background color. Ctrl+Z / Ctrl+Y undo/redo.",
+          "ru": "Левая кнопка/тап рисует основным цветом; правая кнопка (или долгое нажатие на образец) задаёт/использует фоновый цвет. Ctrl+Z / Ctrl+Y — отмена/повтор.",
+          "zh": "左键/点按用前景色绘制；右键（或长按色块）设置/使用背景色。Ctrl+Z / Ctrl+Y 撤销/重做。",
+          "es": "El clic/toque izquierdo dibuja con el color de primer plano; el clic derecho (o pulsación larga en una muestra) define/usa el color de fondo. Ctrl+Z / Ctrl+Y deshacen/rehacen.",
+          "ar": "النقر الأيسر/اللمس يرسم بلون المقدمة؛ النقر الأيمن (أو الضغط المطول على عيّنة لون) يضبط/يستخدم لون الخلفية. Ctrl+Z / Ctrl+Y للتراجع/الإعادة.",
+          "fr": "Le clic/tape gauche dessine avec la couleur de premier plan ; le clic droit (ou l'appui long sur une nuance) définit/utilise la couleur de fond. Ctrl+Z / Ctrl+Y annulent/rétablissent."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "drawing",
+        "creative",
+        "retro"
+      ],
+      "instructions": {
+        "en": "A tiny MS-Paint clone styled like classic Windows XP. Pick a tool from the toolbox (Pencil, Brush, Eraser, Fill, Eyedropper, Text, Line, Rectangle, Ellipse, Select), then draw on the canvas with touch or mouse. Left click/tap draws with the foreground color; right click (or long-press a color swatch) sets and draws with the background color, exactly like the original. Undo/Redo (Ctrl+Z / Ctrl+Y) are capped at 20 steps. Save your drawing as a PNG from the File menu — everything runs locally in the browser tab, no server round-trip.",
+        "ru": "Маленький клон MS Paint в стиле классической Windows XP. Выбери инструмент на панели (карандаш, кисть, ластик, заливка, пипетка, текст, линия, прямоугольник, эллипс, выделение) и рисуй на холсте пальцем или мышью. Левая кнопка/тап рисует основным цветом; правая кнопка (или долгое нажатие на образец цвета) задаёт и использует фоновый цвет — как в оригинале. Отмена/повтор (Ctrl+Z / Ctrl+Y) хранят до 20 шагов. Сохрани рисунок как PNG через меню «Файл» — всё работает локально в браузере, без сервера.",
+        "zh": "一个模仿经典 Windows XP 外观的迷你 MS 画图克隆。从工具箱中选择工具（铅笔、刷子、橡皮擦、填充、取色、文字、直线、矩形、椭圆、选定框），用触摸或鼠标在画布上绘制。左键/点按用前景色绘制；右键（或长按色块）设置并使用背景色，与原版一致。撤销/重做（Ctrl+Z / Ctrl+Y）最多保留 20 步。通过“文件”菜单把作品保存为 PNG——一切都在浏览器标签页本地运行，无需服务器。",
+        "es": "Un pequeño clon de MS Paint con el aspecto clásico de Windows XP. Elige una herramienta de la caja de herramientas (lápiz, pincel, borrador, relleno, cuentagotas, texto, línea, rectángulo, elipse, selección) y dibuja en el lienzo con el dedo o el ratón. El clic/toque izquierdo dibuja con el color de primer plano; el clic derecho (o pulsación larga en una muestra) define y usa el color de fondo, igual que el original. Deshacer/rehacer (Ctrl+Z / Ctrl+Y) guardan hasta 20 pasos. Guarda tu dibujo como PNG desde el menú Archivo — todo funciona localmente en la pestaña del navegador, sin servidor.",
+        "ar": "نسخة صغيرة من MS Paint بمظهر Windows XP الكلاسيكي. اختر أداة من صندوق الأدوات (قلم رصاص، فرشاة، ممحاة، تعبئة، قطارة ألوان، نص، خط، مستطيل، بيضاوي، تحديد) وارسم على اللوحة باللمس أو الفأرة. النقر الأيسر/اللمس يرسم بلون المقدمة؛ النقر الأيمن (أو الضغط المطول على عيّنة لون) يضبط ويستخدم لون الخلفية، تمامًا كما في الأصلي. التراجع/الإعادة (Ctrl+Z / Ctrl+Y) يحتفظان بحتى 20 خطوة. احفظ رسمتك كصورة PNG من قائمة الملف — كل شيء يعمل محليًا داخل تبويب المتصفح دون أي خادم.",
+        "fr": "Un petit clone de MS Paint au look classique de Windows XP. Choisissez un outil dans la boîte à outils (crayon, pinceau, gomme, remplissage, pipette, texte, ligne, rectangle, ellipse, sélection), puis dessinez sur la toile au doigt ou à la souris. Le clic/tape gauche dessine avec la couleur de premier plan ; le clic droit (ou l'appui long sur une nuance) définit et utilise la couleur de fond, comme dans l'original. Annuler/rétablir (Ctrl+Z / Ctrl+Y) conservent jusqu'à 20 étapes. Enregistrez votre dessin en PNG depuis le menu Fichier — tout fonctionne localement dans l'onglet du navigateur, sans serveur."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "paint-xp/client/index.html",
+      "manifest": "paint-xp/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Deliberate style exception for this hub: a skeuomorphic Windows XP 'Luna' MS-Paint clone (title-bar gradient, border-style outset/inset beveled toolbox, 28-swatch VGA-ish palette), not the usual neon-vector look. System font stack only (Tahoma/Segoe UI/Verdana) — no bundled or fetched webfont. Pencil is plotted pixel-by-pixel (Bresenham) for a true hard edge; the XP window chrome stays LTR-structured even under RTL languages (mirrors games/music-synth's piano-mirroring-avoidance precedent) while every string is fully translated."
     }
   ]
 }

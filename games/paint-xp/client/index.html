@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0f47b5" />
+  <title>Paint XP — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<!-- Deliberate style exception: classic Windows XP "Luna" skeuomorphic chrome,
+     not the hub's usual neon-vector look. System font stack only (Tahoma /
+     Segoe UI / Verdana) — no bundled or fetched webfont, see style.css. -->
+<body class="xp-body">
+  <div class="xp-window" id="window">
+
+    <!-- Title bar -->
+    <div class="xp-titlebar">
+      <button type="button" class="xp-titleicon" id="backBtn" data-i18n-title="backAria" aria-label="Back to library">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path d="M2 8l5-5v3h7v4H7v3z" fill="#ffffff"/>
+        </svg>
+      </button>
+      <div class="xp-titletext" id="titleText" data-i18n="titleBar">untitled - Paint</div>
+      <div class="xp-titlebtns">
+        <button type="button" class="xp-tbtn xp-tbtn-min" id="minBtn" aria-label="Minimize" tabindex="-1">
+          <svg viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><rect x="1" y="7.5" width="8" height="1.6" fill="#0a1a3a"/></svg>
+        </button>
+        <button type="button" class="xp-tbtn xp-tbtn-max" id="maxBtn" aria-label="Maximize" tabindex="-1">
+          <svg viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><rect x="0.8" y="0.8" width="8.4" height="8.4" fill="none" stroke="#0a1a3a" stroke-width="1.4"/></svg>
+        </button>
+        <button type="button" class="xp-tbtn xp-tbtn-close" id="closeBtn" data-i18n-title="backAria" aria-label="Close">
+          <svg viewBox="0 0 10 10" width="9" height="9" aria-hidden="true">
+            <path d="M1 1l8 8M9 1l-8 8" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu bar -->
+    <div class="xp-menubar" id="menubar" role="menubar">
+      <div class="xp-menu" data-menu="file">
+        <button type="button" class="xp-menubtn" role="menuitem" data-i18n="menuFile">File</button>
+        <div class="xp-dropdown" role="menu">
+          <button type="button" class="xp-menuitem" data-action="new" data-i18n="fileNew">New</button>
+          <button type="button" class="xp-menuitem" data-action="open" data-i18n="fileOpen">Open...</button>
+          <button type="button" class="xp-menuitem" data-action="save" data-i18n="fileSave">Save as PNG</button>
+          <div class="xp-menusep" role="separator"></div>
+          <button type="button" class="xp-menuitem" data-action="exit" data-i18n="fileExit">Exit</button>
+        </div>
+      </div>
+      <div class="xp-menu" data-menu="edit">
+        <button type="button" class="xp-menubtn" role="menuitem" data-i18n="menuEdit">Edit</button>
+        <div class="xp-dropdown" role="menu">
+          <button type="button" class="xp-menuitem" data-action="undo" data-i18n="editUndo">Undo</button>
+          <button type="button" class="xp-menuitem" data-action="redo" data-i18n="editRedo">Redo</button>
+          <div class="xp-menusep" role="separator"></div>
+          <button type="button" class="xp-menuitem" data-action="selectAll" data-i18n="editSelectAll">Select All</button>
+          <button type="button" class="xp-menuitem" data-action="clearSelection" data-i18n="editClearSelection">Clear Selection</button>
+          <button type="button" class="xp-menuitem" data-action="clearImage" data-i18n="editClearImage">Clear Image</button>
+        </div>
+      </div>
+      <div class="xp-menu" data-menu="view">
+        <button type="button" class="xp-menubtn" role="menuitem" data-i18n="menuView">View</button>
+        <div class="xp-dropdown" role="menu">
+          <button type="button" class="xp-menuitem xp-menuitem-check is-checked" data-action="toggleToolbox" data-i18n="viewToolbox">Tool Box</button>
+          <button type="button" class="xp-menuitem xp-menuitem-check is-checked" data-action="toggleColorBox" data-i18n="viewColorBox">Color Box</button>
+          <button type="button" class="xp-menuitem xp-menuitem-check is-checked" data-action="toggleStatusBar" data-i18n="viewStatusBar">Status Bar</button>
+        </div>
+      </div>
+      <div class="xp-menu" data-menu="image">
+        <button type="button" class="xp-menubtn" role="menuitem" data-i18n="menuImage">Image</button>
+        <div class="xp-dropdown" role="menu">
+          <button type="button" class="xp-menuitem" data-action="flipH" data-i18n="imageFlipH">Flip Horizontal</button>
+          <button type="button" class="xp-menuitem" data-action="flipV" data-i18n="imageFlipV">Flip Vertical</button>
+          <button type="button" class="xp-menuitem" data-action="rotate" data-i18n="imageRotate">Rotate 90°</button>
+          <button type="button" class="xp-menuitem" data-action="invert" data-i18n="imageInvert">Invert Colors</button>
+        </div>
+      </div>
+      <div class="xp-menu" data-menu="colors">
+        <button type="button" class="xp-menubtn" role="menuitem" data-i18n="menuColors">Colors</button>
+        <div class="xp-dropdown" role="menu">
+          <button type="button" class="xp-menuitem" data-action="editColors" data-i18n="colorsEdit">Edit Colors...</button>
+        </div>
+      </div>
+      <div class="xp-menu" data-menu="help">
+        <button type="button" class="xp-menubtn" role="menuitem" data-i18n="menuHelp">Help</button>
+        <div class="xp-dropdown" role="menu">
+          <button type="button" class="xp-menuitem" data-action="about" data-i18n="helpAbout">About Paint XP</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toolbox + canvas -->
+    <div class="xp-main">
+      <div class="xp-toolbox" id="toolbox">
+        <div class="xp-tool-grid" id="toolGrid"></div>
+        <div class="xp-tool-options" id="toolOptions"></div>
+      </div>
+      <div class="xp-canvas-stage" id="canvasStage">
+        <canvas id="canvas" class="xp-canvas"></canvas>
+        <div class="xp-marquee" id="marquee" hidden></div>
+      </div>
+    </div>
+
+    <!-- Color palette -->
+    <div class="xp-palette-row" id="paletteRow">
+      <div class="xp-color-indicator">
+        <button type="button" class="xp-swatch-bg" id="bgIndicator" data-i18n-title="secondaryColorAria" aria-label="Background color"></button>
+        <button type="button" class="xp-swatch-fg" id="fgIndicator" data-i18n-title="primaryColorAria" aria-label="Foreground color"></button>
+      </div>
+      <div class="xp-palette-grid" id="paletteGrid"></div>
+    </div>
+
+    <!-- Status bar -->
+    <div class="xp-statusbar" id="statusbar">
+      <div class="xp-status-pane xp-status-msg" id="statusMsg" data-i18n="statusReady">Ready</div>
+      <div class="xp-status-pane xp-status-pos" id="statusPos">–, –</div>
+      <div class="xp-status-pane xp-status-dims" id="statusDims">0 x 0 px</div>
+      <div class="xp-status-pane xp-status-lang">
+        <button type="button" class="xp-langbtn" id="langBtn" data-i18n-title="langLabel" aria-haspopup="true" aria-expanded="false">EN</button>
+        <div class="xp-langmenu" id="langMenu" hidden></div>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="fileInput" accept="image/*" hidden />
+  <input type="color" id="colorPicker" value="#000000" hidden />
+
+  <!-- Generic classic-Windows message box, reused for About + confirms. -->
+  <div class="xp-dialog-overlay" id="dialogOverlay" hidden>
+    <div class="xp-dialog" id="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+      <div class="xp-dialog-titlebar">
+        <span id="dialogTitle">Title</span>
+      </div>
+      <div class="xp-dialog-body">
+        <div class="xp-dialog-icon" id="dialogIcon" aria-hidden="true"></div>
+        <div class="xp-dialog-msg" id="dialogMsg">Message</div>
+      </div>
+      <div class="xp-dialog-buttons" id="dialogButtons"></div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

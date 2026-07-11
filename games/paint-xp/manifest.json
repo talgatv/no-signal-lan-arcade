@@ -1,0 +1,27 @@
+{
+  "id": "paint-xp",
+  "name": "Paint XP",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["creative", "sandbox", "art"],
+  "tags": ["solo", "experimental", "drawing", "creative", "retro"],
+  "style": "win-xp-classic",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse", "keyboard"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Left click/tap draws with the foreground color; right click (or long-press a swatch) sets/uses the background color. Ctrl+Z / Ctrl+Y undo/redo.",
+      "ru": "Левая кнопка/тап рисует основным цветом; правая кнопка (или долгое нажатие на образец) задаёт/использует фоновый цвет. Ctrl+Z / Ctrl+Y — отмена/повтор."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css"],
+  "notes": "Deliberate style exception for this hub: a skeuomorphic Windows XP 'Luna' MS-Paint clone, not the usual neon-vector look. System font stack only (Tahoma/Segoe UI/Verdana) — no bundled or fetched webfont. Pencil is plotted pixel-by-pixel (Bresenham) for a true hard, non-anti-aliased edge; every other tool uses normal canvas 2D stroking. Left-click/primary-touch draws with the foreground color, right-click/long-press draws with the background color, exactly like classic Paint."
+}
