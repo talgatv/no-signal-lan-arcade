@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0a201c" />
+  <title>Mahjong Solitaire — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="mj-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="mj-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="mj-hud" role="status">
+        <div class="ogh-pill" id="hudTiles" data-i18n-title="tilesLeftAria" title="Tiles left"><span aria-hidden="true">🀫</span> <strong id="tilesVal">136</strong></div>
+        <div class="ogh-pill" id="hudMoves" data-i18n-title="movesAria" title="Moves"><span aria-hidden="true">↷</span> <strong id="movesVal">0</strong></div>
+        <div class="ogh-pill" id="hudTime" data-i18n-title="timeAria" title="Time"><span aria-hidden="true">⏱</span> <strong id="timeVal">00:00</strong></div>
+      </div>
+      <div class="mj-actions">
+        <button type="button" class="ogh-btn" id="btnHint" data-i18n="hintBtn">Hint</button>
+        <button type="button" class="ogh-btn" id="btnUndo" data-i18n="undoBtn">Undo</button>
+        <button type="button" class="ogh-btn" id="btnShuffle" data-i18n="shuffleBtn">Shuffle</button>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNew" data-i18n="newGameBtn">New game</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <main class="ogh-stage mj-stage">
+      <!-- dir="ltr" is deliberate and must stay: the tile board is a fixed
+           spatial puzzle layout (layer/x/y positions baked into layout.js),
+           not prose — it must never mirror under an RTL UI language (e.g.
+           Arabic), same risk category as games/solitaire's #board,
+           games/pop-the-bugs' .pb-grid, and games/music-synth's piano keys.
+           Tile positions are set via plain left/top (always physical-left
+           regardless of `dir`), so this is belt-and-suspenders today, not
+           load-bearing — see style.css .mj-board for the matching note. -->
+      <div class="mj-board" id="board" dir="ltr"></div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Tap two matching free tiles to clear them.</p>
+
+    <div class="ogh-overlay" id="winOverlay" hidden>
+      <div class="ogh-card mj-win-card">
+        <h1 data-i18n="winTitle">Board cleared!</h1>
+        <p id="winStatsLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+
+    <div class="ogh-overlay" id="deadlockOverlay" hidden>
+      <div class="ogh-card mj-deadlock-card">
+        <h1 data-i18n="deadlockTitle">No moves left</h1>
+        <p data-i18n="deadlockMsg">No two free tiles match right now.</p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnDeadlockShuffle" data-i18n="deadlockShuffleBtn">Shuffle tiles</button>
+        <button type="button" class="ogh-btn" id="btnDeadlockRestart" data-i18n="deadlockRestartBtn">New game</button>
+        <button type="button" class="ogh-btn" id="btnDeadlockUndo" data-i18n="deadlockUndoBtn" hidden>Undo last move</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

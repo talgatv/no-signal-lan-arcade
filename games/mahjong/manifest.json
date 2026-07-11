@@ -1,0 +1,27 @@
+{
+  "id": "mahjong",
+  "name": "Mahjong Solitaire",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["puzzle", "tile-matching", "classic"],
+  "tags": ["solo", "experimental", "tile-matching", "puzzle", "classic"],
+  "style": "classic-tile-table",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap a free tile to select it, then tap a matching free tile to clear both. Tap the same tile again to deselect, or tap a different free tile to switch your selection. H = hint, U/Ctrl+Z = undo, S = shuffle, N = new game.",
+      "ru": "Тапни свободную плитку, чтобы выбрать её, затем тапни такую же свободную плитку, чтобы убрать обе. Повторный тап по той же плитке снимает выбор, тап по другой свободной плитке переключает выбор. H — подсказка, U/Ctrl+Z — отмена, S — перемешать, N — новая игра."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js"],
+  "notes": "Mahjong Solitaire (the tile-matching puzzle, NOT the 4-player Mahjong card game). Tiles are rendered with the real Unicode Mahjong Tiles block (U+1F000-U+1F021, the 34 wind/dragon/character/bamboo/circle glyphs) as plain text in DOM buttons — no bitmap image assets, confirmed legible in-environment before committing to this approach. The board is a simplified 5-layer stepped pyramid (60/40/24/8/4 = 136 tiles = 68 pairs, 4 copies of each of the 34 types; flowers/seasons/joker deliberately omitted to keep matching uniform) on a half-tile-unit coordinate grid, laid out once in fixed logical-pixel space and scaled as a whole via CSS transform to fit any viewport with zero scrolling (games/comet's canvas-sizing idea / games/solitaire's .sol-board pattern, applied to this board's own absolutely-positioned tile buttons). A tile is free iff nothing in a higher layer overlaps its footprint AND at least one immediate same-layer left/right neighbor is absent (top-clear + one-side-clear, the standard Mahjong Solitaire freedom rule). Board generation guarantees solvability by construction: it repeatedly removes any 2 currently-free tiles from the full active set (recording the pair order) until empty, which is by definition a valid full clearing sequence; type labels are assigned to the resulting pairs afterward and never affect the guarantee. Shuffle re-runs the exact same generator restricted to just the currently-remaining tiles, so it always produces a freshly solvable arrangement for whatever is left, and deadlock (no two currently-free tiles share a type) is auto-detected and surfaced with Shuffle/New game/Undo options rather than leaving the player stuck. Hint highlights one genuinely valid free matching pair; Undo restores the whole match history, not just the last one. RTL (Arabic) mirrors header/hint/win/deadlock chrome only; the tile board's spatial layout (#board dir=\"ltr\") never mirrors, same precedent as games/solitaire and games/pop-the-bugs."
+}

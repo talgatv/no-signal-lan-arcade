@@ -1601,6 +1601,86 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Deliberate style exception for this hub (like games/paint-xp and games/penguin-fling): a felt-green classic-card-table look instead of the usual neon-vector theme. All 52 cards are plain DOM elements (corner rank+suit, center suit-glyph watermark, real Unicode suit glyphs U+2660/2665/2666/2663, CSS-pattern backs) — no bundled image assets. The board is a fixed logical-pixel layout scaled as a whole via CSS transform to fit any viewport without scrolling (games/comet's canvas-sizing idea applied to a DOM subtree), with dynamically-shrinking per-column card offsets so a column can never overflow regardless of card count. Drag uses Pointer Events (not HTML5 DnD, for equal mouse/touch behavior); tap-to-select-then-tap-to-place is a full alternative, sharing the same rules.js move-legality code as drag. Undo is whole-state-snapshot based, capped at 200 steps. Foundations are a one-way sink during normal play (documented simplification — Undo reverses a foundation placement instead). Auto-finish uses the standard 'no hidden cards left' greedy-completion heuristic. RTL (Arabic) mirrors header/hint/win-overlay chrome only; the board's spatial layout (#board dir=\"ltr\") never mirrors, same precedent as games/pop-the-bugs and games/music-synth."
+    },
+    {
+      "id": "mahjong",
+      "name": "Mahjong Solitaire",
+      "names": {
+        "en": "Mahjong Solitaire",
+        "ru": "Маджонг пасьянс",
+        "zh": "麻将接龙",
+        "es": "Solitario Mahjong",
+        "ar": "سوليتير ماهجونغ",
+        "fr": "Solitaire Mahjong"
+      },
+      "tagline": "Clear the board — match pairs of exposed tiles, layer by layer.",
+      "style": "classic-tile-table",
+      "styles": [
+        "tile-table",
+        "lacquered-wood",
+        "classic-mahjong"
+      ],
+      "genres": [
+        "puzzle",
+        "tile-matching",
+        "classic"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap a free tile to select it, then tap a matching free tile to clear both. Tap the same tile again to deselect, or tap a different free tile to switch your selection.",
+          "ru": "Тапни свободную плитку, чтобы выбрать её, затем тапни такую же свободную плитку, чтобы убрать обе. Повторный тап по той же плитке снимает выбор, тап по другой свободной плитке переключает выбор.",
+          "zh": "点击一张空闲的牌将其选中，再点击一张相同的空闲牌即可消除两张牌。再次点击同一张牌取消选择，点击另一张空闲牌则切换选择。",
+          "es": "Toca una ficha libre para seleccionarla, luego toca una ficha libre igual para eliminar ambas. Toca la misma ficha de nuevo para deseleccionarla, o toca otra ficha libre para cambiar tu selección.",
+          "ar": "اضغط على قطعة حرّة لتحديدها، ثم اضغط على قطعة حرّة مطابقة لإزالة الاثنتين. اضغط على نفس القطعة مرة أخرى لإلغاء التحديد، أو اضغط على قطعة حرّة أخرى لتبديل التحديد.",
+          "fr": "Touchez une tuile libre pour la sélectionner, puis touchez une tuile libre identique pour retirer les deux. Touchez à nouveau la même tuile pour la désélectionner, ou touchez une autre tuile libre pour changer votre sélection."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "tile-matching",
+        "puzzle",
+        "classic"
+      ],
+      "instructions": {
+        "en": "Mahjong Solitaire — a solo tile-matching puzzle (not the 4-player Mahjong card game). 136 tiles (4 copies each of 34 wind/dragon/character/bamboo/circle types) are stacked in a 5-layer pyramid. A tile is free to pick when nothing sits on top of it and at least one of its left/right sides is open. Tap two free tiles of the same type to clear them both; tap a free tile then a non-matching one to switch your selection instead of erroring. Clear every tile to win. If no matching free pair remains, shuffle the remaining tiles into a fresh solvable arrangement or start a new game — Hint and Undo are always available too.",
+        "ru": "Маджонг-пасьянс — головоломка на составление пар для одного игрока (а не карточная игра на четверых). 136 плиток (по 4 копии каждого из 34 типов: ветра, драконы, иероглифы, бамбук, кружки) сложены в пятиярусную пирамиду. Плитку можно взять, если сверху на ней ничего нет и хотя бы одна из боковых сторон открыта. Тапни две свободные одинаковые плитки, чтобы убрать обе; тап по несовпадающей свободной плитке просто переключает выбор, а не выдаёт ошибку. Убери все плитки, чтобы победить. Если совпадающих свободных пар не осталось — перемешай оставшиеся плитки в новую решаемую расстановку или начни заново; подсказка и отмена хода доступны всегда.",
+        "zh": "麻将接龙是单人配对益智游戏（不是四人麻将牌类游戏）。136张牌（34种花色——风牌、三元牌、万子、条子、饼子——各4张）叠成五层金字塔。当一张牌上方没有牌压住、且左右两侧至少一侧没有相邻的牌时，这张牌就是空闲的、可以拿取。点击两张相同的空闲牌即可将它们一起消除；点击一张不匹配的空闲牌只会切换选择，而不会报错。消除所有牌即可获胜。如果没有可配对的空闲牌了，可以把剩余的牌洗成新的可解排列，或者重新开始——提示和撤销功能随时可用。",
+        "es": "Mahjong Solitario es un rompecabezas de emparejar fichas para un jugador (no el juego de cartas de Mahjong a cuatro). 136 fichas (4 copias de cada uno de los 34 tipos: vientos, dragones, caracteres, bambú y círculos) se apilan en una pirámide de 5 niveles. Una ficha está libre para tomarse cuando nada la cubre y al menos uno de sus lados queda abierto. Toca dos fichas libres del mismo tipo para eliminarlas; tocar una ficha libre que no coincide simplemente cambia tu selección, sin error. Elimina todas las fichas para ganar. Si no queda ningún par libre que coincida, mezcla las fichas restantes en una disposición nueva y resoluble o empieza de nuevo — la pista y deshacer siempre están disponibles.",
+        "ar": "سوليتير ماهجونغ لعبة ألغاز لمطابقة القطع للاعب واحد (وليست لعبة ورق الماهجونغ الجماعية لأربعة لاعبين). تُرصّ 136 قطعة (4 نسخ من كل نوع من الأنواع الـ34: رياح، تنانين، حروف، خيزران، دوائر) في هرم من 5 طبقات. تكون القطعة حرّة يمكن أخذها عندما لا يوجد شيء فوقها وكان أحد جانبيها الأيمن أو الأيسر مفتوحًا على الأقل. اضغط على قطعتين حرّتين من نفس النوع لإزالتهما معًا؛ الضغط على قطعة حرّة غير مطابقة يبدّل التحديد فقط دون أي خطأ. أزل كل القطع للفوز. إذا لم يتبقَّ زوج حرّ متطابق، أعد خلط القطع المتبقية بترتيب جديد قابل للحل أو ابدأ لعبة جديدة — التلميح والتراجع متاحان دائمًا.",
+        "fr": "Mahjong Solitaire est un casse-tête d'appariement de tuiles en solo (pas le jeu de cartes Mahjong à quatre joueurs). 136 tuiles (4 exemplaires de chacun des 34 types : vents, dragons, caractères, bambous, cercles) sont empilées en une pyramide à 5 niveaux. Une tuile est libre à prendre quand rien ne la recouvre et qu'au moins un de ses côtés gauche/droit est dégagé. Touchez deux tuiles libres du même type pour les retirer toutes les deux ; toucher une tuile libre non correspondante change simplement votre sélection, sans erreur. Retirez toutes les tuiles pour gagner. S'il ne reste aucune paire libre correspondante, mélangez les tuiles restantes en un nouvel arrangement soluble ou recommencez — l'indice et l'annulation sont toujours disponibles."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "mahjong/client/index.html",
+      "manifest": "mahjong/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 53.4,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Deliberate style exception for this hub (like games/solitaire, games/paint-xp, games/penguin-fling): a lacquered jade-and-gold tile-table look instead of the usual neon-vector theme. Every tile is plain DOM: a rounded-rect ivory button with the real Unicode Mahjong Tiles glyph (U+1F000-U+1F021) as its text content — no bundled image assets — confirmed legible in-environment (including the font's own red tint on the center dragon) before committing to this approach over hand-drawn SVG faces. The 5-layer stepped-pyramid board (60/40/24/8/4 tiles = 136 total = 68 pairs) sits on a half-tile-unit coordinate grid; a tile is free iff no higher-layer tile overlaps its footprint and at least one same-layer left/right neighbor is absent. Board generation guarantees solvability by construction (repeatedly remove any 2 currently-free tiles from the full active set until empty; the recorded order is by definition a valid full clearing sequence, and assigning matching type labels to the resulting pairs afterward can never break that), verified both by direct replay and by an independent randomized greedy-match solver across many freshly-generated boards. Shuffle re-runs the identical generator restricted to whatever tiles are still in play, so it's always solvable again immediately, including from a genuine forced deadlock — not just a naive in-place type shuffle, which could easily produce another unsolvable state. Board geometry is a fixed logical-pixel layout scaled as a whole via CSS transform to fit any viewport without scrolling (games/comet's canvas-sizing idea / games/solitaire's .sol-board pattern, applied to this board's own tile buttons). Tap-to-select-then-tap-to-match only (no drag needed for this genre); Hint highlights one genuinely valid free pair, Undo replays the full match history in reverse. RTL (Arabic) mirrors header/hint/win/deadlock chrome only — the board itself never mirrors, same precedent as games/solitaire and games/pop-the-bugs."
     }
   ]
 }
