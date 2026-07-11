@@ -62,4 +62,5 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.serialization.json)
     testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.websockets)
 }
