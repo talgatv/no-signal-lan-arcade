@@ -21,6 +21,13 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* An author rule setting display:flex/grid/etc. on an element beats the UA's
+   [hidden]{display:none} on a same-specificity source-order tiebreak, so any game
+   that reuses a class like that for a togglable panel silently keeps it visible
+   while "hidden". Hit independently by three separate games before this existed
+   (video-convert, flashlight, tic-tac-toe) — settled here once, for all of them. */
+[hidden] { display: none !important; }
+
 html, body {
   margin: 0;
   padding: 0;
