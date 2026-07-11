@@ -53,6 +53,24 @@ class _Cfg:
 
 CFG = _Cfg()
 
+# Every spelling of "the hub" except its own canonical /games/hub/ redirects there
+# (do_GET) rather than serving hub/index.html's content directly at a different
+# URL — that page's own asset tags (hub.js, ../_shared/css/...) are relative to
+# /games/hub/ and resolve incorrectly if the browser thinks it's anywhere else.
+HUB_REDIRECT_PATHS = frozenset(
+    (
+        "/games",
+        "/games/",
+        "/games/hub",
+        "/hub",
+        "/hub/",
+        "/library",
+        "/library/",
+        "/apps",
+        "/apps/",
+    )
+)
+
 WS_MAGIC = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
 
 
@@ -401,6 +419,12 @@ class OGHHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path or "/"
 
+        if path in HUB_REDIRECT_PATHS:
+            self.send_response(302)
+            self.send_header("Location", "/games/hub/")
+            self.end_headers()
+            return
+
         if path == "/ws":
             self._upgrade_websocket()
             return
@@ -460,19 +484,16 @@ class OGHHandler(BaseHTTPRequestHandler):
             return WWW_DIR / "index.html"
         if path in ("/about", "/about/", "/about.html"):
             return WWW_DIR / "about.html"
-        # Games hub (library + profile) — also lists programs from catalog
-        if path in (
-            "/games",
-            "/games/",
-            "/games/hub",
-            "/games/hub/",
-            "/hub",
-            "/hub/",
-            "/library",
-            "/library/",
-            "/apps",
-            "/apps/",
-        ):
+        # Games hub (library + profile) — also lists programs from catalog.
+        # Every other spelling of this (bare /games, /hub, /library, /apps, and
+        # /games/hub without its trailing slash) redirects to this canonical path
+        # in do_GET before ever reaching here — see HUB_REDIRECT_PATHS. Serving
+        # hub/index.html's *content* directly at one of those other URLs (the
+        # previous behavior here) left the page's own relative asset paths
+        # (hub.js, ../_shared/css/...) resolving against the wrong base URL,
+        # since the browser resolves relative URLs against the requested
+        # address, not the file's real location on disk.
+        if path == "/games/hub/":
             return CFG.games_dir / "hub" / "index.html"
         if path.startswith("/games/"):
             return safe_join(CFG.games_dir, path[len("/games/") :])
