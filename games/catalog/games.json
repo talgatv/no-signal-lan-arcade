@@ -565,7 +565,7 @@
     {
       "id": "world-trail",
       "name": "World Trail",
-      "tagline": "Offline world map · GPS · pins · LAN trails",
+      "tagline": "World map · 7k cities · GPS · see friends on LAN",
       "style": "neon-vector",
       "genres": [
         "utility",
@@ -668,6 +668,118 @@
         "status": "ready",
         "protocol": "ogh-net-v1",
         "notes": "Host=Builder sim; second=Caller picks"
+      }
+    },
+    {
+      "id": "video-convert",
+      "name": "Video Convert",
+      "kind": "program",
+      "tagline": "Private in-browser video toolkit — convert, compress, trim, GIF, frames. No uploads.",
+      "style": "neon-vector",
+      "genres": [
+        "utility",
+        "media"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Pick a video, choose a tool, Run. Sliders for trim and speed.",
+          "ru": "Выбери видео, выбери инструмент, нажми Run. Слайдеры — обрезка и скорость."
+        }
+      },
+      "instructions": {
+        "en": "Choose a video file. Convert/re-encode (resolution, fps, quality), compress, trim, extract audio, make an animated GIF, grab frames, rotate/flip, or change speed. 100% on-device — your video never leaves the browser.",
+        "ru": "Выбери видеофайл. Конвертация (разрешение, fps, качество), сжатие, обрезка, извлечение звука, GIF, кадры, поворот, скорость. Всё локально — видео не покидает браузер."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-10",
+        "updated": "2026-07-10"
+      },
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "video-convert/client/index.html",
+      "manifest": "video-convert/manifest.json",
+      "version": "0.1.0",
+      "status": "experimental",
+      "familyFriendly": true,
+      "tags": [
+        "program",
+        "video",
+        "converter",
+        "offline",
+        "media"
+      ],
+      "notes": "Uses native MediaRecorder + canvas.captureStream. Output codec depends on browser (WebM/VP9 on Chromium, MP4 on Safari)."
+    },
+    {
+      "id": "p2p-share",
+      "name": "P2P File Share",
+      "kind": "program",
+      "tagline": "Send files directly between browsers over WebRTC — never through the host.",
+      "style": "flat-ui",
+      "genres": [
+        "utility",
+        "networking"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Drag a file in or tap Choose file. Tap a room member (or Send to everyone) to transfer it."
+        }
+      },
+      "instructions": {
+        "en": "Drag and drop a file, or tap Choose file. Pick someone in the room and tap Send, or use Send to everyone. The file transfers directly to their browser over WebRTC — the host only relays the connection setup, never the file data. Watch the progress bar, then use Save on the receiving side.",
+        "ru": "Перетащите файл или нажмите «Выбрать файл». Выберите человека в комнате и нажмите «Отправить», либо «Отправить всем». Файл передаётся напрямую в его браузер через WebRTC — хост участвует только в установке соединения, но не видит сами данные. Следите за индикатором, затем нажмите «Сохранить» на принимающей стороне.",
+        "zh": "拖拽文件，或点击「选择文件」。选择房间里的一个人并点击「发送」，或使用「发送给所有人」。文件通过 WebRTC 直接传输到对方浏览器——主机只负责建立连接，不会经手文件内容。查看进度条，接收方完成后点击「保存」。",
+        "es": "Arrastra un archivo o toca «Elegir archivo». Elige a alguien de la sala y toca «Enviar», o usa «Enviar a todos». El archivo se transfiere directamente a su navegador mediante WebRTC — el host solo coordina la conexión, nunca ve los datos del archivo. Observa la barra de progreso y luego usa «Guardar» en el lado receptor.",
+        "ar": "اسحب ملفًا أو اضغط «اختر ملفًا». اختر شخصًا في الغرفة واضغط «إرسال»، أو استخدم «إرسال للجميع». يُنقل الملف مباشرة إلى متصفحه عبر WebRTC — يقتصر دور المضيف على إعداد الاتصال ولا يرى بيانات الملف أبدًا. راقب شريط التقدم ثم اضغط «حفظ» على الطرف المستقبل.",
+        "fr": "Glissez un fichier ou touchez « Choisir un fichier ». Choisissez une personne dans le salon et touchez « Envoyer », ou utilisez « Envoyer à tous ». Le fichier est transféré directement vers son navigateur via WebRTC — l'hôte ne fait que relayer la mise en connexion, jamais les données du fichier. Suivez la barre de progression puis utilisez « Enregistrer » côté récepteur."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11"
+      },
+      "players": {
+        "min": 1,
+        "max": 8,
+        "solo": false
+      },
+      "entry": "p2p-share/client/index.html",
+      "manifest": "p2p-share/manifest.json",
+      "version": "0.1.0",
+      "status": "experimental",
+      "familyFriendly": true,
+      "tags": [
+        "program",
+        "file-sharing",
+        "webrtc",
+        "p2p",
+        "networking",
+        "multiplayer"
+      ],
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "Signaling (SDP/ICE) over the host WebSocket relay; file bytes transfer directly browser-to-browser via WebRTC DataChannel, never through the host"
       }
     }
   ]

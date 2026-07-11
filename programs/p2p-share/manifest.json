@@ -1,0 +1,31 @@
+{
+  "id": "p2p-share",
+  "name": "P2P File Share",
+  "version": "0.1.0",
+  "kind": "program",
+  "minPlayers": 1,
+  "maxPlayers": 8,
+  "supportsSolo": false,
+  "genres": ["utility", "networking"],
+  "tags": ["program", "file-sharing", "webrtc", "p2p", "multiplayer"],
+  "style": "flat-ui",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Drag a file in or tap Choose file. Tap a room member (or Send to everyone) to transfer it."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "WebRTC DataChannel file transfer; ogh-net WebSocket room relay used only for SDP/ICE signaling"
+  },
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-net.js", "js/ogh-profile.js"],
+  "notes": "No STUN/TURN configured — peers on the same LAN room connect with host ICE candidates only. File bytes never pass through the host."
+}
