@@ -5,7 +5,13 @@
    root element needs its own override too — touch-action is computed as the
    intersection of an element's value and every ancestor's, so overriding
    only .vc-body (the <body>) cannot "re-open" scrolling that <html> still
-   blocks. Keep this in sync with the .vc-body override below. */
+   blocks. Keep touch-action in sync on both. Overflow, however, must only
+   be "auto" on ONE of html/body — html is the actual scrolling element
+   here, so body stays "visible": if both are non-visible scroll containers,
+   position:sticky (.vc-top below) resolves its nearest scroll-container
+   ancestor to <body> instead of the viewport, and since body's own
+   height:auto box never itself overflows, the header never sticks — it
+   scrolls away with the rest of the page instead of staying pinned. */
 html {
   height: auto;
   min-height: 100%;
@@ -14,7 +20,7 @@ html {
 }
 
 .vc-body {
-  overflow: auto;
+  overflow: visible;
   min-height: 100%;
   height: auto;
   background:
