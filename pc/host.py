@@ -55,6 +55,14 @@ CFG = _Cfg()
 
 WS_MAGIC = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
 
+# Bare aliases for the games hub — redirected (not served directly) so the
+# browser's relative-URL base lands on /games/hub/, matching where
+# games/hub/index.html and its ../_shared/*, hub.css, hub.js actually live.
+HUB_REDIRECT_PATHS = {
+    "/games", "/games/", "/games/hub",
+    "/hub", "/hub/", "/library", "/library/", "/apps", "/apps/",
+}
+
 
 # ---------------------------------------------------------------------------
 # Room hub
@@ -415,6 +423,18 @@ class OGHHandler(BaseHTTPRequestHandler):
                 for rid, r in list(HUB.rooms.items())
             }
             self._json(200, {"rooms": rooms})
+            return
+
+        if path in HUB_REDIRECT_PATHS:
+            # games/hub/index.html uses paths relative to its own folder
+            # (../_shared/css/..., hub.css, hub.js). Serving that file's
+            # content directly at a shallower URL like /games/ or /hub
+            # would resolve those relative to the wrong "directory", so the
+            # hub loads unstyled with hub.js never executing. Redirect to
+            # the canonical /games/hub/ where relative resolution is correct.
+            self.send_response(302)
+            self.send_header("Location", "/games/hub/")
+            self.end_headers()
             return
 
         # static
