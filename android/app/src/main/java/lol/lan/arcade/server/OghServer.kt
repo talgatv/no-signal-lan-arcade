@@ -9,6 +9,7 @@ import io.ktor.server.cio.CIO
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.response.respondBytes
+import io.ktor.server.response.respondRedirect
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
@@ -89,22 +90,26 @@ fun Application.installOghRouting(hub: Hub, contentRoots: ContentRoots) {
 
         get("/{path...}") {
             val raw = "/" + call.parameters.getAll("path").orEmpty().joinToString("/")
+            if (raw in RouteResolver.HUB_REDIRECT_PATHS) {
+                call.respondRedirect("/games/hub/", permanent = false)
+                return@get
+            }
             val resolved = RouteResolver.resolve(raw)
-            val bytes = contentRoots.load(resolved.root, resolved.relativePath)
-            if (bytes == null) {
+            val loaded = contentRoots.load(resolved.root, resolved.relativePath)
+            if (loaded == null) {
                 call.respondText("Not found", ContentType.Text.Plain, HttpStatusCode.NotFound)
             } else {
-                call.respondBytes(bytes, guessContentType(resolved.relativePath))
+                call.respondBytes(loaded.bytes, guessContentType(loaded.matchedPath))
             }
         }
 
         get("/") {
             val resolved = RouteResolver.resolve("/")
-            val bytes = contentRoots.load(resolved.root, resolved.relativePath)
-            if (bytes == null) {
+            val loaded = contentRoots.load(resolved.root, resolved.relativePath)
+            if (loaded == null) {
                 call.respondText("Not found", ContentType.Text.Plain, HttpStatusCode.NotFound)
             } else {
-                call.respondBytes(bytes, guessContentType(resolved.relativePath))
+                call.respondBytes(loaded.bytes, guessContentType(loaded.matchedPath))
             }
         }
     }

@@ -2,6 +2,7 @@ package lol.lan.arcade.server
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class RouteResolverTest {
@@ -24,12 +25,23 @@ class RouteResolverTest {
     }
 
     @Test
-    fun `hub aliases resolve to the games hub index`() {
-        for (p in listOf("/games", "/games/", "/games/hub", "/games/hub/", "/hub", "/hub/", "/library", "/library/", "/apps", "/apps/")) {
-            val r = RouteResolver.resolve(p)
-            assertEquals(RouteResolver.Root.GAMES, r.root)
-            assertEquals("hub/index.html", r.relativePath)
+    fun `only the canonical trailing-slash hub path resolves to the hub index directly`() {
+        val r = RouteResolver.resolve("/games/hub/")
+        assertEquals(RouteResolver.Root.GAMES, r.root)
+        assertEquals("hub/index.html", r.relativePath)
+    }
+
+    @Test
+    fun `bare hub aliases are marked for redirect, not resolved directly`() {
+        // Regression test: a live device test showed that serving hub/index.html's
+        // content AT these shallower URLs breaks its relative asset paths
+        // (../_shared/css/..., hub.css, hub.js all resolve wrong), so hub.js never
+        // executes and the catalog never loads. The caller must redirect these to
+        // /games/hub/ instead of calling resolve() on them — see HUB_REDIRECT_PATHS.
+        for (p in listOf("/games", "/games/", "/games/hub", "/hub", "/hub/", "/library", "/library/", "/apps", "/apps/")) {
+            assertTrue("$p should be in HUB_REDIRECT_PATHS", p in RouteResolver.HUB_REDIRECT_PATHS)
         }
+        assertTrue("/games/hub/ (canonical) must NOT be redirected", "/games/hub/" !in RouteResolver.HUB_REDIRECT_PATHS)
     }
 
     @Test

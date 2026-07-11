@@ -4,7 +4,9 @@ import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.plugins.websocket.webSocket
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import io.ktor.server.testing.testApplication
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
@@ -39,6 +41,46 @@ class OghServerRouteTest {
         val res = client.get("/games/comet/client/index.html")
         assertEquals(HttpStatusCode.OK, res.status)
         assertEquals("COMET", res.bodyAsText())
+    }
+
+    @Test
+    fun `bare hub aliases redirect to the canonical trailing-slash path`() = testApplication {
+        // Regression test for a bug caught live on-device (and confirmed also present in
+        // pc/host.py, fixed there too): /games/, /hub, etc. must redirect rather than
+        // serve hub/index.html's bytes directly, or its relative asset paths break.
+        application { installOghRouting(Hub(), contentRoots()) }
+        val noRedirectClient = createClient { followRedirects = false }
+        for (path in listOf("/games", "/games/", "/games/hub", "/hub", "/library", "/apps")) {
+            val res = noRedirectClient.get(path)
+            assertEquals("redirect expected for $path", HttpStatusCode.Found, res.status)
+            assertEquals("/games/hub/", res.headers["Location"])
+        }
+    }
+
+    @Test
+    fun `canonical hub path serves content directly, no redirect`() = testApplication {
+        application { installOghRouting(Hub(), contentRoots("web/games/hub/index.html" to "<html>HUB</html>")) }
+        val res = client.get("/games/hub/")
+        assertEquals(HttpStatusCode.OK, res.status)
+        assertEquals("<html>HUB</html>", res.bodyAsText())
+    }
+
+    @Test
+    fun `directory-style request gets text-html, not octet-stream`() = testApplication {
+        // Regression test for a bug caught during the live device smoke test: the hub
+        // UI (games/hub/hub.js entryToPath()) always links to games/programs with a
+        // trailing slash and no "index.html" — e.g. "/programs/lan-chat/client/". The
+        // server resolves that to real HTML via ContentRoots' index.html fallback, but
+        // was guessing Content-Type from the pre-fallback request path (no extension),
+        // so it answered "application/octet-stream" — which Chrome silently refused to
+        // render as a page. Confirmed against the real bug on-device before this fix.
+        application {
+            installOghRouting(Hub(), contentRoots("web/programs/lan-chat/client/index.html" to "<html>CHAT</html>"))
+        }
+        val res = client.get("/programs/lan-chat/client/")
+        assertEquals(HttpStatusCode.OK, res.status)
+        assertEquals(ContentType.Text.Html.withoutParameters(), res.contentType()?.withoutParameters())
+        assertEquals("<html>CHAT</html>", res.bodyAsText())
     }
 
     @Test

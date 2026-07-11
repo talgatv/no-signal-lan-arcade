@@ -3,6 +3,12 @@ package lol.lan.arcade.server
 import java.io.File
 import java.io.IOException
 
+/** [bytes] is the loaded content; [matchedPath] is the actual file that was served —
+ *  e.g. `games/comet/client/index.html` even when the request was the directory-style
+ *  `games/comet/client/`. Callers need this (not the pre-fallback request path) to
+ *  guess the right Content-Type: the request path alone may have no file extension. */
+data class LoadedResource(val bytes: ByteArray, val matchedPath: String)
+
 /**
  * Resolves (root, relativePath) to bytes. Checks the external pack directory first
  * (so a pushed full `games/`/`programs/` tree overrides the bundled demo subset for
@@ -22,16 +28,16 @@ class ContentRoots(
         RouteResolver.Root.DOCS -> "docs"
     }
 
-    fun load(root: RouteResolver.Root, relativePath: String): ByteArray? {
+    fun load(root: RouteResolver.Root, relativePath: String): LoadedResource? {
         val safeRel = RouteResolver.safeRelative(relativePath) ?: return null
         val base = rootDirName(root)
         val candidates = listOf("$base/$safeRel", "$base/$safeRel/index.html".replace("//", "/"))
 
         for (rel in candidates) {
-            loadExternal(rel)?.let { return it }
+            loadExternal(rel)?.let { return LoadedResource(it, rel) }
         }
         for (rel in candidates) {
-            loadAsset(rel)?.let { return it }
+            loadAsset(rel)?.let { return LoadedResource(it, rel) }
         }
         return null
     }
