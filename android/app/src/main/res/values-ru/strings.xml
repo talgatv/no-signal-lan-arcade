@@ -4,6 +4,7 @@
     <string name="notif_channel_name">Игровой хост</string>
     <string name="notif_title">Оффлайн Хаб Игр запущен</string>
     <string name="notif_text">Гости: откройте http://&lt;IP этого телефона&gt;:%1$d/ в браузере</string>
+    <string name="notif_text_https">Гости: откройте https://&lt;IP этого телефона&gt;:%1$d/ в браузере</string>
     <string name="home_tagline">Запустите локальный игровой сервер. Гости подключаются из любого браузера в той же Wi-Fi сети — приложение ставить не нужно.</string>
     <string name="home_start">Начать хостинг</string>
     <string name="settings_title">Настройки</string>
@@ -12,10 +13,13 @@
     <string name="running_open_lobby">Открыть лобби на этом телефоне</string>
     <string name="running_hotspot_hint">Чтобы другие могли подключиться, включите Wi-Fi точку доступа на этом телефоне (или подключитесь к роутеру), затем попросите их открыть один из адресов выше.</string>
     <string name="running_hotspot_button">Открыть настройки точки доступа</string>
+    <string name="running_https_warning">При первом заходе гости увидят предупреждение «Соединение не защищено» — это нормально для самоподписанного сертификата. Им нужно нажать «Дополнительно» (или «Подробнее») → «Перейти на сайт».</string>
     <string name="running_stop">Остановить хостинг</string>
     <string name="settings_language">Язык</string>
     <string name="settings_port">Порт</string>
     <string name="settings_port_hint">От 1024 до 65535, по умолчанию 8080.</string>
     <string name="settings_keep_screen_on">Не выключать экран во время хостинга</string>
+    <string name="settings_use_https">Использовать HTTPS</string>
+    <string name="settings_use_https_hint">Нужно, чтобы у гостей работали микрофон (рация) и GPS (Мировой Путь). Используется самоподписанный сертификат — гости один раз увидят предупреждение браузера о безопасности, которое нужно принять.</string>
     <string name="settings_back">Назад</string>
 </resources>

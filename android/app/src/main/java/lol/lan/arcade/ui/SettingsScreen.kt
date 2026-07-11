@@ -47,6 +47,7 @@ fun SettingsScreen(
     onPortChange: (Int) -> Unit,
     onKeepScreenOnChange: (Boolean) -> Unit,
     onLanguageChange: (String?) -> Unit,
+    onUseHttpsChange: (Boolean) -> Unit,
     onBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -96,6 +97,13 @@ fun SettingsScreen(
             Text(stringResource(R.string.settings_keep_screen_on), modifier = Modifier.weight(1f))
             Switch(checked = state.keepScreenOn, onCheckedChange = onKeepScreenOnChange)
         }
+
+        Spacer(Modifier.height(24.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(stringResource(R.string.settings_use_https), modifier = Modifier.weight(1f))
+            Switch(checked = state.useHttps, onCheckedChange = onUseHttpsChange)
+        }
+        Text(stringResource(R.string.settings_use_https_hint), style = MaterialTheme.typography.bodySmall)
 
         Spacer(Modifier.height(24.dp))
         TextButton(onClick = onBack) { Text(stringResource(R.string.settings_back)) }

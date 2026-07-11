@@ -5,6 +5,7 @@
     <string name="notif_channel_name">Game host</string>
     <string name="notif_title">Offline Games Host is running</string>
     <string name="notif_text">Guests: open http://&lt;this phone\'s IP&gt;:%1$d/ in a browser</string>
+    <string name="notif_text_https">Guests: open https://&lt;this phone\'s IP&gt;:%1$d/ in a browser</string>
 
     <string name="home_tagline">Start a local game server. Guests join from any browser on the same Wi-Fi — no app to install.</string>
     <string name="home_start">Start hosting</string>
@@ -14,6 +15,8 @@
     <string name="settings_port">Port</string>
     <string name="settings_port_hint">Between 1024 and 65535, 8080 by default.</string>
     <string name="settings_keep_screen_on">Keep screen on while hosting</string>
+    <string name="settings_use_https">Use HTTPS</string>
+    <string name="settings_use_https_hint">Needed for microphone (radio) and GPS (World Trail) to work for guests. Uses a self-signed certificate — guests will see a one-time browser security warning to accept.</string>
     <string name="settings_back">Back</string>
 
     <string name="running_title">Hosting</string>
@@ -21,5 +24,6 @@
     <string name="running_open_lobby">Open lobby on this phone</string>
     <string name="running_hotspot_hint">To let others join, turn on this phone\'s Wi-Fi hotspot (or connect to a router), then have them open one of the addresses above.</string>
     <string name="running_hotspot_button">Open hotspot settings</string>
+    <string name="running_https_warning">Guests will see a "connection is not private" warning the first time — this is expected with a self-signed certificate. They should tap Advanced (or Show Details) → Proceed / visit this website.</string>
     <string name="running_stop">Stop hosting</string>
 </resources>

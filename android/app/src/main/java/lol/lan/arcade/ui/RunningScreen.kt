@@ -44,11 +44,13 @@ fun RunningScreen(state: HostUiState, onRefresh: () -> Unit, onStop: () -> Unit)
             Text(stringResource(R.string.running_title), style = MaterialTheme.typography.headlineSmall)
             Spacer(Modifier.height(16.dp))
         }
+        val scheme = if (state.useHttps) "https" else "http"
+
         if (state.ips.isEmpty()) {
             item { Text(stringResource(R.string.running_no_ip)) }
         } else {
             items(state.ips) { ip ->
-                val url = "http://$ip:${state.port}/"
+                val url = "$scheme://$ip:${state.port}/"
                 Text(url, style = MaterialTheme.typography.bodyLarge)
                 val bitmap = remember(url) { qrCodeBitmap(url) }
                 if (bitmap != null) {
@@ -62,10 +64,17 @@ fun RunningScreen(state: HostUiState, onRefresh: () -> Unit, onStop: () -> Unit)
             }
         }
 
+        if (state.useHttps) {
+            item {
+                Text(stringResource(R.string.running_https_warning), style = MaterialTheme.typography.bodySmall)
+                Spacer(Modifier.height(16.dp))
+            }
+        }
+
         item {
             Button(onClick = {
                 val ip = state.ips.firstOrNull() ?: "127.0.0.1"
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://$ip:${state.port}/"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("$scheme://$ip:${state.port}/"))
                 context.startActivity(intent)
             }) { Text(stringResource(R.string.running_open_lobby)) }
 

@@ -4,6 +4,7 @@
     <string name="notif_channel_name">مضيف الألعاب</string>
     <string name="notif_title">مركز الألعاب دون اتصال قيد التشغيل</string>
     <string name="notif_text">الضيوف: افتحوا http://&lt;عنوان IP لهذا الهاتف&gt;:%1$d/ في المتصفح</string>
+    <string name="notif_text_https">الضيوف: افتحوا https://&lt;عنوان IP لهذا الهاتف&gt;:%1$d/ في المتصفح</string>
     <string name="home_tagline">ابدأ خادم ألعاب محلي. ينضم الضيوف من أي متصفح على نفس شبكة Wi-Fi، دون تثبيت أي تطبيق.</string>
     <string name="home_start">بدء الاستضافة</string>
     <string name="settings_title">الإعدادات</string>
@@ -12,10 +13,13 @@
     <string name="running_open_lobby">افتح الردهة على هذا الهاتف</string>
     <string name="running_hotspot_hint">لتمكين الآخرين من الانضمام، فعّل نقطة اتصال Wi-Fi لهذا الهاتف (أو اتصل براوتر)، ثم اطلب منهم فتح أحد العناوين أعلاه.</string>
     <string name="running_hotspot_button">افتح إعدادات نقطة الاتصال</string>
+    <string name="running_https_warning">سيرى الضيوف تحذير "الاتصال غير خاص" في المرة الأولى — هذا أمر متوقع مع شهادة موقّعة ذاتيًا. عليهم النقر على "متقدم" (أو "عرض التفاصيل") ← "المتابعة / زيارة هذا الموقع".</string>
     <string name="running_stop">إيقاف الاستضافة</string>
     <string name="settings_language">اللغة</string>
     <string name="settings_port">المنفذ</string>
     <string name="settings_port_hint">من 1024 إلى 65535، الافتراضي 8080.</string>
     <string name="settings_keep_screen_on">إبقاء الشاشة مضاءة أثناء الاستضافة</string>
+    <string name="settings_use_https">استخدام HTTPS</string>
+    <string name="settings_use_https_hint">مطلوب لعمل الميكروفون (الراديو) و GPS (مسار العالم) لدى الضيوف. يستخدم شهادة موقّعة ذاتيًا — سيرى الضيوف تحذير أمان من المتصفح لمرة واحدة يجب قبوله.</string>
     <string name="settings_back">رجوع</string>
 </resources>

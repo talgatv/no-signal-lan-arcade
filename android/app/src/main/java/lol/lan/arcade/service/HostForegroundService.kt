@@ -12,20 +12,25 @@ import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import lol.lan.arcade.MainActivity
 import lol.lan.arcade.R
+import lol.lan.arcade.net.NetworkUtils
 import lol.lan.arcade.server.ContentRoots
 import lol.lan.arcade.server.OghServer
+import lol.lan.arcade.server.RunningHostServer
+import lol.lan.arcade.server.tls.HttpsOghServer
+import lol.lan.arcade.server.tls.TlsCertProvider
 import java.io.IOException
 
 class HostForegroundService : Service() {
 
-    private var server: OghServer? = null
+    private var server: RunningHostServer? = null
     private var wakeLock: PowerManager.WakeLock? = null
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val port = intent?.getIntExtra(EXTRA_PORT, DEFAULT_PORT) ?: DEFAULT_PORT
-        val notification = buildNotification(port)
+        val useHttps = intent?.getBooleanExtra(EXTRA_USE_HTTPS, false) ?: false
+        val notification = buildNotification(port, useHttps)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         } else {
@@ -43,7 +48,13 @@ class HostForegroundService : Service() {
                     }
                 },
             )
-            server = OghServer(port = port, contentRoots = contentRoots).also { it.start() }
+            server = if (useHttps) {
+                val sslContext = TlsCertProvider.sslContext(NetworkUtils.localIpv4Addresses())
+                HttpsOghServer(port = port, contentRoots = contentRoots, sslContext = sslContext)
+            } else {
+                OghServer(port = port, contentRoots = contentRoots)
+            }
+            server?.start()
         }
         acquireWakeLock()
         return START_STICKY
@@ -70,7 +81,7 @@ class HostForegroundService : Service() {
         wakeLock = null
     }
 
-    private fun buildNotification(port: Int): android.app.Notification {
+    private fun buildNotification(port: Int, useHttps: Boolean): android.app.Notification {
         val channelId = "ogh_host"
         val nm = getSystemService(NotificationManager::class.java)
         if (nm.getNotificationChannel(channelId) == null) {
@@ -81,10 +92,11 @@ class HostForegroundService : Service() {
         val openIntent = PendingIntent.getActivity(
             this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE,
         )
+        val text = if (useHttps) getString(R.string.notif_text_https, port) else getString(R.string.notif_text, port)
         return NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(getString(R.string.notif_title))
-            .setContentText(getString(R.string.notif_text, port))
+            .setContentText(text)
             .setContentIntent(openIntent)
             .setOngoing(true)
             .build()
@@ -92,6 +104,7 @@ class HostForegroundService : Service() {
 
     companion object {
         const val EXTRA_PORT = "port"
+        const val EXTRA_USE_HTTPS = "use_https"
         const val DEFAULT_PORT = 8080
         private const val NOTIFICATION_ID = 1
     }

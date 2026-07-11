@@ -4,6 +4,7 @@
     <string name="notif_channel_name">游戏主机</string>
     <string name="notif_title">离线游戏中心正在运行</string>
     <string name="notif_text">访客请在浏览器中打开 http://&lt;本机IP&gt;:%1$d/</string>
+    <string name="notif_text_https">访客请在浏览器中打开 https://&lt;本机IP&gt;:%1$d/</string>
     <string name="home_tagline">启动本地游戏服务器。同一 Wi-Fi 下的访客可用任意浏览器加入——无需安装应用。</string>
     <string name="home_start">开始托管</string>
     <string name="settings_title">设置</string>
@@ -12,10 +13,13 @@
     <string name="running_open_lobby">在本机打开大厅</string>
     <string name="running_hotspot_hint">要让其他人加入，请打开本机的 Wi-Fi 热点(或连接路由器)，然后让他们打开上面的地址之一。</string>
     <string name="running_hotspot_button">打开热点设置</string>
+    <string name="running_https_warning">访客首次访问时会看到"连接不是私密连接"的警告——这是自签名证书的正常现象。他们应点击"高级"(或"显示详情") → "继续访问"。</string>
     <string name="running_stop">停止托管</string>
     <string name="settings_language">语言</string>
     <string name="settings_port">端口</string>
     <string name="settings_port_hint">1024–65535 之间，默认 8080。</string>
     <string name="settings_keep_screen_on">托管时保持屏幕常亮</string>
+    <string name="settings_use_https">使用 HTTPS</string>
+    <string name="settings_use_https_hint">访客使用麦克风(对讲)和 GPS(世界足迹)功能需要此项。使用自签名证书——访客会看到一次性的浏览器安全警告，需要接受。</string>
     <string name="settings_back">返回</string>
 </resources>

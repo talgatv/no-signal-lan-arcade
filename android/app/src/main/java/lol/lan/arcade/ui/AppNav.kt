@@ -48,6 +48,7 @@ fun AppNav() {
                 onPortChange = viewModel::setPort,
                 onKeepScreenOnChange = viewModel::setKeepScreenOn,
                 onLanguageChange = viewModel::setLanguage,
+                onUseHttpsChange = viewModel::setUseHttps,
                 onBack = { nav.popBackStack() },
             )
         }

@@ -18,6 +18,7 @@ data class HostUiState(
     val ips: List<String> = emptyList(),
     val keepScreenOn: Boolean = true,
     val language: String? = null,
+    val useHttps: Boolean = false,
 )
 
 class HostViewModel(application: Application) : AndroidViewModel(application) {
@@ -35,13 +36,19 @@ class HostViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             settings.language.collect { v -> _state.update { it.copy(language = v) } }
         }
+        viewModelScope.launch {
+            settings.useHttps.collect { v -> _state.update { it.copy(useHttps = v) } }
+        }
     }
 
     fun start() {
         val app = getApplication<Application>()
         val port = _state.value.port
+        val useHttps = _state.value.useHttps
         app.startService(
-            Intent(app, HostForegroundService::class.java).putExtra(HostForegroundService.EXTRA_PORT, port)
+            Intent(app, HostForegroundService::class.java)
+                .putExtra(HostForegroundService.EXTRA_PORT, port)
+                .putExtra(HostForegroundService.EXTRA_USE_HTTPS, useHttps)
         )
         _state.update { it.copy(running = true, ips = NetworkUtils.localIpv4Addresses()) }
     }
@@ -66,5 +73,9 @@ class HostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setLanguage(tag: String?) {
         viewModelScope.launch { settings.setLanguage(tag) }
+    }
+
+    fun setUseHttps(enabled: Boolean) {
+        viewModelScope.launch { settings.setUseHttps(enabled) }
     }
 }
