@@ -1,0 +1,260 @@
+/* Cross the Road — canvas-game-shell layout. Mirrors games/comet's
+   .ogh-root/.ogh-stage pattern for the overall page skeleton, and
+   games/neon-drift's header/lang-switch/fixed-touch-controls pattern (this
+   game also needs a persistent on-screen button bar, so — like neon-drift —
+   it does NOT use the shared auto-sizing `.ogh-game-canvas` rule, and
+   instead sizes #game to explicitly leave room below it for the controls
+   bar). ogh-base.css's `overflow: hidden; touch-action: none;` on html/body
+   is exactly what a fixed-viewport tap/swipe game needs already — not
+   overridden here. */
+
+.ctr-body {
+  background: #05060c;
+  overflow: hidden;
+  touch-action: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills + language switch.                    */
+/* ------------------------------------------------------------------ */
+.ctr-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 10px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.ctr-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.ctr-hud .ogh-pill {
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+
+#hudStage strong { color: #5ce1ff; }
+#hudDistance strong { color: #5cffb0; }
+#hudBest strong { color: #ffd166; }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage + canvas. Width/height both derive from the same viewport      */
+/* budget so the internal 720x1000 (aspect 0.72) canvas never distorts, */
+/* same min()-with-multiplication technique ogh-base.css's shared       */
+/* .ogh-game-canvas rule uses, just with an extra fixed offset carved   */
+/* out for the header/hint/controls chrome around it.                   */
+/* ------------------------------------------------------------------ */
+.ctr-stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.ctr-canvas {
+  display: block;
+  width: min(94vw, calc((100vh - 230px) * 0.72));
+  height: min(calc(100vh - 230px), calc(94vw / 0.72));
+  max-width: 100%;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 1px rgba(92, 225, 255, 0.18), 0 12px 40px rgba(0, 0, 0, 0.45);
+  touch-action: none;
+  cursor: pointer;
+}
+
+.ctr-floater {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Montserrat", "Roboto", sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px, 4vw, 28px);
+  letter-spacing: 0.03em;
+  color: #5cffb0;
+  text-shadow: 0 0 16px rgba(92, 255, 176, 0.7);
+  pointer-events: none;
+  opacity: 0;
+  white-space: nowrap;
+}
+
+.ctr-floater.is-on {
+  animation: ctr-floater-pop 1.1s ease-out forwards;
+}
+
+@keyframes ctr-floater-pop {
+  0% { opacity: 0; transform: translate(-50%, -40%) scale(0.85); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+  30% { transform: translate(-50%, -50%) scale(1); }
+  75% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -62%) scale(1); }
+}
+
+.ctr-hint {
+  flex: 0 0 auto;
+  margin: 2px 0 4px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ogh-fg-dim);
+}
+
+/* ------------------------------------------------------------------ */
+/* Touch controls — deliberately forced LTR regardless of document dir: */
+/* the left button always dodges physically left (a spatial control     */
+/* mapping, not text), and must never swap sides under RTL. Same        */
+/* precedent as games/neon-drift's .nd-controls.                        */
+/* ------------------------------------------------------------------ */
+.ctr-controls {
+  flex: 0 0 auto;
+  z-index: 4;
+  display: flex;
+  direction: ltr;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 12px calc(10px + var(--ogh-safe-bottom));
+}
+
+.ctr-btn {
+  border-radius: 16px;
+  border: 2px solid rgba(92, 225, 255, 0.35);
+  background: rgba(12, 16, 32, 0.85);
+  color: #e8ecff;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  line-height: 1;
+}
+
+.ctr-btn-side {
+  width: 64px;
+  height: 64px;
+}
+
+.ctr-btn-fwd {
+  width: 84px;
+  height: 76px;
+  border-color: rgba(92, 255, 176, 0.55);
+  color: #5cffb0;
+  font-size: 28px;
+}
+
+.ctr-btn:active,
+.ctr-btn.is-down {
+  transform: scale(0.94);
+  background: rgba(92, 225, 255, 0.18);
+}
+
+/* ------------------------------------------------------------------ */
+/* Crash flash — brief full-stage red pulse on collision.               */
+/* ------------------------------------------------------------------ */
+.ctr-stage.is-flash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 92, 122, 0.35);
+  pointer-events: none;
+  animation: ctr-flash 0.4s ease-out forwards;
+}
+
+@keyframes ctr-flash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards                                                        */
+/* ------------------------------------------------------------------ */
+.ctr-card h1 {
+  font-family: "Montserrat", "Roboto", sans-serif;
+  letter-spacing: 0.06em;
+}
+
+.ctr-best-line {
+  margin: 0 0 14px !important;
+  font-size: 13px !important;
+  color: var(--ogh-fg-dim) !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+
+.ctr-final-line {
+  margin: 0 0 8px !important;
+  font-size: 1.05rem !important;
+  font-weight: 700;
+  color: #e8ecff !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+
+.ctr-new-best {
+  margin: 0 0 10px !important;
+  font-size: 13px !important;
+  font-weight: 700;
+  color: #ffd166 !important;
+}
+
+@media (max-width: 380px) {
+  .back { font-size: 12px; }
+  .ctr-hud .ogh-pill { font-size: 11px; padding: 5px 9px; }
+  .ctr-btn-side { width: 56px; height: 56px; font-size: 20px; }
+  .ctr-btn-fwd { width: 74px; height: 66px; font-size: 24px; }
+}
+
+@media (max-height: 640px) {
+  .ctr-canvas {
+    width: min(94vw, calc((100vh - 195px) * 0.72));
+    height: min(calc(100vh - 195px), calc(94vw / 0.72));
+  }
+}

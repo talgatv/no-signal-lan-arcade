@@ -43,6 +43,15 @@ export function createOghSfx() {
     boing: () => tone(210, 0.16, 'sine', 0.055, 380),
     whoosh: () => tone(600, 0.5, 'sine', 0.03, 140),
     land: () => tone(120, 0.14, 'sine', 0.05, 65),
+    // Added for games/cross-the-road — forward-hop and ambient-traffic-honk
+    // cues. `hop` is a quick two-note upward chirp (distinct from the flatter
+    // generic `tap`) so the very-frequent "advance one lane" action reads as
+    // a bouncy character hop rather than a UI click. `honk` is a short
+    // two-tone car-horn blip (a plain square/triangle interval, same
+    // no-sample approach as everything else here) used sparingly as ambient
+    // traffic flavor, not tied to collision.
+    hop: () => { tone(430, 0.045, 'triangle', 0.045, 640); setTimeout(() => tone(760, 0.035, 'triangle', 0.03), 35); },
+    honk: () => { tone(340, 0.09, 'square', 0.05); setTimeout(() => tone(270, 0.11, 'square', 0.045), 70); },
   };
 
   return {

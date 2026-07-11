@@ -1848,6 +1848,87 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Three grid sizes (4x4/8 pairs, 6x4/12 pairs, 6x6/18 pairs) and four card themes (Shapes — plain CSS clip-path shapes in a 3-color rotation; Animals and Tiles — Unicode emoji / the games/mahjong Mahjong Tiles glyph block; Letters — plain bold text), each with 24 curated symbols so even the largest grid never runs short. No image assets anywhere. A round is rebuilt from scratch (fresh shuffle, fresh DOM grid) on every New game / Play again, so there's never leftover state between rounds. Board is a fixed logical-pixel grid, recomputed per grid size and scaled as a whole via CSS transform (games/solitaire's fitBoard() pattern) so it always fits without scrolling. Tracks moves and elapsed time, plus a local best-moves/best-time per grid size via OGHProfile. RTL (Arabic) mirrors header/setup/result chrome only; the card grid itself never mirrors (#board dir=\"ltr\"), same precedent as games/solitaire and games/tic-tac-toe. Solo only — no networking, by design."
+    },
+    {
+      "id": "cross-the-road",
+      "name": "Cross the Road",
+      "names": {
+        "en": "Cross the Road",
+        "ru": "Через дорогу",
+        "zh": "过马路",
+        "es": "Cruza la Calle",
+        "ar": "اعبر الطريق",
+        "fr": "Traverse la Route"
+      },
+      "tagline": "Pseudo-3D Frogger-style road crossing — hop lanes, dodge traffic, the road keeps getting wider and faster.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "pseudo-3d",
+        "perspective"
+      ],
+      "genres": [
+        "arcade",
+        "reaction",
+        "endless"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap the road (or the forward button) to hop one lane ahead; swipe or tap left/right to dodge within a lane. Arrow keys / WASD work too — Up hops, Left/Right dodge.",
+          "ru": "Тапни по дороге (или по кнопке вперёд), чтобы прыгнуть на одну полосу вперёд; свайп или тап влево/вправо — увернуться в полосе. Стрелки / WASD тоже работают: вверх — прыжок, влево/вправо — уворот.",
+          "zh": "点击道路（或前进按钮）向前跳一条车道；滑动或点击左右两侧可在车道内躲避。方向键 / WASD 也可以：上为跳跃，左右为躲避。",
+          "es": "Toca la carretera (o el botón de avanzar) para saltar un carril; desliza o toca izquierda/derecha para esquivar dentro del carril. Las flechas / WASD también funcionan: arriba salta, izquierda/derecha esquiva.",
+          "ar": "اضغط على الطريق (أو زر التقدم) للقفز حارة للأمام؛ اسحب أو اضغط يسارًا/يمينًا للتفادي داخل الحارة. تعمل الأسهم / WASD أيضًا: للأعلى قفز، لليسار/اليمين تفادٍ.",
+          "fr": "Touchez la route (ou le bouton avancer) pour sauter une voie ; glissez ou touchez à gauche/droite pour esquiver dans la voie. Les flèches / WASD fonctionnent aussi : haut pour sauter, gauche/droite pour esquiver."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "arcade",
+        "endless",
+        "pseudo-3d"
+      ],
+      "instructions": {
+        "en": "Hop forward lane by lane and dodge the oncoming traffic — tap/swipe or use the on-screen buttons, arrow keys work too. Each stage you clear, the road gets wider (more lanes) and the traffic gets faster and denser. Score is distance traveled; a best-distance high score is saved locally.",
+        "ru": "Прыгай вперёд полосу за полосой и уворачивайся от машин — тапай/свайпай, используй кнопки на экране или стрелки на клавиатуре. С каждым пройденным этапом дорога становится шире (больше полос) и быстрее — трафик становится плотнее. Очки — это пройденная дистанция; лучший результат сохраняется локально.",
+        "zh": "逐条车道向前跳跃，躲避迎面而来的车流——点击/滑动，或使用屏幕按钮，方向键也可以。每通过一关，道路就会变宽（车道更多），车流也会更快更密。得分即为前进的距离；最佳距离会保存在本地。",
+        "es": "Avanza carril a carril esquivando el tráfico — toca/desliza, usa los botones en pantalla o las flechas del teclado. Cada etapa superada, la carretera se ensancha (más carriles) y el tráfico se vuelve más rápido y denso. La puntuación es la distancia recorrida; el mejor resultado se guarda localmente.",
+        "ar": "اقفز للأمام حارة تلو الأخرى وتفادَ حركة المرور القادمة — اضغط/اسحب، أو استخدم الأزرار على الشاشة، وتعمل أسهم لوحة المفاتيح أيضًا. مع كل مرحلة تجتازها يصبح الطريق أعرض (حارات أكثر) وتصبح حركة المرور أسرع وأكثر ازدحامًا. النتيجة هي المسافة المقطوعة، وتُحفظ أفضل مسافة محليًا.",
+        "fr": "Avancez voie par voie en évitant la circulation venant en face — touchez/glissez, utilisez les boutons à l'écran ou les flèches du clavier. À chaque étape franchie, la route s'élargit (plus de voies) et la circulation devient plus rapide et plus dense. Le score est la distance parcourue ; le meilleur score est sauvegardé localement."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "cross-the-road/client/index.html",
+      "manifest": "cross-the-road/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 67.0,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Pseudo-3D perspective renderer (render.js): lanes drawn as trapezoids narrowing toward a horizon, sprites scaled by depth, camera rides with the player — not a flat top-down grid. Difficulty is a pure function of stage number (road.js's stageParams()): lane count grows every stage up to a cap, while speed/density/truck-mix keep climbing indefinitely beyond that (endless). Collision is checked every frame against explicit vehicle hitboxes; a short move tween is purely cosmetic and never grants invulnerability. No bundled image or audio assets — canvas vector shapes with a neon glow, sound reuses games/_shared/js/ogh-sfx.js (extended with 'hop'/'honk'). Best distance persists via OGHProfile, same convention as games/pop-the-bugs."
     }
   ]
 }

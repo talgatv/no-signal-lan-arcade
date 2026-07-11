@@ -1,0 +1,27 @@
+{
+  "id": "cross-the-road",
+  "name": "Cross the Road",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "reaction", "endless"],
+  "tags": ["solo", "experimental", "arcade", "endless", "pseudo-3d"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap the road (or the forward button) to hop one lane ahead; swipe or tap left/right to dodge within a lane. Arrow keys / WASD work too — Up hops, Left/Right dodge.",
+      "ru": "Тапни по дороге (или по кнопке вперёд), чтобы прыгнуть на одну полосу вперёд; свайп или тап влево/вправо — увернуться в полосе. Стрелки / WASD тоже работают: вверх — прыжок, влево/вправо — уворот."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Pseudo-3D 'cross the road' arcade game: lanes recede toward a horizon (trapezoidal perspective, sprites scaled by distance) instead of a flat top-down grid. Classic hop-forward/dodge-left-right control scheme. Each stage is a fixed run of traffic lanes ending in a safe median; clearing a stage grows the lane count (up to a cap) and, without a cap, keeps raising vehicle speed and packing lanes denser — a real, endless difficulty ramp, not a token bump. Row generation is a pure function of stage number (stageParams() in road.js), so difficulty at any stage can be inspected or jumped to directly for testing. No bundled image or audio assets — road, traffic, and the runner are canvas vector shapes with a neon glow; sound reuses games/_shared/js/ogh-sfx.js (extended here with 'hop'/'honk' patterns, same convention as games/neon-drift's 'screech' and games/penguin-fling's 'thwack'/'boing'/'whoosh'/'land'). Best distance persists via OGHProfile, same convention as games/pop-the-bugs."
+}
