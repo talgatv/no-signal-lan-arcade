@@ -17,11 +17,13 @@ class SettingsStore(private val context: Context) {
         val PORT = intPreferencesKey("port")
         val LANGUAGE = stringPreferencesKey("language")
         val KEEP_SCREEN_ON = booleanPreferencesKey("keep_screen_on")
+        val USE_HTTPS = booleanPreferencesKey("use_https")
     }
 
     val port: Flow<Int> = context.dataStore.data.map { it[Keys.PORT] ?: DEFAULT_PORT }
     val language: Flow<String?> = context.dataStore.data.map { it[Keys.LANGUAGE] }
     val keepScreenOn: Flow<Boolean> = context.dataStore.data.map { it[Keys.KEEP_SCREEN_ON] ?: true }
+    val useHttps: Flow<Boolean> = context.dataStore.data.map { it[Keys.USE_HTTPS] ?: false }
 
     suspend fun setPort(port: Int) {
         context.dataStore.edit { it[Keys.PORT] = port }
@@ -35,6 +37,10 @@ class SettingsStore(private val context: Context) {
 
     suspend fun setKeepScreenOn(enabled: Boolean) {
         context.dataStore.edit { it[Keys.KEEP_SCREEN_ON] = enabled }
+    }
+
+    suspend fun setUseHttps(enabled: Boolean) {
+        context.dataStore.edit { it[Keys.USE_HTTPS] = enabled }
     }
 
     companion object {

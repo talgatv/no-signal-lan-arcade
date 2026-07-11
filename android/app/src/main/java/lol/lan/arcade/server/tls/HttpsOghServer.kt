@@ -5,6 +5,7 @@ import lol.lan.arcade.server.Connection
 import lol.lan.arcade.server.Dispatcher
 import lol.lan.arcade.server.Hub
 import lol.lan.arcade.server.RouteResolver
+import lol.lan.arcade.server.RunningHostServer
 import lol.lan.arcade.server.guessContentTypeString
 import java.io.BufferedOutputStream
 import java.io.OutputStream
@@ -30,12 +31,12 @@ class HttpsOghServer(
     private val port: Int,
     private val contentRoots: ContentRoots,
     private val sslContext: SSLContext,
-) {
+) : RunningHostServer {
     private val hub = Hub()
     private var serverSocket: SSLServerSocket? = null
     private var pool: ExecutorService? = null
 
-    fun start() {
+    override fun start() {
         if (serverSocket != null) return
         val executor = Executors.newCachedThreadPool()
         pool = executor
@@ -53,7 +54,7 @@ class HttpsOghServer(
         }
     }
 
-    fun stop() {
+    override fun stop() {
         try {
             serverSocket?.close()
         } catch (e: Exception) {

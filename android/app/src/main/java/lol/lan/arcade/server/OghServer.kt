@@ -92,18 +92,18 @@ fun Application.installOghRouting(hub: Hub, contentRoots: ContentRoots) {
     }
 }
 
-class OghServer(private val port: Int, private val contentRoots: ContentRoots) {
+class OghServer(private val port: Int, private val contentRoots: ContentRoots) : RunningHostServer {
     private val hub = Hub()
     private var engine: EmbeddedServer<*, *>? = null
 
-    fun start() {
+    override fun start() {
         if (engine != null) return
         engine = embeddedServer(CIO, host = "0.0.0.0", port = port) {
             installOghRouting(hub, contentRoots)
         }.start(wait = false)
     }
 
-    fun stop() {
+    override fun stop() {
         engine?.stop(1000, 2000)
         engine = null
     }
