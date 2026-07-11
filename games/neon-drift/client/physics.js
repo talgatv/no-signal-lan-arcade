@@ -96,7 +96,7 @@ function raceMetric(c) {
   return c.lap + c.progress;
 }
 
-function rubberbandMultiplier(c, cars) {
+export function rubberbandMultiplier(c, cars) {
   if (cars.length < 2) return 1;
   const metrics = cars.map(raceMetric);
   const avg = metrics.reduce((a, b) => a + b, 0) / metrics.length;
