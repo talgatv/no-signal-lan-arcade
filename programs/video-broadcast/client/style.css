@@ -1,0 +1,382 @@
+/*
+ * ogh-base.css sets `overflow: hidden; touch-action: none; height: 100%;`
+ * on html/body, which is correct for fixed-viewport canvas games but wrong
+ * here: a tile grid with several broadcasters plus header/controls can be
+ * taller than the viewport on a phone. Override BOTH html and body (not
+ * just body) so the page can scroll — html must actually grow/scroll, and
+ * body must stay `overflow: visible` (not `auto`/`hidden`) so `position:
+ * sticky` on the controls bar resolves against the real scroller (html)
+ * instead of body, which — because body's own height:auto box never
+ * overflows itself — would otherwise give sticky nothing to stick against.
+ */
+html {
+  height: auto;
+  min-height: 100%;
+  overflow: auto;
+  touch-action: manipulation;
+}
+
+.vb-body {
+  overflow: visible;
+  min-height: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+  color: var(--ogh-fg);
+  font-family: var(--ogh-font);
+  touch-action: manipulation;
+}
+
+.vb-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(92, 225, 255, 0.15);
+  background: var(--ogh-bg-elevated);
+  flex-wrap: wrap;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.titles { flex: 1; min-width: 160px; }
+.titles h1 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-family: var(--ogh-display);
+  letter-spacing: 0.04em;
+}
+.net {
+  margin: 2px 0 0;
+  font-size: 11px;
+  font-family: var(--ogh-mono);
+  color: var(--ogh-fg-dim);
+}
+.net.online { color: var(--ogh-good); }
+.net.offline { color: var(--ogh-warn); }
+
+.me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.me img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--ogh-bg-elevated);
+}
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.lang-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+.tagline {
+  margin: 0;
+  padding: 8px 14px 0;
+  font-size: 12px;
+  color: var(--ogh-fg-dim);
+  flex: 0 0 auto;
+}
+
+.banner {
+  margin: 8px 14px 0;
+  padding: 10px 14px;
+  border-radius: var(--ogh-radius);
+  font-size: 12.5px;
+  line-height: 1.5;
+  flex: 0 0 auto;
+}
+.banner p { margin: 0; }
+.banner-warn {
+  background: rgba(255, 209, 102, 0.1);
+  border: 1px solid rgba(255, 209, 102, 0.4);
+  color: var(--ogh-warn);
+}
+.banner-error {
+  background: rgba(255, 92, 122, 0.1);
+  border: 1px solid rgba(255, 92, 122, 0.4);
+  color: var(--ogh-bad);
+}
+
+.vb-layout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 0;
+}
+
+@media (max-width: 760px) {
+  .vb-layout { grid-template-columns: 1fr; }
+  .roster-wrap { border-left: none; border-top: 1px solid rgba(92, 225, 255, 0.12); }
+  .roster { max-height: 140px; }
+}
+
+.vb-main {
+  min-height: 0;
+  padding: 10px 14px;
+}
+
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  align-content: start;
+  justify-items: center;
+}
+
+.grid-empty {
+  grid-column: 1 / -1;
+  margin: 24px 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ogh-fg-dim);
+}
+.grid-empty[hidden] { display: none; }
+
+.tile {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 4 / 3;
+  background: #141c28;
+  border: 1px solid #243040;
+  border-radius: var(--ogh-radius);
+  overflow: hidden;
+}
+
+.tile video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #000;
+}
+
+.tile.mirrored video { transform: scaleX(-1); }
+
+.tile-placeholder {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #0e1420;
+}
+.tile.cam-off .tile-placeholder { display: flex; }
+.tile.cam-off video { visibility: hidden; }
+
+.tile-avatar {
+  width: 25%;
+  min-width: 40px;
+  max-width: 72px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: linear-gradient(160deg, var(--ogh-accent), var(--ogh-accent-2));
+  color: #07080f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-family: var(--ogh-display);
+}
+
+.tile-placeholder-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ogh-fg-dim);
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tile-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}
+
+.tile-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tile-badge {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ogh-accent);
+  border: 1px solid rgba(92, 225, 255, 0.5);
+  border-radius: 999px;
+  padding: 1px 6px;
+  background: rgba(7, 8, 15, 0.5);
+  flex: 0 0 auto;
+}
+
+.tile-icon {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ogh-bad);
+  border: 1px solid rgba(255, 92, 122, 0.5);
+  border-radius: 999px;
+  padding: 1px 6px;
+  background: rgba(7, 8, 15, 0.5);
+  flex: 0 0 auto;
+}
+.tile-icon[hidden] { display: none; }
+
+.roster-wrap {
+  border-left: 1px solid rgba(92, 225, 255, 0.12);
+  padding: 12px;
+  background: var(--ogh-bg-elevated);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.roster-wrap h2 {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ogh-fg-dim);
+}
+.roster {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.roster .empty { color: var(--ogh-fg-dim); font-size: 12px; padding: 8px 2px; }
+
+.peer-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: #141c28;
+  border-radius: 10px;
+  border: 1px solid #243040;
+  flex-wrap: wrap;
+}
+.peer-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ogh-fg-dim);
+  flex: 0 0 auto;
+}
+.peer-dot.connecting { background: var(--ogh-warn); box-shadow: 0 0 6px var(--ogh-warn); }
+.peer-dot.connected { background: var(--ogh-good); box-shadow: 0 0 6px var(--ogh-good); }
+.peer-dot.failed { background: var(--ogh-bad); }
+.peer-dot.closed { background: var(--ogh-fg-dim); }
+.peer-dot.idle { background: var(--ogh-fg-dim); }
+
+.peer-name {
+  font-size: 13px;
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.peer-badge {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ogh-accent-2);
+  border: 1px solid rgba(255, 107, 203, 0.4);
+  border-radius: 999px;
+  padding: 1px 6px;
+}
+.peer-status {
+  font-size: 10px;
+  color: var(--ogh-fg-dim);
+  font-family: var(--ogh-mono);
+  flex-basis: 100%;
+}
+
+.controls-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 14px calc(10px + var(--ogh-safe-bottom));
+  background: rgba(10, 12, 24, 0.9);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(92, 225, 255, 0.15);
+}
+.controls-bar .ogh-btn[hidden] { display: none; }
+.controls-bar .ogh-btn.is-active {
+  border-color: rgba(255, 92, 122, 0.6);
+  background: linear-gradient(160deg, rgba(255, 92, 122, 0.22), rgba(255, 107, 203, 0.1));
+  color: var(--ogh-bad);
+}
+
+.hint.privacy {
+  margin: 0;
+  padding: 8px 14px 12px;
+  font-size: 11px;
+  color: var(--ogh-fg-dim);
+  text-align: center;
+  flex: 0 0 auto;
+}

@@ -1,0 +1,31 @@
+{
+  "id": "video-broadcast",
+  "name": "Video Broadcast",
+  "version": "0.1.0",
+  "kind": "program",
+  "minPlayers": 1,
+  "maxPlayers": 8,
+  "supportsSolo": false,
+  "genres": ["utility", "networking"],
+  "tags": ["program", "video", "camera", "webrtc", "p2p", "broadcast", "multiplayer"],
+  "style": "flat-ui",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap Start broadcasting to go live with your camera and mic. Tap Mute, Camera off, or Flip camera to control your own stream."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "Full-mesh WebRTC: every browser connects directly to every other browser's RTCPeerConnection and adds its own camera/mic tracks. The ogh-net WebSocket room relay only ever carries SDP/ICE signaling and small media-state (mute/camera-off) messages, never video or audio."
+  },
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-net.js", "js/ogh-profile.js"],
+  "notes": "No STUN/TURN configured — peers on the same LAN room connect with host ICE candidates only. Camera/mic access requires a secure context (HTTPS or localhost); a plain-HTTP LAN page can still receive/watch broadcasts but cannot send its own. Full mesh scales to roughly 4-6 simultaneous broadcasters on typical phones/laptops before CPU/bandwidth strain — there is intentionally no media relay/SFU server."
+}

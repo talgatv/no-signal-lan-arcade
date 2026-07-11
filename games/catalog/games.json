@@ -1050,6 +1050,67 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Deliberate style exception for this hub: a skeuomorphic Windows XP 'Luna' MS-Paint clone (title-bar gradient, border-style outset/inset beveled toolbox, 28-swatch VGA-ish palette), not the usual neon-vector look. System font stack only (Tahoma/Segoe UI/Verdana) — no bundled or fetched webfont. Pencil is plotted pixel-by-pixel (Bresenham) for a true hard edge; the XP window chrome stays LTR-structured even under RTL languages (mirrors games/music-synth's piano-mirroring-avoidance precedent) while every string is fully translated."
+    },
+    {
+      "id": "video-broadcast",
+      "name": "Video Broadcast",
+      "kind": "program",
+      "tagline": "Broadcast your camera and mic to the room, full mesh — never through the host.",
+      "style": "flat-ui",
+      "genres": [
+        "utility",
+        "networking"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap Start broadcasting to go live with your camera and mic. Tap Mute, Camera off, or Flip camera to control your own stream."
+        }
+      },
+      "instructions": {
+        "en": "Tap “Start broadcasting” to go live with your camera and mic — everyone else in the room who has this page open sees you appear as a video tile immediately, including anyone who joins later. Use Mute or Camera off to control your own feed; Flip camera swaps between front and back cameras if your device has both. Not everyone has to broadcast — watch quietly, or join in with your own camera, your choice. Needs a secure connection (HTTPS or localhost) to use your camera; the host only relays connection setup, never your video or audio.",
+        "ru": "Нажмите «Начать трансляцию», чтобы выйти в эфир с камерой и микрофоном — все, у кого открыта эта страница в комнате, сразу увидят вас в виде видео-плитки, включая тех, кто присоединится позже. Используйте «Выключить звук» или «Выключить камеру», чтобы управлять своим потоком; «Переключить камеру» меняет фронтальную и основную камеру, если на устройстве есть обе. Транслировать не обязательно всем — можно просто смотреть или включить свою камеру, как захотите. Для доступа к камере нужно защищённое соединение (HTTPS или localhost); хост лишь передаёт данные для установки соединения, но никогда не видит ваше видео или звук.",
+        "zh": "点击“开始直播”，即可用摄像头和麦克风上线——房间里打开此页面的所有人都会立即看到你的视频画面，包括之后加入的人。使用“静音”或“关闭摄像头”来控制自己的画面；如果设备有前后两个摄像头，“切换摄像头”可以切换。并非所有人都必须直播——安静观看，或开启自己的摄像头，随你选择。使用摄像头需要安全连接（HTTPS 或 localhost）；主机只转发连接建立所需的数据，绝不会看到你的视频或音频。",
+        "es": "Toca «Iniciar transmisión» para salir en vivo con tu cámara y micrófono — todos los que tengan esta página abierta en la sala te verán aparecer como una miniatura de vídeo de inmediato, incluidos quienes se unan más tarde. Usa «Silenciar» o «Apagar cámara» para controlar tu propia señal; «Cambiar cámara» alterna entre la cámara frontal y la trasera si tu dispositivo tiene ambas. No todos tienen que transmitir — puedes simplemente mirar, o unirte con tu propia cámara, tú decides. Necesita una conexión segura (HTTPS o localhost) para usar tu cámara; el host solo transmite los datos de conexión, nunca tu vídeo ni tu audio.",
+        "ar": "اضغط «بدء البث» لتصبح مباشرًا بالكاميرا والميكروفون — سيرى الجميع ممن فتحوا هذه الصفحة في الغرفة ظهورك كبلاطة فيديو على الفور، بمن فيهم من ينضم لاحقًا. استخدم «كتم الصوت» أو «إيقاف الكاميرا» للتحكم في بثك؛ يبدّل «تبديل الكاميرا» بين الكاميرا الأمامية والخلفية إذا كان جهازك يحتوي على الاثنتين. ليس على الجميع البث — يمكنك المشاهدة بهدوء أو الانضمام بكاميرتك، الخيار لك. يتطلب استخدام الكاميرا اتصالًا آمنًا (HTTPS أو localhost)؛ لا يقوم المضيف إلا بترحيل بيانات إعداد الاتصال، ولا يرى أبدًا الفيديو أو الصوت الخاص بك.",
+        "fr": "Touchez « Démarrer la diffusion » pour passer en direct avec votre caméra et votre micro — tous ceux qui ont cette page ouverte dans le salon vous verront apparaître immédiatement sous forme de vignette vidéo, y compris ceux qui arrivent plus tard. Utilisez « Couper le son » ou « Couper la caméra » pour contrôler votre propre flux ; « Changer de caméra » bascule entre la caméra avant et arrière si votre appareil a les deux. Tout le monde n'est pas obligé de diffuser — regardez tranquillement, ou rejoignez avec votre propre caméra, comme vous le souhaitez. Nécessite une connexion sécurisée (HTTPS ou localhost) pour utiliser votre caméra ; l'hôte ne relaie que les données de mise en connexion, jamais votre vidéo ni votre audio."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11"
+      },
+      "players": {
+        "min": 1,
+        "max": 8,
+        "solo": false
+      },
+      "entry": "video-broadcast/client/index.html",
+      "manifest": "video-broadcast/manifest.json",
+      "version": "0.1.0",
+      "status": "experimental",
+      "familyFriendly": true,
+      "tags": [
+        "program",
+        "video",
+        "camera",
+        "webrtc",
+        "p2p",
+        "broadcast",
+        "multiplayer"
+      ],
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "Full-mesh WebRTC: signaling (SDP/ICE) and small media-state messages over the host WebSocket relay; camera/mic tracks transfer directly browser-to-browser, never through the host"
+      }
     }
   ]
 }
