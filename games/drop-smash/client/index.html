@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Drop Smash — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="ds-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="ds-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="ds-hud" role="status">
+        <button type="button" class="ogh-pill ds-tower-pill" id="hudTower" data-i18n-aria="hudTowerAria">
+          <span data-i18n="towerLabel">Tower</span> <strong id="hudTowerVal">Sheer Tower</strong> <span aria-hidden="true" class="ds-cycle-mark">⟳</span>
+        </button>
+        <div class="ogh-pill" id="hudLayers" data-i18n-aria="hudLayersAria">
+          <span data-i18n="layersLabel">Layers</span> <strong id="hudLayersVal">0/11</strong>
+        </div>
+        <div class="ogh-pill" id="hudScore" data-i18n-aria="hudScoreAria">
+          <span data-i18n="scoreLabel">Score</span> <strong id="hudScoreVal">0</strong>
+        </div>
+        <div class="ogh-pill" id="hudBest" data-i18n-aria="hudBestAria">
+          <span data-i18n="bestLabel">Best</span> <strong id="hudBestVal">0</strong>
+        </div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- The tower scene (a horizontal spawn-position track above a vertical
+         stack of layers) is spatial gameplay drawn in a fixed world space
+         and must never mirror under RTL — dir="ltr" on both the stage and
+         the canvas is deliberate and must stay, same precedent as
+         games/siege-break's battlefield (see this game's i18n.js header
+         comment). game.js also forces ctx.direction = 'ltr'. -->
+    <main class="ogh-stage" dir="ltr">
+      <canvas class="ogh-game-canvas" id="game" width="720" height="1000" dir="ltr" aria-label="Tower"></canvas>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hintConfig">Drag across the top to aim, then press Drop</p>
+
+    <!-- Persistent config strip (not an overlay) — stays visible while
+         configuring so the player can see the tower/spawn marker while
+         choosing ball count/weight, same "real header, not a floating
+         overlay" idiom as games/claw-machine's .clw-controls. dir="ltr" for
+         the same reason as the stage: this is a left/right physical control
+         layout, not prose. -->
+    <div class="ds-controls" id="controls" dir="ltr">
+      <div class="ds-row">
+        <span class="ds-row-label" data-i18n="ballsLabel">Balls</span>
+        <div class="ds-btn-group" id="ballGroup" role="group" aria-label="Ball count" data-i18n-aria="ballGroupAria">
+          <button type="button" class="ds-opt-btn" data-count="1">1</button>
+          <button type="button" class="ds-opt-btn" data-count="2">2</button>
+          <button type="button" class="ds-opt-btn" data-count="3">3</button>
+        </div>
+      </div>
+      <div class="ds-row">
+        <span class="ds-row-label" data-i18n="weightLabel">Weight</span>
+        <div class="ds-btn-group" id="weightGroup" role="group" aria-label="Ball weight" data-i18n-aria="weightGroupAria">
+          <button type="button" class="ds-opt-btn" data-weight="light" data-i18n="weightLight">Light</button>
+          <button type="button" class="ds-opt-btn" data-weight="medium" data-i18n="weightMedium">Medium</button>
+          <button type="button" class="ds-opt-btn" data-weight="heavy" data-i18n="weightHeavy">Heavy</button>
+        </div>
+      </div>
+      <button type="button" class="ogh-btn ogh-btn-primary ds-drop-btn" id="btnDrop" data-i18n="dropBtn">Drop</button>
+    </div>
+
+    <div class="ogh-overlay" id="overlay">
+      <!-- Start -->
+      <div class="ogh-card" id="startCard">
+        <h1 data-i18n="title">Drop Smash</h1>
+        <p data-i18n="blurb">Choose how many balls, how heavy, and where to drop them — then let real physics smash through as many tower layers as it can.</p>
+        <p class="ds-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start smashing</button>
+      </div>
+
+      <!-- Results (shown after every drop settles) -->
+      <div class="ogh-card" id="resultsCard" hidden>
+        <h1 id="resultsTitle" data-i18n="dropDoneTitle">Drop settled</h1>
+        <p class="ds-stat-line" id="resLayersLine"></p>
+        <p class="ds-stat-line" id="resDepthLine"></p>
+        <p class="ds-stat-line ds-score-line" id="resScoreLine"></p>
+        <p class="ds-stat-line" id="resTotalLine"></p>
+        <p class="ds-new-best" id="newBestLine" hidden data-i18n="newBestLine">New best score!</p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnContinue" data-i18n="continueBtn">Configure next drop</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+/* Drop Smash — neon-vector page chrome on top of ogh-base.css's shared
+   structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card,
+   .ogh-btn, .ogh-pill, .ogh-hint). Palette stays the hub default dark
+   neon-vector look (no :root override) — this file only adds the header /
+   lang-switch / config-strip / overlay layout, mirroring games/siege-break's
+   real-flow header pattern (a normal header that takes layout space, not a
+   fixed overlay) and games/claw-machine's persistent bottom controls strip.
+   The whole scene (tower layers, cracks, balls, debris) is Canvas 2D vector
+   shapes with a neon glow — no bitmap assets. */
+
+.ds-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills + language switch.                    */
+/* ------------------------------------------------------------------ */
+.ds-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 10px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.ds-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.ds-hud .ogh-pill {
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+.ds-hud .ogh-pill span:not(.ds-cycle-mark) { color: var(--ogh-fg-dim); }
+#hudTowerVal { color: var(--ogh-accent); }
+#hudLayersVal { color: var(--ogh-warn); }
+#hudScoreVal { color: var(--ogh-good); }
+#hudBestVal { color: var(--ogh-accent-2); }
+
+/* The tower pill doubles as a "tap to switch tower" button — reset the
+   default <button> chrome so it still reads as a plain HUD pill. */
+.ds-tower-pill {
+  border: 1px solid rgba(92, 225, 255, 0.22);
+  cursor: pointer;
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ds-tower-pill:active { transform: scale(0.97); }
+.ds-tower-pill:disabled { opacity: 0.55; cursor: default; }
+.ds-cycle-mark { color: var(--ogh-fg-dim); margin-inline-start: 2px; }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas — uses the shared auto-sizing .ogh-game-canvas rule as-is     */
+/* (the internal 720x1000 resolution matches that rule's 0.72 portrait  */
+/* aspect, so it scales to fit with no distortion and no override).     */
+/* ------------------------------------------------------------------ */
+.ogh-game-canvas {
+  background:
+    radial-gradient(120% 70% at 50% 0%, #10182e 0%, #0a0e1c 55%, #06070f 100%);
+  cursor: grab;
+  touch-action: none;
+}
+.ogh-game-canvas.is-dragging { cursor: grabbing; }
+
+/* ------------------------------------------------------------------ */
+/* Config strip — persistent (not an overlay) so the tower/spawn marker */
+/* stay visible while choosing ball count / weight. Disabled (not      */
+/* hidden) while a drop is falling, so the layout never jumps.          */
+/* ------------------------------------------------------------------ */
+.ds-controls {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 6px 14px calc(10px + var(--ogh-safe-bottom));
+}
+
+.ds-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ds-row-label {
+  flex: 0 0 auto;
+  min-width: 52px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ogh-fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ds-btn-group {
+  display: flex;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ds-opt-btn {
+  flex: 1 1 0;
+  min-height: 42px;
+  padding: 0 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: rgba(8, 10, 22, 0.8);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ds-opt-btn.is-active {
+  border-color: var(--ogh-accent);
+  background: rgba(92, 225, 255, 0.18);
+  box-shadow: 0 0 14px rgba(92, 225, 255, 0.14);
+}
+.ds-opt-btn:disabled,
+.ds-controls.is-locked .ds-opt-btn {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.ds-drop-btn {
+  width: 100%;
+  letter-spacing: 0.04em;
+}
+.ds-drop-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards — start blurb, results stat lines.                     */
+/* ------------------------------------------------------------------ */
+.ds-best-line {
+  margin: -6px 0 16px !important;
+  font-size: 0.9rem !important;
+  color: var(--ogh-fg-dim) !important;
+}
+
+.ds-stat-line {
+  margin: 4px 0 !important;
+  font-size: 0.98rem !important;
+  color: var(--ogh-fg) !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+.ds-score-line { color: var(--ogh-good) !important; font-weight: 800; }
+
+.ds-new-best {
+  margin: 8px 0 2px !important;
+  font-weight: 800;
+  color: var(--ogh-accent) !important;
+  font-size: 0.95rem !important;
+}
+
+@media (max-width: 400px) {
+  .back { font-size: 12px; }
+  .ds-hud .ogh-pill { font-size: 11px; padding: 5px 8px; }
+  .ds-row-label { min-width: 44px; font-size: 11.5px; }
+  .ds-opt-btn { font-size: 12px; min-height: 38px; }
+}
+
+@media (max-height: 640px) {
+  .ds-controls { gap: 5px; padding-bottom: calc(6px + var(--ogh-safe-bottom)); }
+  .ds-opt-btn { min-height: 36px; }
+}

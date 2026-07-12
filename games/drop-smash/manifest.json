@@ -1,0 +1,27 @@
+{
+  "id": "drop-smash",
+  "name": "Drop Smash",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["physics", "casual", "arcade"],
+  "tags": ["solo", "experimental", "physics", "casual", "destruction"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Drag anywhere on the tower to choose the horizontal drop position (a marker shows where the ball(s) will fall), pick 1-3 balls and a weight (light/medium/heavy) from the strip below, then press Drop. Works the same with mouse or touch. Enter/Space activates the current primary action (start / drop / configure next); arrow keys nudge the drop position and 1/2/3 pick the ball count.",
+      "ru": "Проведи в любом месте по башне, чтобы выбрать горизонтальную точку сброса (метка показывает, где упадут шары), выбери 1-3 шара и вес (лёгкий/средний/тяжёлый) на панели снизу, затем нажми «Сбросить». Мышь и тач работают одинаково. Enter/Space активирует текущее главное действие (старт / сброс / настроить следующий); стрелки сдвигают точку сброса, а 1/2/3 задают число шаров."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Original ball-drop tower-smashing physics toy (a fresh take on the well-known 'drop balls onto stacked breakable layers' casual mobile genre — own settings/towers/code/sound, nothing copied). client/physics.js is a pure, DOM-free 2D physics module (circles vs. static axis-aligned platforms; no rotation/torque needed for this genre, unlike games/siege-break's oriented-box solver): a ball's impact momentum (mass x approach speed) drives both whether a platform's hp is chipped or broken outright and how hard the ball bounces off it (normal component reflected with restitution and energy loss, tangential component damped), so heavier/faster balls measurably break through more/tougher layers while a platform that survives a hit shows a growing crack before it fully breaks (verified headlessly — see window.OGH_DROP_SMASH). Ball-vs-ball collision is a textbook unequal-mass elastic-ish impulse (the general form games/billiards' equal-mass swap is a special case of), so multiple simultaneous balls can deflect off each other mid-fall without overlapping. client/tower.js authors four structurally distinct towers (a straight escalating gauntlet, alternating half-width zigzag ledges, full-width 'fortress' toughness bands with a narrow center gap, and a twin-column spire with periodic bridges) from four material hp tiers (glass/wood/stone/granite-style, echoing games/siege-break's vocabulary) calibrated so a light ball alone struggles past the easiest tier while a heavy ball, or several balls landing together, can break tiers a single light ball can't. Every drop starts from a fully-intact tower instance — no damage carries over between drops, so switching weight/tower or simply retrying always compares against full hp — and towers rotate for replay variety, either automatically (a full clear advances to the next one) or by tapping the Tower HUD pill. Configure 1-3 balls, a light/medium/heavy weight, and the horizontal drop position (drag anywhere on the canvas), then Drop and watch physics take over until every ball rests or falls out the bottom. Score comes from layers broken plus depth reached, with a cumulative session total and a local best persisted via games/_shared/js/ogh-profile.js (games/pop-the-bugs convention). No bundled image or audio assets: the whole scene (tower layers, cracks, balls, debris) is Canvas 2D vector shapes with a neon glow, plus a screen-shake and particle burst on a big break; sound reuses games/_shared/js/ogh-sfx.js, extended with one new 'crack' pattern for a layer taking damage without breaking (the drop release, no-damage bounce, ball-ball knock, full break and exit-the-bottom cues all reuse the existing whoosh/bounce/clack/crumble/land patterns). i18n across the UN-6 languages; Arabic flips only the text chrome to RTL — the horizontal spawn-position track and every tower's own layout never mirror (stage+canvas dir=ltr, ctx.direction forced ltr)."
+}

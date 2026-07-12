@@ -160,6 +160,22 @@ export function createOghSfx() {
       tone(95, 0.6, 'square', 0.07, 24);
       tone(60, 0.7, 'sine', 0.08, 18);
     },
+    // Added for games/drop-smash — a ball impact that dents a tower layer
+    // without breaking it (its crack visibly deepens). The drop release,
+    // no-damage bounce, ball-ball knock, full-layer break and exit-the-
+    // bottom cues all deliberately reuse existing patterns instead of
+    // adding more (`whoosh` already reads as something released to fall,
+    // `bounce` already reads as a plain rebound, `clack` already reads as
+    // two hard round bodies meeting, `crumble` — siege-break's masonry-
+    // shattering cue — already reads as a layer breaking outright, and
+    // `land` already reads as a solid touchdown for a ball leaving the
+    // bottom of the frame), so `crack` is the one genuinely new sound this
+    // genre needs: a single short, dry, high snap (one quick square blip
+    // sliding down in pitch) distinct from `bounce` (no pitch slide, reads
+    // as a neutral knock) and from `crumble` (two lower notes, longer,
+    // reads as full collapse) — a hit landed and did damage, but the layer
+    // is still standing.
+    crack: () => tone(950, 0.045, 'square', 0.045, 650),
   };
 
   return {
