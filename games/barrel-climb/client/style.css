@@ -1,0 +1,231 @@
+/* Barrel Climb — neon-vector page chrome on top of ogh-base.css's shared
+   structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card,
+   .ogh-btn, .ogh-hint, .ogh-pill). Palette stays the hub default dark
+   neon-vector look (no :root override) — same convention as games/comet and
+   games/fight-arena. The canvas is a fixed 720x1000 (0.72 aspect) world, so
+   the shared portrait auto-sizing rule in ogh-base.css already fits it with
+   no override needed. This file only styles the header/HUD, the touch pad,
+   the stage-clear/hammer badges and the overlay cards. */
+
+.bc-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+/* ------------------------------------------------------------------------ */
+/* Header: back link, HUD pills, language switch.                           */
+/* ------------------------------------------------------------------------ */
+.bc-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px 4px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.bc-hud {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  order: 3;
+  flex: 1 1 100%;
+}
+@media (min-width: 560px) {
+  .bc-hud { order: 0; flex: 0 1 auto; }
+}
+
+.bc-hud .ogh-pill { padding: 6px 12px; font-size: 13px; }
+.bc-hud .ogh-pill strong { color: var(--ogh-accent); }
+#hudLives strong, .bc-lives { color: var(--ogh-bad); letter-spacing: 2px; }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------------ */
+/* Canvas stage + floating badges.                                          */
+/* ------------------------------------------------------------------------ */
+.ogh-stage canvas.ogh-game-canvas {
+  background: #05060d;
+  box-shadow:
+    0 0 0 1px rgba(92, 225, 255, 0.14),
+    0 14px 44px rgba(0, 0, 0, 0.5);
+}
+
+.bc-hammer-badge {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(255, 209, 102, 0.16);
+  border: 1px solid rgba(255, 209, 102, 0.55);
+  color: var(--ogh-warn);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  box-shadow: 0 0 18px rgba(255, 209, 102, 0.3);
+  pointer-events: none;
+}
+
+.bc-stage-banner {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  text-align: center;
+  pointer-events: none;
+  animation: bc-banner-in 0.35s ease-out;
+}
+.bc-stage-banner-title {
+  font-family: "Montserrat", "Roboto", sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--ogh-good);
+  text-shadow: 0 0 18px rgba(92, 255, 176, 0.6);
+}
+.bc-stage-banner-sub {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--ogh-fg-dim);
+}
+@keyframes bc-banner-in {
+  from { opacity: 0; transform: translate(-50%, -42%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* ------------------------------------------------------------------------ */
+/* On-screen touch controls: a movement D-pad + a separate jump button.     */
+/* ------------------------------------------------------------------------ */
+.bc-touch {
+  flex: 0 0 auto;
+  z-index: 4;
+  direction: ltr;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 6px 16px calc(10px + var(--ogh-safe-bottom));
+}
+
+.bc-touch-pad {
+  display: grid;
+  grid-template-columns: 50px 50px 50px;
+  grid-template-rows: 50px 50px 50px;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.bc-tbtn {
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: rgba(12, 16, 30, 0.82);
+  color: var(--ogh-fg);
+  border-radius: 12px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 17px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.bc-tbtn:active, .bc-tbtn.is-down {
+  background: rgba(92, 225, 255, 0.22);
+  border-color: var(--ogh-accent);
+}
+.bc-t-up { grid-column: 2; grid-row: 1; }
+.bc-t-left { grid-column: 1; grid-row: 2; }
+.bc-t-down { grid-column: 2; grid-row: 3; }
+.bc-t-right { grid-column: 3; grid-row: 2; }
+
+.bc-jbtn {
+  flex-shrink: 0;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 209, 102, 0.5);
+  background: radial-gradient(circle at 35% 30%, rgba(255, 209, 102, 0.35), rgba(12, 16, 30, 0.85));
+  color: var(--ogh-warn);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  box-shadow: 0 0 20px rgba(255, 209, 102, 0.15);
+}
+.bc-jbtn:active, .bc-jbtn.is-down {
+  background: radial-gradient(circle at 35% 30%, rgba(255, 209, 102, 0.55), rgba(12, 16, 30, 0.9));
+  box-shadow: 0 0 26px rgba(255, 209, 102, 0.35);
+}
+
+@media (max-width: 420px) {
+  .bc-touch-pad { grid-template-columns: 44px 44px 44px; grid-template-rows: 44px 44px 44px; }
+  .bc-jbtn { width: 72px; height: 72px; font-size: 13px; }
+}
+
+/* ------------------------------------------------------------------------ */
+/* Overlay cards.                                                            */
+/* ------------------------------------------------------------------------ */
+.bc-card h1 {
+  font-family: "Montserrat", "Roboto", sans-serif;
+}
+.bc-note {
+  margin: 6px 0 0 !important;
+  font-size: 0.85rem !important;
+  color: var(--ogh-fg-dim) !important;
+  line-height: 1.4;
+}
+.bc-note.is-good {
+  color: var(--ogh-good) !important;
+  font-weight: 700;
+}
+#finalStatsLine {
+  font-family: var(--ogh-mono);
+  font-size: 1rem !important;
+  color: var(--ogh-fg) !important;
+  margin: 0 0 4px !important;
+}
+#gemsLine {
+  font-size: 0.85rem !important;
+  color: var(--ogh-accent) !important;
+  margin: 0 0 10px !important;
+}
+#overCard .ogh-btn { margin-top: 10px; }

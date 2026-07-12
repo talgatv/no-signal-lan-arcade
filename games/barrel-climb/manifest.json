@@ -1,0 +1,27 @@
+{
+  "id": "barrel-climb",
+  "name": "Barrel Climb",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "platformer", "classic"],
+  "tags": ["solo", "experimental", "platformer", "arcade", "classic"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "On-screen buttons: ◀/▶ walk, ▲/▼ climb a ladder, JUMP to hop. Keyboard: Arrow keys or WASD to move, Up/Down to climb, Space to jump. Time a jump to clear a rolling barrel, or ride a ladder out of its path.",
+      "ru": "Кнопки на экране: ◀/▶ — ходьба, ▲/▼ — подъём по лестнице, JUMP — прыжок. Клавиатура: стрелки или WASD — движение, вверх/вниз — подъём, пробел — прыжок. Подгадай прыжок, чтобы перескочить катящуюся бочку, или уйди от неё по лестнице."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Original climbing-platformer arcade game (genre reference: the classic tilted-girders-and-ladders 'dodge rolling barrels to reach the top' arcade platformer, not a copy of anyone's specific characters/content) — an original 'Scrap Tower' setting: the antagonist robot Warden-9 rolls fuel drums down alternating tilted girders to stop the player reaching Mira at the top. Barrel physics (entities.js) genuinely follow each platform's slope (y derived from the segment's own tilt, same helper the player's walk uses), fall through platform-edge/gap transitions with no scripted path, and occasionally divert down a ladder by a per-stage chance — validated with a standalone Node harness (position-sampled over hundreds of frames, checked against the platform's own slope formula) before ever touching canvas/input, per docs/contributing test discipline. Jump-over-a-barrel is genuine simulated 2D clearance (no invulnerability flag): tuned so a well-timed jump has a real, non-trivial safe window and a mistimed one still gets hit, at both easy and max difficulty. 5 distinct hand-authored stage layouts (tilt pattern, ladder zigzag spacing, gap count 0/0/1/1/2, hazard/item placement) cycle with a continuously ramping difficulty curve (barrel speed/frequency, ladder-branch chance, patrol hazard speed — stages.js's stageParams(n)) that climbs to a fair ceiling and holds, same endless-with-a-cap philosophy as games/cross-the-road. A patrolling 'Spark Drone' hazard and a temporary hammer power-up (smash barrels/the drone instead of dodging, classic genre mechanic) round out the hazards/pickups. No bundled image or audio assets — canvas vector shapes with a neon glow; sound fully reuses games/_shared/js/ogh-sfx.js's existing patterns (hop/land/tick/die/pickup/boing/thwack/win — no new patterns needed). Score (height climbed + items + jump-over bonus + stage-clear bonus) persists as a local high score via OGHProfile, same convention as games/pop-the-bugs."
+}
