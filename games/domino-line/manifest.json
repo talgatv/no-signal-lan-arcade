@@ -1,0 +1,32 @@
+{
+  "id": "domino-line",
+  "name": "Dominoes",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 2,
+  "supportsSolo": true,
+  "genres": ["board", "strategy", "classic"],
+  "tags": ["solo", "local-multiplayer", "multiplayer", "ai", "board-game", "classic", "experimental"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap a tile in your hand to play it. If it fits both open ends, tap the glowing left/right end zone to choose. When you have no legal tile, tap Draw to pull from the boneyard (repeat until you can play); if the boneyard is empty, tap Pass.",
+      "ru": "Коснись кости в руке, чтобы выложить её. Если она подходит к обоим концам, коснись подсвеченной левой/правой зоны. Если хода нет — жми «Взять», чтобы тянуть из базара (пока не сможешь походить); если базар пуст — жми «Пропуск»."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "Hidden hands over a dumb relay: the dealer (first joiner) broadcasts only a small integer seed; both clients run the identical seeded shuffle and each computes ONLY its own 7-tile slice + the shared boneyard, so no hand/tile list is ever put on the wire. Play relays public events only — place {tile,end}, draw (advances the shared boneyard by one; a count, not a tile), pass, and on a blocked game a single summed pip count. Also supports offline vs-AI and same-device pass-and-play (with a privacy hand-off gate); LAN degrades to local pass-and-play automatically when no host is reachable."
+  },
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-net.js", "js/ogh-profile.js", "js/ogh-sfx.js"],
+  "notes": "Standard double-six block dominoes: a 28-tile set, 7 dealt to each of 2 players, the rest a face-down boneyard. Play a tile whose matching pip connects to an open end; the line grows both ways. No legal tile -> draw from the boneyard until you can play, or pass when it's empty. Win by emptying your hand; if the game blocks (both pass, boneyard empty) the LOWER remaining pip total wins. Pure rules (rules.js, incl. a seeded shuffle) and a heuristic AI (ai.js) are DOM/network-free and unit-testable, the same split as games/tic-tac-toe (verified with a 300-game self-play simulation exercising both win-by-empty and blocked-scoring paths). Tiles are pure CSS vector shapes (pip dots in a 3x3 grid) — no image assets. Sound reuses games/_shared/js/ogh-sfx.js unchanged (place, pickup=draw, tick=pass, win=round over). RTL (Arabic) mirrors the header/menu/result chrome only; the line and hands never mirror (stage dir=\"ltr\")."
+}

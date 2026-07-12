@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Checkers — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="ck-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="ck-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="ck-hud" role="status">
+        <div class="ogh-pill" id="netPill">…</div>
+        <div class="ogh-pill" id="turnPill">…</div>
+        <div class="ogh-pill ck-count" id="countPill">◆ 12 · ◆ 12</div>
+      </div>
+      <div class="ck-actions">
+        <button type="button" class="ogh-btn" id="btnMenu" data-i18n="menuBtn">Change mode</button>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNew" data-i18n="newGameBtn">New game</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <main class="ogh-stage ck-stage">
+      <!-- dir="ltr" is deliberate and must stay: the 8x8 board is a fixed
+           spatial gameplay convention (row 0 / col 0 is always top-left), not
+           prose — it must never mirror under an RTL UI language (Arabic),
+           same precedent as games/tic-tac-toe's #board. The cell index math
+           in rules.js always matches physical left-to-right, top-to-bottom
+           regardless of `dir` on <html>. -->
+      <div class="ck-board" id="board" dir="ltr"></div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Tap one of your pieces, then a highlighted square.</p>
+
+    <!-- Mode / difficulty picker — shown at launch and via "Change mode" -->
+    <div class="ogh-overlay" id="modeOverlay">
+      <div class="ogh-card ck-mode-card">
+        <h1 data-i18n="chooseModeTitle">Checkers</h1>
+        <p data-i18n="chooseModeSub">Play against the computer, pass the device to a friend, or connect over LAN.</p>
+        <div class="ck-mode-list" id="modeList">
+          <button type="button" class="ogh-btn ogh-btn-primary mode-btn" id="btnModeAi" data-i18n="modeAiBtn">vs AI</button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeLocal" data-i18n="modeLocalBtn">Pass &amp; Play</button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeLan" data-i18n="modeLanBtn">LAN Multiplayer</button>
+        </div>
+        <div class="ck-diff-list" id="diffList" hidden>
+          <p class="ck-diff-label" data-i18n="difficultyLabel">Difficulty</p>
+          <button type="button" class="ogh-btn diff-btn" data-diff="easy" data-i18n="diffEasyBtn">Easy</button>
+          <button type="button" class="ogh-btn diff-btn ogh-btn-primary" data-diff="medium" data-i18n="diffMediumBtn">Medium</button>
+          <button type="button" class="ogh-btn diff-btn" data-diff="hard" data-i18n="diffHardBtn">Hard</button>
+          <button type="button" class="ogh-btn ck-back-btn" id="btnDiffBack" data-i18n="backToModesBtn">← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Win overlay -->
+    <div class="ogh-overlay" id="resultOverlay" hidden>
+      <div class="ogh-card">
+        <h1 id="resultTitle">…</h1>
+        <p id="resultStatsLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

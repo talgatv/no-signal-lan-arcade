@@ -3777,6 +3777,178 @@
         "protocol": "ogh-net-v1",
         "notes": "Whoever presses Start Race picks a random sentence (in their own UI language) and broadcasts {text, lang, startAt}; each client scores its own keystrokes locally and broadcasts {pct, wpm} on a ~300ms throttle plus a one-time {wpm, accuracy, elapsedMs} on finish. A round ends when every racer frozen into the roster at go()-time has finished, or after a 90-second timeout (remaining players ranked by progress). Solo Practice never touches the network; LAN Race degrades to a solo time-trial automatically when no host is reachable."
       }
+    },
+    {
+      "id": "checkers",
+      "name": "Checkers",
+      "names": {
+        "en": "Checkers",
+        "ru": "Шашки",
+        "zh": "西洋跳棋",
+        "es": "Damas",
+        "ar": "الداما",
+        "fr": "Dames"
+      },
+      "tagline": "Classic 8x8 draughts — mandatory captures, kings, and a real AI. Solo, pass-and-play, or LAN.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "board"
+      ],
+      "genres": [
+        "board",
+        "strategy",
+        "classic"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap one of your pieces, then tap a highlighted square. Legal destinations glow; when a capture is available it is mandatory and capturing pieces pulse. Finish a multi-jump by tapping each landing square in turn.",
+          "ru": "Коснись своей шашки, затем подсвеченной клетки. Возможные ходы подсвечиваются; если доступно взятие — оно обязательно, а бьющие шашки пульсируют. Серию взятий завершай, касаясь каждой клетки приземления по очереди."
+        }
+      },
+      "tags": [
+        "solo",
+        "local-multiplayer",
+        "multiplayer",
+        "ai",
+        "board-game",
+        "classic",
+        "experimental"
+      ],
+      "instructions": {
+        "en": "Standard 8x8 checkers (English draughts), three ways to play. Move a piece diagonally forward one square, or capture by jumping an adjacent enemy piece to the empty square beyond it. Captures are MANDATORY: if you can jump you must, and if the same piece can keep jumping it must finish the whole chain in one turn. Reach the far row to crown a King, which then moves and jumps backward too. You win when your opponent has no pieces left or no legal move. Play vs a minimax AI (Easy/Medium/Hard), pass-and-play on one device, or LAN multiplayer over the PC host (first joiner is Cyan, second is Pink).",
+        "ru": "Классические шашки 8x8 (английские draughts), три способа игры. Двигай шашку по диагонали вперёд на одну клетку или бей, перепрыгивая соседнюю шашку соперника на пустую клетку за ней. Взятие ОБЯЗАТЕЛЬНО: если можешь бить — бьёшь, и если та же шашка может бить дальше, она должна завершить всю серию за один ход. Дойди до дальнего ряда, чтобы получить дамку, которая ходит и бьёт также назад. Ты побеждаешь, когда у соперника не осталось шашек или нет допустимого хода. Играй против ИИ на минимаксе (Легко/Средне/Сложно), по очереди на одном устройстве или по локальной сети через PC-хост (первый игрок — Голубые, второй — Розовые).",
+        "zh": "标准8x8西洋跳棋（英式draughts），三种玩法。棋子沿对角线向前走一格，或跳过相邻的敌方棋子落到其后的空格来吃子。吃子是强制的：能跳就必须跳，且同一棋子若能连跳，必须在一个回合内完成整条连跳。抵达对面底线可加冕为王，王还能向后走子与吃子。当对手没有棋子或无合法走法时你获胜。可对战极小化极大AI（简单/中等/困难）、同设备轮流游玩，或通过PC主机局域网联机（先加入者执青方，后加入者执粉方）。",
+        "es": "Damas clásicas 8x8 (damas inglesas), tres formas de jugar. Mueve una ficha en diagonal hacia adelante una casilla, o captura saltando sobre una ficha rival adyacente hasta la casilla vacía siguiente. Las capturas son OBLIGATORIAS: si puedes saltar debes hacerlo, y si la misma ficha puede seguir saltando debe completar toda la cadena en un turno. Llega a la última fila para coronar una Dama, que además mueve y captura hacia atrás. Ganas cuando el rival se queda sin fichas o sin jugada legal. Juega contra una IA minimax (Fácil/Media/Difícil), por turnos en un dispositivo, o multijugador LAN por el host de PC (el primero en unirse es Cian, el segundo Rosa).",
+        "ar": "الداما الكلاسيكية 8x8 (الداما الإنجليزية)، بثلاث طرق للعب. حرّك قطعتك قطريًا للأمام مربعًا واحدًا، أو اقفز فوق قطعة الخصم المجاورة إلى المربع الفارغ خلفها لأسرها. الأسر إجباري: إن استطعت القفز فيجب أن تقفز، وإذا استطاعت القطعة نفسها مواصلة القفز فعليها إكمال السلسلة كاملة في دور واحد. صِل إلى الصف الأبعد لتتوّج مَلِكًا يتحرك ويأسر للخلف أيضًا. تفوز عندما لا يبقى للخصم قطع أو حركة قانونية. العب ضد ذكاء اصطناعي بخوارزمية Minimax (سهل/متوسط/صعب)، أو بالتناوب على جهاز واحد، أو عبر الشبكة المحلية من خلال مضيف الـPC (أول من ينضم هو السماوي والثاني الوردي).",
+        "fr": "Dames classiques 8x8 (jeu de dames anglais), trois façons de jouer. Déplacez un pion en diagonale d'une case vers l'avant, ou capturez en sautant un pion adverse adjacent vers la case vide au-delà. Les prises sont OBLIGATOIRES : si vous pouvez sauter vous devez le faire, et si le même pion peut continuer à sauter il doit terminer toute la chaîne en un tour. Atteignez la rangée du fond pour couronner une Dame, qui se déplace et capture aussi vers l'arrière. Vous gagnez quand l'adversaire n'a plus de pions ou aucun coup légal. Jouez contre une IA minimax (Facile/Moyen/Difficile), à tour de rôle sur un appareil, ou en multijoueur LAN via l'hôte PC (le premier arrivé est Cyan, le second Rose)."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [
+        "tic-tac-toe",
+        "domino-line"
+      ],
+      "players": {
+        "min": 1,
+        "max": 2,
+        "solo": true
+      },
+      "entry": "checkers/client/index.html",
+      "manifest": "checkers/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 50.6,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Standard English draughts (8x8, 12 pieces per side) with mandatory captures, forced multi-jump chains, crowning (kings move both directions), and a win when the opponent has no pieces or no legal move (plus a 40-move no-progress draw). Pure rules (rules.js) + AI (ai.js) are DOM/network-free and unit-tested in isolation, the same split as games/tic-tac-toe; the AI is negamax with alpha-beta over a material+positional evaluation (Easy/Medium/Hard = depth 2/4/6) and can only ever pick from the legal, mandatory-capture-respecting move set. The board is a fixed logical-pixel 8x8 grid scaled as a whole via CSS transform (games/tic-tac-toe fitBoard() pattern) so it always fits without scrolling; pieces are vector shapes with a neon glow, no image assets. Sound reuses games/_shared/js/ogh-sfx.js unchanged. RTL (Arabic) mirrors header/menu/result chrome only; the board never mirrors (dir=\"ltr\").",
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "First joiner = Cyan, second = Pink; each individual hop relays as a tiny {from,to} payload (a multi-jump is several hops). The receiver re-derives whose turn it is (and whether a jump chain is mid-flight) from its own board before applying, so a stale/duplicate relayed hop can't desync the two boards. Also fully playable offline (vs AI or local pass-and-play); LAN degrades to local pass-and-play when no host is reachable."
+      }
+    },
+    {
+      "id": "domino-line",
+      "name": "Dominoes",
+      "names": {
+        "en": "Dominoes",
+        "ru": "Домино",
+        "zh": "多米诺骨牌",
+        "es": "Dominó",
+        "ar": "الدومينو",
+        "fr": "Dominos"
+      },
+      "tagline": "Double-six block dominoes — match the ends, empty your hand, or win the blocked count. Solo, pass-and-play, or LAN.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "tiles"
+      ],
+      "genres": [
+        "board",
+        "strategy",
+        "classic"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap a tile in your hand to play it; if it fits both open ends, tap the glowing left/right end zone to choose. When you have no legal tile, tap Draw to pull from the boneyard (repeat until playable); if the boneyard is empty, tap Pass.",
+          "ru": "Коснись кости в руке, чтобы выложить её; если она подходит к обоим концам, коснись подсвеченной левой/правой зоны. Если хода нет — жми «Взять», чтобы тянуть из базара (пока не сможешь походить); если базар пуст — жми «Пропуск»."
+        }
+      },
+      "tags": [
+        "solo",
+        "local-multiplayer",
+        "multiplayer",
+        "ai",
+        "board-game",
+        "classic",
+        "experimental"
+      ],
+      "instructions": {
+        "en": "Standard double-six block dominoes, three ways to play. You get 7 tiles; the remaining 14 form a face-down boneyard. On your turn, play a tile whose number matches an open end of the line (it grows both ways); if it fits both ends, you choose which. No legal tile? Draw from the boneyard until you can play, or pass if it is empty. Win by playing your last tile — or, if the game blocks (both players pass with an empty boneyard), the player with the FEWEST pips left in hand wins (a tie is a draw). Play vs a heuristic AI, pass-and-play on one device (a hand-off gate keeps hands secret), or LAN multiplayer over the PC host — where hands stay private (only a shuffle seed and public moves cross the network, never your tiles).",
+        "ru": "Классическое домино «дубль-шесть» (глухой вариант), три способа игры. Тебе сдают 7 костей; оставшиеся 14 образуют закрытый базар. В свой ход выложи кость, число которой совпадает с открытым концом линии (она растёт в обе стороны); если подходит к обоим концам — выбираешь сам. Нет хода? Тяни из базара, пока не сможешь походить, или пропусти, если базар пуст. Побеждаешь, выложив последнюю кость, — либо, если игра заблокирована (оба пропускают при пустом базаре), выигрывает тот, у кого на руках МЕНЬШЕ очков (равенство — ничья). Играй против эвристического ИИ, по очереди на одном устройстве (передача устройства скрывает руки) или по локальной сети через PC-хост, где руки остаются приватными (по сети идут лишь сид перемешивания и открытые ходы, но не твои кости).",
+        "zh": "标准双六「闷牌」多米诺，三种玩法。你拿7张骨牌，其余14张组成暗置牌堆。轮到你时，出一张数字与线的某个开放端相符的骨牌（线向两侧延伸）；若两端都能接，由你选择。无牌可出？从牌堆摸牌直到能出，若牌堆已空则过牌。打出最后一张骨牌即获胜——或当牌局封死（双方在牌堆空时均过牌），手中剩余点数最少者获胜（相等则平局）。可对战启发式AI、同设备轮流游玩（传递设备可隐藏各自手牌），或通过PC主机局域网联机——手牌保持私密（网络上只传洗牌种子和公开走法，绝不传你的骨牌）。",
+        "es": "Dominó clásico doble-seis (variante cerrada), tres formas de jugar. Recibes 7 fichas; las 14 restantes forman un pozo boca abajo. En tu turno, juega una ficha cuyo número coincida con un extremo abierto de la línea (crece por ambos lados); si encaja en ambos, tú eliges. ¿Sin jugada? Roba del pozo hasta poder jugar, o pasa si está vacío. Ganas al jugar tu última ficha — o, si la partida se cierra (ambos pasan con el pozo vacío), gana quien tenga MENOS puntos en la mano (empate = tablas). Juega contra una IA heurística, por turnos en un dispositivo (un relevo oculta las manos), o multijugador LAN por el host de PC, donde las manos siguen siendo privadas (por la red solo viajan una semilla de barajado y las jugadas públicas, nunca tus fichas).",
+        "ar": "دومينو دبل-ستة الكلاسيكي (اللعب المغلق)، بثلاث طرق للعب. تحصل على 7 أحجار، وتشكّل الـ14 الباقية مخزنًا مقلوبًا. في دورك، العب حجرًا يطابق رقمه أحد طرفي الخط المفتوحين (ينمو في الاتجاهين)؛ وإن طابق الطرفين فالاختيار لك. لا حركة؟ اسحب من المخزن حتى تستطيع اللعب، أو مرِّر إن كان فارغًا. تفوز بلعب آخر حجر — أو، إذا انغلقت اللعبة (مرّر اللاعبان والمخزن فارغ)، يفوز صاحب أقل نقاط في يده (التعادل مناصفة). العب ضد ذكاء اصطناعي إرشادي، أو بالتناوب على جهاز واحد (تمرير الجهاز يُخفي الأيدي)، أو عبر الشبكة المحلية من خلال مضيف الـPC حيث تبقى الأيدي خاصة (لا يعبر الشبكة سوى بذرة الخلط والحركات العلنية، لا أحجارك).",
+        "fr": "Dominos classiques double-six (jeu bloqué), trois façons de jouer. Vous recevez 7 tuiles ; les 14 restantes forment une pioche face cachée. À votre tour, jouez une tuile dont le nombre correspond à un bout ouvert de la ligne (elle grandit des deux côtés) ; si elle va aux deux bouts, vous choisissez. Aucun coup ? Piochez jusqu'à pouvoir jouer, ou passez si la pioche est vide. Vous gagnez en jouant votre dernière tuile — ou, si la partie est bloquée (les deux passent, pioche vide), le joueur avec le MOINS de points en main gagne (égalité = nul). Jouez contre une IA heuristique, à tour de rôle sur un appareil (un relais garde les mains secrètes), ou en multijoueur LAN via l'hôte PC, où les mains restent privées (seuls une graine de mélange et les coups publics circulent, jamais vos tuiles)."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [
+        "checkers",
+        "tic-tac-toe"
+      ],
+      "players": {
+        "min": 1,
+        "max": 2,
+        "solo": true
+      },
+      "entry": "domino-line/client/index.html",
+      "manifest": "domino-line/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 55.5,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Standard double-six block dominoes: 28 tiles, 7 dealt per player, the rest a face-down boneyard. Match a pip to an open end (the line grows both ways); no legal tile -> draw until you can play, or pass when the boneyard is empty; win by emptying your hand, or on a blocked game the LOWER remaining pip total wins. Pure rules (rules.js, incl. a seeded shuffle) + heuristic AI (ai.js) are DOM/network-free and unit-tested, the same split as games/tic-tac-toe (a 300-game self-play simulation checks termination and both win-by-empty and blocked pip-scoring). Tiles are pure CSS pip-dot vector shapes, no image assets. Sound reuses games/_shared/js/ogh-sfx.js unchanged. RTL (Arabic) mirrors header/menu/result chrome only; the line and hands never mirror (dir=\"ltr\").",
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "Hidden hands over a dumb relay: the dealer (first joiner) broadcasts only a small integer shuffle seed; both clients run the identical seeded shuffle and each computes ONLY its own 7-tile slice + the shared boneyard, so no hand/tile list is ever sent. Play relays public events only — place {tile,end}, draw (advances the shared boneyard by one; a count, not a tile), pass, and on a blocked game one summed pip count. LAN degrades to local pass-and-play when no host is reachable."
+      }
     }
   ]
 }

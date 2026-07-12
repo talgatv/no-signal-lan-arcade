@@ -1,0 +1,32 @@
+{
+  "id": "checkers",
+  "name": "Checkers",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 2,
+  "supportsSolo": true,
+  "genres": ["board", "strategy", "classic"],
+  "tags": ["solo", "local-multiplayer", "multiplayer", "ai", "board-game", "classic", "experimental"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap one of your pieces, then tap a highlighted square. Legal destinations glow; when a capture is available it is mandatory, and capturing pieces pulse. Finish multi-jump chains by tapping each landing square in turn.",
+      "ru": "Коснись своей шашки, затем подсвеченной клетки. Возможные ходы подсвечиваются; если доступно взятие — оно обязательно, а бьющие шашки пульсируют. Серию взятий завершай, касаясь каждой клетки приземления по очереди."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "First joiner = Cyan, second = Pink; each individual hop relays over the host WebSocket as a tiny {from,to} payload (a multi-jump is several hops). The receiver re-derives whose turn it is (and whether a jump chain is mid-flight) from its own board before applying, so a stale/duplicate relayed hop can't desync the two boards. Also supports offline vs-AI (minimax) and same-device pass-and-play; LAN mode degrades to local pass-and-play automatically when no host is reachable."
+  },
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-net.js", "js/ogh-profile.js", "js/ogh-sfx.js"],
+  "notes": "Standard English draughts on an 8x8 board: 12 pieces per side, diagonal forward moves, mandatory captures, forced multi-jump chains, crowning on the far row (kings move both directions), and a win when the opponent has no pieces or no legal move (plus a 40-move no-progress draw). Pure rules (rules.js) and AI (ai.js) are DOM/network-free and unit-testable in isolation, the same split as games/tic-tac-toe. AI is negamax with alpha-beta over a material + positional evaluation (Easy/Medium/Hard = depth 2/4/6, Easy/Medium also mix in some random moves); it can only ever choose from the legal (mandatory-capture-respecting) move set. Board is a fixed logical-pixel 8x8 grid scaled as a whole via CSS transform (games/tic-tac-toe fitBoard() pattern) so it always fits with zero scrolling. Sound reuses games/_shared/js/ogh-sfx.js unchanged (place=move, clack=capture, pickup=king, win=game over). RTL (Arabic) mirrors the header/menu/result chrome only; the board never mirrors (board dir=\"ltr\")."
+}
