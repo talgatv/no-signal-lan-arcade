@@ -3217,6 +3217,161 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original atmospheric precision timing-and-placement game (own storm/village concept — not a clone of any existing title). A silhouetted village sleeps at the bottom of a rainy night sky; the storm periodically threatens one of six buildings at a time with a wild charge that flickers to life above its roof and builds toward a peak over a fair 1.5-3s (shrinking as the session progresses) telegraph window — see client/lightning.js's difficultyAt()/createThreat()/advanceThreat(), a pure dt-accumulator charge model (never wall-clock) so it is frame-exact testable via window.OGH_STORM_WARDEN. Tapping the threatened building before peak casts a controlled bolt that arcs to the village's one non-targetable grounding spire; client/lightning.js's scoreForCharge()/ratingForCharge() reward casting closer to peak (Early/Good/Perfect) the same way a rhythm game's timing window does, just framed the other way — there is no 'too late that still counts', since charge reaching 1 IS the strike. Tapping the wrong building does nothing (placement genuinely matters, verified independently of timing); an unresolved peak strikes the building, which goes dark/scorched (charred fill, windows out, a few rising smoke particles) for the rest of the session and counts toward a buildings-lost tally capped at 4 of 6 (a defeat before the 100s session clock runs out at all). client/village.js procedurally builds the six-building skyline (5 roofline silhouette profiles, randomized per-building height/width, a scattered lit-window grid) plus the spire, purely as data (game.js does all drawing). client/rain.js is a two-depth-layer falling-raindrop particle system (back layer behind the village, front layer in front) for a 'looking through rain' read. client/lightning.js's generateBoltPath()/generateBranches() are a recursive midpoint-displacement fractal line generator (the classic jagged-lightning technique) shared by the small flickering charge filament, the cast bolt, the strike bolt and their branches, all drawn through the same two-pass neon-vector glow stroke. No bundled image or audio assets: sound reuses games/_shared/js/ogh-sfx.js's existing tick (charge pulse)/screech (wasted cast)/win/die/tap patterns plus two new patterns added this session (zap = successful cast, thunder = a noise-like layered-low-oscillator strike crack). Local high score via OGHProfile, same convention as games/pop-the-bugs and games/void-drift. RTL (Arabic) flips text/menu chrome only; the storm scene — village order, number-key mapping, rain direction — never mirrors (stage is dir=\"ltr\", ctx.direction forced to 'ltr')."
+    },
+    {
+      "id": "sliding-puzzle",
+      "name": "Sliding Puzzle",
+      "names": {
+        "en": "Sliding Puzzle",
+        "ru": "Пятнашка",
+        "zh": "滑动拼图",
+        "es": "Puzzle Deslizante",
+        "ar": "أحجية الإزلاق",
+        "fr": "Puzzle Coulissant"
+      },
+      "tagline": "The classic sliding tile puzzle — shuffle always solvable, slide tiles back into order.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "grid"
+      ],
+      "genres": [
+        "puzzle",
+        "classic"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap a tile in the blank's row or column to slide it (a tile two away slides the whole line at once). Choose a grid size on the setup screen — that's the difficulty.",
+          "ru": "Тапни плитку в строке или столбце пустой клетки, чтобы её сдвинуть (плитка через одну сдвигает сразу весь ряд). Размер поля на экране настройки — это и есть сложность.",
+          "zh": "点击空格所在行或列中的方块即可滑动（隔一格的方块会带动整排一起滑动）。在设置界面选择棋盘大小——这就是难度。",
+          "es": "Toca una ficha en la fila o columna del hueco para deslizarla (una ficha a dos casillas desliza toda la línea a la vez). Elige un tamaño de tablero en la pantalla de configuración: esa es la dificultad.",
+          "ar": "اضغط على قطعة في صف أو عمود المربع الفارغ لتحريكها (قطعة تبعد خانتين تحرك الصف بأكمله دفعة واحدة). اختر حجم اللوحة في شاشة الإعداد — وهو مستوى الصعوبة.",
+          "fr": "Touchez une tuile sur la ligne ou la colonne de la case vide pour la faire glisser (une tuile à deux cases fait glisser toute la ligne d'un coup). Choisissez une taille de grille sur l'écran de configuration — c'est la difficulté."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "puzzle",
+        "classic"
+      ],
+      "instructions": {
+        "en": "The classic sliding tile puzzle (8/15/24-puzzle). Choose a grid size on the setup screen — 3x3, 4x4 (the classic '15 puzzle'), or 5x5 — that choice is the difficulty. Tiles start shuffled around one blank space; tap any tile in the blank's row or column to slide it (and every tile between it and the blank) toward the blank in one move. Win by getting every tile back in numerical order, blank last. The shuffle always starts from the solved grid and performs a long sequence of random legal slides, so every shuffle is guaranteed solvable — never a raw random arrangement, about half of which would be mathematically unsolvable for this puzzle. A move counter and a live timer track your progress, and your best (fewest moves, and separately fastest time) is saved locally per grid size.",
+        "ru": "Классическая головоломка со сдвижными плитками (8/15/24-пятнашки). Выбери размер поля на экране настройки — 3x3, 4x4 (классическая «пятнашка») или 5x5 — это и есть сложность. Плитки стартуют перемешанными вокруг одной пустой клетки; тапни любую плитку в строке или столбце пустой клетки, чтобы сдвинуть её (и все плитки между ней и пустой клеткой) на одну позицию. Победа — когда все плитки расставлены по порядку номеров, пустая клетка в конце. Перемешивание всегда начинается с решённого поля и выполняет длинную серию случайных допустимых сдвигов, поэтому результат всегда гарантированно решаем — никогда не берётся случайная расстановка, примерно половина которых математически нерешаема для этой головоломки. Счётчик ходов и живой таймер отслеживают прогресс, а лучший результат (минимум ходов и отдельно минимальное время) сохраняется локально для каждого размера поля.",
+        "zh": "经典滑动拼图（8/15/24拼图）。在设置界面选择棋盘大小——3x3、4x4（经典的15拼图）或5x5——这就是难度。方块一开始围绕一个空格被打乱；点击空格所在行或列中的任意方块，即可将其（以及它与空格之间的所有方块）滑动一步。当所有方块按数字顺序排列、空格位于最后时即获胜。洗牌总是从已解出的棋盘开始，执行一长串随机的合法滑动，因此每次洗牌都保证可解——绝不是直接随机排列（那样的排列大约一半在数学上是无法解开的）。步数计数器和实时计时器记录你的进度，每种棋盘大小的最佳成绩（最少步数，以及单独的最快用时）都会在本地保存。",
+        "es": "El clásico puzzle de fichas deslizantes (8/15/24 piezas). Elige un tamaño de tablero en la pantalla de configuración — 3x3, 4x4 (el clásico 'puzzle de 15') o 5x5 — esa elección es la dificultad. Las fichas empiezan mezcladas alrededor de un hueco vacío; toca cualquier ficha en la fila o columna del hueco para deslizarla (junto con todas las fichas entre ella y el hueco) un paso. Ganas cuando todas las fichas quedan en orden numérico, con el hueco al final. El mezclado siempre parte del tablero resuelto y realiza una larga secuencia de deslizamientos legales al azar, así que el resultado siempre es solucionable garantizado — nunca una disposición aleatoria directa, de las cuales cerca de la mitad serían matemáticamente irresolubles para este puzzle. Un contador de movimientos y un cronómetro en vivo siguen tu progreso, y tu mejor marca (menos movimientos, y por separado el tiempo más rápido) se guarda localmente por tamaño de tablero.",
+        "ar": "أحجية القطع المنزلقة الكلاسيكية (8/15/24 قطعة). اختر حجم اللوحة في شاشة الإعداد — 3×3، أو 4×4 (أحجية الـ15 الكلاسيكية)، أو 5×5 — وهذا الاختيار هو مستوى الصعوبة. تبدأ القطع مبعثرة حول مربع فارغ واحد؛ اضغط أي قطعة في صف أو عمود المربع الفارغ لتحريكها (وكل القطع بينها وبين المربع الفارغ) خطوة واحدة نحوه. تفوز عندما تعود كل القطع مرتبة رقميًا مع بقاء المربع الفارغ في النهاية. يبدأ الخلط دائمًا من اللوحة المحلولة وينفذ سلسلة طويلة من التحريكات العشوائية المسموح بها، لذا فإن كل خلطة مضمونة الحل دائمًا — وليست ترتيبًا عشوائيًا مباشرًا، إذ إن نحو نصف هذه الترتيبات يستحيل حلها رياضيًا في هذه الأحجية. عداد الحركات والمؤقت الحي يتتبعان تقدمك، وأفضل نتيجة (أقل حركات، وأسرع وقت بشكل منفصل) تُحفظ محليًا لكل حجم لوحة.",
+        "fr": "Le puzzle à tuiles coulissantes classique (8/15/24 pièces). Choisissez une taille de grille sur l'écran de configuration — 3x3, 4x4 (le célèbre « taquin » à 15) ou 5x5 — ce choix est la difficulté. Les tuiles démarrent mélangées autour d'une case vide ; touchez n'importe quelle tuile sur la ligne ou la colonne de la case vide pour la faire glisser (ainsi que toutes les tuiles entre elle et la case vide) d'un cran. Vous gagnez en remettant toutes les tuiles dans l'ordre numérique, la case vide en dernier. Le mélange part toujours de la grille résolue et effectue une longue séquence de glissements légaux aléatoires, donc chaque mélange est garanti solvable — jamais une disposition aléatoire brute, dont environ la moitié serait mathématiquement insoluble pour ce puzzle. Un compteur de coups et un chronomètre en direct suivent votre progression, et votre meilleur score (le moins de coups, et séparément le temps le plus rapide) est enregistré localement par taille de grille."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "sliding-puzzle/client/index.html",
+      "manifest": "sliding-puzzle/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 46.2,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "The classic 15-puzzle family (8/15/24-puzzle via a 3x3/4x4/5x5 grid size choice, which IS the difficulty). shuffledBoard() in client/app.js never permutes tile values directly — it starts from the solved array and performs size*size*60 random legal blank-slides, which is what mathematically guarantees the shuffled result is always solvable (a raw random permutation is unsolvable about half the time). isSolvable()/countInversions() implement the standard independent inversion-count + blank-row-parity check purely as a self-verifying belt-and-suspenders (asserted against every shuffle, also exposed via window.OGH_SLIDING_PUZZLE for a test harness — empirically re-verified live at 900/900 solvable across all three sizes plus a check that the tester correctly flags a known-unsolvable board). One persistent DOM button per tile number (not per board cell) is positioned with a CSS-transitioned transform, so a tap on any tile in the blank's row/column slides that whole line to the blank in one fluid animated move (a single-tile slide is just the distance-1 case of the same lineTo() code path) — games/gem-swap's 'state drives position, the browser interpolates' architecture. Tiles sitting in their correct final slot get a soft green glow. Tracks moves and elapsed time, plus a local best-moves/best-time per grid size via OGHProfile (games/memory-match's per-grid-size convention). No bundled image assets: tiles are styled DOM buttons with a neon glow; sound reuses games/_shared/js/ogh-sfx.js's existing patterns unchanged (place=single-tile slide, whoosh=multi-tile line slide, win=solved). RTL (Arabic) flips text/menu chrome only; the tile grid itself never mirrors (#board dir=\"ltr\")."
+    },
+    {
+      "id": "hanoi-towers",
+      "name": "Towers of Hanoi",
+      "names": {
+        "en": "Towers of Hanoi",
+        "ru": "Ханойская башня",
+        "zh": "汉诺塔",
+        "es": "Torres de Hanói",
+        "ar": "أبراج هانوي",
+        "fr": "Tours de Hanoï"
+      },
+      "tagline": "Move the whole disk stack to the goal peg, one disk at a time, big never on small.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow"
+      ],
+      "genres": [
+        "puzzle",
+        "classic"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap a peg to pick up its top disk, tap another peg to place it there. Placing a bigger disk on a smaller one is rejected with feedback. Choose the disk count on the setup screen — that's the difficulty.",
+          "ru": "Тапни стержень, чтобы взять верхний диск, затем тапни другой, чтобы его поставить. Попытка поставить больший диск на меньший отклоняется с обратной связью. Число дисков на экране настройки — это и есть сложность.",
+          "zh": "点击一根柱子拿起最上面的圆盘，再点击另一根柱子放下。把大圆盘放在小圆盘上面会被拒绝并给出提示。在设置界面选择圆盘数量——这就是难度。",
+          "es": "Toca un poste para tomar su disco superior, toca otro poste para colocarlo allí. Colocar un disco grande sobre uno pequeño se rechaza con aviso. Elige el número de discos en la pantalla de configuración: esa es la dificultad.",
+          "ar": "اضغط على عمود لالتقاط قرصه العلوي، ثم اضغط على عمود آخر لوضعه هناك. وضع قرص أكبر فوق قرص أصغر يُرفض مع إشعار. اختر عدد الأقراص في شاشة الإعداد — وهو مستوى الصعوبة.",
+          "fr": "Touchez une tige pour prendre son disque du dessus, touchez une autre tige pour le poser. Poser un grand disque sur un petit est refusé avec un retour visuel. Choisissez le nombre de disques sur l'écran de configuration — c'est la difficulté."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "puzzle",
+        "classic"
+      ],
+      "instructions": {
+        "en": "The classic disk-moving puzzle. Three pegs; a stack of differently-sized disks starts on the source peg (left), largest at the bottom. Choose how many disks (3-10) on the setup screen — that choice is the difficulty, banded live into Easy/Medium/Hard/Extreme alongside the theoretical minimum move count (2^n-1). Tap a peg to pick up its top disk, tap another peg to place it there; a bigger disk can never be placed on a smaller one, and an illegal attempt is rejected with a shake, a message and a sound while the disk stays 'in hand' so you can immediately try elsewhere. Win by moving the entire stack onto the goal peg (right, clearly marked) — not back on the start peg, not left on the middle spare peg. The header shows your live move count next to the optimal count, and solving it in exactly the optimal number of moves earns a distinct 'Perfect!' note on the result screen. Your best (fewest moves) is saved locally per disk count.",
+        "ru": "Классическая головоломка с переносом дисков. Три стержня; стопка дисков разного размера стартует на исходном стержне (слева), самый большой — снизу. Выбери число дисков (3-10) на экране настройки — это и есть сложность, которая сразу же делится на Лёгкую/Среднюю/Сложную/Экстремальную вместе с теоретическим минимумом ходов (2^n-1). Тапни стержень, чтобы взять верхний диск, затем тапни другой, чтобы его поставить; больший диск нельзя поставить на меньший, и недопустимая попытка отклоняется со встряской, сообщением и звуком, при этом диск остаётся «в руке», так что можно сразу попробовать другой стержень. Победа — когда вся стопка перенесена на целевой стержень (справа, чётко обозначен) — не обратно на стартовый и не оставлена на среднем вспомогательном. В шапке рядом со счётчиком ходов показан оптимальный минимум, а решение ровно за оптимальное число ходов отмечается отдельной пометкой «Идеально!» на экране результата. Лучший результат (минимум ходов) сохраняется локально для каждого числа дисков.",
+        "zh": "经典的圆盘移动益智游戏。三根柱子；一摞大小不同的圆盘从起始柱（左侧）开始，最大的在最下面。在设置界面选择圆盘数量（3-10）——这一选择就是难度，并会实时归入简单/中等/困难/极限并显示理论最少步数（2^n-1）。点击一根柱子拿起最上面的圆盘，再点击另一根柱子将其放下；大圆盘永远不能放在小圆盘上面，非法尝试会以晃动、提示信息和音效被拒绝，同时圆盘仍保持在你的“手中”，可以立即尝试其他柱子。将整摞圆盘移到目标柱（右侧，有明显标记）即可获胜——不能留在起始柱，也不能留在中间的备用柱上。顶部会在你的实际步数旁显示最优步数，若恰好以最优步数解开，结果界面会显示专门的“完美！”提示。你的最佳成绩（最少步数）会按圆盘数量分别保存在本地。",
+        "es": "El clásico puzzle de mover discos. Tres postes; una pila de discos de distinto tamaño empieza en el poste de origen (izquierda), el más grande abajo. Elige cuántos discos (3-10) en la pantalla de configuración — esa elección es la dificultad, clasificada al instante en Fácil/Medio/Difícil/Extremo junto con el número mínimo teórico de movimientos (2^n-1). Toca un poste para tomar su disco superior, toca otro poste para colocarlo allí; un disco grande nunca puede colocarse sobre uno pequeño, y un intento ilegal se rechaza con una sacudida, un mensaje y un sonido mientras el disco permanece 'en mano' para que puedas probar otro poste de inmediato. Ganas moviendo toda la pila al poste meta (derecha, claramente marcado) — no de vuelta al poste de inicio, ni dejada en el poste auxiliar del medio. La cabecera muestra tu conteo de movimientos en vivo junto al óptimo, y resolverlo en exactamente el número óptimo de movimientos gana una nota distintiva de '¡Perfecto!' en la pantalla de resultado. Tu mejor marca (menos movimientos) se guarda localmente por cantidad de discos.",
+        "ar": "أحجية نقل الأقراص الكلاسيكية. ثلاثة أعمدة؛ تبدأ كومة من الأقراص بأحجام مختلفة على العمود المصدر (يسارًا)، وأكبرها في الأسفل. اختر عدد الأقراص (3-10) في شاشة الإعداد — هذا الاختيار هو مستوى الصعوبة، ويُصنَّف فورًا إلى سهل/متوسط/صعب/شديد الصعوبة إلى جانب أقل عدد نظري من الحركات (2^n-1). اضغط على عمود لالتقاط قرصه العلوي، ثم اضغط على عمود آخر لوضعه هناك؛ لا يمكن أبدًا وضع قرص أكبر فوق قرص أصغر، وتُرفض أي محاولة غير مسموحة باهتزاز ورسالة وصوت بينما يظل القرص 'في يدك' لتجربة عمود آخر فورًا. تفوز بنقل الكومة بأكملها إلى العمود الهدف (يمينًا، محدد بوضوح) — وليس العودة إلى عمود البداية، ولا تركه على العمود الأوسط الاحتياطي. يعرض الرأس عدد حركاتك الحي بجانب العدد الأمثل، وحل الأحجية بالعدد الأمثل من الحركات بالضبط يمنحك ملاحظة مميزة 'ممتاز!' في شاشة النتيجة. تُحفظ أفضل نتيجة لك (أقل عدد حركات) محليًا لكل عدد أقراص.",
+        "fr": "Le puzzle classique de déplacement de disques. Trois tiges ; une pile de disques de tailles différentes démarre sur la tige source (gauche), le plus grand en bas. Choisissez le nombre de disques (3-10) sur l'écran de configuration — ce choix est la difficulté, classée en direct en Facile/Moyen/Difficile/Extrême avec le nombre minimal théorique de coups (2^n-1). Touchez une tige pour prendre son disque du dessus, touchez une autre tige pour le poser ; un grand disque ne peut jamais être posé sur un petit, et une tentative illégale est refusée avec une secousse, un message et un son, tandis que le disque reste 'en main' pour essayer une autre tige immédiatement. Vous gagnez en déplaçant toute la pile sur la tige cible (droite, clairement marquée) — pas de retour sur la tige de départ, ni laissée sur la tige auxiliaire du milieu. L'en-tête affiche votre nombre de coups en direct à côté de l'optimal, et résoudre le puzzle en exactement le nombre optimal de coups gagne une mention distincte « Parfait ! » sur l'écran de résultat. Votre meilleur score (le moins de coups) est enregistré localement par nombre de disques."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "hanoi-towers/client/index.html",
+      "manifest": "hanoi-towers/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 52.7,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "The classic disk-moving puzzle: 3 pegs, move the whole stack from the source peg to a fixed goal peg (visually marked with a distinct rod color + a 'Goal' label) one disk at a time, never a bigger disk on a smaller one. Disk count (3-10) IS the difficulty, chosen via a stepper on the setup screen alongside a live Easy/Medium/Hard/Extreme band label and the theoretical minimum move count (2^n-1, computed directly). canPlace() forbids an illegal placement at every move (not just checked at the end), which is what makes the win check a simple, provably-correct pegs[targetPeg].length === numDisks — verified live (including the specific edge case of a full stack sitting on the middle/auxiliary peg, or still on the source peg, correctly NOT counting as a win; only the labeled goal peg does). Tap-to-select-then-tap-to-place input (games/gem-swap's tap-fallback convention, used here as the sole input): tapping a peg with a disk picks it up (it visually floats above its stack), tapping a different peg attempts to place it, an illegal placement is rejected with sound + a shake + a transient message while keeping the disk 'in hand', and tapping the held peg again cancels the pickup. One persistent DOM element per disk size is positioned with a CSS-transitioned transform; each peg is one large transparent hit-target button spanning its whole column (disks are pointer-events:none decoration) so a tap anywhere in a peg's column registers. Tracks moves plus a live (unpersisted) elapsed-time HUD clock; only fewest-moves is saved as a local best via OGHProfile, tracked separately per disk count. The result screen shows actual moves vs. the optimal count and a distinct 'Perfect!' note when they match (verified live via a real optimal-algorithm solve). No bundled image assets: disks are styled DOM elements with a neon glow keyed by a 10-color rotation; sound reuses games/_shared/js/ogh-sfx.js's existing patterns unchanged (pickup=lift disk, place=valid drop, screech=invalid drop rejected, win=stack completed). RTL (Arabic) flips text/menu chrome only; the peg board itself never mirrors (#board dir=\"ltr\")."
     }
   ]
 }

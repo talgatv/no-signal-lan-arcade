@@ -1,0 +1,27 @@
+{
+  "id": "hanoi-towers",
+  "name": "Towers of Hanoi",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["puzzle", "classic"],
+  "tags": ["solo", "experimental", "puzzle", "classic"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap a peg to pick up its top disk, tap another peg to place it there. Placing a bigger disk on a smaller one is rejected with feedback. Choose the disk count on the setup screen — that's the difficulty.",
+      "ru": "Тапни стержень, чтобы взять верхний диск, затем тапни другой, чтобы его поставить. Попытка поставить больший диск на меньший отклоняется с обратной связью. Число дисков на экране настройки — это и есть сложность."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "The classic disk-moving puzzle: 3 pegs, move the whole stack from the source peg to a fixed goal peg (visually marked with a distinct rod color + a 'Goal' label) one disk at a time, never a bigger disk on a smaller one. Disk count (3-10, client/app.js's MIN_DISKS/MAX_DISKS) IS the difficulty, chosen via a stepper on the setup screen alongside a live Easy/Medium/Hard/Extreme band label and the theoretical minimum move count (2^n-1, computed directly, not looked up). canPlace() forbids an illegal placement at every move (not just checked at the end), which is what makes the win check a simple, provably-correct `pegs[targetPeg].length === numDisks` — there is no way to legally land every disk on one peg out of order. Tap-to-select-then-tap-to-place input (games/gem-swap's tap-fallback convention, used here as the sole input rather than a dual drag/tap scheme): tapping a peg with a disk picks it up (it visually floats above its stack), tapping a different peg attempts to place it there, an illegal placement is rejected with sound + a shake + a transient on-screen message while keeping the disk 'in hand' so another peg can be tried immediately, and tapping the held peg again cancels the pickup. One persistent DOM element per disk size (not per stack slot) is positioned with a CSS-transitioned transform and each peg is one large transparent hit-target button spanning its whole column (disks are pointer-events:none decoration) so a tap anywhere in a peg's column registers, not just directly on a disk. Tracks moves plus a live (unpersisted) elapsed-time HUD clock; only fewest-moves is saved as a local best via OGHProfile, tracked separately per disk count (per the task's spec — no time-based best for this game, matching games/memory-match's per-key-progress-object convention otherwise). The result screen shows actual moves vs. the optimal count and a distinct 'Perfect!' note when they match. No bundled image assets: disks are styled DOM elements with a neon glow keyed by a 10-color rotation (one color per disk size, up to the 10-disk max); sound reuses games/_shared/js/ogh-sfx.js's existing patterns unchanged (pickup=lift disk, place=valid drop, screech=invalid drop rejected, win=stack completed on the goal peg). RTL (Arabic) flips text/menu chrome only; the peg board itself never mirrors (#board dir=\"ltr\") — peg 0 (start) stays the visual left peg and peg 2 (goal) stays the visual right peg regardless of language, same precedent as games/gem-swap and games/sliding-puzzle."
+}
