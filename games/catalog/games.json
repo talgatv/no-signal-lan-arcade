@@ -3608,7 +3608,7 @@
       "manifest": "dash-runner/manifest.json",
       "version": "0.1.0",
       "sizeBudgetKb": 100,
-      "sizeMeasuredKb": 69.6,
+      "sizeMeasuredKb": 69.7,
       "status": "experimental",
       "familyFriendly": true,
       "localeDefault": "en",
