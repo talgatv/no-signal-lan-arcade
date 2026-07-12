@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Keyboard Ninja — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="kn-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="kn-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="kn-hud" role="status">
+        <div class="ogh-pill" id="netPill">…</div>
+        <div class="ogh-pill" id="wpmPill"><strong id="wpmVal">0</strong> <span data-i18n="wpmLabel">WPM</span></div>
+        <div class="ogh-pill" id="accPill"><strong id="accVal">100</strong>%</div>
+        <div class="ogh-pill" id="timePill"><strong id="timeVal">60</strong>s</div>
+        <div class="ogh-pill" id="bestPill"><span data-i18n="bestLabel">Best</span> <strong id="bestVal">0</strong></div>
+      </div>
+      <div class="kn-actions">
+        <button type="button" class="ogh-btn kn-sound-btn" id="btnSound" data-i18n="soundOffLabel">Key sounds: off</button>
+        <button type="button" class="ogh-btn" id="btnMenu" data-i18n="menuBtn">Menu</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <main class="ogh-stage kn-stage">
+      <!-- Solo + Race share this typing view; race adds the live track below. -->
+      <div class="kn-typing-view" id="typingView" hidden>
+        <!-- dir is set dynamically from the CONTENT language (client/data/content.json),
+             not the viewer's own UI language — in a race, everyone types the
+             STARTER's chosen passage/language, which may differ from their own
+             UI chrome language. Verified empirically that a dir="rtl" span-per-
+             character overlay + dir="rtl" <input> render correctly right-to-left
+             while input.value keeps logical (typed) character order, so no
+             special-casing is needed in the diff logic itself, only here. -->
+        <div class="kn-passage" id="passage" dir="ltr" aria-live="off"></div>
+        <input
+          type="text"
+          class="kn-input"
+          id="typeInput"
+          dir="ltr"
+          autocomplete="off"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+          data-i18n-ph="readyHint"
+          placeholder="Start typing to begin…"
+        />
+
+        <!-- Race-only live progress track — one row per player. Forced dir="ltr"
+             regardless of UI language: this is a spatial/comparative gameplay
+             element (how far along each racer is), not prose, same precedent as
+             games/tic-tac-toe's #board and games/pop-the-bugs' #grid staying
+             un-mirrored under RTL (see style.css .kn-track). -->
+        <div class="kn-track" id="raceTrack" dir="ltr" hidden></div>
+      </div>
+
+      <!-- LAN race lobby: roster + Start Race -->
+      <div class="kn-lobby" id="raceLobby" hidden>
+        <div class="ogh-card kn-lobby-card">
+          <h1 data-i18n="raceLobbyTitle">LAN Race</h1>
+          <p class="kn-lobby-room" id="lobbyRoomLine"></p>
+          <ul class="kn-roster" id="lobbyRoster"></ul>
+          <p class="kn-lobby-hint" data-i18n="raceWaitingHint">Press Start Race when ready. Racing alone still works — you race the clock.</p>
+          <button type="button" class="ogh-btn ogh-btn-primary" id="btnStartRace" data-i18n="startRaceBtn">Start Race</button>
+        </div>
+      </div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="typingHint">Correct letters glow blue, mistakes glow red — just backspace to fix them.</p>
+
+    <!-- Mode picker -->
+    <div class="ogh-overlay" id="modeOverlay">
+      <div class="ogh-card kn-mode-card">
+        <h1 data-i18n="title">Keyboard Ninja</h1>
+        <p data-i18n="blurb">Type words and sentences as fast and accurately as you can.</p>
+        <p class="kn-kb-note" data-i18n="keyboardNote">Needs a physical keyboard — a typing test has no on-screen keyboard.</p>
+        <div class="kn-mode-list">
+          <button type="button" class="ogh-btn ogh-btn-primary mode-btn" id="btnModeSolo">
+            <span class="kn-mode-btn-title" data-i18n="modeSoloBtn">Solo Practice</span>
+            <small class="kn-mode-btn-desc" data-i18n="modeSoloDesc">60-second timed session.</small>
+          </button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeRace">
+            <span class="kn-mode-btn-title" data-i18n="modeRaceBtn">LAN Race</span>
+            <small class="kn-mode-btn-desc" data-i18n="modeRaceDesc">Everyone types the same sentence.</small>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Solo results -->
+    <div class="ogh-overlay" id="resultOverlay" hidden>
+      <div class="ogh-card">
+        <h1 data-i18n="resultsTitle">Time's up!</h1>
+        <p class="kn-result-big" id="resultWpmLine"></p>
+        <p class="kn-result-line" id="resultAccLine"></p>
+        <p class="kn-new-best" id="newBestLine" hidden data-i18n="newBestBadge">New best!</p>
+        <p class="kn-best-line" id="resultBestLine"></p>
+        <div class="kn-result-actions">
+          <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+          <button type="button" class="ogh-btn" id="btnResultMenu" data-i18n="backToMenuBtn">Change mode</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Race leaderboard -->
+    <div class="ogh-overlay" id="raceResultOverlay" hidden>
+      <div class="ogh-card kn-race-result-card">
+        <h1 id="raceResultTitle">…</h1>
+        <div class="kn-leaderboard-wrap">
+          <table class="kn-leaderboard" id="leaderboardTable">
+            <thead>
+              <tr>
+                <th data-i18n="raceRankCol">#</th>
+                <th data-i18n="raceNameCol">Player</th>
+                <th data-i18n="raceWpmCol">WPM</th>
+                <th data-i18n="raceAccCol">Acc</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody"></tbody>
+          </table>
+        </div>
+        <div class="kn-result-actions">
+          <button type="button" class="ogh-btn ogh-btn-primary" id="btnRaceAgain" data-i18n="raceAgainBtn">Race again</button>
+          <button type="button" class="ogh-btn" id="btnRaceResultMenu" data-i18n="backToMenuBtn">Change mode</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Race countdown -->
+    <div class="ogh-overlay" id="countdownOverlay" hidden>
+      <div class="kn-countdown" id="countdownNum">3</div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

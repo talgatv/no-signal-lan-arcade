@@ -1,0 +1,408 @@
+/* Keyboard Ninja — neon-vector typing test. Built on ogh-base.css tokens/
+   classes (.ogh-root/.ogh-stage/.ogh-hud pattern, .ogh-pill, .ogh-btn,
+   .ogh-overlay, .ogh-card, .ogh-hint). No bundled image/audio assets.
+   Priority per the design brief: a clean, legible typing-test UI first
+   (large text, unambiguous correct/incorrect highlighting), neon-glow
+   polish layered on top — not the other way around. */
+
+body.kn-body { display: flex; flex-direction: column; }
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills (WPM/accuracy/time/best) + actions.   */
+/* ------------------------------------------------------------------ */
+.kn-top {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.kn-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.kn-hud::-webkit-scrollbar { display: none; }
+
+.kn-hud .ogh-pill {
+  padding: 6px 10px;
+  font-size: 12.5px;
+  font-family: var(--ogh-mono);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#wpmPill strong { color: var(--ogh-accent); }
+#accPill strong { color: var(--ogh-good); }
+#timePill strong { color: var(--ogh-warn); }
+#bestPill strong { color: var(--ogh-accent-2); }
+
+.kn-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.kn-sound-btn {
+  min-height: 34px;
+  padding: 0 10px;
+  font-size: 11.5px;
+}
+
+#btnMenu { min-height: 34px; padding: 0 12px; font-size: 12.5px; }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage                                                                */
+/* ------------------------------------------------------------------ */
+.kn-stage {
+  padding: 12px;
+  align-items: center;
+}
+
+.kn-typing-view {
+  width: min(760px, 94vw);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Passage display — per-character spans, monospace for a crisp        */
+/* 1:1 read against the input below.                                   */
+/* ------------------------------------------------------------------ */
+.kn-passage {
+  background: var(--ogh-bg-elevated);
+  border: 1px solid rgba(92, 225, 255, 0.22);
+  border-radius: var(--ogh-radius);
+  box-shadow: 0 0 0 1px rgba(92, 225, 255, 0.08), 0 12px 32px rgba(0, 0, 0, 0.4);
+  padding: 20px 22px;
+  max-height: 34vh;
+  overflow-y: auto;
+  font-family: var(--ogh-mono);
+  font-size: clamp(18px, 3.6vw, 28px);
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+  word-wrap: break-word;
+}
+
+.kn-ch {
+  white-space: pre-wrap;
+  color: var(--ogh-fg-dim);
+  transition: color 60ms ease-out;
+}
+.kn-ch.is-correct {
+  color: var(--ogh-accent);
+  text-shadow: 0 0 10px rgba(92, 225, 255, 0.55);
+}
+.kn-ch.is-incorrect {
+  color: var(--ogh-bad);
+  background: rgba(255, 92, 122, 0.16);
+  border-radius: 3px;
+  text-shadow: 0 0 10px rgba(255, 92, 122, 0.55);
+}
+.kn-ch.is-current {
+  border-bottom: 2px solid var(--ogh-warn);
+  animation: kn-caret-pulse 1s ease-in-out infinite;
+}
+@keyframes kn-caret-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+/* Solo mode: current word is emphasized; the upcoming-words preview is a
+   plain dim strip (no per-character grading — it hasn't been typed yet). */
+.kn-current-word { font-size: 1.15em; }
+.kn-upcoming-words {
+  display: block;
+  margin-top: 10px;
+  color: rgba(139, 147, 184, 0.55);
+  font-size: 0.7em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Input                                                               */
+/* ------------------------------------------------------------------ */
+.kn-input {
+  width: 100%;
+  min-height: var(--ogh-touch);
+  padding: 12px 16px;
+  border-radius: var(--ogh-radius);
+  border: 1px solid rgba(92, 225, 255, 0.35);
+  background: rgba(8, 10, 22, 0.85);
+  color: var(--ogh-fg);
+  font-family: var(--ogh-mono);
+  font-size: clamp(16px, 3vw, 20px);
+  outline: none;
+}
+.kn-input:focus {
+  border-color: var(--ogh-accent);
+  box-shadow: 0 0 0 3px rgba(92, 225, 255, 0.18);
+}
+.kn-input:disabled {
+  opacity: 0.5;
+}
+
+/* ------------------------------------------------------------------ */
+/* Race live track — forced LTR regardless of UI language: a racer's   */
+/* progress bar is spatial/comparative gameplay, not prose, same        */
+/* precedent as games/tic-tac-toe's #board and games/pop-the-bugs'      */
+/* #grid staying un-mirrored under RTL. Only the row's name/stat TEXT   */
+/* is language-shaped; the bar itself always fills the same physical    */
+/* direction on every viewer's screen so positions stay comparable.     */
+/* ------------------------------------------------------------------ */
+.kn-track {
+  direction: ltr;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--ogh-bg-elevated);
+  border: 1px solid rgba(92, 225, 255, 0.16);
+  border-radius: var(--ogh-radius);
+  padding: 12px 14px;
+}
+
+.kn-track-row {
+  display: grid;
+  grid-template-columns: minmax(60px, 100px) 1fr 52px;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ogh-mono);
+  font-size: 12.5px;
+}
+
+.kn-track-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ogh-fg);
+}
+.kn-track-row.is-you .kn-track-name { color: var(--ogh-accent); font-weight: 700; }
+.kn-track-row.is-finished .kn-track-name { color: var(--ogh-good); }
+
+.kn-bar {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(139, 147, 184, 0.16);
+  overflow: hidden;
+}
+.kn-bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ogh-accent), var(--ogh-accent-2));
+  box-shadow: 0 0 10px rgba(92, 225, 255, 0.5);
+  transition: width 150ms ease-out;
+}
+.kn-track-row.is-finished .kn-bar-fill {
+  background: linear-gradient(90deg, var(--ogh-good), var(--ogh-accent));
+}
+
+.kn-track-wpm {
+  text-align: right;
+  color: var(--ogh-fg-dim);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* Race lobby                                                          */
+/* ------------------------------------------------------------------ */
+.kn-lobby {
+  width: min(460px, 94vw);
+}
+.kn-lobby-card { width: 100%; }
+.kn-lobby-room {
+  margin: 0 0 12px !important;
+  font-size: 13px !important;
+  color: var(--ogh-fg-dim) !important;
+  font-family: var(--ogh-mono);
+}
+.kn-roster {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+.kn-roster li {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(92, 225, 255, 0.08);
+  font-size: 14px;
+  text-align: start;
+}
+.kn-roster li.you { color: var(--ogh-accent); font-weight: 700; }
+
+.kn-lobby-hint {
+  margin: 0 0 16px !important;
+  font-size: 12.5px !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Mode picker                                                          */
+/* ------------------------------------------------------------------ */
+.kn-kb-note {
+  margin: -8px 0 16px !important;
+  font-size: 12px !important;
+  color: var(--ogh-warn) !important;
+}
+.kn-mode-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mode-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 12px 16px;
+  min-height: unset;
+  text-align: start;
+}
+.kn-mode-btn-title { font-size: 15px; font-weight: 700; }
+.kn-mode-btn-desc {
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--ogh-fg-dim);
+  line-height: 1.35;
+  white-space: normal;
+}
+.mode-btn.ogh-btn-primary .kn-mode-btn-desc { color: rgba(7, 8, 15, 0.65); }
+.mode-btn.ogh-btn-primary { color: var(--ogh-bg); }
+
+/* ------------------------------------------------------------------ */
+/* Results overlays                                                     */
+/* ------------------------------------------------------------------ */
+.kn-result-big {
+  font-size: 2rem !important;
+  font-weight: 800;
+  color: var(--ogh-accent) !important;
+  font-family: var(--ogh-mono);
+  text-shadow: 0 0 16px rgba(92, 225, 255, 0.45);
+  margin: 0 0 6px !important;
+}
+.kn-result-line {
+  font-size: 1rem !important;
+  color: var(--ogh-fg) !important;
+  font-family: var(--ogh-mono);
+  margin: 0 0 10px !important;
+}
+.kn-new-best {
+  color: var(--ogh-warn) !important;
+  font-weight: 800;
+  font-size: 14px !important;
+  text-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+  margin: 0 0 8px !important;
+}
+.kn-best-line {
+  font-size: 13px !important;
+  color: var(--ogh-fg-dim) !important;
+  font-family: var(--ogh-mono);
+  margin: 0 0 16px !important;
+}
+.kn-result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kn-race-result-card { width: min(480px, 100%); }
+.kn-leaderboard-wrap {
+  max-height: 40vh;
+  overflow-y: auto;
+  margin: 0 0 16px;
+}
+.kn-leaderboard {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--ogh-mono);
+  font-size: 13px;
+}
+.kn-leaderboard th, .kn-leaderboard td {
+  padding: 8px 6px;
+  text-align: start;
+  border-bottom: 1px solid rgba(92, 225, 255, 0.14);
+}
+.kn-leaderboard th {
+  color: var(--ogh-fg-dim);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.kn-leaderboard td.kn-lb-rank { color: var(--ogh-warn); font-weight: 800; }
+.kn-leaderboard tr.is-you td { color: var(--ogh-accent); }
+.kn-leaderboard tr.is-unfinished td { color: var(--ogh-fg-dim); }
+
+/* ------------------------------------------------------------------ */
+/* Countdown                                                            */
+/* ------------------------------------------------------------------ */
+.kn-countdown {
+  font-family: var(--ogh-display);
+  font-weight: 800;
+  font-size: clamp(64px, 22vw, 160px);
+  color: var(--ogh-accent);
+  text-shadow: 0 0 40px rgba(92, 225, 255, 0.65);
+  animation: kn-countdown-pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+@keyframes kn-countdown-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  60% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 420px) {
+  .back { font-size: 12px; }
+  .kn-hud .ogh-pill { font-size: 11px; padding: 5px 8px; }
+  .kn-passage { padding: 14px 16px; }
+  .kn-track-row { grid-template-columns: minmax(46px, 76px) 1fr 44px; font-size: 11px; }
+  .kn-sound-btn { display: none; }
+}

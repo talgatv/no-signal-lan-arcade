@@ -3693,6 +3693,90 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original fruit-slicing swipe arcade (an own take on the well-known 'fruit arcs up from below, swipe to slice, avoid the bomb' genre — own fruit designs/physics/code/sound, nothing copied from any specific existing game). client/fruits.js is a pure, DOM-free entity module: 5 fruit types (apple, watermelon-wedge, berry cluster, citrus cross-section, kiwi cross-section — distinguished by both silhouette and saturated color) plus a deliberately desaturated, spiky, pulsing-red-glow, lit-fuse bomb, launched with real gravity-arc physics (plain per-frame Euler integration, not a scripted/closed-form path). Sliced-fruit debris (two halves flying apart) reuses each intact fruit's own whole-shape draw() call clipped to one side via canvas clip(), so no fruit type needed a second hand-authored half-shape. client/slicing.js is a second pure module: a swipe-segment-vs-circle-hitbox test called once per new path segment as a pointer drags, so a fast swipe is checked along its whole path, not just its endpoints. Combo scoring: the Nth fruit sliced within one unbroken swipe scores basePoints*N, resetting on pointer-up, so one stroke clearing several fruit scores meaningfully more than the same fruit sliced across separate swipes. Slicing the bomb is instant game over (the higher-stakes classic genre convention); missing a fruit (falling back below the screen unsliced) costs 1 of 3 lives, a missed bomb is free. Difficulty is a pure function of elapsed play time (fruits.js's difficultyForElapsed(), inspectable via window.OGH_BLADE_FRUIT.getDifficulty): spawn interval, simultaneous items per wave, bomb probability and launch speed all ramp over the first 45s then hold. No bundled image or audio assets — Canvas 2D vector shapes with a neon glow, a glowing swipe trail sampled from the live pointer path, and particle bursts (juice on a fruit, a bigger multi-color burst plus screen-shake on the bomb); sound reuses games/_shared/js/ogh-sfx.js, extended with exactly one new 'slice' pattern (a fast bright blade-swish sweep) — combo continuation reuses gem-swap's 'chain' cascade sparkle, the bomb reuses 'boom', a missed fruit reuses 'screech', the run-ending sting reuses 'die'. Score persists locally via games/_shared/js/ogh-profile.js (games/pop-the-bugs convention). RTL (Arabic) flips only the text/menu chrome; the play field (launch positions, swipe path) never mirrors (stage+canvas dir=ltr, ctx.direction forced ltr), same precedent as games/dash-runner and games/drop-smash."
+    },
+    {
+      "id": "keyboard-ninja",
+      "name": "Keyboard Ninja",
+      "names": {
+        "en": "Keyboard Ninja",
+        "ru": "Клавиатурный Ниндзя",
+        "zh": "键盘忍者",
+        "es": "Ninja del Teclado",
+        "ar": "نينجا لوحة المفاتيح",
+        "fr": "Ninja du Clavier"
+      },
+      "tagline": "Type words and sentences fast and accurately — solo practice against the clock, or a live LAN typing race.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "monospace"
+      ],
+      "genres": [
+        "arcade",
+        "typing",
+        "competitive"
+      ],
+      "controls": {
+        "primary": "keyboard",
+        "supported": [
+          "keyboard"
+        ],
+        "keyboard": "required",
+        "mouse": "none",
+        "notes": {
+          "en": "Type using a physical keyboard — a typing-speed test has no on-screen keyboard on purpose, since faking one would defeat the point of measuring real typing speed. Solo Practice: type the highlighted word into the text box, Space commits it and advances to the next one. LAN Race: type the shared sentence shown on screen; everyone races at once.",
+          "ru": "Печатай на физической клавиатуре — у теста на скорость печати нет экранной клавиатуры, ведь она свела бы на нет смысл измерения реальной скорости. Одиночная тренировка: печатай выделенное слово в поле ввода, пробел подтверждает его и переходит к следующему. Гонка по сети: печатай общее предложение на экране — все соревнуются одновременно.",
+          "zh": "使用实体键盘打字——打字速度测试特意不提供屏幕键盘，因为那样会失去测量真实打字速度的意义。单人练习：把高亮显示的单词打入输入框，按空格键确认并进入下一个。局域网竞速：打出屏幕上显示的共同句子——所有人同时比赛。",
+          "es": "Escribe usando un teclado físico — una prueba de velocidad de mecanografía no tiene teclado en pantalla a propósito, ya que uno falso anularía el sentido de medir la velocidad real. Práctica en solitario: escribe la palabra resaltada en el cuadro de texto; Espacio la confirma y pasa a la siguiente. Carrera LAN: escribe la frase compartida que aparece en pantalla — todos compiten a la vez.",
+          "ar": "اكتب باستخدام لوحة مفاتيح فعلية — اختبار سرعة الكتابة لا يحتوي عمدًا على لوحة مفاتيح على الشاشة، لأن وجود واحدة وهمية سيُبطل الغرض من قياس سرعة الكتابة الحقيقية. تدريب فردي: اكتب الكلمة المميزة في مربع النص، ويؤكدها المسافة وينتقل للتالية. سباق عبر الشبكة: اكتب الجملة المشتركة الظاهرة على الشاشة — يتسابق الجميع في آنٍ واحد.",
+          "fr": "Tapez avec un clavier physique — un test de vitesse de frappe n'a délibérément pas de clavier à l'écran, car un faux clavier annulerait l'intérêt de mesurer une vraie vitesse de frappe. Entraînement solo : tapez le mot surligné dans le champ de texte, Espace le valide et passe au suivant. Course LAN : tapez la phrase commune affichée à l'écran — tout le monde court en même temps."
+        }
+      },
+      "tags": [
+        "solo",
+        "multiplayer",
+        "experimental",
+        "typing",
+        "competitive"
+      ],
+      "instructions": {
+        "en": "Type words and sentences as fast and accurately as you can. Solo Practice: a 60-second timed session against a per-language word bank — the current word is shown large with live per-character highlighting (correct glows blue, mistakes glow red), Space commits it and advances; WPM and accuracy update live, and your best WPM is saved on this device. LAN Race: join a room over Wi-Fi via the PC host, and whoever presses Start Race picks a random sentence and broadcasts it so everyone types the identical passage after a synchronized 3-2-1 countdown; live progress bars show who's ahead, first to finish wins, and a final leaderboard shows finish order, WPM and accuracy for everyone. Racing alone works too — you just race the clock, and LAN Race degrades to that automatically when no host is reachable.",
+        "ru": "Печатай слова и предложения максимально быстро и точно. Одиночная тренировка: сессия на 60 секунд по банку слов на выбранном языке — текущее слово показано крупно с подсветкой каждой буквы в реальном времени (верные буквы светятся синим, ошибки — красным), пробел подтверждает слово и переходит к следующему; скорость и точность обновляются в реальном времени, а лучший результат сохраняется на этом устройстве. Гонка по сети: подключись к комнате по Wi-Fi через PC-хост — тот, кто нажмёт «Старт гонки», выбирает случайное предложение и рассылает его всем, чтобы все печатали один и тот же текст после синхронного отсчёта 3-2-1; шкалы прогресса в реальном времени показывают, кто лидирует, побеждает тот, кто закончит первым, а итоговая таблица показывает порядок финиша, скорость и точность каждого. Можно гоняться и в одиночку — тогда ты соревнуешься с таймером, и гонка по сети автоматически переходит в этот режим, если хост недоступен.",
+        "zh": "尽可能快速、准确地打出单词和句子。单人练习：60秒计时挑战，使用所选语言的词库——当前单词大字号显示并实时高亮每个字符（打对发蓝光，打错发红光），空格键确认并进入下一个；打字速度和准确率实时更新，最佳成绩保存在本设备上。局域网竞速：通过PC主机以Wi-Fi加入房间——按下「开始比赛」的人会随机选择一个句子并广播给所有人，经过同步的3-2-1倒计时后，大家打出完全相同的文字；实时进度条显示谁领先，最先完成的获胜，最终排行榜显示每个人的完成名次、速度和准确率。一个人也能玩——这时你是在和时间赛跑，若没有可用的主机，局域网竞速会自动切换到这种单人模式。",
+        "es": "Escribe palabras y frases lo más rápido y preciso posible. Práctica en solitario: sesión cronometrada de 60 segundos con un banco de palabras en el idioma elegido — la palabra actual se muestra en grande con resaltado de cada carácter en vivo (lo correcto brilla en azul, los errores en rojo), Espacio la confirma y pasa a la siguiente; la velocidad y precisión se actualizan en vivo, y tu mejor marca se guarda en este dispositivo. Carrera LAN: únete a una sala por Wi-Fi a través del host de PC — quien pulse Iniciar carrera elige una frase al azar y la transmite para que todos escriban el mismo texto tras una cuenta atrás sincronizada de 3-2-1; barras de progreso en vivo muestran quién va ganando, gana quien termine primero, y una clasificación final muestra el orden de llegada, velocidad y precisión de todos. También puedes correr solo — entonces compites contra el reloj, y la Carrera LAN pasa a ese modo automáticamente si no hay host disponible.",
+        "ar": "اكتب الكلمات والجمل بأقصى سرعة ودقة ممكنة. تدريب فردي: جلسة محسوبة بالوقت مدتها 60 ثانية باستخدام بنك كلمات باللغة المختارة — تُعرض الكلمة الحالية بحجم كبير مع تمييز كل حرف مباشرة (الصحيح يتوهّج بالأزرق والخطأ بالأحمر)، ويؤكدها مفتاح المسافة وينتقل للتالية؛ تتحدّث السرعة والدقة مباشرة، وتُحفظ أفضل نتيجة لك على هذا الجهاز. سباق عبر الشبكة: انضم إلى غرفة عبر Wi-Fi من خلال مضيف الـPC — من يضغط «ابدأ السباق» يختار جملة عشوائية ويبثّها ليكتب الجميع النص نفسه بعد عدّ تنازلي متزامن 3-2-1؛ تُظهر أشرطة التقدّم المباشرة من يتصدّر، ويفوز أول من ينهي، وتعرض لوحة النتائج النهائية ترتيب الوصول والسرعة والدقة للجميع. يمكنك السباق منفردًا أيضًا — عندها تتسابق مع الساعة، وينتقل سباق الشبكة تلقائيًا لهذا الوضع إذا تعذّر الوصول إلى مضيف.",
+        "fr": "Tapez des mots et des phrases aussi vite et précisément que possible. Entraînement solo : session chronométrée de 60 secondes avec une banque de mots dans la langue choisie — le mot actuel s'affiche en grand avec surlignage de chaque caractère en direct (correct brille en bleu, erreur en rouge), Espace le valide et passe au suivant ; la vitesse et la précision se mettent à jour en direct, et votre meilleur score est enregistré sur cet appareil. Course LAN : rejoignez un salon en Wi-Fi via l'hôte PC — celui qui appuie sur Démarrer la course choisit une phrase au hasard et la diffuse pour que tout le monde tape le même texte après un compte à rebours synchronisé 3-2-1 ; des barres de progression en direct montrent qui est en tête, le premier à finir gagne, et un classement final affiche l'ordre d'arrivée, la vitesse et la précision de chacun. Courir seul fonctionne aussi — vous affrontez alors le chronomètre, et la Course LAN bascule automatiquement dans ce mode si aucun hôte n'est disponible."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 8,
+        "solo": true
+      },
+      "entry": "keyboard-ninja/client/index.html",
+      "manifest": "keyboard-ninja/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 130,
+      "sizeMeasuredKb": 86.4,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Typing-speed test with solo practice and a real-time LAN typing race. Pure calculation logic (per-character diff, WPM = (characters typed / 5) / minutes elapsed, accuracy = correct keystrokes / total keystrokes) lives in client/typing-core.js with zero DOM references, directly unit-testable in plain Node, same 'pure logic never touches the DOM' split as games/tic-tac-toe. Content is split from UI chrome: client/data/content.json holds the per-language word bank (80 words/language) and sentence bank (15 sentences/language) the player actually types; client/i18n.js holds only the UI-chrome string table. zh (Chinese) typing content is romanized Hanyu Pinyin, not hanzi: real Chinese characters require an IME composition step (several keystrokes collapse into one candidate-selected character) that the game's 1-keystroke-per-target-character model can't represent, so romanized content is the honestly-functional choice, clearly labeled as such in the UI and README. ar (Arabic) content, by contrast, IS native Arabic script: a standard Arabic keyboard layout maps one physical key to one Arabic letter directly with no IME/composition step (the same mechanism as a Cyrillic layout for Russian, just right-to-left), so direct keydown/input capture works correctly — verified empirically that a dir=rtl per-character span overlay plus a dir=rtl <input> render right-to-left while input.value keeps logical/typed character order, so the diff/accuracy logic needed zero RTL-specific branching. The race mode's live progress track is forced dir=ltr regardless of UI language (a racer's position is spatial/comparative gameplay, not prose — same precedent as games/tic-tac-toe's board and games/pop-the-bugs' grid staying un-mirrored under RTL). LAN race ranking is deterministic across clients: each client times its own run via performance.now() from its own local countdown reaching GO (not Date.now(), immune to cross-device clock skew), and finish order is a pure sort of each racer's self-reported elapsed time, so relay/delivery order on the WebSocket can never produce two different leaderboards.",
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "Whoever presses Start Race picks a random sentence (in their own UI language) and broadcasts {text, lang, startAt}; each client scores its own keystrokes locally and broadcasts {pct, wpm} on a ~300ms throttle plus a one-time {wpm, accuracy, elapsedMs} on finish. A round ends when every racer frozen into the roster at go()-time has finished, or after a 90-second timeout (remaining players ranked by progress). Solo Practice never touches the network; LAN Race degrades to a solo time-trial automatically when no host is reachable."
+      }
     }
   ]
 }
