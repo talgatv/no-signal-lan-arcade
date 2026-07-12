@@ -1,0 +1,27 @@
+{
+  "id": "void-drift",
+  "name": "Void Drift",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "shooter", "classic"],
+  "tags": ["solo", "experimental", "arcade", "shooter", "classic", "physics"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard"],
+    "keyboard": "optional",
+    "touch": "ok",
+    "notes": {
+      "en": "Touch-first: a bottom-left D-pad has ◁ rotate-left, ▷ rotate-right and ▲ thrust; ● bottom-right fires. Hold any button to keep rotating/thrusting/firing. Momentum is real: thrust adds to whatever velocity the ship already has, so it keeps drifting in its old direction until you thrust again, even while turning. Desktop bonus: ← → (or A/D) rotate, ↑ (or W) thrusts, Space fires.",
+      "ru": "Приоритет — сенсор: D-pad внизу слева — ◁ поворот влево, ▷ поворот вправо и ▲ тяга; ● справа снизу — огонь. Удерживай любую кнопку, чтобы продолжать поворот/тягу/огонь. Инерция настоящая: тяга добавляется к уже имеющейся скорости, поэтому корабль продолжает дрейфовать в прежнем направлении, пока не разгонишься снова, даже во время поворота. Бонус для ПК: ← → (или A/D) — поворот, ↑ (или W) — тяга, пробел — огонь."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Original Newtonian-physics space shooter in the classic 'rotate/thrust ship, shoot and split asteroids, screen wraps' arcade genre (no copied assets/content — an original vector-line take in this hub's own neon-vector style). client/physics.js is the core: rotation only ever changes ship.angle, thrust only ever accumulates onto ship.vx/vy along the current facing direction (never snaps velocity to facing), gentle drag scales speed without touching direction, and every moving body (ship/asteroids/bullets/UFO) wraps independently on both axes via toroidal wrap math — collision distance is computed the same toroidal way, so a bullet near one edge can hit a rock that has wrapped to the opposite edge. client/asteroids.js spawns large rocks with a fixed jagged outline (tumbling via their own spin) that split into 2-3 smaller rocks on hit (large -> medium -> small -> destroyed outright), each split inheriting half the parent's drift plus a fresh randomized kick so the pieces visibly scatter; smaller tiers score more, move faster and have a smaller hitbox, bigger tiers score less but are slower and harder to dodge. A UFO bonus enemy periodically crosses the field on a gentle sine-wave path and takes aimed-but-imperfect shots at the player; shooting it scores a bonus, but colliding with it (like an asteroid) costs a life. Waves escalate a real asteroid count and speed multiplier (see waveConfig() in game.js, inspectable via window.OGH_VOID_DRIFT) that keeps climbing well past wave 5 before capping. 3 ships, a short invulnerability window (with a visible respawn blink) after each life lost, local high score via OGHProfile — same convention as games/pop-the-bugs. No bundled image or audio assets: canvas vector line-art with a glow throughout (including wrap-edge 'ghost' rendering so a body crossing the seam is visible on both sides at once), sound reuses games/_shared/js/ogh-sfx.js's existing patterns unchanged (pop=fire, thwack=asteroid split, pocket=asteroid/UFO destroyed, splat=life lost, die=game over, win=wave clear, screech=UFO fires, whoosh=thrust). RTL (Arabic) flips text/menu chrome only; the play field, screen wrap and rotate-button meanings never mirror (stage is dir=ltr, ctx.direction forced to ltr)."
+}

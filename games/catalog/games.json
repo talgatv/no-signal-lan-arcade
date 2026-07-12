@@ -2530,6 +2530,80 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original first-person raycasting maze shooter in the 1990s corridor-shooter genre (Wolfenstein 3D is the rendering-technique reference only; setting, constructs, weapon and neon-vector art are our own). client/raycaster.js is a from-scratch DDA (Digital Differential Analysis) renderer: per screen column it builds a ray from the player position + facing + camera plane, walks the grid one cell boundary at a time to the first solid cell, and draws a vertical wall slice of height H/perpendicular-distance (the ray's projection onto the camera direction, i.e. fisheye-corrected, NOT raw Euclidean ray length — the classic bug that bows straight walls). Walls are solid neon colors, darker on N/S than E/W faces and faded toward a dark fog with distance, colored by cell type; no bitmap textures. Enemies/pickups/exit are billboarded sprites (flat vector shapes scaled by distance, always camera-facing) drawn in a second pass with a per-column z-buffer for correct occlusion behind walls. Two distinct enemy types: Drone (fast, low-HP melee swarmer) and Sentry (tougher ranged construct holding a standoff distance, firing slow bolts); AI detects the player by range + a grid line-of-sight raycast, and being shot alerts nearby constructs. Combat is hitscan (a ray from the player picks the nearest enemy in the crosshair in front of the wall), 7-round magazine + reload, health with repair-cell pickups, game over at zero. Clear every construct in a sector to bring its exit online, then reach the exit; 3 hand-built maze layouts with corridors/junctions/rooms. HUD has a top-down minimap (walls, player facing, enemies, exit) plus health/ammo. Touch-primary: floating left virtual stick + right drag-look + fire/reload buttons; WASD/arrows + pointer-lock mouse-look are desktop bonuses. window.OGH_RAY_MAZE exposes state + geometry probes (centerWallDistance, debugColumn) for verifying the raycasting math. No bundled image/audio assets: Canvas 2D neon-vector drawing throughout, sound reuses games/_shared/js/ogh-sfx.js unchanged. RTL (Arabic) flips only the header/cards/hint text chrome; the first-person view, the minimap and all movement/turn directions never mirror (stage dir=ltr, ctx.direction forced ltr)."
+    },
+    {
+      "id": "void-drift",
+      "name": "Void Drift",
+      "names": {
+        "en": "Void Drift",
+        "ru": "Дрейф в пустоте",
+        "zh": "虚空漂移",
+        "es": "Deriva del Vacío",
+        "ar": "انجراف الفراغ",
+        "fr": "Dérive du Vide"
+      },
+      "tagline": "A Newtonian-physics arcade shooter — rotate, thrust and drift through a screen-wrapping field, splitting asteroids wave after wave.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "top-down",
+        "physics"
+      ],
+      "genres": [
+        "arcade",
+        "shooter",
+        "classic"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "touch": "ok",
+        "notes": {
+          "en": "Touch-first: a bottom-left D-pad has ◁ rotate-left, ▷ rotate-right and ▲ thrust; ● bottom-right fires. Hold any button to keep rotating/thrusting/firing. Momentum is real: thrust adds to whatever velocity the ship already has, so it keeps drifting in its old direction until you thrust again, even while turning. Desktop bonus: ← → (or A/D) rotate, ↑ (or W) thrusts, Space fires.",
+          "ru": "Приоритет — сенсор: D-pad внизу слева — ◁ поворот влево, ▷ поворот вправо и ▲ тяга; ● справа снизу — огонь. Удерживай любую кнопку, чтобы продолжать поворот/тягу/огонь. Инерция настоящая: тяга добавляется к уже имеющейся скорости, поэтому корабль продолжает дрейфовать в прежнем направлении, пока не разгонишься снова, даже во время поворота. Бонус для ПК: ← → (или A/D) — поворот, ↑ (или W) — тяга, пробел — огонь."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "arcade",
+        "shooter",
+        "classic",
+        "physics"
+      ],
+      "instructions": {
+        "en": "Rotate and thrust your ship through an asteroid field where everything wraps around the screen edges. Turning only changes which way you face — it never changes your velocity — so thrust in a direction to build momentum, then you can turn and coast while still drifting the old way; thrust again to add to whatever speed you already have. On touch, the bottom-left D-pad rotates left/right and thrusts forward, and the bottom-right button fires (hold any button to keep rotating, thrusting or firing; fire has a short cooldown). On desktop use the arrow keys or A/D to rotate, the up arrow or W to thrust, and Space to fire. Shooting a large asteroid splits it into 2-3 medium asteroids; shooting a medium asteroid splits it into 2-3 small ones; a small asteroid is destroyed outright. Bigger asteroids score fewer points but are slow with a big hitbox; smaller ones score more but are fast and easy to miss. An occasional UFO crosses the field on its own path and takes potshots at you — shoot it down for a bonus, or avoid its hull and its bolts, both of which cost a life just like an asteroid would. Clear every asteroid in a wave (down through all of its splits) to advance to the next, tougher wave. You start with 3 ships; losing one respawns you at center with a brief invulnerable, blinking window. Lose your last ship and the run ends with a results screen and a local high score.",
+        "ru": "Вращай и разгоняй свой корабль сквозь пояс астероидов, где всё оборачивается через края экрана. Поворот меняет только направление, куда смотрит корабль, — он никогда не меняет скорость, — поэтому разгонись в одну сторону, а затем можно повернуть и продолжать скользить по-старому; разгонись снова, чтобы добавить тяги к уже имеющейся скорости. На сенсоре D-pad внизу слева поворачивает влево/вправо и разгоняет вперёд, а кнопка справа снизу стреляет (удерживай любую кнопку, чтобы продолжать поворот, тягу или огонь; у выстрела есть небольшая пауза между очередями). На ПК используй стрелки или A/D для поворота, стрелку вверх или W для тяги и пробел для огня. Попадание по крупному астероиду дробит его на 2-3 средних; попадание по среднему — на 2-3 мелких; мелкий астероид уничтожается полностью. Крупные астероиды дают меньше очков, но медленные и с большой зоной поражения; мелкие дают больше очков, но быстрые и в них трудно попасть. Время от времени через поле пролетает НЛО по собственному маршруту и постреливает по тебе — сбей его ради бонуса или уклоняйся от его корпуса и зарядов: и то, и другое отнимает жизнь, как и столкновение с астероидом. Зачисти все астероиды волны (включая все осколки), чтобы перейти на следующую, более сложную волну. У тебя 3 корабля; потеря одного возвращает тебя в центр с коротким периодом неуязвимости, во время которого корабль мигает. Потеряешь последний корабль — забег завершится экраном результатов и локальным рекордом."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "void-drift/client/index.html",
+      "manifest": "void-drift/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 70.6,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original Newtonian-physics space shooter in the classic 'rotate/thrust ship, shoot and split asteroids, screen wraps' arcade genre (no copied assets/content — an original vector-line take in this hub's own neon-vector style). client/physics.js is the core: rotation only ever changes ship.angle, thrust only ever accumulates onto ship.vx/vy along the current facing direction (never snaps velocity to facing), gentle drag scales speed without touching direction, and every moving body (ship/asteroids/bullets/UFO) wraps independently on both axes via toroidal wrap math — collision distance is computed the same toroidal way, so a bullet near one edge can hit a rock that has wrapped to the opposite edge. client/asteroids.js spawns large rocks with a fixed jagged outline (tumbling via their own spin) that split into 2-3 smaller rocks on hit (large -> medium -> small -> destroyed outright), each split inheriting half the parent's drift plus a fresh randomized kick so the pieces visibly scatter; smaller tiers score more, move faster and have a smaller hitbox, bigger tiers score less but are slower and harder to dodge. A UFO bonus enemy periodically crosses the field on a gentle sine-wave path and takes aimed-but-imperfect shots at the player; shooting it scores a bonus, but colliding with it (like an asteroid) costs a life. Waves escalate a real asteroid count and speed multiplier (see waveConfig() in game.js, inspectable via window.OGH_VOID_DRIFT) that keeps climbing well past wave 5 before capping. 3 ships, a short invulnerability window (with a visible respawn blink) after each life lost, local high score via OGHProfile — same convention as games/pop-the-bugs. No bundled image or audio assets: canvas vector line-art with a glow throughout (including wrap-edge 'ghost' rendering so a body crossing the seam is visible on both sides at once), sound reuses games/_shared/js/ogh-sfx.js's existing patterns unchanged (pop=fire, thwack=asteroid split, pocket=asteroid/UFO destroyed, splat=life lost, die=game over, win=wave clear, screech=UFO fires, whoosh=thrust). RTL (Arabic) flips text/menu chrome only; the play field, screen wrap and rotate-button meanings never mirror (stage is dir=ltr, ctx.direction forced to ltr)."
     }
   ]
 }
