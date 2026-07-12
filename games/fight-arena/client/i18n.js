@@ -1,0 +1,471 @@
+/**
+ * i18n — string table for Fight Arena.
+ * Mirrors games/claw-machine/client/i18n.js and games/billiards/client/i18n.js
+ * (same batch, same shape): a flat STRINGS table per UN-6 language, plus
+ * detect/apply helpers, no framework.
+ *
+ * RTL (Arabic) flips the text-bearing UI chrome only — the header, the
+ * character-select cards, HUD labels, overlay result screens and the touch
+ * button *labels*. It deliberately does NOT mirror the fight stage itself:
+ * Player 1 stays on the LEFT and Player 2 on the RIGHT, "walk right" always
+ * moves the on-screen figure right, and each player's control scheme keeps
+ * its physical key meaning. A versus fighting stage is fixed spatial
+ * gameplay (like a game board), not reading-order text — mirroring it would
+ * silently swap the two players' sides and invert every movement/attack
+ * direction relative to the keys. This is the same precedent already set by
+ * games/billiards' table, games/paintball's arena and games/claw-machine's
+ * pit (see the dir="ltr" on the stage/canvas/touch-pad in index.html and the
+ * `direction: ltr` guards in style.css). game.js also forces
+ * ctx.direction = 'ltr' so canvas HUD/label text never re-orders.
+ *
+ * Fighter names (Volt / Boulder / Sable) are proper nouns kept in Latin
+ * across every language, same as a character's name in any game; only their
+ * archetype taglines and move names are translated.
+ */
+
+export const LANGS = ['en', 'ru', 'zh', 'es', 'ar', 'fr'];
+
+export const LANG_LABELS = {
+  en: 'EN',
+  ru: 'RU',
+  zh: '中文',
+  es: 'ES',
+  ar: 'AR',
+  fr: 'FR',
+};
+
+export const RTL_LANGS = new Set(['ar']);
+
+export const STRINGS = {
+  en: {
+    back: 'Library',
+    title: 'Fight Arena',
+    blurb: 'A side-view versus fighting game. Pick a fighter, close the gap, and read your opponent — light and heavy punches and kicks, real hitboxes, blocking, and one signature special each. Best of three rounds.',
+    langSwitchAria: 'Language',
+    modeLocalBtn: 'Local 2-Player',
+    modeAiBtn: 'Vs Computer',
+    selectTitle: 'Choose your fighters',
+    p1Label: 'Player 1',
+    p2Label: 'Player 2',
+    cpuLabel: 'Computer',
+    randomBtn: 'Random',
+    startBtn: 'Fight!',
+    backBtn: 'Back',
+    vsLabel: 'VS',
+    hpAriaP1: 'Player 1 health',
+    hpAriaP2: 'Player 2 health',
+    roundLabel: 'Round {n}',
+    fightGo: 'Fight!',
+    koLabel: 'K.O.',
+    timeUpLabel: 'Time Up',
+    drawLabel: 'Draw',
+    roundWinLabel: '{name} takes the round',
+    matchWinLabel: '{name} wins the match!',
+    rematchBtn: 'Rematch',
+    changeBtn: 'Change fighters',
+    // Character roster
+    char_volt_name: 'Volt',
+    char_volt_tag: 'Bolt zoner — balanced, throws energy bolts from range.',
+    char_volt_special: 'Arc Bolt (projectile)',
+    char_boulder_name: 'Boulder',
+    char_boulder_tag: 'Heavy bruiser — slow but hits like a truck; rising ram swats jumps.',
+    char_boulder_special: 'Rising Ram (uppercut)',
+    char_sable_name: 'Sable',
+    char_sable_tag: 'Blade dancer — fast and fragile, dashes in with quick strikes.',
+    char_sable_special: 'Slip Strike (rush)',
+    statPower: 'Power',
+    statSpeed: 'Speed',
+    statHealth: 'Health',
+    // Controls help
+    controlsTitle: 'Controls',
+    p1keysTitle: 'Player 1',
+    p2keysTitle: 'Player 2',
+    ctrlMove: 'Move',
+    ctrlJump: 'Jump',
+    ctrlCrouch: 'Crouch',
+    ctrlBlock: 'Block (hold away)',
+    ctrlLP: 'Light punch',
+    ctrlHP: 'Heavy punch',
+    ctrlLK: 'Light kick',
+    ctrlHK: 'Heavy kick',
+    ctrlSpecial: 'Special',
+    ctrlDash: 'Dash (double-tap left/right)',
+    hintLocal: 'P1 = WASD + F G V B + R · P2 = Arrows + K L , . + ; · hold away to block',
+    hintAi: 'WASD move · F/G punch · V/B kick · R special · double-tap to dash · hold away to block',
+    // Touch button labels (solo vs-AI fallback)
+    btnLeftAria: 'Move left',
+    btnRightAria: 'Move right',
+    btnJumpAria: 'Jump',
+    btnCrouchAria: 'Crouch',
+    btnLPAria: 'Light punch',
+    btnHPAria: 'Heavy punch',
+    btnLKAria: 'Light kick',
+    btnHKAria: 'Heavy kick',
+    btnSpecialAria: 'Special move',
+  },
+  ru: {
+    back: 'Библиотека',
+    title: 'Арена Бойцов',
+    blurb: 'Файтинг с видом сбоку. Выбери бойца, сократи дистанцию и читай соперника — лёгкие и тяжёлые удары руками и ногами, настоящие хитбоксы, блок и по одному фирменному спецприёму. Матч до двух побед в раундах.',
+    langSwitchAria: 'Язык',
+    modeLocalBtn: 'На двоих',
+    modeAiBtn: 'Против компьютера',
+    selectTitle: 'Выберите бойцов',
+    p1Label: 'Игрок 1',
+    p2Label: 'Игрок 2',
+    cpuLabel: 'Компьютер',
+    randomBtn: 'Случайно',
+    startBtn: 'Бой!',
+    backBtn: 'Назад',
+    vsLabel: 'ПРОТИВ',
+    hpAriaP1: 'Здоровье игрока 1',
+    hpAriaP2: 'Здоровье игрока 2',
+    roundLabel: 'Раунд {n}',
+    fightGo: 'Бой!',
+    koLabel: 'Нокаут',
+    timeUpLabel: 'Время вышло',
+    drawLabel: 'Ничья',
+    roundWinLabel: '{name} берёт раунд',
+    matchWinLabel: '{name} побеждает в матче!',
+    rematchBtn: 'Реванш',
+    changeBtn: 'Сменить бойцов',
+    char_volt_name: 'Вольт',
+    char_volt_tag: 'Зонер-разрядник — сбалансирован, метает сгустки энергии с дистанции.',
+    char_volt_special: 'Разряд (снаряд)',
+    char_boulder_name: 'Валун',
+    char_boulder_tag: 'Тяжёлый громила — медленный, но бьёт как грузовик; апперкот сбивает прыжки.',
+    char_boulder_special: 'Восходящий таран (апперкот)',
+    char_sable_name: 'Сэйбл',
+    char_sable_tag: 'Клинок-танцор — быстрая и хрупкая, врывается рывком с быстрыми ударами.',
+    char_sable_special: 'Проскок (рывок)',
+    statPower: 'Сила',
+    statSpeed: 'Скорость',
+    statHealth: 'Здоровье',
+    controlsTitle: 'Управление',
+    p1keysTitle: 'Игрок 1',
+    p2keysTitle: 'Игрок 2',
+    ctrlMove: 'Движение',
+    ctrlJump: 'Прыжок',
+    ctrlCrouch: 'Присесть',
+    ctrlBlock: 'Блок (держи от соперника)',
+    ctrlLP: 'Лёгкий удар рукой',
+    ctrlHP: 'Тяжёлый удар рукой',
+    ctrlLK: 'Лёгкий удар ногой',
+    ctrlHK: 'Тяжёлый удар ногой',
+    ctrlSpecial: 'Спецприём',
+    ctrlDash: 'Рывок (двойное нажатие влево/вправо)',
+    hintLocal: 'И1 = WASD + F G V B + R · И2 = стрелки + K L , . + ; · держи от соперника для блока',
+    hintAi: 'WASD — движение · F/G — руки · V/B — ноги · R — спец · двойное нажатие — рывок · держи назад для блока',
+    btnLeftAria: 'Влево',
+    btnRightAria: 'Вправо',
+    btnJumpAria: 'Прыжок',
+    btnCrouchAria: 'Присесть',
+    btnLPAria: 'Лёгкий удар рукой',
+    btnHPAria: 'Тяжёлый удар рукой',
+    btnLKAria: 'Лёгкий удар ногой',
+    btnHKAria: 'Тяжёлый удар ногой',
+    btnSpecialAria: 'Спецприём',
+  },
+  zh: {
+    back: '资料库',
+    title: '格斗竞技场',
+    blurb: '横版对战格斗游戏。选择一名斗士，拉近距离，读懂对手——轻重拳脚、真实判定框、格挡，以及各自一招招牌绝技。三局两胜。',
+    langSwitchAria: '语言',
+    modeLocalBtn: '本地双人',
+    modeAiBtn: '对战电脑',
+    selectTitle: '选择你的斗士',
+    p1Label: '玩家 1',
+    p2Label: '玩家 2',
+    cpuLabel: '电脑',
+    randomBtn: '随机',
+    startBtn: '开打！',
+    backBtn: '返回',
+    vsLabel: 'VS',
+    hpAriaP1: '玩家 1 血量',
+    hpAriaP2: '玩家 2 血量',
+    roundLabel: '第 {n} 回合',
+    fightGo: '开打！',
+    koLabel: '击倒',
+    timeUpLabel: '时间到',
+    drawLabel: '平局',
+    roundWinLabel: '{name} 拿下本回合',
+    matchWinLabel: '{name} 赢得比赛！',
+    rematchBtn: '再战',
+    changeBtn: '重选斗士',
+    char_volt_name: 'Volt',
+    char_volt_tag: '放电控场——属性均衡，远程投掷能量弹。',
+    char_volt_special: '电弧弹（飞行道具）',
+    char_boulder_name: 'Boulder',
+    char_boulder_tag: '重型猛将——移动慢但出拳沉重；升龙撞击专克跳跃。',
+    char_boulder_special: '升龙撞（升龙拳）',
+    char_sable_name: 'Sable',
+    char_sable_tag: '刃舞者——快速而脆弱，突进近身连打。',
+    char_sable_special: '滑步斩（突进）',
+    statPower: '力量',
+    statSpeed: '速度',
+    statHealth: '血量',
+    controlsTitle: '操作',
+    p1keysTitle: '玩家 1',
+    p2keysTitle: '玩家 2',
+    ctrlMove: '移动',
+    ctrlJump: '跳跃',
+    ctrlCrouch: '蹲下',
+    ctrlBlock: '格挡（按住远离方向）',
+    ctrlLP: '轻拳',
+    ctrlHP: '重拳',
+    ctrlLK: '轻腿',
+    ctrlHK: '重腿',
+    ctrlSpecial: '绝技',
+    ctrlDash: '冲刺（连按左/右两下）',
+    hintLocal: '玩家1 = WASD + F G V B + R · 玩家2 = 方向键 + K L , . + ; · 按住远离方向格挡',
+    hintAi: 'WASD 移动 · F/G 出拳 · V/B 出腿 · R 绝技 · 连按两下冲刺 · 按住后退格挡',
+    btnLeftAria: '向左移动',
+    btnRightAria: '向右移动',
+    btnJumpAria: '跳跃',
+    btnCrouchAria: '蹲下',
+    btnLPAria: '轻拳',
+    btnHPAria: '重拳',
+    btnLKAria: '轻腿',
+    btnHKAria: '重腿',
+    btnSpecialAria: '绝技',
+  },
+  es: {
+    back: 'Biblioteca',
+    title: 'Arena de Combate',
+    blurb: 'Un juego de lucha de vista lateral. Elige un luchador, acorta la distancia y lee a tu rival: puñetazos y patadas ligeros y fuertes, hitboxes reales, bloqueo y un especial característico para cada uno. Al mejor de tres asaltos.',
+    langSwitchAria: 'Idioma',
+    modeLocalBtn: '2 Jugadores local',
+    modeAiBtn: 'Contra la máquina',
+    selectTitle: 'Elige a tus luchadores',
+    p1Label: 'Jugador 1',
+    p2Label: 'Jugador 2',
+    cpuLabel: 'Máquina',
+    randomBtn: 'Aleatorio',
+    startBtn: '¡Pelea!',
+    backBtn: 'Atrás',
+    vsLabel: 'VS',
+    hpAriaP1: 'Salud del jugador 1',
+    hpAriaP2: 'Salud del jugador 2',
+    roundLabel: 'Asalto {n}',
+    fightGo: '¡Pelea!',
+    koLabel: 'K.O.',
+    timeUpLabel: 'Se acabó el tiempo',
+    drawLabel: 'Empate',
+    roundWinLabel: '{name} gana el asalto',
+    matchWinLabel: '¡{name} gana el combate!',
+    rematchBtn: 'Revancha',
+    changeBtn: 'Cambiar luchadores',
+    char_volt_name: 'Volt',
+    char_volt_tag: 'Controlador eléctrico: equilibrado, lanza descargas de energía a distancia.',
+    char_volt_special: 'Descarga Arco (proyectil)',
+    char_boulder_name: 'Boulder',
+    char_boulder_tag: 'Bestia pesada: lento pero pega como un camión; su embestida ascendente derriba saltos.',
+    char_boulder_special: 'Embestida Ascendente (gancho)',
+    char_sable_name: 'Sable',
+    char_sable_tag: 'Danzante de hojas: rápida y frágil, entra con embestidas de golpes veloces.',
+    char_sable_special: 'Golpe Deslizante (embestida)',
+    statPower: 'Fuerza',
+    statSpeed: 'Velocidad',
+    statHealth: 'Salud',
+    controlsTitle: 'Controles',
+    p1keysTitle: 'Jugador 1',
+    p2keysTitle: 'Jugador 2',
+    ctrlMove: 'Mover',
+    ctrlJump: 'Saltar',
+    ctrlCrouch: 'Agacharse',
+    ctrlBlock: 'Bloquear (mantén hacia atrás)',
+    ctrlLP: 'Puñetazo ligero',
+    ctrlHP: 'Puñetazo fuerte',
+    ctrlLK: 'Patada ligera',
+    ctrlHK: 'Patada fuerte',
+    ctrlSpecial: 'Especial',
+    ctrlDash: 'Embestida (doble toque izq./der.)',
+    hintLocal: 'J1 = WASD + F G V B + R · J2 = flechas + K L , . + ; · mantén hacia atrás para bloquear',
+    hintAi: 'WASD mover · F/G puño · V/B patada · R especial · doble toque para embestir · mantén atrás para bloquear',
+    btnLeftAria: 'Mover a la izquierda',
+    btnRightAria: 'Mover a la derecha',
+    btnJumpAria: 'Saltar',
+    btnCrouchAria: 'Agacharse',
+    btnLPAria: 'Puñetazo ligero',
+    btnHPAria: 'Puñetazo fuerte',
+    btnLKAria: 'Patada ligera',
+    btnHKAria: 'Patada fuerte',
+    btnSpecialAria: 'Movimiento especial',
+  },
+  ar: {
+    back: 'المكتبة',
+    title: 'حَلبة القتال',
+    blurb: 'لعبة قتال بمنظور جانبي. اختر مقاتلًا، اقترب من خصمك واقرأ تحركاته — لكمات وركلات خفيفة وثقيلة، صناديق إصابة حقيقية، صدّ، ولكل مقاتل ضربة خاصة مميزة. أفضل ثلاث جولات.',
+    langSwitchAria: 'اللغة',
+    modeLocalBtn: 'لاعبان محليًا',
+    modeAiBtn: 'ضد الحاسوب',
+    selectTitle: 'اختر مقاتليك',
+    p1Label: 'اللاعب 1',
+    p2Label: 'اللاعب 2',
+    cpuLabel: 'الحاسوب',
+    randomBtn: 'عشوائي',
+    startBtn: 'قتال!',
+    backBtn: 'رجوع',
+    vsLabel: 'ضد',
+    hpAriaP1: 'صحة اللاعب 1',
+    hpAriaP2: 'صحة اللاعب 2',
+    roundLabel: 'الجولة {n}',
+    fightGo: 'قتال!',
+    koLabel: 'الضربة القاضية',
+    timeUpLabel: 'انتهى الوقت',
+    drawLabel: 'تعادل',
+    roundWinLabel: '{name} يفوز بالجولة',
+    matchWinLabel: '{name} يفوز بالمباراة!',
+    rematchBtn: 'إعادة المباراة',
+    changeBtn: 'تغيير المقاتلين',
+    char_volt_name: 'Volt',
+    char_volt_tag: 'مسيطر بالطاقة — متوازن، يقذف كرات طاقة من بعيد.',
+    char_volt_special: 'قوس البرق (مقذوف)',
+    char_boulder_name: 'Boulder',
+    char_boulder_tag: 'ثقيل ضخم — بطيء لكنه يضرب كالشاحنة؛ نطحته الصاعدة تُسقط القفزات.',
+    char_boulder_special: 'النطحة الصاعدة (لكمة صاعدة)',
+    char_sable_name: 'Sable',
+    char_sable_tag: 'راقصة النصال — سريعة وهشّة، تندفع بضربات خاطفة.',
+    char_sable_special: 'الضربة المنزلقة (اندفاع)',
+    statPower: 'القوة',
+    statSpeed: 'السرعة',
+    statHealth: 'الصحة',
+    controlsTitle: 'التحكم',
+    p1keysTitle: 'اللاعب 1',
+    p2keysTitle: 'اللاعب 2',
+    ctrlMove: 'الحركة',
+    ctrlJump: 'القفز',
+    ctrlCrouch: 'الانحناء',
+    ctrlBlock: 'الصدّ (اضغط بعيدًا عن الخصم)',
+    ctrlLP: 'لكمة خفيفة',
+    ctrlHP: 'لكمة ثقيلة',
+    ctrlLK: 'ركلة خفيفة',
+    ctrlHK: 'ركلة ثقيلة',
+    ctrlSpecial: 'ضربة خاصة',
+    ctrlDash: 'اندفاع (نقرتان يسار/يمين)',
+    hintLocal: 'ل1 = WASD + F G V B + R · ل2 = الأسهم + K L , . + ; · اضغط بعيدًا للصدّ',
+    hintAi: 'WASD للحركة · F/G لكم · V/B ركل · R خاص · نقرتان للاندفاع · اضغط للخلف للصدّ',
+    btnLeftAria: 'التحرك يسارًا',
+    btnRightAria: 'التحرك يمينًا',
+    btnJumpAria: 'القفز',
+    btnCrouchAria: 'الانحناء',
+    btnLPAria: 'لكمة خفيفة',
+    btnHPAria: 'لكمة ثقيلة',
+    btnLKAria: 'ركلة خفيفة',
+    btnHKAria: 'ركلة ثقيلة',
+    btnSpecialAria: 'ضربة خاصة',
+  },
+  fr: {
+    back: 'Bibliothèque',
+    title: 'Arène de Combat',
+    blurb: 'Un jeu de combat en vue de côté. Choisis un combattant, réduis la distance et lis ton adversaire : coups de poing et de pied légers et lourds, hitboxes réelles, garde, et un spécial signature chacun. Au meilleur des trois rounds.',
+    langSwitchAria: 'Langue',
+    modeLocalBtn: '2 joueurs local',
+    modeAiBtn: "Contre l'ordinateur",
+    selectTitle: 'Choisissez vos combattants',
+    p1Label: 'Joueur 1',
+    p2Label: 'Joueur 2',
+    cpuLabel: 'Ordinateur',
+    randomBtn: 'Aléatoire',
+    startBtn: 'Combat !',
+    backBtn: 'Retour',
+    vsLabel: 'VS',
+    hpAriaP1: 'Santé du joueur 1',
+    hpAriaP2: 'Santé du joueur 2',
+    roundLabel: 'Round {n}',
+    fightGo: 'Combat !',
+    koLabel: 'K.O.',
+    timeUpLabel: 'Temps écoulé',
+    drawLabel: 'Égalité',
+    roundWinLabel: '{name} remporte le round',
+    matchWinLabel: '{name} remporte le combat !',
+    rematchBtn: 'Revanche',
+    changeBtn: 'Changer de combattants',
+    char_volt_name: 'Volt',
+    char_volt_tag: "Contrôleur à distance — équilibré, lance des éclairs d'énergie de loin.",
+    char_volt_special: 'Arc Éclair (projectile)',
+    char_boulder_name: 'Boulder',
+    char_boulder_tag: 'Brute lourde — lent mais frappe comme un camion ; son bélier ascendant balaie les sauts.',
+    char_boulder_special: 'Bélier Ascendant (uppercut)',
+    char_sable_name: 'Sable',
+    char_sable_tag: 'Danseuse de lames — rapide et fragile, fonce avec des frappes vives.',
+    char_sable_special: 'Frappe Glissée (charge)',
+    statPower: 'Puissance',
+    statSpeed: 'Vitesse',
+    statHealth: 'Santé',
+    controlsTitle: 'Commandes',
+    p1keysTitle: 'Joueur 1',
+    p2keysTitle: 'Joueur 2',
+    ctrlMove: 'Se déplacer',
+    ctrlJump: 'Sauter',
+    ctrlCrouch: 'S’accroupir',
+    ctrlBlock: 'Garde (maintenir vers l’arrière)',
+    ctrlLP: 'Poing léger',
+    ctrlHP: 'Poing lourd',
+    ctrlLK: 'Pied léger',
+    ctrlHK: 'Pied lourd',
+    ctrlSpecial: 'Spécial',
+    ctrlDash: 'Charge (double appui gauche/droite)',
+    hintLocal: 'J1 = WASD + F G V B + R · J2 = flèches + K L , . + ; · maintenir vers l’arrière pour la garde',
+    hintAi: 'WASD déplacer · F/G poing · V/B pied · R spécial · double appui pour charger · maintenir arrière pour la garde',
+    btnLeftAria: 'Se déplacer à gauche',
+    btnRightAria: 'Se déplacer à droite',
+    btnJumpAria: 'Sauter',
+    btnCrouchAria: 'S’accroupir',
+    btnLPAria: 'Poing léger',
+    btnHPAria: 'Poing lourd',
+    btnLKAria: 'Pied léger',
+    btnHKAria: 'Pied lourd',
+    btnSpecialAria: 'Coup spécial',
+  },
+};
+
+function qs(name) {
+  try {
+    return new URLSearchParams(location.search).get(name);
+  } catch {
+    return null;
+  }
+}
+
+export function detectLang() {
+  const q = qs('lang');
+  if (q && STRINGS[q]) return q;
+  try {
+    const stored = localStorage.getItem('ogh_fight_arena_lang');
+    if (stored && STRINGS[stored]) return stored;
+  } catch { /* storage may be unavailable */ }
+  const nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
+  return STRINGS[nav] ? nav : 'en';
+}
+
+export function rememberLang(lang) {
+  try {
+    localStorage.setItem('ogh_fight_arena_lang', lang);
+  } catch { /* ignore */ }
+}
+
+/** Translate a key for a given language, with optional {placeholder} substitution. */
+export function t(lang, key, vars) {
+  const dict = STRINGS[lang] || STRINGS.en;
+  let s = dict[key] ?? STRINGS.en[key] ?? key;
+  if (vars) {
+    for (const [k, v] of Object.entries(vars)) {
+      s = s.replaceAll(`{${k}}`, String(v));
+    }
+  }
+  return s;
+}
+
+export function applyStaticStrings(lang) {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = RTL_LANGS.has(lang) ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    const key = el.getAttribute('data-i18n');
+    el.textContent = t(lang, key);
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+    const key = el.getAttribute('data-i18n-aria');
+    el.setAttribute('aria-label', t(lang, key));
+  });
+}

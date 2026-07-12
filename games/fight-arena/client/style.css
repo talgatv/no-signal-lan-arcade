@@ -1,0 +1,356 @@
+/* Fight Arena — neon-vector page chrome on top of ogh-base.css's shared
+   structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card,
+   .ogh-btn, .ogh-hint). Palette stays the hub default dark neon-vector look
+   (no :root override) — same convention as games/billiards and games/comet.
+   The health bars, timer, round pips and round/KO banners are drawn ON the
+   canvas (fixed 960x540 world) so they stay aligned with the fighters and
+   scale as one; this file only styles the page chrome, the character-select
+   card, the match-end card and the optional touch pad, plus a LANDSCAPE
+   override of the shared auto-sizing canvas rule. */
+
+.fa-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + language switch.                                */
+/* ------------------------------------------------------------------ */
+.fa-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px 4px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas — landscape override (16:9, matches the 960x540 world the    */
+/* game draws). Selector repeats ogh-base.css's own                    */
+/* `.ogh-stage canvas.ogh-game-canvas` to MATCH its specificity, then  */
+/* relies on the canvas's intrinsic width=960/height=540 aspect via    */
+/* the replaced-element auto-sizing algorithm (same robust approach as */
+/* games/billiards' landscape canvas), which can't desync a locked     */
+/* aspect ratio the way the shared portrait min() formula can.         */
+/* ------------------------------------------------------------------ */
+.ogh-stage {
+  padding: 0 8px;
+}
+.ogh-stage canvas.ogh-game-canvas {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background: #05060d;
+  box-shadow:
+    0 0 0 1px rgba(92, 225, 255, 0.14),
+    0 14px 44px rgba(0, 0, 0, 0.5);
+  touch-action: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Visually-hidden live status for screen readers (HP/round updates).  */
+/* ------------------------------------------------------------------ */
+.fa-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* On-screen touch controls (solo vs-AI fallback only).                */
+/* ------------------------------------------------------------------ */
+.fa-touch {
+  flex: 0 0 auto;
+  z-index: 4;
+  direction: ltr;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 14px calc(10px + var(--ogh-safe-bottom));
+}
+
+.fa-touch-pad {
+  display: grid;
+  grid-template-columns: 46px 46px 46px;
+  grid-template-rows: 46px 46px 46px;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.fa-tbtn,
+.fa-abtn {
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: rgba(12, 16, 30, 0.82);
+  color: var(--ogh-fg);
+  border-radius: 12px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.fa-tbtn:active, .fa-tbtn.is-down,
+.fa-abtn:active, .fa-abtn.is-down {
+  background: rgba(92, 225, 255, 0.22);
+  border-color: var(--ogh-accent);
+}
+.fa-t-up { grid-column: 2; grid-row: 1; }
+.fa-t-left { grid-column: 1; grid-row: 2; }
+.fa-t-down { grid-column: 2; grid-row: 3; }
+.fa-t-right { grid-column: 3; grid-row: 2; }
+
+.fa-touch-atk {
+  display: grid;
+  grid-template-columns: repeat(3, 52px);
+  grid-auto-rows: 44px;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.fa-abtn { font-size: 13px; }
+.fa-a-sp {
+  grid-column: span 3;
+  color: var(--ogh-bg);
+  background: var(--ogh-accent-2);
+  border-color: var(--ogh-accent-2);
+}
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards.                                                       */
+/* ------------------------------------------------------------------ */
+.fa-card h1 {
+  font-family: "Montserrat", "Roboto", sans-serif;
+}
+.fa-select {
+  width: min(720px, 100%);
+  text-align: center;
+}
+.fa-blurb {
+  margin: 0 0 14px !important;
+  font-size: 0.88rem !important;
+}
+
+.fa-modes {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.fa-mode-btn {
+  flex: 1 1 0;
+  max-width: 220px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(92, 225, 255, 0.28);
+  background: rgba(8, 10, 22, 0.8);
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fa-mode-btn.is-on {
+  color: var(--ogh-fg);
+  border-color: var(--ogh-accent);
+  background: rgba(92, 225, 255, 0.16);
+  box-shadow: 0 0 16px rgba(92, 225, 255, 0.12);
+}
+
+.fa-pickers {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.fa-picker {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.fa-vs {
+  align-self: center;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--ogh-fg-dim);
+  letter-spacing: 0.04em;
+}
+.fa-picker-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ogh-fg-dim);
+  letter-spacing: 0.03em;
+  text-align: left;
+}
+.fa-pnum {
+  display: inline-block;
+  min-width: 22px;
+  padding: 1px 5px;
+  border-radius: 6px;
+  color: var(--ogh-bg);
+  font-weight: 800;
+  text-align: center;
+}
+.fa-pnum-1 { background: var(--ogh-accent); }
+.fa-pnum-2 { background: var(--ogh-accent-2); }
+
+.fa-roster {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.fa-chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 10, 22, 0.7);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+}
+.fa-chip:hover { border-color: rgba(255, 255, 255, 0.28); }
+.fa-chip.is-on {
+  border-color: var(--c, var(--ogh-accent));
+  background: color-mix(in srgb, var(--c, var(--ogh-accent)) 18%, rgba(8, 10, 22, 0.7));
+  box-shadow: 0 0 16px -2px var(--c, var(--ogh-accent));
+}
+.fa-chip-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--c, var(--ogh-accent));
+  box-shadow: 0 0 10px var(--c, var(--ogh-accent));
+  flex-shrink: 0;
+}
+
+.fa-preview {
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(6, 8, 18, 0.6);
+  min-height: 92px;
+}
+.fa-preview-name {
+  font-weight: 800;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+.fa-preview-special {
+  font-size: 11px;
+  color: var(--ogh-accent);
+  margin-bottom: 5px;
+}
+.fa-preview-tag {
+  font-size: 11px;
+  color: var(--ogh-fg-dim);
+  line-height: 1.35;
+  margin-bottom: 7px;
+}
+.fa-stat {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 3px;
+}
+.fa-stat-label {
+  font-size: 10px;
+  color: var(--ogh-fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.fa-stat-pips {
+  display: flex;
+  gap: 3px;
+}
+.fa-pip {
+  height: 7px;
+  flex: 1 1 0;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.fa-pip.on { background: var(--c, var(--ogh-accent)); }
+
+.fa-fight-btn { width: 100%; margin-top: 4px; }
+.fa-controls-note {
+  margin: 10px 0 0 !important;
+  font-size: 11px !important;
+  color: var(--ogh-fg-dim) !important;
+  line-height: 1.4;
+}
+
+#matchTitle { font-size: 1.6rem; }
+.fa-match-line {
+  font-size: 0.95rem !important;
+  color: var(--ogh-fg-dim) !important;
+  font-family: var(--ogh-mono);
+}
+#matchCard .ogh-btn { margin-top: 8px; }
+
+/* Narrow screens: stack the two pickers, shrink the pad. */
+@media (max-width: 560px) {
+  .fa-pickers { flex-direction: column; }
+  .fa-vs { display: none; }
+  .fa-roster { flex-direction: row; flex-wrap: wrap; }
+  .fa-chip { flex: 1 1 30%; justify-content: center; }
+  .fa-preview { min-height: 0; }
+}
+@media (max-width: 420px) {
+  .fa-touch-pad { grid-template-columns: 42px 42px 42px; grid-template-rows: 42px 42px 42px; }
+  .fa-touch-atk { grid-template-columns: repeat(3, 46px); }
+}

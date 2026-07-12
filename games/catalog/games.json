@@ -2307,6 +2307,78 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Pseudo-3D claw machine (not flat top-down): a simple oblique 'cabinet-style' projection (render3d.js's project()) maps world (x left/right, y depth 0=near-glass..150=back-wall, z height 0=floor..165=rail) onto the canvas — screen X/Y combine a per-axis pixel scale that ALSO shrinks with depth (depthScale(y): 1.05 near -> 0.58 far) with an additive oblique shear/rise per unit of y, so farther objects are both smaller and pulled up-and-sideways on screen; draw order is back-to-front via a single scalar depth key (y - z*bias) so a low claw over a near prize correctly occludes it. Claw movement (X/Y, continuous while a D-pad button is held, or arrow keys/WASD) only responds while state.claw.phase==='idle'; Drop lowers Z at a fixed speed until it reaches either the pit floor or the top of the nearest prize within its grab window (prizes.js's nearestPrizeAt/grabRadiusFor = prize.radius + a fixed pad). Grip success (prizes.js's gripChance) depends on how centered the claw was over that prize — a falloff curve from ~0.85 at dead-center down to ~0.08 at the edge of the grab window, scaled by a per-prize-type gripMul (round/small/light prizes are forgiving, bulky plush and the rare high-value tokens less so). Even a successful grab carries independent lift- and carry-phase slip risk (slipChance) that ALSO scales with that same centering, so precise play compounds its advantage across both rolls without ever guaranteeing a win (verified statistically via the debug hook: a dead-center grab on an average prize delivers roughly 5x more often end-to-end than one taken near the edge of the grab window, but neither is 0% or 100%). A slipped prize detaches at its real mid-air position and tumbles via simple gravity+bounce physics (prizes.js's stepFallingPrize: decaying multi-bounce, horizontal drag, settles back into the pile) rather than teleporting back. 6 prize types (ball/box/bear/bunny/star/gem — distinct vector silhouettes and point values 60-400) scatter with deliberate pile overlap. 8 credits per session (like coins), tracking score and prizes won, with a results screen once credits run out and a Play Again reset. No bundled image or audio assets: the whole cabinet (bezel, glass, pit shell, claw rig, prizes) is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js's existing patterns entirely (whoosh/thwack/pickup/clack/boing/land/pocket/win/die/tap — no new patterns needed). window.OGH_CLAW_MACHINE exposes live state, the projection function, the grip/slip probability curves, and simulateDrop/runGripTrials/fastForward test hooks for automated verification without waiting out real animation time."
+    },
+    {
+      "id": "fight-arena",
+      "name": "Fight Arena",
+      "names": {
+        "en": "Fight Arena",
+        "ru": "Арена Бойцов",
+        "zh": "格斗竞技场",
+        "es": "Arena de Combate",
+        "ar": "حَلبة القتال",
+        "fr": "Arène de Combat"
+      },
+      "tagline": "Original neon side-view 1v1 fighter — split-keyboard local 2-player or vs-AI, three distinct characters, best of three rounds.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "side-view",
+        "fighting"
+      ],
+      "genres": [
+        "fighting",
+        "action",
+        "versus"
+      ],
+      "controls": {
+        "primary": "keyboard",
+        "supported": [
+          "keyboard",
+          "touch"
+        ],
+        "keyboard": "ok",
+        "touch": "optional",
+        "notes": {
+          "en": "Local 2-player on one SPLIT keyboard (the deliberate primary for a shared-device fighter). Player 1 (left): A/D move, W jump, S crouch, F/G light/heavy punch, V/B light/heavy kick, R special. Player 2 (right): Arrow keys move/jump/crouch, K/L light/heavy punch, ,/. light/heavy kick, ; special. Hold AWAY from the opponent to block; double-tap left/right to dash. The two schemes are independent. Vs-Computer (solo) mode adds an on-screen d-pad + attack buttons on touch devices as a fallback; keyboard stays primary.",
+          "ru": "На двоих за одной РАЗДЕЛЁННОЙ клавиатурой (осознанно основной режим для файтинга за одним устройством). Игрок 1 (слева): A/D — движение, W — прыжок, S — присед, F/G — лёгкий/тяжёлый рукой, V/B — лёгкий/тяжёлый ногой, R — спец. Игрок 2 (справа): стрелки — движение/прыжок/присед, K/L — лёгкий/тяжёлый рукой, ,/. — лёгкий/тяжёлый ногой, ; — спец. Держи направление ОТ соперника для блока; двойное нажатие влево/вправо — рывок. Схемы независимы. В режиме против компьютера на сенсоре появляются экранные кнопки; клавиатура остаётся основной."
+        }
+      },
+      "tags": [
+        "local-multiplayer",
+        "experimental",
+        "fighting",
+        "action"
+      ],
+      "instructions": {
+        "en": "Choose Local 2-Player or Vs Computer, then each side picks one of three fighters (Volt: balanced, throws energy bolts; Boulder: slow but heavy-hitting with a rising uppercut; Sable: fast and fragile with a dashing rush). Close the gap and attack with light/heavy punches and kicks — every attack has a real windup and a brief active hit window, and only lands when its hitbox overlaps the opponent's body. Hold away to block (crouch-block stops lows, stand-block stops highs), crouch to duck high attacks, jump with a real arc, and double-tap to dash. Land a light attack to cancel into another for a quick combo, and use your special on its own key. Win two of three rounds to take the match; if the timer runs out the higher-HP fighter wins the round.",
+        "ru": "Выбери режим (на двоих или против компьютера), затем каждая сторона выбирает одного из трёх бойцов (Вольт — сбалансированный, метает сгустки энергии; Валун — медленный, но мощный, с восходящим апперкотом; Сэйбл — быстрая и хрупкая, с рывком). Сокращай дистанцию и бей лёгкими/тяжёлыми ударами рук и ног — у каждого удара есть настоящий замах и короткое окно попадания, и он засчитывается, только когда хитбокс перекрывает тело соперника. Держи направление от соперника для блока (нижний блок держит низкие удары, верхний — верхние), приседай, чтобы уклоняться от верхних атак, прыгай по настоящей дуге, двойное нажатие — рывок. Попади лёгким ударом, чтобы связать его в комбо, и используй спецприём на своей клавише. Побеждает тот, кто возьмёт два раунда из трёх; если время вышло — раунд за тем, у кого больше здоровья."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 2,
+        "solo": true
+      },
+      "entry": "fight-arena/client/index.html",
+      "manifest": "fight-arena/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 98.8,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original 1v1 side-view versus fighter (own characters/moves/art; Street Fighter is only a genre reference, nothing copied). client/combat.js is a pure, DOM-free, fixed-60Hz simulation directly steppable from window.OGH_FIGHT_ARENA: a per-fighter state machine (idle/walk/jump/crouch/block/attack/hitstun/ko), real STARTUP->ACTIVE->RECOVERY attack windows, and hit detection by genuine axis-aligned hitbox-vs-hurtbox rectangle OVERLAP (rectsOverlap) rather than center distance — crouching literally shortens the hurtbox so 'high' attacks (e.g. heavy punch) whiff over it. Three deliberately different characters: Volt (balanced, Arc Bolt PROJECTILE that crosses the stage as its own entity), Boulder (high HP/high damage but slow, Rising Ram UPPERCUT gap-closer/anti-air), Sable (fastest but fragile, Slip Strike forward RUSH). Blocking (hold away) cuts a hit to chip damage; cancelable light normals chain into simple combos on hit; universal double-tap dash. Best-of-3 rounds with a round timer, KO/time-out round-end, a round-transition banner and a match-winner screen. Modes: local 2-player on one split keyboard (deliberate keyboard-primary exception to the hub's touch-first norm, correct for a shared-device fighter) and vs-AI (ai.js) for solo, with an on-screen touch d-pad/buttons only as a solo-on-phone fallback. No bundled image or audio assets: fighters/stage/HUD are Canvas 2D neon-vector shapes and sound reuses games/_shared/js/ogh-sfx.js unchanged. RTL (Arabic) flips text/menu chrome only; the fight stage, P1/P2 sides and movement directions never mirror."
     }
   ]
 }
