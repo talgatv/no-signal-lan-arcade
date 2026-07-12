@@ -2455,6 +2455,81 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original climbing-platformer arcade game (genre reference: the classic tilted-girders-and-ladders 'dodge rolling barrels to reach the top' arcade platformer, not a copy of anyone's specific characters/content) — own 'Scrap Tower' setting: antagonist robot Warden-9 rolls fuel drums down alternating tilted girders to stop the player (Rook) reaching Mira at the top. client/entities.js is a pure, DOM-free, fixed-60Hz simulation directly steppable from window.OGH_BARREL_CLIMB: barrels genuinely roll along whichever platform segment's own slope they're currently on (same lerpY helper the player's walk uses, not a scripted path), fall through platform-edge/gap transitions with the new roll direction re-derived from the landing platform's own tilt, and occasionally divert down a ladder by a per-stage chance instead of continuing to the edge. Jump-over-a-barrel is genuine simulated 2D clearance with no invulnerability flag — validated with a standalone Node harness (position-sampled over hundreds of frames against the platform's own slope formula, plus a ~120-offset jump-timing sweep) before any canvas/input code was written, confirming a real non-trivial safe window at both min and max difficulty. 5 distinct hand-authored stage layouts (tilt pattern, ladder zigzag spacing, gap count 0/0/1/1/2, hazard/item placement) cycle with a continuously ramping difficulty curve (barrel speed/frequency, ladder-branch chance, patrol-hazard speed) that climbs to a fair ceiling by stage 10 and holds — same endless-with-a-cap philosophy as games/cross-the-road. A patrolling Spark Drone hazard and a temporary hammer power-up (smash barrels/the drone instead of dodging) round out the hazards/pickups. No bundled image or audio assets — canvas vector shapes with a neon glow; sound fully reuses games/_shared/js/ogh-sfx.js's existing patterns (hop/land/tick/die/pickup/boing/thwack/win), no new patterns needed. Score (height climbed + items + jump-over bonus + stage-clear bonus) persists as a local high score via OGHProfile, same convention as games/pop-the-bugs. RTL (Arabic) flips text/menu chrome only; the tower layout and climb/walk directions never mirror."
+    },
+    {
+      "id": "ray-maze",
+      "name": "Ray Maze",
+      "names": {
+        "en": "Ray Maze",
+        "ru": "Лучевой лабиринт",
+        "zh": "光线迷宫",
+        "es": "Laberinto de Rayos",
+        "ar": "متاهة الأشعة",
+        "fr": "Labyrinthe de Rayons"
+      },
+      "tagline": "A first-person DDA raycasting maze shooter — purge a neon data-vault of rogue constructs, sector by sector.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "first-person",
+        "raycasting"
+      ],
+      "genres": [
+        "shooter",
+        "fps",
+        "action"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "keyboard",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "optional",
+        "touch": "ok",
+        "notes": {
+          "en": "Touch-first (deliberate primary for this hub): a floating virtual joystick on the LEFT half moves/strafes, dragging the RIGHT half looks/turns, and on-screen FIRE (hold to auto-fire) and reload buttons sit bottom-right. Desktop bonus: WASD/arrows move (A/D strafe, arrows or Q/E turn), drag the right side or arrows to look, double-click for pointer-lock mouse-look then click to fire, Space fires, R reloads.",
+          "ru": "Приоритет — сенсор (осознанно основной режим): плавающий джойстик в ЛЕВОЙ половине — движение/шаги вбок, перетаскивание ПРАВОЙ половины — обзор, экранные кнопки ОГОНЬ (удерживай для авто-огня) и перезарядка внизу справа. Бонус для ПК: WASD/стрелки — движение (A/D — вбок, стрелки или Q/E — поворот), перетаскивание правой части или стрелки — обзор, двойной клик — мышиный обзор с захватом, затем клик — огонь, пробел — огонь, R — перезарядка."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "shooter",
+        "raycasting",
+        "first-person"
+      ],
+      "instructions": {
+        "en": "Move through the maze in first person and clear each sector of rogue constructs. On touch, a floating joystick on the left half moves and strafes while dragging the right half looks around; the round FIRE button fires (hold to auto-fire) and the reload button reloads. On desktop use WASD or arrow keys to move, the mouse or left/right arrows to look, and click or Space to fire, R to reload. Your blaster is hitscan with a 7-round magazine: it hits the nearest construct centered in your crosshair that isn't behind a wall, so firing at walls or down an empty corridor just wastes ammo and gives your position away. Drones are fast, fragile and rush you for a melee zap; Sentries are tougher, hang back at a distance and snipe with slow bolts. Constructs stay dormant until they see you (range plus line-of-sight) or you shoot near them. Grab repair cells to restore health. Each sector's exit stays locked until every construct in it is destroyed — then walk into the exit to descend. Clear all three sectors to purge the vault; if your health hits zero you flatline. The minimap (top-right) shows walls, your facing, live enemies and the exit.",
+        "ru": "Двигайся по лабиринту от первого лица и зачищай каждый сектор от взбесившихся конструктов. На сенсоре плавающий джойстик в левой половине — движение и шаги вбок, перетаскивание правой половины — обзор; круглая кнопка ОГОНЬ стреляет (удерживай для авто-огня), кнопка перезарядки перезаряжает. На ПК: WASD или стрелки — движение, мышь или стрелки влево/вправо — обзор, клик или пробел — огонь, R — перезарядка. Бластер работает по лучу (hitscan) с магазином на 7 патронов: попадает по ближайшему конструкту в прицеле, если тот не за стеной, так что стрельба по стенам или в пустой коридор лишь тратит патроны и выдаёт тебя. Дроны — быстрые и хрупкие, налетают для ближней атаки; Стражи — крепче, держат дистанцию и бьют медленными зарядами. Конструкты спят, пока не увидят тебя (дальность плюс прямая видимость) или пока ты не выстрелишь рядом. Подбирай ремонтные ячейки для здоровья. Выход сектора закрыт, пока не уничтожен каждый конструкт, — затем зайди в выход, чтобы спуститься. Зачисти все три сектора, чтобы очистить хранилище; при нуле здоровья — конец. Мини-карта (справа вверху) показывает стены, твоё направление, живых врагов и выход."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "ray-maze/client/index.html",
+      "manifest": "ray-maze/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 85.6,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original first-person raycasting maze shooter in the 1990s corridor-shooter genre (Wolfenstein 3D is the rendering-technique reference only; setting, constructs, weapon and neon-vector art are our own). client/raycaster.js is a from-scratch DDA (Digital Differential Analysis) renderer: per screen column it builds a ray from the player position + facing + camera plane, walks the grid one cell boundary at a time to the first solid cell, and draws a vertical wall slice of height H/perpendicular-distance (the ray's projection onto the camera direction, i.e. fisheye-corrected, NOT raw Euclidean ray length — the classic bug that bows straight walls). Walls are solid neon colors, darker on N/S than E/W faces and faded toward a dark fog with distance, colored by cell type; no bitmap textures. Enemies/pickups/exit are billboarded sprites (flat vector shapes scaled by distance, always camera-facing) drawn in a second pass with a per-column z-buffer for correct occlusion behind walls. Two distinct enemy types: Drone (fast, low-HP melee swarmer) and Sentry (tougher ranged construct holding a standoff distance, firing slow bolts); AI detects the player by range + a grid line-of-sight raycast, and being shot alerts nearby constructs. Combat is hitscan (a ray from the player picks the nearest enemy in the crosshair in front of the wall), 7-round magazine + reload, health with repair-cell pickups, game over at zero. Clear every construct in a sector to bring its exit online, then reach the exit; 3 hand-built maze layouts with corridors/junctions/rooms. HUD has a top-down minimap (walls, player facing, enemies, exit) plus health/ammo. Touch-primary: floating left virtual stick + right drag-look + fire/reload buttons; WASD/arrows + pointer-lock mouse-look are desktop bonuses. window.OGH_RAY_MAZE exposes state + geometry probes (centerWallDistance, debugColumn) for verifying the raycasting math. No bundled image/audio assets: Canvas 2D neon-vector drawing throughout, sound reuses games/_shared/js/ogh-sfx.js unchanged. RTL (Arabic) flips only the header/cards/hint text chrome; the first-person view, the minimap and all movement/turn directions never mirror (stage dir=ltr, ctx.direction forced ltr)."
     }
   ]
 }

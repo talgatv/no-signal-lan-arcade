@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Ray Maze — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="rm-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="rm-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="rm-hud" role="status">
+        <div class="ogh-pill rm-hp" id="hudHealth" data-i18n-aria="hudHealthAria">
+          <span aria-hidden="true">❤</span>
+          <span class="rm-lbl" data-i18n="healthLabel">HP</span>
+          <strong id="hudHealthVal">100</strong>
+        </div>
+        <div class="ogh-pill rm-ammo" id="hudAmmo" data-i18n-aria="hudAmmoAria">
+          <span class="rm-lbl" data-i18n="ammoLabel">AMMO</span>
+          <span class="rm-pips" id="ammoPips"></span>
+          <span class="rm-reload" id="reloadLabel" data-i18n="reloading" hidden>Reloading…</span>
+        </div>
+        <div class="ogh-pill rm-sector" id="hudLevel" data-i18n-aria="hudLevelAria">
+          <span class="rm-lbl" data-i18n="levelLabel">SECTOR</span>
+          <strong id="hudLevelVal">1/3</strong>
+        </div>
+        <div class="ogh-pill rm-exit" id="hudExit">Exit locked</div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <!-- The first-person raycast view and the minimap are fixed spatial
+         renders, and the virtual stick / look zone are position-based controls.
+         dir="ltr" on the stage keeps every one of them from mirroring under
+         RTL — only the header/cards/hint (the text chrome) flip for Arabic.
+         See i18n.js's header comment for the full rationale. -->
+    <main class="rm-stage" dir="ltr">
+      <canvas id="view" class="rm-view" aria-label="First-person maze view"></canvas>
+
+      <div class="rm-touch" id="touchLayer" dir="ltr" hidden>
+        <div class="rm-stick-zone" id="stickZone" aria-hidden="true">
+          <div class="rm-stick-base" id="stickBase" hidden>
+            <div class="rm-stick-knob" id="stickKnob"></div>
+          </div>
+        </div>
+        <div class="rm-look-zone" id="lookZone" aria-hidden="true"></div>
+        <div class="rm-actions">
+          <button type="button" class="rm-abtn rm-reload-btn" id="btnReload" data-i18n-aria="btnReloadAria" aria-label="Reload"><span aria-hidden="true">⟳</span></button>
+          <button type="button" class="rm-abtn rm-fire-btn" id="btnFire" data-i18n-aria="btnFireAria" aria-label="Fire"><span aria-hidden="true">◎</span></button>
+        </div>
+      </div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Left stick moves · drag the right side to look · FIRE · ⟳ to reload</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card rm-card" id="startCard">
+        <h1 data-i18n="title">Ray Maze</h1>
+        <p data-i18n="blurb">Purge a corrupted neon data-vault of rogue security constructs.</p>
+        <div class="rm-legend" role="list">
+          <div class="rm-legend-item" role="listitem"><span class="rm-sw rm-sw-drone"></span><span data-i18n="legendDrone">Drone — melee swarmer</span></div>
+          <div class="rm-legend-item" role="listitem"><span class="rm-sw rm-sw-sentry"></span><span data-i18n="legendSentry">Sentry — ranged sniper</span></div>
+          <div class="rm-legend-item" role="listitem"><span class="rm-sw rm-sw-health"></span><span data-i18n="legendHealth">Repair cell — restores HP</span></div>
+          <div class="rm-legend-item" role="listitem"><span class="rm-sw rm-sw-exit"></span><span data-i18n="legendExit">Exit — reach it once clear</span></div>
+        </div>
+        <p class="rm-controls-note" data-i18n="controlsNote">Touch: left stick to move, drag the right half to look, FIRE and reload buttons. Desktop: WASD/arrows, mouse or ← → to look, click or Space to fire, R to reload.</p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Enter the Vault</button>
+      </div>
+
+      <div class="ogh-card rm-card" id="levelClearCard" hidden>
+        <h1 id="levelClearTitle">Sector cleared</h1>
+        <p id="levelClearSub"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNext" data-i18n="nextBtn">Next sector</button>
+      </div>
+
+      <div class="ogh-card rm-card" id="gameOverCard" hidden>
+        <h1 data-i18n="gameOverTitle">Flatlined</h1>
+        <p id="gameOverSub"></p>
+        <p class="rm-stats" id="gameOverStats"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnRetry" data-i18n="playAgainBtn">Run again</button>
+      </div>
+
+      <div class="ogh-card rm-card" id="victoryCard" hidden>
+        <h1 data-i18n="victoryTitle">Vault Purged</h1>
+        <p data-i18n="victorySub"></p>
+        <p class="rm-stats" id="victoryStats"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnVictoryAgain" data-i18n="playAgainBtn">Run again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
