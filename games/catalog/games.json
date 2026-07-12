@@ -3143,6 +3143,80 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original two-character elemental co-op puzzle-platformer (own spirits/temple setting/art; Fireboy & Watergirl is only a genre reference, nothing copied). client/sim.js is a pure, DOM-free, fixed-60Hz simulation directly steppable from window.OGH_EMBER_TIDE: per-axis AABB tile collision, coyote-time/jump-buffer jumps, plates (momentary) and levers (latch/toggle, optionally element-locked) driving gates (solid while closed) and bridges (solid deck while extended), elemental hazard death and the both-spirits-home win test. levels.js holds six authored 24x15 ASCII levels + parser with increasing complexity: elemental tutorial, plate->gate, lever->bridge, mutual two-lever bridges, plate+lever across two heights, and a capstone with mutual bridges plus a vertical climb. Bridge pools are 4 tiles wide (wider than a jump can clear) so the wrong-element spirit truly needs the bridge, not a leap. Fire wades lava / dies in water, water wades pools / dies in lava, spikes kill both; each spirit only completes at its own colored door and both must be home at once. Modes: Solo (one active spirit, Shift/Tab switch — matching browser single-player of the genre) and local 2-player split keyboard (Ember=WASD, Tide=Arrows) both live. Keyboard is the deliberate primary (a correct exception to the hub's touch-first norm for a co-op platformer); on-screen d-pads are a touch fallback. No bundled image or audio assets: the whole temple is Canvas 2D neon-vector shapes and sound reuses games/_shared/js/ogh-sfx.js unchanged (boing=jump, land=touchdown, place=lever/plate/gate, pickup=spirit reaches its door, win=chamber clear, die=death). RTL (Arabic) flips text/menu chrome only; the stage, spirit colors, hazard positions and movement directions never mirror."
+    },
+    {
+      "id": "storm-warden",
+      "name": "Storm Warden",
+      "names": {
+        "en": "Storm Warden",
+        "ru": "Страж Бури",
+        "zh": "风暴守护者",
+        "es": "Guardián de la Tormenta",
+        "ar": "حارس العاصفة",
+        "fr": "Gardien de la Tempête"
+      },
+      "tagline": "Read the sky, time the strike — ground every wild charge before it finds a roof.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "weather",
+        "silhouette"
+      ],
+      "genres": [
+        "arcade",
+        "reaction",
+        "atmospheric"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "touch": "ok",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap or click the building where a wild charge is flickering, before it peaks. Timing matters (closer to peak = a higher Early/Good/Perfect score) and so does placement (the tap has to land on the threatened building, not just anywhere). A caught charge arcs safely to the village's grounding spire; an untouched or wrongly-placed one strikes home and that building goes dark for the rest of the storm. Desktop bonus: number keys 1-6 cast on the matching building, left to right.",
+          "ru": "Коснись или щёлкни по дому, над которым мерцает дикий заряд, пока он не достиг пика. Важен тайминг (ближе к пику — выше оценка Рано/Хорошо/Идеально) и важна точность места (нужно попасть именно по дому под угрозой, а не куда угодно). Пойманный вовремя заряд безопасно уходит дугой в громоотвод деревни; нетронутый или пойманный не в том месте — бьёт по дому, и тот гаснет до конца бури. Бонус для ПК: цифры 1-6 бьют по соответствующему дому слева направо."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "arcade",
+        "reaction",
+        "atmospheric"
+      ],
+      "instructions": {
+        "en": "A storm circles a sleeping village at the bottom of the screen. Watch the sky above each of the six rooftops: when a wild charge starts flickering, it builds toward a peak over a few seconds, brighter and faster the closer it gets. Tap or click that building before it peaks to cast a controlled bolt — it arcs safely to the village's grounding spire and the roof stays lit. Timing decides your score: an early, safe tap scores least, a Good cast (roughly 40-78% charged) scores more, and a Perfect cast caught right before peak scores the most, though it's the riskiest to time. Placement matters just as much as timing — a tap only works on the actual threatened building; anywhere else just fizzles and wastes the attempt while the real threat keeps charging. Miss the window entirely and the wild bolt strikes home: that building goes dark and scorched for the rest of the storm, counting toward a limit of 4 lost buildings before the storm wins outright. Threats come faster and their warning window shrinks as the session goes on, with multiple buildings under threat at once in the later stretch. Survive the roughly 100-second session (or lose too many buildings first) for a results screen with your score, how many homes are still standing, and a local high score. On desktop, number keys 1-6 also cast on the matching building, left to right.",
+        "ru": "Буря кружит над спящей деревней внизу экрана. Следи за небом над каждой из шести крыш: когда над крышей начинает мерцать дикий заряд, он несколько секунд копится к пику — чем ближе пик, тем ярче и чаще мерцание. Коснись или щёлкни по этому дому до того, как заряд достигнет пика, — направленный разряд безопасно уйдёт дугой в громоотвод деревни, и крыша останется цела. Тайминг определяет счёт: ранний безопасный тап даёт меньше всего очков, попадание «Хорошо» (примерно 40-78% заряда) — больше, а «Идеально» — пойманное у самого пика — даёт больше всего очков, хотя это и самый рискованный момент. Место важно не меньше тайминга: касание сработает только по дому, над которым реально нависла угроза; попадание в любой другой дом просто впустую гаснет, а настоящая угроза продолжает копиться. Если упустить момент совсем — дикий разряд бьёт по дому: тот гаснет и обугливается до конца бури, и это засчитывается в лимит из 4 потерянных домов, после которого буря побеждает. Со временем угрозы появляются чаще, а окно предупреждения короче, а в последней трети сессии под угрозой могут одновременно оказаться сразу несколько домов. Продержись примерно 100 секунд (или продержись, пока не потеряешь слишком много домов) — и увидишь экран результатов со счётом, числом уцелевших домов и локальным рекордом. На ПК цифры 1-6 тоже бьют по соответствующему дому слева направо."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "storm-warden/client/index.html",
+      "manifest": "storm-warden/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 82.2,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original atmospheric precision timing-and-placement game (own storm/village concept — not a clone of any existing title). A silhouetted village sleeps at the bottom of a rainy night sky; the storm periodically threatens one of six buildings at a time with a wild charge that flickers to life above its roof and builds toward a peak over a fair 1.5-3s (shrinking as the session progresses) telegraph window — see client/lightning.js's difficultyAt()/createThreat()/advanceThreat(), a pure dt-accumulator charge model (never wall-clock) so it is frame-exact testable via window.OGH_STORM_WARDEN. Tapping the threatened building before peak casts a controlled bolt that arcs to the village's one non-targetable grounding spire; client/lightning.js's scoreForCharge()/ratingForCharge() reward casting closer to peak (Early/Good/Perfect) the same way a rhythm game's timing window does, just framed the other way — there is no 'too late that still counts', since charge reaching 1 IS the strike. Tapping the wrong building does nothing (placement genuinely matters, verified independently of timing); an unresolved peak strikes the building, which goes dark/scorched (charred fill, windows out, a few rising smoke particles) for the rest of the session and counts toward a buildings-lost tally capped at 4 of 6 (a defeat before the 100s session clock runs out at all). client/village.js procedurally builds the six-building skyline (5 roofline silhouette profiles, randomized per-building height/width, a scattered lit-window grid) plus the spire, purely as data (game.js does all drawing). client/rain.js is a two-depth-layer falling-raindrop particle system (back layer behind the village, front layer in front) for a 'looking through rain' read. client/lightning.js's generateBoltPath()/generateBranches() are a recursive midpoint-displacement fractal line generator (the classic jagged-lightning technique) shared by the small flickering charge filament, the cast bolt, the strike bolt and their branches, all drawn through the same two-pass neon-vector glow stroke. No bundled image or audio assets: sound reuses games/_shared/js/ogh-sfx.js's existing tick (charge pulse)/screech (wasted cast)/win/die/tap patterns plus two new patterns added this session (zap = successful cast, thunder = a noise-like layered-low-oscillator strike crack). Local high score via OGHProfile, same convention as games/pop-the-bugs and games/void-drift. RTL (Arabic) flips text/menu chrome only; the storm scene — village order, number-key mapping, rain direction — never mirrors (stage is dir=\"ltr\", ctx.direction forced to 'ltr')."
     }
   ]
 }

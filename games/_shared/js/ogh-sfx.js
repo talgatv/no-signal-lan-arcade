@@ -135,6 +135,31 @@ export function createOghSfx() {
     // bodies meeting. Kept brief since a collapse can shatter several blocks
     // in quick succession.
     crumble: () => { tone(300, 0.09, 'sawtooth', 0.05, 90); setTimeout(() => tone(190, 0.08, 'square', 0.045, 70), 42); },
+    // Added for games/storm-warden — controlled-bolt-cast and wild-bolt-
+    // strike cues. Charge-building telegraph deliberately reuses the
+    // existing `tick` pattern unchanged (a soft neutral pulse played at an
+    // accelerating cadence as a threat's charge nears peak already reads as
+    // an urgent countdown), and a wrong/wasted cast reuses `screech`
+    // (already established elsewhere as "that action was invalid/reversed",
+    // e.g. gem-swap's invalid-swap snap-back) — so `zap` and `thunder` are
+    // the two genuinely new sounds this genre needs. `zap` is a bright,
+    // fast upward crackle (two overlapping square/sawtooth sweeps a beat
+    // apart) for a well-timed controlled cast — distinct from `pop`'s
+    // flatter single blip because a lightning discharge should sound more
+    // electric/textured than a mechanical shot. `thunder` is a low
+    // rumbling crack built from a short sharp high tick (the initial
+    // "crack" transient) layered under three detuned low-frequency
+    // oscillators (sawtooth/square/sine) swept further downward, reading as
+    // a booming, noise-like peal rather than a single clean tone — the
+    // hub's most physically "large" sound, so a struck building lands with
+    // real weight.
+    zap: () => { tone(360, 0.07, 'square', 0.05, 1400); setTimeout(() => tone(900, 0.05, 'sawtooth', 0.035, 1800), 30); },
+    thunder: () => {
+      tone(1200, 0.02, 'square', 0.05);
+      tone(140, 0.5, 'sawtooth', 0.09, 32);
+      tone(95, 0.6, 'square', 0.07, 24);
+      tone(60, 0.7, 'sine', 0.08, 18);
+    },
   };
 
   return {

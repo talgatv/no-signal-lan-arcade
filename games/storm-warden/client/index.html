@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#05060d" />
+  <title>Storm Warden — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="sw-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="sw-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="sw-hud" role="status">
+        <div class="ogh-pill sw-score" id="hudScore" data-i18n-aria="hudScoreAria">
+          <span class="sw-lbl" data-i18n="scoreLabel">SCORE</span>
+          <strong id="hudScoreVal">0</strong>
+        </div>
+        <div class="ogh-pill sw-saved" id="hudSaved" data-i18n-aria="hudSavedAria">
+          <span class="sw-lbl" data-i18n="savedLabel">SAVED</span>
+          <strong id="hudSavedVal">0/6</strong>
+        </div>
+        <div class="ogh-pill sw-time" id="hudTime" data-i18n-aria="hudTimeAria">
+          <span class="sw-lbl" data-i18n="timeLabel">TO DAWN</span>
+          <strong id="hudTimeVal">100</strong>
+        </div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <!-- The storm scene is a fixed spatial arrangement, not reading-order
+         text: dir="ltr" here (plus ctx.direction forced 'ltr' in game.js)
+         keeps the village order, number-key mapping and rain direction from
+         ever mirroring under RTL. Only the header/cards/hint chrome flips
+         for Arabic — see i18n.js. -->
+    <main class="sw-stage" dir="ltr">
+      <canvas id="view" class="sw-view" aria-label="Storm Warden play field"></canvas>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Tap the flickering roof before the charge peaks — the spire grounds every bolt you catch in time</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card sw-card" id="startCard">
+        <h1 data-i18n="title">Storm Warden</h1>
+        <p data-i18n="blurb">A wild storm circles the sleeping village below.</p>
+        <div class="sw-legend" role="list">
+          <div class="sw-legend-item sw-legend-early" role="listitem" id="legendEarlyTxt">Early — safe, modest points</div>
+          <div class="sw-legend-item sw-legend-good" role="listitem" id="legendGoodTxt">Good — solid timing, solid points</div>
+          <div class="sw-legend-item sw-legend-perfect" role="listitem" id="legendPerfectTxt">Perfect — cast right before peak for the most points</div>
+        </div>
+        <p class="sw-controls-note" data-i18n="controlsNote">Tap the flickering building before the charge peaks.</p>
+        <p class="sw-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Begin the Watch</button>
+      </div>
+
+      <div class="ogh-card sw-card" id="resultCard" hidden>
+        <h1 id="resultTitle" data-i18n="resultWinTitle">Dawn Breaks</h1>
+        <p id="resultSub"></p>
+        <p class="sw-stats" id="finalScoreLine"></p>
+        <p class="sw-stats" id="savedLine"></p>
+        <p class="sw-stats sw-new-best" id="newBestLine" hidden data-i18n="newBestLine">New best score!</p>
+        <p class="sw-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="playAgainBtn">Watch Again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
