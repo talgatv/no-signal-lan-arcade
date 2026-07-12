@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Leap Quest — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="lq-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="lq-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="lq-hud" role="status">
+        <div class="ogh-pill lq-lives" id="hudLives" data-i18n-aria="hudLivesAria">
+          <span class="lq-lbl" data-i18n="livesLabel">LIVES</span>
+          <strong id="livesVal">3</strong>
+        </div>
+        <div class="ogh-pill lq-coins" id="hudCoins" data-i18n-aria="hudCoinsAria">
+          <span class="lq-lbl" data-i18n="coinsLabel">COINS</span>
+          <strong id="coinsVal">0</strong>
+        </div>
+        <div class="ogh-pill lq-level" id="hudLevel" data-i18n-aria="hudLevelAria">
+          <span class="lq-lbl" data-i18n="levelLabel">LEVEL</span>
+          <strong id="levelVal">1/5</strong>
+        </div>
+        <div class="ogh-pill lq-score" id="hudScore" data-i18n-aria="hudScoreAria">
+          <span class="lq-lbl" data-i18n="scoreLabel">SCORE</span>
+          <strong id="scoreVal">0</strong>
+        </div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <!-- A side-scrolling platformer is a fixed spatial simulation with a
+         permanent "forward" (toward the flag): dir="ltr" here (plus
+         ctx.direction forced 'ltr' in game.js) keeps the level, camera and
+         the LEFT/RIGHT/JUMP button layout from ever mirroring under RTL.
+         Only the header/cards/hint text chrome flips for Arabic — see
+         i18n.js. -->
+    <main class="lq-stage" dir="ltr">
+      <canvas id="view" class="lq-view" aria-label="Leap Quest play field"></canvas>
+
+      <div class="lq-touch" id="touchLayer" dir="ltr">
+        <div class="lq-dpad">
+          <button type="button" class="lq-btn lq-btn-left" id="btnLeft" data-i18n-aria="btnLeftAria" aria-label="Move left"></button>
+          <button type="button" class="lq-btn lq-btn-right" id="btnRight" data-i18n-aria="btnRightAria" aria-label="Move right"></button>
+        </div>
+        <button type="button" class="lq-btn lq-btn-jump" id="btnJump" data-i18n-aria="btnJumpAria" aria-label="Jump"></button>
+      </div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Hold JUMP longer to leap higher · slide a wall + JUMP to wall-jump</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card lq-card" id="startCard">
+        <h1 data-i18n="title">Leap Quest</h1>
+        <p data-i18n="blurb">Run, leap and stomp across five neon worlds.</p>
+        <div class="lq-legend" role="list">
+          <div class="lq-legend-item" role="listitem"><span class="lq-sw lq-sw-coin"></span><span data-i18n="legendCoin">Coin</span></div>
+          <div class="lq-legend-item" role="listitem"><span class="lq-sw lq-sw-star"></span><span data-i18n="legendMush">Star shell</span></div>
+          <div class="lq-legend-item" role="listitem"><span class="lq-sw lq-sw-flag"></span><span data-i18n="legendFlag">Flag</span></div>
+          <div class="lq-legend-item" role="listitem"><span class="lq-sw lq-sw-crawler"></span><span data-i18n="legendCrawler">Crawler</span></div>
+          <div class="lq-legend-item" role="listitem"><span class="lq-sw lq-sw-stalker"></span><span data-i18n="legendStalker">Stalker</span></div>
+          <div class="lq-legend-item" role="listitem"><span class="lq-sw lq-sw-spike"></span><span data-i18n="legendSpikes">Spikes &amp; pits</span></div>
+        </div>
+        <p class="lq-ability" data-i18n="abilityNote">Wall-jump: slide down a wall, then jump to kick off it.</p>
+        <p class="lq-controls-note" data-i18n="controlsNote">Touch and keyboard controls.</p>
+        <p class="lq-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start quest</button>
+      </div>
+
+      <div class="ogh-card lq-card" id="clearCard" hidden>
+        <h1 id="clearTitle">Level clear!</h1>
+        <p id="clearSub">Nicely done — on to the next.</p>
+        <p class="lq-stats" id="clearScoreLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnContinue" data-i18n="continueBtn">Continue</button>
+      </div>
+
+      <div class="ogh-card lq-card" id="resultCard" hidden>
+        <h1 id="resultTitle">Game over</h1>
+        <p id="resultSub"></p>
+        <p class="lq-stats" id="finalScoreLine"></p>
+        <p class="lq-stats" id="levelsClearedLine"></p>
+        <p class="lq-stats lq-new-best" id="newBestLine" hidden data-i18n="newBestLine">New best score!</p>
+        <p class="lq-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

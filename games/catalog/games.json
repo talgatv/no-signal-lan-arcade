@@ -2834,6 +2834,79 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original match-3 gem puzzle (Bejeweled is the genre reference point only — original vector gem designs, no copied content). client/board.js is pure grid logic: findRuns() scans for maximal 3+ runs; resolveStep() clears them, spawns a row/col line-clear special from a 4-run or a color bomb from a 5-run at the swap's own cell, and chains through any pre-existing specials caught in the sweep (a row/col special caught in a clear sweeps its line; a bomb caught in a sweep clears a random present color) so specials can trigger each other. A bomb's primary activation is a direct swap against a normal gem, deterministically clearing that gem's whole color — wouldMatch() treats any bomb-involved swap as automatically legal. applyGravity() compacts columns and refills the top, returning a per-gem fall log; game.js positions every gem with a CSS-transitioned transform (games/solitaire's 'state drives position' architecture) so swaps, snap-backs, clears and falls all animate from real state changes, including new gems (which start stacked off-board and use the 'set start position, force a reflow, then set the end position' trick to actually animate in). Cascades loop clear/fall/rescan with a rising combo multiplier. hasAnyValidMove() is a localized per-cell check (not a full-board rescan) gating an automatic reshuffle once a resolution settles. 25-move session, local high score via OGHProfile (games/pop-the-bugs convention). No bundled assets: gems are inline SVG vector shapes with a neon glow filter; sound reuses games/_shared/js/ogh-sfx.js almost entirely unchanged plus two new patterns (chain, boom). RTL (Arabic) flips text/menu chrome only; the grid's column order and swap directions never mirror (board dir=ltr)."
+    },
+    {
+      "id": "leap-quest",
+      "name": "Leap Quest",
+      "names": {
+        "en": "Leap Quest",
+        "ru": "Прыжок-Квест",
+        "zh": "跳跃征程",
+        "es": "Salto Quest",
+        "ar": "رحلة القفز",
+        "fr": "Quête de Saut"
+      },
+      "tagline": "Run, leap and stomp across five neon worlds — wall-jump the shafts, dodge the pits, reach the flag.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "side-scroller",
+        "platformer"
+      ],
+      "genres": [
+        "platformer",
+        "arcade",
+        "action"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "touch": "ok",
+        "notes": {
+          "en": "Touch-first: hold LEFT / RIGHT (bottom-left) to run and tap JUMP (bottom-right) to hop — hold JUMP longer for a higher leap (a quick tap is a short hop). Slide down a wall and tap JUMP to wall-jump off it — the only way up the tall shaft in level 4. Land on an enemy's head to stomp it (you bounce); touching one from the side costs a life. Desktop bonus: Arrow keys or A / D to move, Space / W / Up to jump.",
+          "ru": "Приоритет — сенсор: удерживай ВЛЕВО / ВПРАВО (внизу слева) для бега и нажимай ПРЫЖОК (внизу справа) — держи ПРЫЖОК дольше для более высокого прыжка (короткое нажатие — низкий прыжок). Скользи по стене и нажми ПРЫЖОК, чтобы оттолкнуться — единственный путь наверх по высокой шахте на 4-м уровне. Приземлись врагу на голову, чтобы его сбить (ты отскочишь); касание сбоку стоит жизни. Бонус для ПК: стрелки или A / D — движение, Пробел / W / Вверх — прыжок."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "platformer",
+        "arcade",
+        "action"
+      ],
+      "instructions": {
+        "en": "An original side-scrolling platformer: run, leap, stomp enemies, collect coins and reach the flag across five neon levels of rising difficulty. Movement is momentum-based — the longer you hold JUMP the higher you leap (a quick tap is a short hop), and running has real acceleration, so line up a run-up before a wide gap. The extra ability is the WALL-JUMP: press into a wall while falling to slide down it, then tap JUMP to kick up and away; alternate between two close walls to climb — level 4 'The Ascent' is a tall shaft where this is the only way up. Land on an enemy's head to stomp it (you bounce off); a Crawler just patrols back and forth, a Stalker charges at you when it spots you at your height — but touching either from the side or below costs a life. Spikes cost a hit, bottomless pits cost a life, and moving platforms carry you along (time your jumps off them). Grab a star shell for one extra hit, lost on the next hit you take. You have 3 lives; losing them all ends the run with a results screen (score and levels cleared). Coins, stomps and clearing levels all score, and your best score is saved on this device. Desktop bonus: Arrow keys or A / D to move, Space / W / Up to jump.",
+        "ru": "Оригинальный платформер с боковой прокруткой: беги, прыгай, приземляйся на врагов, собирай монеты и добирайся до флага на пяти неоновых уровнях с нарастающей сложностью. Движение основано на инерции — чем дольше держишь ПРЫЖОК, тем выше прыгаешь (короткое нажатие — низкий прыжок), а у бега есть настоящий разгон, так что перед широкой пропастью бери разбег. Дополнительная способность — ПРЫЖОК ОТ СТЕНЫ: прижмись к стене в падении, чтобы скользить по ней, затем нажми ПРЫЖОК, чтобы оттолкнуться вверх и в сторону; чередуя две близкие стены, можно взбираться — уровень 4 «Восхождение» — это высокая шахта, где это единственный путь наверх. Приземлись врагу на голову, чтобы сбить его (ты отскочишь); Ползун просто патрулирует туда-сюда, а Преследователь бросается на тебя, заметив на своей высоте, — но касание любого из них сбоку или снизу стоит жизни. Шипы отнимают удар, бездонные ямы — жизнь, а движущиеся платформы везут тебя на себе (рассчитывай прыжки с них). Подбери звёздный панцирь ради одного лишнего удара, который теряется при следующем попадании. У тебя 3 жизни; когда они кончатся, заезд завершается экраном результатов (очки и пройденные уровни). Монеты, сбитые враги и пройденные уровни приносят очки, а лучший результат сохраняется на этом устройстве. Бонус для ПК: стрелки или A / D — движение, Пробел / W / Вверх — прыжок."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "leap-quest/client/index.html",
+      "manifest": "leap-quest/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 83.1,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original side-scrolling platformer in the classic 'run, jump on enemies to defeat them, collect coins, reach the flag' 2D tradition (no copied content — original neon-vector art, levels and character). Momentum-based movement: gravity-driven variable-height jumping (a tap is a short hop, holding JUMP through the rise is a full ~3-tile leap — releasing cuts remaining upward velocity), run with real acceleration/deceleration, and one extra movement ability — the WALL-JUMP: press into a wall while falling to wall-slide (fall speed clamped), then JUMP to kick up and away, alternating off two close walls to climb a shaft. Level 4 'The Ascent' is a tall two-walled shaft where wall-jumping is the only route to the exit and flag (not optional), with a shorter nook in level 5 too. client/player.js owns the body physics and axis-separated AABB tile collision plus one-way land-on-top moving-platform collision that carries a rider; client/enemies.js has two behaviours (CRAWLER back-and-forth patroller that reverses at edges/walls; STALKER that charges ~3x speed when the player enters a detection box at similar height but still respects edges). Both are stomped from above and harmful on side/below contact. client/levels.js authors 5 hand-tuned levels from numeric rects (not fragile ASCII) with a reachability lint warning on any un-bridged pit wider than the jump budget; hazards are spikes (a hit), bottomless pits (a life) and moving platforms. A star-shell power-up grants one extra hit. 3 lives, coins/stomps/level-clear score, results screen on game over or full clear, local high score via OGHProfile (games/pop-the-bugs convention). Smoothed follow-camera clamped to level bounds, translate-the-world shape as games/hill-rider / games/neon-drift (follows vertically for the shaft). No bundled image/audio assets: Canvas 2-D neon-vector line-art with glow; sound reuses games/_shared/js/ogh-sfx.js entirely unchanged (hop=jump, boing=wall-jump, thwack=stomp, pickup=coin, chain=power-up, screech=lose shell, die=lose life, win=level clear/victory). RTL (Arabic) flips text/menu chrome only; the level, camera, run direction and LEFT/RIGHT/JUMP button layout never mirror (stage dir=ltr, ctx.direction forced ltr)."
     }
   ]
 }
