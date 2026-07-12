@@ -40,7 +40,14 @@
       <canvas class="ogh-game-canvas" id="game" width="720" height="1000" dir="ltr" aria-label="Tower"></canvas>
     </main>
 
-    <p class="ogh-hint" id="hint" data-i18n="hintConfig">Drag across the top to aim, then press Drop</p>
+    <!-- A LOCAL .ds-hint (not the shared .ogh-hint) is deliberate: the
+         shared class is position:fixed to the viewport bottom, which is
+         correct for games with nothing else down there, but this game has
+         a real persistent control strip below the hint — fixed positioning
+         would float the hint text on top of it instead of stacking above
+         it in normal flow. Same fix games/claw-machine's .clw-hint applies
+         for the same reason (its own bottom D-pad/DROP controls). -->
+    <p class="ds-hint" id="hint" data-i18n="hintConfig">Drag across the top to aim, then press Drop</p>
 
     <!-- Persistent config strip (not an overlay) — stays visible while
          configuring so the player can see the tower/spawn marker while

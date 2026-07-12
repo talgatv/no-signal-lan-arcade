@@ -24,9 +24,9 @@ whole simulation is directly steppable and inspectable from a test harness (see
    damage a platform takes and how hard the ball bounces back. A **heavier** weight setting gives
    a ball both more mass *and* more initial drop speed (see `WEIGHTS` in `physics.js`), so the
    difference between a light and a heavy ball is real and compounding, not cosmetic: in the
-   default "Sheer Tower" a light ball dropped center-first breaks 0 layers and stalls near the
-   top, a medium ball breaks roughly half the tower, and a heavy ball routinely clears every
-   layer and exits the bottom.
+   default "Sheer Tower" a light ball dropped center-first breaks through the two weakest layers
+   and then stalls well short of the tougher ones (2 of 11 broken), a medium ball breaks roughly
+   half the tower, and a heavy ball routinely clears every layer and exits the bottom.
 2. **Crack before break.** Each platform has hit points; a hit that doesn't fully deplete them
    leaves it standing but visibly cracked (the crack pattern grows through three stages as hp
    drops), and only hp ≤ 0 removes it. A ball that breaks through keeps falling (lightly damped —

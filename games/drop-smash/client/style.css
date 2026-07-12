@@ -1,12 +1,16 @@
 /* Drop Smash — neon-vector page chrome on top of ogh-base.css's shared
    structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card,
-   .ogh-btn, .ogh-pill, .ogh-hint). Palette stays the hub default dark
-   neon-vector look (no :root override) — this file only adds the header /
-   lang-switch / config-strip / overlay layout, mirroring games/siege-break's
+   .ogh-btn, .ogh-pill). Palette stays the hub default dark neon-vector look
+   (no :root override) — this file only adds the header / lang-switch /
+   config-strip / hint / overlay layout, mirroring games/siege-break's
    real-flow header pattern (a normal header that takes layout space, not a
-   fixed overlay) and games/claw-machine's persistent bottom controls strip.
-   The whole scene (tower layers, cracks, balls, debris) is Canvas 2D vector
-   shapes with a neon glow — no bitmap assets. */
+   fixed overlay) and games/claw-machine's persistent bottom controls strip
+   (including its fix for the shared .ogh-hint: that class is
+   position:fixed to the viewport bottom, correct only when nothing else
+   lives down there, so this game defines its own normal-flow .ds-hint
+   instead — see the rule below). The whole scene (tower layers, cracks,
+   balls, debris) is Canvas 2D vector shapes with a neon glow — no bitmap
+   assets. */
 
 .ds-body {
   display: flex;
@@ -108,6 +112,21 @@
   touch-action: none;
 }
 .ogh-game-canvas.is-dragging { cursor: grabbing; }
+
+/* ------------------------------------------------------------------ */
+/* Hint — a LOCAL class, not the shared .ogh-hint (which is             */
+/* position:fixed to the viewport bottom, correct only when nothing     */
+/* else lives down there). This game has a real config strip below it,  */
+/* so the hint needs to sit in normal flex flow, right above the strip, */
+/* not float on top of it. Same fix as games/claw-machine's .clw-hint.  */
+/* ------------------------------------------------------------------ */
+.ds-hint {
+  flex: 0 0 auto;
+  margin: 2px 0;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ogh-fg-dim);
+}
 
 /* ------------------------------------------------------------------ */
 /* Config strip — persistent (not an overlay) so the tower/spawn marker */
