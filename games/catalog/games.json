@@ -3067,6 +3067,82 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "An original freehand physics-drawing sled toy in the beloved 'draw a line, a rider physics-simulates down it' genre (Line Rider is the classic reference point; this game's rider rig, track tools, code and art are all original — nothing copied). client/physics.js is a pure, DOM-free rider simulator: a 7-point rig (a rigid nose/tail/hip sled-and-seat triangle, a torso braced to hip+nose so it doesn't pendulum-flop, and a head plus two hands hung off the shoulder with a single constraint each so they flail like a loose ragdoll limb) integrated with Verlet position-based dynamics (each point stores only current+previous position; velocity is implicit as the position delta) and relaxed against 8 fixed-length distance constraints a few iterations per tick -- Thomas Jakobsen's 'Advanced Character Physics' technique, the standard this entire genre is built on. Every rider point collides with every solid drawn segment via a closest-point-on-segment 'collide and slide' test: push out along the segment normal, damp the along-surface (tangential) speed for sliding friction, zero the into-surface component so contacts never bounce. Each physics tick is internally split into 4 substeps (with gravity/friction correctly rescaled to match, verified headless) so a fast-falling point can't tunnel through a line between two integration steps, a real failure mode confirmed and fixed during development (see window.OGH_SLED_LINES for the live debug hook). Three line types: solid track (collides), scenery (purely decorative, the rider passes straight through -- verified headless), and a bonus accelerator line (non-collidable, gives a speed boost along its direction when crossed). Toolbar covers draw-track / draw-scenery / draw-boost / erase-near-tap / undo-last-line / clear-all / Play / Edit, with Play always resetting the rider to its start point first and Edit stopping the sim and resetting it back, so editing always resumes from a known-clean state. A modest, non-blocking crash detector (kept deliberately restrained -- this toy is about the joy of drawing and watching, not winning) fires on either a hard impact on a core sled/torso point (calibrated empirically against the real simulated dynamics, not idealized kinematics) or a long unbroken fall with no contact, plus a bonus sustained-topple/flip check; a crash freezes the pose (tinted red) until Edit is pressed. No bundled image or audio assets: the whole scene is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js entirely unchanged (tap=draw-start/tool-switch/undo, whoosh=play, die=crash, screech=erase/clear, land=touchdown). i18n across the UN-6 languages; Arabic flips only the text chrome (header, toolbar labels, hint, start card) to RTL -- the drawn track, the rider's physics and the toolbar's tool order never mirror."
+    },
+    {
+      "id": "ember-tide",
+      "name": "Ember & Tide",
+      "names": {
+        "en": "Ember & Tide",
+        "ru": "Уголёк и Прилив",
+        "zh": "火烬与潮汐",
+        "es": "Ascua y Marea",
+        "ar": "جَمْرة ومَدّ",
+        "fr": "Braise & Marée"
+      },
+      "tagline": "Two elemental spirits, one temple — get fire and water each to its own colored door, together. Solo switch-control or local 2-player split keyboard, six co-op puzzle chambers.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "platformer",
+        "puzzle",
+        "co-op"
+      ],
+      "genres": [
+        "puzzle",
+        "platformer",
+        "co-op"
+      ],
+      "controls": {
+        "primary": "keyboard",
+        "supported": [
+          "keyboard",
+          "touch"
+        ],
+        "keyboard": "ok",
+        "touch": "optional",
+        "notes": {
+          "en": "Two spirits, both must reach their own matching-colored door. Solo (one player): WASD or Arrows move the ACTIVE spirit, W/↑/Space jump, Shift or Tab switches which spirit you control. Local 2-player: split keyboard, both spirits live at once — Ember (fire) on A/D + W, Tide (water) on the Arrow keys. Ember wades safely through lava but dies in water; Tide flows through water but dies in lava; spikes kill both. Levers/pressure-plates let one spirit open gates or extend bridges for the other. R restarts the chamber. Touch: on-screen d-pads (two in 2-player, one + a Switch button in solo) as a fallback; keyboard is the richer primary.",
+          "ru": "Два духа, каждый должен дойти до своей двери подходящего цвета. Одиночный (один игрок): WASD или стрелки двигают АКТИВНОГО духа, W/↑/Пробел — прыжок, Shift или Tab переключает духа. На двоих: разделённая клавиатура, оба духа сразу — Уголёк (огонь) на A/D + W, Прилив (вода) на стрелках. Уголёк спокойно идёт по лаве, но гибнет в воде; Прилив течёт по воде, но гибнет в лаве; шипы губят обоих. Рычаги и нажимные плиты позволяют одному духу открыть ворота или выдвинуть мост для другого. R — заново уровень. Сенсор: экранные крестовины (две вдвоём, одна плюс кнопка «Смена» в одиночном) как запасной вариант; клавиатура — основной способ."
+        }
+      },
+      "tags": [
+        "solo",
+        "local-multiplayer",
+        "experimental",
+        "puzzle",
+        "co-op"
+      ],
+      "instructions": {
+        "en": "Pick Solo or Local 2-Player, then guide two spirits through the temple at once — Ember the fire spirit and Tide the water spirit — and get each one into its own matching-colored door (fire door is orange, water door is blue). It only completes when BOTH are home at the same time; reaching the wrong door does nothing. Ember wades safely through lava but is doused instantly by water; Tide flows through water pools but boils away in lava; spikes kill both, so some gaps are deadly to everyone. Use levers and pressure plates cooperatively: one spirit stands on a plate to hold a gate open for the other, or throws a lever to extend a bridge across a pool the other can't cross (bridge pools are too wide to jump). Any death resets the whole chamber. Solo: WASD or Arrows move the ACTIVE spirit, W/↑/Space jump, Shift or Tab switches spirit. Local 2-player: Ember on A/D+W, Tide on the Arrow keys, both live at once. R restarts the chamber. Six chambers of rising difficulty.",
+        "ru": "Выбери одиночный режим или на двоих, затем веди двух духов через храм одновременно — Уголёк (огонь) и Прилив (вода) — и приведи каждого в свою дверь подходящего цвета (огненная дверь оранжевая, водная — синяя). Уровень пройден, только когда ОБА у своих дверей одновременно; не та дверь ничего не даёт. Уголёк спокойно идёт по лаве, но мгновенно гаснет в воде; Прилив течёт по воде, но испаряется в лаве; шипы губят обоих, поэтому часть проёмов опасна для всех. Используйте рычаги и нажимные плиты сообща: один дух держит плиту, чтобы ворота оставались открытыми для другого, или тянет рычаг, выдвигая мост через пруд, который другой не может пересечь (пруды с мостами слишком широки, чтобы их перепрыгнуть). Любая смерть сбрасывает весь зал. Одиночный: WASD или стрелки двигают АКТИВНОГО духа, W/↑/Пробел — прыжок, Shift или Tab — смена духа. На двоих: Уголёк на A/D+W, Прилив на стрелках, оба сразу. R — заново зал. Шесть залов с нарастающей сложностью."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [
+        "fight-arena"
+      ],
+      "players": {
+        "min": 1,
+        "max": 2,
+        "solo": true
+      },
+      "entry": "ember-tide/client/index.html",
+      "manifest": "ember-tide/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 85.4,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original two-character elemental co-op puzzle-platformer (own spirits/temple setting/art; Fireboy & Watergirl is only a genre reference, nothing copied). client/sim.js is a pure, DOM-free, fixed-60Hz simulation directly steppable from window.OGH_EMBER_TIDE: per-axis AABB tile collision, coyote-time/jump-buffer jumps, plates (momentary) and levers (latch/toggle, optionally element-locked) driving gates (solid while closed) and bridges (solid deck while extended), elemental hazard death and the both-spirits-home win test. levels.js holds six authored 24x15 ASCII levels + parser with increasing complexity: elemental tutorial, plate->gate, lever->bridge, mutual two-lever bridges, plate+lever across two heights, and a capstone with mutual bridges plus a vertical climb. Bridge pools are 4 tiles wide (wider than a jump can clear) so the wrong-element spirit truly needs the bridge, not a leap. Fire wades lava / dies in water, water wades pools / dies in lava, spikes kill both; each spirit only completes at its own colored door and both must be home at once. Modes: Solo (one active spirit, Shift/Tab switch — matching browser single-player of the genre) and local 2-player split keyboard (Ember=WASD, Tide=Arrows) both live. Keyboard is the deliberate primary (a correct exception to the hub's touch-first norm for a co-op platformer); on-screen d-pads are a touch fallback. No bundled image or audio assets: the whole temple is Canvas 2D neon-vector shapes and sound reuses games/_shared/js/ogh-sfx.js unchanged (boing=jump, land=touchdown, place=lever/plate/gate, pickup=spirit reaches its door, win=chamber clear, die=death). RTL (Arabic) flips text/menu chrome only; the stage, spirit colors, hazard positions and movement directions never mirror."
     }
   ]
 }

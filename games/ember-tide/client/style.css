@@ -1,0 +1,274 @@
+/* Ember & Tide — neon-vector page chrome on top of ogh-base.css's shared
+   structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card, .ogh-btn,
+   .ogh-pill, .ogh-hint). Palette stays the hub default dark neon-vector look
+   (no :root override) — same convention as games/fight-arena and games/comet.
+   The whole temple (terrain, lava/water pools, spikes, gates, bridges, doors
+   and the two spirits) is drawn ON the 960x600 canvas so it scales as one; this
+   file only styles the page chrome, HUD, the mode-select / cleared / results
+   cards, the optional touch pads, and a LANDSCAPE override of the shared
+   auto-sizing canvas rule. RTL flips this chrome only — the stage never mirrors
+   (dir="ltr" pinned in the markup). */
+
+.et-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link, in-play HUD, language switch.                    */
+/* ------------------------------------------------------------------ */
+.et-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px 4px;
+  flex-wrap: wrap;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.et-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.et-hud .ogh-pill {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 12px;
+  padding: 5px 11px;
+}
+
+.et-pill-mode.is-fire { color: #ffb27a; border-color: rgba(255, 122, 47, 0.5); }
+.et-pill-mode.is-water { color: #8fddff; border-color: rgba(57, 198, 255, 0.5); }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas — landscape override (matches the 960x600 world). Repeats    */
+/* ogh-base.css's own `.ogh-stage canvas.ogh-game-canvas` selector to  */
+/* MATCH its specificity, then relies on the canvas's intrinsic aspect */
+/* via the replaced-element auto-sizing algorithm — same robust        */
+/* approach as games/fight-arena and games/billiards.                  */
+/* ------------------------------------------------------------------ */
+.ogh-stage { padding: 0 8px; }
+.ogh-stage canvas.ogh-game-canvas {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background: #05060d;
+  box-shadow:
+    0 0 0 1px rgba(126, 150, 210, 0.16),
+    0 14px 44px rgba(0, 0, 0, 0.5);
+  touch-action: none;
+}
+
+/* Visually-hidden live status for screen readers. */
+.et-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Transient death / event banner over the stage. */
+.et-banner {
+  position: fixed;
+  z-index: 4;
+  left: 50%;
+  top: 22%;
+  transform: translateX(-50%);
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: rgba(10, 12, 24, 0.85);
+  border: 1px solid rgba(255, 92, 122, 0.5);
+  color: var(--ogh-fg);
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+/* ------------------------------------------------------------------ */
+/* On-screen touch controls.                                           */
+/* ------------------------------------------------------------------ */
+.et-touch {
+  flex: 0 0 auto;
+  z-index: 4;
+  direction: ltr;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 12px calc(8px + var(--ogh-safe-bottom));
+}
+
+.et-pad {
+  display: grid;
+  grid-template-columns: 50px 50px 50px;
+  grid-template-rows: 50px;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.et-tbtn {
+  border: 1px solid rgba(126, 150, 210, 0.35);
+  background: rgba(12, 16, 30, 0.82);
+  color: var(--ogh-fg);
+  border-radius: 12px;
+  font-size: 18px;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+.et-tbtn.is-down { background: rgba(126, 150, 210, 0.28); border-color: var(--ogh-accent); }
+.et-pad-e .et-tbtn { border-color: rgba(255, 122, 47, 0.4); }
+.et-pad-e .et-tbtn.is-down { background: rgba(255, 122, 47, 0.28); border-color: var(--ogh-fire, #ff7a2f); }
+.et-pad-t .et-tbtn { border-color: rgba(57, 198, 255, 0.4); }
+.et-pad-t .et-tbtn.is-down { background: rgba(57, 198, 255, 0.28); border-color: #39c6ff; }
+
+.et-touch-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 0 1 auto;
+}
+.et-switch {
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(92, 225, 255, 0.45);
+  background: linear-gradient(160deg, rgba(255, 122, 47, 0.22), rgba(57, 198, 255, 0.22));
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+}
+.et-restart {
+  min-height: 34px; min-width: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(126, 150, 210, 0.35);
+  background: rgba(12, 16, 30, 0.82);
+  color: var(--ogh-fg-dim);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards.                                                       */
+/* ------------------------------------------------------------------ */
+.et-card { width: min(560px, 100%); text-align: center; }
+.et-card h1 { font-family: "Montserrat", "Roboto", sans-serif; }
+.et-blurb {
+  margin: 0 0 16px !important;
+  font-size: 0.88rem !important;
+  line-height: 1.5 !important;
+}
+
+.et-modes {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.et-mode-btn {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(126, 150, 210, 0.28);
+  background: rgba(8, 10, 22, 0.8);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.et-mode-btn.is-on {
+  border-color: var(--ogh-accent);
+  background: rgba(92, 225, 255, 0.14);
+  box-shadow: 0 0 18px rgba(92, 225, 255, 0.14);
+}
+.et-mode-name { font-weight: 800; font-size: 15px; }
+.et-mode-desc { font-size: 11.5px; color: var(--ogh-fg-dim); line-height: 1.35; }
+
+.et-start-btn { width: 100%; margin-top: 4px; }
+.et-controls-note {
+  margin: 12px 0 0 !important;
+  font-size: 11px !important;
+  color: var(--ogh-fg-dim) !important;
+  line-height: 1.45;
+}
+
+.et-sub { margin: 0 0 16px !important; color: var(--ogh-fg-dim) !important; }
+.et-stats {
+  margin: 0 0 18px !important;
+  font-family: var(--ogh-mono);
+  color: var(--ogh-accent) !important;
+  font-size: 0.95rem !important;
+}
+#clearedCard .ogh-btn, #resultsCard .ogh-btn { margin-top: 8px; }
+#clearedCard h1 {
+  background: linear-gradient(120deg, #ff9a5a, #39c6ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* Narrow screens: stack modes, shrink pads. */
+@media (max-width: 560px) {
+  .et-modes { flex-direction: column; }
+  .et-pad { grid-template-columns: 46px 46px 46px; grid-template-rows: 46px; }
+}
+@media (max-width: 420px) {
+  .et-pad { grid-template-columns: 42px 42px 42px; grid-template-rows: 42px; gap: 5px; }
+  .et-switch { padding: 0 10px; font-size: 12.5px; }
+}

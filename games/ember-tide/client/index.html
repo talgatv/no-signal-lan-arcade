@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Ember & Tide — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="et-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <canvas class="ogh-shader-canvas" id="bg" aria-hidden="true"></canvas>
+
+    <header class="et-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="et-hud" id="hud" hidden>
+        <span class="ogh-pill" id="hudLevel">Lvl 1</span>
+        <span class="ogh-pill" id="hudResets">⟳ 0</span>
+        <span class="ogh-pill et-pill-mode" id="hudMode"></span>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria" aria-label="Language"></div>
+    </header>
+
+    <!-- The temple stage is fixed spatial gameplay drawn in a 960x600 tile
+         world: the fire spirit/door/lava are always warm, the water
+         spirit/door/pools always cool, and "left" always moves a spirit left.
+         It must never mirror under RTL — dir="ltr" on the stage, canvas and the
+         touch pads is deliberate and must stay (see i18n.js header). game.js
+         also forces ctx.direction='ltr' for any canvas text. -->
+    <main class="ogh-stage" dir="ltr">
+      <canvas class="ogh-game-canvas" id="game" width="960" height="600" dir="ltr" aria-label="Temple stage"></canvas>
+    </main>
+
+    <!-- On-screen touch controls. In Local 2-Player both pads show (Ember left,
+         Tide right); in Solo only the left pad + Switch button show and drive
+         the active spirit. Keyboard is the richer/primary input here. -->
+    <div class="et-touch" id="touch" dir="ltr" hidden>
+      <div class="et-pad et-pad-e" id="padE" role="group" aria-label="Ember controls">
+        <button type="button" class="et-tbtn et-t-left" data-pad="e" data-act="left" aria-label="Ember left">◀</button>
+        <button type="button" class="et-tbtn et-t-jump" data-pad="e" data-act="jump" aria-label="Ember jump">▲</button>
+        <button type="button" class="et-tbtn et-t-right" data-pad="e" data-act="right" aria-label="Ember right">▶</button>
+      </div>
+      <div class="et-touch-mid">
+        <button type="button" class="et-switch" id="btnSwitch" data-i18n="switchBtn" hidden>Switch</button>
+        <button type="button" class="et-restart" id="btnRestart" data-i18n-aria="restartBtn" aria-label="Restart">⟳</button>
+      </div>
+      <div class="et-pad et-pad-t" id="padT" role="group" aria-label="Tide controls">
+        <button type="button" class="et-tbtn et-t-left" data-pad="t" data-act="left" aria-label="Tide left">◀</button>
+        <button type="button" class="et-tbtn et-t-jump" data-pad="t" data-act="jump" aria-label="Tide jump">▲</button>
+        <button type="button" class="et-tbtn et-t-right" data-pad="t" data-act="right" aria-label="Tide right">▶</button>
+      </div>
+    </div>
+
+    <p class="ogh-hint" id="hint"></p>
+    <div class="et-banner" id="banner" hidden></div>
+    <div class="et-sr" id="srStatus" role="status" aria-live="polite"></div>
+
+    <div class="ogh-overlay" id="overlay">
+      <!-- Mode select / main menu -->
+      <div class="ogh-card et-card" id="menuCard">
+        <h1 data-i18n="title">Ember &amp; Tide</h1>
+        <p class="et-blurb" data-i18n="blurb"></p>
+        <div class="et-modes" role="group" aria-label="Mode">
+          <button type="button" class="et-mode-btn is-on" id="modeSolo">
+            <span class="et-mode-name" data-i18n="soloBtn">Solo</span>
+            <span class="et-mode-desc" data-i18n="soloDesc"></span>
+          </button>
+          <button type="button" class="et-mode-btn" id="modeDuo">
+            <span class="et-mode-name" data-i18n="duoBtn">Local 2-Player</span>
+            <span class="et-mode-desc" data-i18n="duoDesc"></span>
+          </button>
+        </div>
+        <button type="button" class="ogh-btn ogh-btn-primary et-start-btn" id="btnStart" data-i18n="startBtn">Enter the temple</button>
+        <p class="et-controls-note" id="controlsNote"></p>
+      </div>
+
+      <!-- Chamber cleared -->
+      <div class="ogh-card et-card" id="clearedCard" hidden>
+        <h1 data-i18n="clearedTitle">Chamber cleared</h1>
+        <p class="et-sub" data-i18n="clearedSub"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNext" data-i18n="nextBtn">Next chamber</button>
+      </div>
+
+      <!-- Final results -->
+      <div class="ogh-card et-card" id="resultsCard" hidden>
+        <h1 data-i18n="winTitle">The temple is at peace</h1>
+        <p class="et-sub" data-i18n="winSub"></p>
+        <p class="et-stats" id="resultStats"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="playAgainBtn">Play again</button>
+        <button type="button" class="ogh-btn" id="btnMenu" data-i18n="menuBtn">Main menu</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

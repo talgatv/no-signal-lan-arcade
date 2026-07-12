@@ -1,0 +1,27 @@
+{
+  "id": "ember-tide",
+  "name": "Ember & Tide",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 2,
+  "supportsSolo": true,
+  "genres": ["puzzle", "platformer", "co-op"],
+  "tags": ["solo", "local-multiplayer", "experimental", "puzzle", "co-op"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "keyboard",
+    "supported": ["keyboard", "touch"],
+    "keyboard": "ok",
+    "touch": "optional",
+    "notes": {
+      "en": "Two spirits, both must reach their own matching-colored door. Solo (one player): WASD or Arrows move the ACTIVE spirit, W/↑/Space jump, Shift or Tab switches which spirit you control. Local 2-player: split keyboard, both spirits live at once — Ember (fire) on A/D + W, Tide (water) on the Arrow keys. Ember wades safely through lava but dies in water; Tide flows through water but dies in lava; spikes kill both. Levers/pressure-plates let one spirit open gates or extend bridges for the other. R restarts the chamber. Touch: on-screen d-pads (two in 2-player, one + a Switch button in solo) as a fallback; keyboard is the richer primary.",
+      "ru": "Два духа, каждый должен дойти до своей двери подходящего цвета. Одиночный (один игрок): WASD или стрелки двигают АКТИВНОГО духа, W/↑/Пробел — прыжок, Shift или Tab переключает духа. На двоих: разделённая клавиатура, оба духа сразу — Уголёк (огонь) на A/D + W, Прилив (вода) на стрелках. Уголёк спокойно идёт по лаве, но гибнет в воде; Прилив течёт по воде, но гибнет в лаве; шипы губят обоих. Рычаги и нажимные плиты позволяют одному духу открыть ворота или выдвинуть мост для другого. R — заново уровень. Сенсор: экранные крестовины (две вдвоём, одна плюс кнопка «Смена» в одиночном) как запасной вариант; клавиатура — основной способ."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "landscape",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-shader-bg.js"],
+  "notes": "Original two-character elemental co-op puzzle-platformer (own spirits/temple setting/art; Fireboy & Watergirl is only a genre reference, nothing copied). client/sim.js is a pure, DOM-free, fixed-60Hz simulation directly steppable from window.OGH_EMBER_TIDE: per-axis AABB tile collision, coyote-time/jump-buffer jumps, plates (momentary) and levers (latch/toggle, optionally element-locked) driving gates (solid while closed) and bridges (solid deck while extended), elemental hazard death and the both-spirits-home win test. levels.js holds six authored 24x15 ASCII levels + parser with increasing complexity: elemental tutorial, plate->gate, lever->bridge, mutual two-lever bridges, plate+lever across two heights, and a capstone with mutual bridges plus a vertical climb. Bridge pools are 4 tiles wide (wider than a jump can clear) so the wrong-element spirit truly needs the bridge, not a leap. Fire wades lava / dies in water, water wades pools / dies in lava, spikes kill both; each spirit only completes at its own colored door and both must be home at once. Modes: Solo (one active spirit, Shift/Tab switch — matching browser single-player of the genre) and local 2-player split keyboard (Ember=WASD, Tide=Arrows) both live. Keyboard is the deliberate primary (a correct exception to the hub's touch-first norm for a co-op platformer); on-screen d-pads are a touch fallback. No bundled image or audio assets: the whole temple is Canvas 2D neon-vector shapes and sound reuses games/_shared/js/ogh-sfx.js unchanged (boing=jump, land=touchdown, place=lever/plate/gate, pickup=spirit reaches its door, win=chamber clear, die=death). RTL (Arabic) flips text/menu chrome only; the stage, spirit colors, hazard positions and movement directions never mirror."
+}
