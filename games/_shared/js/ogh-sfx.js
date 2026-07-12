@@ -176,6 +176,23 @@ export function createOghSfx() {
     // reads as full collapse) — a hit landed and did damage, but the layer
     // is still standing.
     crack: () => tone(950, 0.045, 'square', 0.045, 650),
+    // Added for games/dash-runner — a 3-lane endless runner. Jump/land,
+    // lane-change, coin, crash, power-up and UI-tap cues all deliberately
+    // reuse existing patterns instead of adding more (`hop` — cross-the-
+    // road's forward-hop chirp — already reads as a jump lift-off; `land`
+    // already reads as a real-gravity touchdown; `tick` already reads as a
+    // lateral move, the exact precedent set by cross-the-road's own
+    // within-lane dodge; `pickup` already reads as a bright coin chime;
+    // `die` already reads as a crash; `win` already reads as an
+    // achievement fanfare, reused here for both a power-up activating and
+    // a new best distance; `boom` already reads as a big, satisfying
+    // payoff hit, reused for smashing through an obstacle while
+    // invincible), so `duck` is the one genuinely new sound this genre
+    // needs: nothing existing captures a quick crouch/slide-down motion.
+    // It's a fast downward pitch sweep from a mid-high tone — distinct
+    // from `land` (a short, low, punchy thud with almost no slide, reading
+    // as an impact) because ducking is a deliberate dodge, not a landing.
+    duck: () => tone(480, 0.09, 'sine', 0.045, 160),
   };
 
   return {
