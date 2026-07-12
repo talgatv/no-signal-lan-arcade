@@ -210,6 +210,24 @@ export function createOghSfx() {
     // two hard round bodies meeting) because a fruit slice should sound
     // fast and airy, not like an impact.
     slice: () => { tone(1400, 0.035, 'sine', 0.05, 2200); setTimeout(() => tone(2000, 0.03, 'sine', 0.035, 900), 18); },
+    // Added for games/backgammon — a two-dice rattle-and-settle for a roll.
+    // Move / hit / bear-off / win feedback all reuse existing patterns unchanged
+    // (`place` for a checker set down, `clack` for hitting an enemy blot onto
+    // the bar, `pocket` — billiards' drop-into-a-hole cue — for a checker borne
+    // off into the tray, `win`/`die` for the game end), so `dice` is the one
+    // genuinely new sound this game needs: nothing existing reads as dice
+    // tumbling (the closest, `clack`, is a single hard click already used for a
+    // hit, and `crumble` is a brittle downward crackle for breaking stone). It
+    // is a rapid burst of four short, dry square/triangle blips at slightly
+    // varied low-mid pitches (the dice clattering across the board) — the same
+    // quick multi-blip approach as `hop`/`zap` but flatter and woodier so it
+    // reads as tumbling cubes rather than a chirp or an electric crackle.
+    dice: () => {
+      tone(300, 0.03, 'square', 0.05, 240);
+      setTimeout(() => tone(360, 0.03, 'triangle', 0.045, 250), 45);
+      setTimeout(() => tone(270, 0.035, 'square', 0.05, 210), 95);
+      setTimeout(() => tone(330, 0.045, 'triangle', 0.06, 200), 150);
+    },
   };
 
   return {

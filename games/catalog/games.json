@@ -4035,6 +4035,94 @@
         "protocol": "ogh-net-v1",
         "notes": "First joiner = White, second = Black; later joiners spectate. Each move relays as a tiny {from,to,promo} payload. The receiver re-validates every relayed move against its OWN position (only a currently-legal move for the side to move is accepted) before applying, so a stale, duplicate, or out-of-turn relayed move can never desync the boards. Also fully playable offline (vs AI or local pass-and-play); LAN degrades to local pass-and-play when no host is reachable."
       }
+    },
+    {
+      "id": "backgammon",
+      "name": "Backgammon",
+      "names": {
+        "en": "Backgammon",
+        "ru": "Нарды",
+        "zh": "双陆棋",
+        "es": "Backgammon",
+        "ar": "الطاولة",
+        "fr": "Backgammon"
+      },
+      "tagline": "Full standard backgammon — the bar, hitting, bearing off, doubles and the forcing rule. Solo vs a real AI, pass-and-play, or LAN.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "board"
+      ],
+      "genres": [
+        "board",
+        "strategy",
+        "classic",
+        "dice"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap the dice (or Roll) to roll, then tap one of your checkers — its legal destination points glow — and tap a point to move it. Doubles give four moves. A checker on the bar must re-enter in the opponent's home first. With all fifteen checkers home, bear them off from the highlighted tray.",
+          "ru": "Коснись костей (или «Бросить»), затем коснись своей шашки — доступные пункты подсвечиваются — и коснись пункта, чтобы сходить. Дубль даёт четыре хода. Шашку на баре сначала введи в доме соперника. Когда все пятнадцать шашек дома, выводи их в подсвеченный трей."
+        }
+      },
+      "tags": [
+        "solo",
+        "local-multiplayer",
+        "multiplayer",
+        "ai",
+        "board-game",
+        "dice",
+        "classic",
+        "experimental"
+      ],
+      "instructions": {
+        "en": "Full standard backgammon, three ways to play. Roll two dice and race your 15 checkers home and off the board (White runs 24→1 with home board 1–6; Black runs 1→24 with home board 19–24). Move each die's distance with one checker or split across two; every hop must land on a point that is empty, yours, or holds a single enemy checker — landing on a lone enemy checker (a blot) sends it to the bar. Doubles let you move that number four times. A checker on the bar must re-enter in the opponent's home board before any other move, and if you can't enter you lose the turn. You must use as many dice as you legally can (and, for a non-double where only one die is playable, the larger one). Once all 15 checkers are in your home board you bear them off — a die bears a checker off its matching point, or off a lower point when nothing sits higher; a checker hit back to the bar must come home again before bearing off resumes. First to bear off all 15 wins (no doubling cube or gammon scoring). Play vs a heuristic AI (Easy/Medium/Hard), pass-and-play on one device, or LAN multiplayer over the PC host (first joiner is White, second is Black; the roller rolls once and broadcasts it, so there is one authoritative roll per turn).",
+        "ru": "Полноценные нарды, три способа игры. Бросай две кости и веди свои 15 шашек домой и с доски (Белые идут 24→1, дом 1–6; Чёрные идут 1→24, дом 19–24). Ходи на значение каждой кости одной шашкой или двумя; клетка должна быть пустой, твоей или с одной шашкой соперника — попав на одиночную шашку (блот), ты отправляешь её на бар. Дубль даёт четыре хода. Шашку на баре нужно сначала ввести в доме соперника; если ввести нельзя — ход теряется. Нужно использовать как можно больше костей (а если играется только одна из двух — большую). Когда все 15 шашек дома, выводи их — кость выводит шашку с соответствующего пункта или с более низкого, если выше ничего нет; шашка, сбитая на бар, сначала вновь возвращается домой. Побеждает тот, кто первым выведет все 15 (без куба удвоения и бонусов). Играй против ИИ (Легко/Средне/Сложно), по очереди на одном устройстве или по локальной сети через PC-хост (первый игрок — Белые, второй — Чёрные; бросок делается один раз и рассылается — один авторитетный бросок за ход).",
+        "zh": "完整的标准双陆棋，三种玩法。掷两颗骰子，把你的 15 枚棋子赶回家并起出棋盘（白方走 24→1，内区 1–6；黑方走 1→24，内区 19–24）。每颗骰子的点数用一枚棋走或分给两枚；落点必须是空位、自己的点，或只有一枚对方棋子的点——落在单枚对方棋子（blot）上会把它打到中条。掷出双数可走四次。中条上的棋子必须先从对方内区进场，无法进场则跳过回合。你必须尽可能多地用骰子（非双数时若只能走一颗，则走较大的）。当 15 枚棋全部回到内区，就可起子——骰子从对应点起子，或在更高点无子时从较低点起子；被打回中条的棋必须先回家才能继续起子。最先起出全部 15 枚者胜（不含加倍骰与奖分）。可与启发式 AI 对战（简单/中等/困难）、同设备轮流，或通过 PC 主机局域网联机（先加入者执白，后者执黑；掷骰者只掷一次并广播，每回合只有一个权威的骰点）。",
+        "es": "Backgammon estándar completo, tres formas de jugar. Tira dos dados y lleva tus 15 fichas a casa y fuera del tablero (las Blancas van 24→1, cuadro interior 1–6; las Negras van 1→24, cuadro interior 19–24). Mueve la distancia de cada dado con una ficha o repartida entre dos; cada salto debe caer en un punto vacío, tuyo o con una sola ficha rival — caer sobre una ficha suelta (un blot) la envía a la barra. Los dobles permiten mover ese número cuatro veces. Una ficha en la barra debe reentrar en el cuadro interior rival antes de cualquier otra jugada, y si no puede entrar pierdes el turno. Debes usar tantos dados como sea legal (y, en un no-doble donde solo uno es jugable, el mayor). Con las 15 fichas en tu cuadro interior las retiras — un dado retira una ficha de su punto, o de un punto menor cuando no hay nada más alto; una ficha golpeada a la barra debe volver a casa antes de seguir retirando. Gana quien retire las 15 primero (sin cubo de doblar ni bonificaciones). Juega contra una IA heurística (Fácil/Media/Difícil), por turnos en un dispositivo, o en LAN por el host de PC (el primero en unirse juega Blancas, el segundo Negras; quien tira lanza una vez y lo transmite, una única tirada autoritativa por turno).",
+        "ar": "طاولة قياسية كاملة، بثلاث طرق للعب. ارم نردين واسبق بأحجارك الـ 15 إلى بيتك ثم خارج اللوح (الأبيض يسير 24→1 وبيته 1–6؛ الأسود يسير 1→24 وبيته 19–24). حرّك مسافة كل نردة بحجر واحد أو قسّمها على حجرين؛ ويجب أن تهبط على نقطة فارغة أو لك أو عليها حجر خصم واحد — والهبوط على حجر مفرد يرسله إلى الحاجز. الدوبل يمنحك أربع نقلات. الحجر على الحاجز يجب إدخاله في بيت الخصم قبل أي نقلة أخرى، وإن تعذّر الدخول خسرت الدور. عليك استخدام أكبر عدد ممكن من النرد (وفي غير الدوبل إذا أمكن لعب نردة واحدة فقط فالأكبر). عندما تصبح الـ 15 حجرًا في بيتك تخرجها — تخرج النردة حجرًا من نقطتها المطابقة، أو من نقطة أدنى إذا لم يكن أعلى منها شيء؛ والحجر المضروب إلى الحاجز يجب أن يعود للبيت قبل متابعة الإخراج. من يخرج الـ 15 أولاً يفوز (دون مكعّب المضاعفة أو المكافآت). العب ضد ذكاء اصطناعي (سهل/متوسط/صعب)، أو بالتناوب على جهاز واحد، أو عبر الشبكة المحلية عبر مضيف الـPC (أول من ينضم يلعب بالأبيض والثاني بالأسود؛ الرامي يرمي مرة واحدة ويبثّها، رمية معتمدة واحدة لكل دور).",
+        "fr": "Backgammon standard complet, trois façons de jouer. Lancez deux dés et ramenez vos 15 pions à la maison puis hors du plateau (les Blancs vont 24→1, jan intérieur 1–6 ; les Noirs vont 1→24, jan intérieur 19–24). Jouez la distance de chaque dé avec un pion ou répartie sur deux ; chaque saut doit arriver sur un point vide, à vous, ou avec un seul pion adverse — arriver sur un pion isolé (un blot) l'envoie à la barre. Les doubles permettent de jouer ce nombre quatre fois. Un pion à la barre doit rentrer dans le jan intérieur adverse avant tout autre coup, et si vous ne pouvez pas entrer vous perdez le tour. Vous devez utiliser autant de dés que possible (et, pour un non-double où un seul dé est jouable, le plus grand). Une fois vos 15 pions dans votre jan intérieur, sortez-les — un dé sort un pion de son point, ou d'un point inférieur si rien n'est plus haut ; un pion renvoyé à la barre doit rentrer avant de reprendre la sortie. Le premier à sortir ses 15 pions gagne (sans videau ni bonus). Jouez contre une IA heuristique (Facile/Moyen/Difficile), à tour de rôle sur un appareil, ou en LAN via l'hôte PC (le premier arrivé joue les Blancs, le second les Noirs ; le lanceur lance une fois et le diffuse, un seul lancer faisant foi par tour)."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [
+        "chess",
+        "checkers"
+      ],
+      "players": {
+        "min": 1,
+        "max": 2,
+        "solo": true
+      },
+      "entry": "backgammon/client/index.html",
+      "manifest": "backgammon/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 65.0,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Full, correct standard Backgammon on the 24-point board: the exact standard opening position (each side 2/5/3/5 on the 24/13/8/6 points in its own numbering; opening pip count 167 each), two-dice movement with doubles giving four moves, and the complete rule set — open/blocked points, hitting a blot to the bar, forced bar re-entry into the opponent's home before any other move, bearing off once all fifteen checkers are home (including the rule that a higher die may bear off a lower point when no checker sits on a higher one), and the 'use as many dice as possible' forcing rule with the non-double must-play-the-larger-die tie-break. A checker hit back to the bar mid-bear-off must re-enter and come home before bearing off resumes. Win by bearing off all fifteen (no doubling cube / gammon scoring — deliberately out of scope). Pure rules (rules.js) and AI (ai.js) are DOM/network-free and unit-testable in isolation, the same split as games/chess and games/checkers; the AI enumerates every maximal legal move sequence for its roll and picks the best by a heuristic (race/pip lead, made and home-board points, primes, hitting/pinning enemy blots, blot-exposure safety), so it always plays legal, sound moves and obeys the forcing rule (Easy/Medium add randomness and near-best variety; Hard is deterministic-best). The board is drawn on a single <canvas> with neon glows (points, checkers, dice, bar and bear-off trays — White = cyan, Black = magenta) scaled as a whole via CSS transform so it always fits without scrolling; no image assets. Sound reuses games/_shared/js/ogh-sfx.js (place=move, clack=hit, pocket=bear-off, win/die=game over) plus one added pattern (dice=roll rattle). RTL (Arabic) mirrors the header/menu/result chrome only; the 24-point board never mirrors (canvas dir=\"ltr\").",
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "First joiner = White, second = Black; later joiners spectate. The player whose turn it is rolls the dice locally and broadcasts the roll ({d1,d2}) — the one piece of information that can't be re-derived — so there is a single authoritative roll per turn; each single-die checker move then relays as a tiny {from,to,die} payload. The receiver re-validates every relayed move against its OWN board and remaining dice before applying, and BOTH sides derive turn changes (and a no-legal-move pass) from the shared board with no separate end-turn message, so a stale, duplicate, or out-of-turn relay can never desync the boards. Also fully playable offline (vs AI or local pass-and-play); LAN degrades to local pass-and-play automatically when no host is reachable."
+      }
     }
   ]
 }

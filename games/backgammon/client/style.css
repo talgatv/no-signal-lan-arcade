@@ -1,0 +1,123 @@
+/* Backgammon — OGH neon-vector look. Header/pills/cards/buttons come from
+   ogh-base.css; this file is the header layout, the language switch, the mode /
+   result overlays, and the board canvas frame. The board itself (points,
+   checkers, dice, bar, bear-off trays) is drawn on a <canvas> in app.js with
+   neon glows (shadowBlur), so there are no image assets. The canvas is a fixed
+   logical size scaled as a whole via a CSS transform (app.js fitBoard(), the
+   games/chess + games/checkers pattern) so it always fits with zero scrolling. */
+
+body.bg-body {
+  background: radial-gradient(120% 140% at 50% -10%, #101a2c 0%, var(--ogh-bg) 70%);
+}
+
+/* header ------------------------------------------------------------- */
+.bg-top {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 10px 14px;
+  background: rgba(7, 8, 15, 0.6);
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.bg-hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bg-hud .ogh-pill {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 13px;
+  padding: 6px 12px;
+  white-space: nowrap;
+}
+
+.bg-count .bg-dot-w { color: #eaf9ff; text-shadow: 0 0 6px rgba(92, 225, 255, 0.9); }
+.bg-count .bg-dot-b { color: #ff7ad0; text-shadow: 0 0 6px rgba(255, 107, 203, 0.9); }
+
+.bg-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+.bg-actions .ogh-btn {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.lang-switch { display: flex; gap: 4px; flex-wrap: wrap; }
+.lang-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: #071018;
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* stage / board -------------------------------------------------------- */
+.bg-stage { overflow: visible; }
+
+.bg-board {
+  flex: none;
+  border-radius: 14px;
+  border: 2px solid rgba(92, 225, 255, 0.35);
+  box-shadow: 0 0 40px rgba(92, 225, 255, 0.12), inset 0 0 40px rgba(0, 0, 0, 0.35);
+  transform-origin: center center;
+  will-change: transform;
+  background: #0a0d18;
+  touch-action: none;
+}
+
+/* mode / difficulty overlay -------------------------------------------- */
+.bg-mode-card { width: min(460px, 100%); }
+.bg-mode-list,
+.bg-diff-list { display: flex; flex-direction: column; gap: 10px; }
+.bg-diff-list { margin-top: 6px; }
+.bg-diff-label {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: var(--ogh-fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.mode-btn, .diff-btn { width: 100%; }
+.bg-back-btn { margin-top: 4px; opacity: 0.8; }
+
+#resultStatsLine {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-fg);
+  opacity: 0.85;
+}
+
+@media (max-width: 420px) {
+  .bg-actions .ogh-btn { min-height: 34px; padding: 0 10px; font-size: 12px; }
+  .back { font-size: 13px; }
+}
