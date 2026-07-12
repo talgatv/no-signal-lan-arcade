@@ -2604,6 +2604,81 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original Newtonian-physics space shooter in the classic 'rotate/thrust ship, shoot and split asteroids, screen wraps' arcade genre (no copied assets/content — an original vector-line take in this hub's own neon-vector style). client/physics.js is the core: rotation only ever changes ship.angle, thrust only ever accumulates onto ship.vx/vy along the current facing direction (never snaps velocity to facing), gentle drag scales speed without touching direction, and every moving body (ship/asteroids/bullets/UFO) wraps independently on both axes via toroidal wrap math — collision distance is computed the same toroidal way, so a bullet near one edge can hit a rock that has wrapped to the opposite edge. client/asteroids.js spawns large rocks with a fixed jagged outline (tumbling via their own spin) that split into 2-3 smaller rocks on hit (large -> medium -> small -> destroyed outright), each split inheriting half the parent's drift plus a fresh randomized kick so the pieces visibly scatter; smaller tiers score more, move faster and have a smaller hitbox, bigger tiers score less but are slower and harder to dodge. A UFO bonus enemy periodically crosses the field on a gentle sine-wave path and takes aimed-but-imperfect shots at the player; shooting it scores a bonus, but colliding with it (like an asteroid) costs a life. Waves escalate a real asteroid count and speed multiplier (see waveConfig() in game.js, inspectable via window.OGH_VOID_DRIFT) that keeps climbing well past wave 5 before capping. 3 ships, a short invulnerability window (with a visible respawn blink) after each life lost, local high score via OGHProfile — same convention as games/pop-the-bugs. No bundled image or audio assets: canvas vector line-art with a glow throughout (including wrap-edge 'ghost' rendering so a body crossing the seam is visible on both sides at once), sound reuses games/_shared/js/ogh-sfx.js's existing patterns unchanged (pop=fire, thwack=asteroid split, pocket=asteroid/UFO destroyed, splat=life lost, die=game over, win=wave clear, screech=UFO fires, whoosh=thrust). RTL (Arabic) flips text/menu chrome only; the play field, screen wrap and rotate-button meanings never mirror (stage is dir=ltr, ctx.direction forced to ltr)."
+    },
+    {
+      "id": "brick-game",
+      "name": "Brick Game",
+      "names": {
+        "en": "Brick Game",
+        "ru": "Брик-гейм",
+        "zh": "砖块游戏机",
+        "es": "Brick Game",
+        "ar": "بريك جيم",
+        "fr": "Brick Game"
+      },
+      "tagline": "A retro-LCD handheld: three classic games — Tanks, Snake and Breakout — behind one dot-matrix menu, all in a shared chunky-pixel look.",
+      "style": "retro-lcd",
+      "styles": [
+        "retro-lcd",
+        "dot-matrix",
+        "monochrome",
+        "pixel",
+        "collection"
+      ],
+      "genres": [
+        "arcade",
+        "classic",
+        "collection"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "touch": "ok",
+        "notes": {
+          "en": "One handheld, three classics behind a shared pick-a-game menu. On-screen D-pad moves/aims, the red A button is the action (fire in Tanks, launch the ball in Breakout, confirm in menus) and MENU returns to the picker. Tanks: D-pad drives the tank in four directions, A fires. Snake: D-pad turns. Breakout: D-pad or drag on the screen moves the paddle, A launches. Desktop bonus: arrow keys or WASD are the D-pad, Space/Enter is A, Esc is MENU.",
+          "ru": "Одна консоль — три классики за общим меню выбора. Экранная крестовина двигает/целится, красная кнопка A — действие (огонь в «Танках», запуск мяча в «Арканоиде», подтверждение в меню), MENU возвращает к выбору игры. Танки: крестовина ведёт танк в четырёх направлениях, A — огонь. Змейка: крестовина поворачивает. Арканоид: крестовина или перетаскивание по экрану двигает ракетку, A — запуск. Бонус для ПК: стрелки или WASD — крестовина, Space/Enter — A, Esc — MENU."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "arcade",
+        "classic",
+        "retro",
+        "collection"
+      ],
+      "instructions": {
+        "en": "A homage to the cheap 90s/2000s 'Brick Game' handhelds, this is three original games behind one shared menu, all in a single retro-LCD look: chunky dark dots on a pale-olive dot-matrix screen inside a graphite console with a D-pad and an A/MENU button. From the menu, D-pad up/down picks a game and A plays it (or tap a game; keys 1/2/3 jump straight in); MENU always returns here. TANKS is Battle City-style: your tank moves in four grid-aligned directions and A fires straight ahead. Brick walls crumble a dot at a time, steel walls are indestructible and block shots. Enemy tanks spawn from the top in escalating waves with real AI — they roam, converge on your eagle base (and sometimes you) and shoot when lined up. Wipe out each wave; you have 3 lives, but if any shot reaches your base the run is lost immediately even with lives left. SNAKE is classic grid snake: it moves continuously, the D-pad turns it (no instant reversals), eating the blinking blip grows it one segment and speeds it up, and hitting the wall or your own tail ends it. BREAKOUT is paddle/ball/bricks: D-pad or drag moves the paddle, A launches the ball, and where the ball lands on the paddle sets its rebound angle — a centre hit goes straight up, an edge hit flies off sharply. Clear all bricks to advance through three cycling layouts; 3 lives, letting the ball fall costs one. Each game keeps its own best score. Desktop: arrow keys/WASD = D-pad, Space/Enter = A, Esc = MENU.",
+        "ru": "Дань дешёвым консолям «Брик-гейм» 90-х/2000-х: три оригинальные игры за общим меню, все в едином ретро-LCD-стиле — тёмные квадратные точки на бледно-оливковом точечном экране в графитовом корпусе с крестовиной и кнопками A/MENU. В меню крестовина вверх/вниз выбирает игру, A запускает (или коснитесь игры; клавиши 1/2/3 — сразу в игру); MENU всегда возвращает сюда. ТАНКИ — в духе Battle City: танк движется в четырёх направлениях по сетке, A стреляет вперёд. Кирпичные стены крошатся по точке, стальные — неразрушимы и держат выстрел. Вражеские танки появляются сверху волнами со своим ИИ — они бродят, идут к твоей базе-орлу (иногда к тебе) и стреляют, когда выровнялись. Зачищай каждую волну; жизней 3, но если выстрел достанет базу — проигрыш сразу, даже с оставшимися жизнями. ЗМЕЙКА — классика на сетке: движется непрерывно, крестовина поворачивает (без мгновенного разворота), поедание мигающей точки удлиняет на сегмент и ускоряет, удар о стену или свой хвост — конец. АРКАНОИД — ракетка/мяч/кирпичи: крестовина или перетаскивание двигает ракетку, A запускает мяч, а точка удара по ракетке задаёт угол отскока: по центру — прямо вверх, краем — резко в сторону. Разбей все кирпичи, чтобы пройти три сменяющихся расклада; жизней 3, упавший мяч стоит одной. У каждой игры свой рекорд. ПК: стрелки/WASD — крестовина, Space/Enter — A, Esc — MENU."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "brick-game/client/index.html",
+      "manifest": "brick-game/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 150,
+      "sizeMeasuredKb": 97.0,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original 3-in-1 retro-LCD handhelds collection (no copied ROMs/assets — original takes on Tanks/Snake/Breakout in this hub's own shared dot-matrix style, a deliberate departure from neon-vector like games/paint-xp's XP skin). client/lcd.js is the shared Screen renderer + palette that makes all three read as one device: chunky dark dots on a pale-olive LCD with a faint 'ghost' unlit-segment grid; the menu draws its icons with the same dots. Tanks (Battle City-style): per-dot-destructible brick walls, indestructible steel, an eagle base whose destruction loses the run instantly even with lives remaining, enemy AI that seeks the base/player and fires when aligned, escalating waves. Snake: grid snake that grows and speeds up on eating, ends on wall/self collision. Breakout: real paddle-position rebound angle (bounceVelocity(off) is the single pure source, test-hooked — centre hit vx≈0, edge hit large |vx| at constant speed) across three cycling layouts. Per-sub-game OGHProfile bests under separate keys (brick-tanks/brick-snake/brick-arkanoid), same convention as games/pop-the-bugs. Sound reuses _shared/js/ogh-sfx.js patterns unchanged (pop/clack/thwack/bounce/pickup/boing/splat/die/win/tap). i18n en/ru/zh/es/ar/fr; RTL (Arabic) flips only text chrome (header/hint/HUD/menu/overlays) — never any game's LCD dot field (canvas dir=ltr) nor the D-pad cluster (dir=ltr). No bitmap/audio asset files. window.OGH_BRICK_GAME exposes shell + active game."
     }
   ]
 }

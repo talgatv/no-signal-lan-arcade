@@ -1,0 +1,27 @@
+{
+  "id": "brick-game",
+  "name": "Brick Game",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "classic", "collection"],
+  "tags": ["solo", "experimental", "arcade", "classic", "retro", "collection"],
+  "style": "retro-lcd",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard"],
+    "keyboard": "optional",
+    "touch": "ok",
+    "notes": {
+      "en": "One handheld, three classics behind a shared pick-a-game menu. On-screen D-pad moves/aims, the red A button is the action (fire in Tanks, launch the ball in Breakout, confirm in menus) and MENU returns to the picker. Tanks: D-pad drives the tank in four directions, A fires. Snake: D-pad turns. Breakout: D-pad or drag on the screen moves the paddle, A launches. Desktop bonus: arrow keys or WASD are the D-pad, Space/Enter is A, Esc is MENU.",
+      "ru": "Одна консоль — три классики за общим меню выбора. Экранная крестовина двигает/целится, красная кнопка A — действие (огонь в «Танках», запуск мяча в «Арканоиде», подтверждение в меню), MENU возвращает к выбору игры. Танки: крестовина ведёт танк в четырёх направлениях, A — огонь. Змейка: крестовина поворачивает. Арканоид: крестовина или перетаскивание по экрану двигает ракетку, A — запуск. Бонус для ПК: стрелки или WASD — крестовина, Space/Enter — A, Esc — MENU."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "A homage to the cheap 90s/2000s 'Brick Game' handhelds that bundled several simple monochrome-LCD games in one device — here, three original takes on the classics behind one menu, sharing a single retro-LCD visual identity (a deliberate departure from the hub's neon-vector look, in the spirit of games/paint-xp's Windows-XP skin). style is 'retro-lcd': everything renders as chunky dark dots on one pale-olive dot-matrix LCD via client/lcd.js (a shared Screen renderer with the whole palette + a ghost 'unlit segment' grid), inside a skeuomorphic graphite console with a physical D-pad + A/MENU buttons. The three games: (1) Tanks — a Battle City-style top-down grid arena with per-dot-destructible brick walls, indestructible steel, an eagle base you must defend (an enemy shot reaching it loses the run instantly, even with lives left), enemy tanks with real seek-the-base/player AI that shoot when lined up, and escalating waves; (2) Snake — classic grid snake that grows and speeds up as it eats, ending on wall or self collision; (3) Breakout — paddle/ball/bricks with real paddle-position-dependent rebound angle (edge hits angle sharply, centre hits go straight up — bounceVelocity() is the single pure source, test-hooked) across three cycling layouts. Each sub-game keeps its own OGHProfile best under its own key (brick-tanks / brick-snake / brick-arkanoid), same convention as games/pop-the-bugs. Sound reuses games/_shared/js/ogh-sfx.js patterns unchanged (pop=shoot, clack=brick break, thwack=tank kill, bounce=ball rebound, pickup=snake eat, boing=ball launch, splat=life lost, die=game over, win=wave/level clear, tap=UI). i18n across the UN-6 languages (en/ru/zh/es/ar/fr); RTL (Arabic) flips only the text chrome — header, hint, HUD, menu and overlay cards — never the LCD dot field of any game (canvas forced dir=ltr in lcd.js) nor the D-pad cluster (dir=ltr in markup). No bitmap or audio asset files; pure canvas dots + CSS. window.OGH_BRICK_GAME exposes the shell + active game for inspection/automation."
+}
