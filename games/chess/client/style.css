@@ -1,0 +1,255 @@
+/* Chess — OGH neon-vector look. Header/pills/cards/buttons come from
+   ogh-base.css; this file is the board geometry, piece glyphs, move
+   highlights, and the mode / promotion / result overlays. The board is a fixed
+   logical-pixel 8x8 grid scaled as a whole via a CSS transform (app.js
+   fitBoard(), the games/checkers + games/tic-tac-toe pattern) so it always
+   fits with zero scrolling. All 64 squares are in play (unlike checkers), so
+   every square is tappable. */
+
+body.cs-body {
+  background: radial-gradient(120% 140% at 50% -10%, #101a2c 0%, var(--ogh-bg) 70%);
+}
+
+/* header ------------------------------------------------------------- */
+.cs-top {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 10px 14px;
+  background: rgba(7, 8, 15, 0.6);
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.cs-hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cs-hud .ogh-pill {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 13px;
+  padding: 6px 12px;
+  white-space: nowrap;
+}
+
+/* the check pill only shows while the side to move is in check */
+.cs-check {
+  color: #07080f;
+  background: var(--ogh-bad);
+  border-color: var(--ogh-bad) !important;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  animation: csCheckPulse 0.9s ease-in-out infinite;
+}
+@keyframes csCheckPulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(255, 92, 122, 0); }
+  50% { box-shadow: 0 0 18px rgba(255, 92, 122, 0.7); }
+}
+
+.cs-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+.cs-actions .ogh-btn {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.lang-switch { display: flex; gap: 4px; flex-wrap: wrap; }
+.lang-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: #071018;
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* stage / board -------------------------------------------------------- */
+.cs-stage { overflow: visible; }
+
+.cs-board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 512px;
+  height: 512px;
+  flex: none;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(92, 225, 255, 0.35);
+  box-shadow: 0 0 40px rgba(92, 225, 255, 0.12), inset 0 0 40px rgba(0, 0, 0, 0.35);
+  transform-origin: center center;
+  will-change: transform;
+  background: #0a0d18;
+}
+
+.cs-sq {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+/* the two board-square tints (both are in play) */
+.cs-sq.is-light { background: rgba(92, 225, 255, 0.10); }
+.cs-sq.is-dark { background: rgba(12, 18, 34, 0.85); }
+
+/* last-move trail (from + to) */
+.cs-sq.is-last::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 209, 102, 0.16);
+  box-shadow: inset 0 0 0 2px rgba(255, 209, 102, 0.35);
+}
+
+/* pieces --------------------------------------------------------------- */
+.cs-piece {
+  position: relative;
+  z-index: 2;
+  font-size: 46px;
+  line-height: 1;
+  pointer-events: none;
+  transition: transform 0.08s ease;
+}
+/* White = bright cyan-white glow; Black = magenta/pink glow. Both use the
+   solid glyph set so the silhouettes are crisp and identically shaped; only the
+   colour/glow distinguishes the sides (the games/checkers cyan-vs-pink identity,
+   applied to chess). */
+.cs-piece.w {
+  color: #eaf9ff;
+  text-shadow: 0 0 6px rgba(92, 225, 255, 0.95), 0 0 14px rgba(92, 225, 255, 0.55), 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+.cs-piece.b {
+  color: #ff7ad0;
+  text-shadow: 0 0 6px rgba(255, 107, 203, 0.9), 0 0 14px rgba(255, 107, 203, 0.5), 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* highlights ----------------------------------------------------------- */
+.cs-sq.is-selected {
+  box-shadow: inset 0 0 0 3px var(--ogh-good), inset 0 0 22px rgba(92, 255, 176, 0.35);
+}
+/* the king of the side in check glows red */
+.cs-sq.is-check::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 3px var(--ogh-bad), inset 0 0 26px rgba(255, 92, 122, 0.55);
+  z-index: 1;
+}
+/* legal move onto an empty square: a soft dot */
+.cs-sq.is-move::after {
+  content: "";
+  position: absolute;
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(92, 255, 176, 0.9), rgba(92, 255, 176, 0.2));
+  box-shadow: 0 0 14px rgba(92, 255, 176, 0.7);
+  z-index: 1;
+}
+/* legal capture (or en-passant) destination: a ring around the target */
+.cs-sq.is-capture::after {
+  content: "";
+  position: absolute;
+  width: 84%;
+  height: 84%;
+  border-radius: 50%;
+  border: 3px solid var(--ogh-warn);
+  box-shadow: 0 0 16px rgba(255, 209, 102, 0.6), inset 0 0 12px rgba(255, 209, 102, 0.35);
+  z-index: 1;
+}
+
+/* mode / difficulty overlay -------------------------------------------- */
+.cs-mode-card { width: min(460px, 100%); }
+.cs-mode-list,
+.cs-diff-list { display: flex; flex-direction: column; gap: 10px; }
+.cs-diff-list { margin-top: 6px; }
+.cs-diff-label {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: var(--ogh-fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.mode-btn, .diff-btn { width: 100%; }
+.cs-back-btn { margin-top: 4px; opacity: 0.8; }
+
+/* promotion overlay ---------------------------------------------------- */
+.cs-promo-card { width: min(400px, 100%); }
+.cs-promo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 6px;
+}
+.cs-promo-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 6px;
+  border: 1px solid rgba(92, 225, 255, 0.35);
+  border-radius: 12px;
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.14), rgba(255, 107, 203, 0.08));
+  color: var(--ogh-fg);
+  font-family: inherit;
+  cursor: pointer;
+}
+.cs-promo-btn:active { transform: scale(0.96); }
+.cs-promo-glyph {
+  font-size: 40px;
+  line-height: 1;
+  color: #eaf9ff;
+  text-shadow: 0 0 8px rgba(92, 225, 255, 0.9);
+}
+.cs-promo-glyph.is-black {
+  color: #ff7ad0;
+  text-shadow: 0 0 8px rgba(255, 107, 203, 0.9);
+}
+.cs-promo-name { font-size: 11px; color: var(--ogh-fg-dim); font-weight: 700; }
+
+#resultStatsLine {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-fg);
+  opacity: 0.85;
+}
+
+@media (max-width: 420px) {
+  .cs-actions .ogh-btn { min-height: 34px; padding: 0 10px; font-size: 12px; }
+  .back { font-size: 13px; }
+  .cs-promo-glyph { font-size: 34px; }
+}

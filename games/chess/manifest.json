@@ -1,0 +1,32 @@
+{
+  "id": "chess",
+  "name": "Chess",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 2,
+  "supportsSolo": true,
+  "genres": ["board", "strategy", "classic"],
+  "tags": ["solo", "local-multiplayer", "multiplayer", "ai", "board-game", "classic", "experimental"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap a piece to select it — its legal destinations glow (a dot for a move, a ring for a capture) — then tap one to move. A pawn reaching the far rank opens a promotion picker (queen/rook/bishop/knight). The king glows red when in check.",
+      "ru": "Коснись фигуры, чтобы выбрать её — доступные ходы подсвечиваются (точка — ход, кольцо — взятие), затем коснись клетки, чтобы сходить. Пешка, дошедшая до последней горизонтали, открывает выбор превращения (ферзь/ладья/слон/конь). Король светится красным при шахе."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "First joiner = White, second = Black; later joiners spectate. Each move relays over the host WebSocket as a tiny {from,to,promo} payload. The receiver re-validates every relayed move against its OWN position (only a currently-legal move for the side to move is accepted) before applying, so a stale, duplicate, or out-of-turn relayed move can never desync the boards. Also supports offline vs-AI (minimax) and same-device pass-and-play; LAN mode degrades to local pass-and-play automatically when no host is reachable."
+  },
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-net.js", "js/ogh-profile.js", "js/ogh-sfx.js"],
+  "notes": "Full, correct standard chess on an 8x8 board: all six piece types with their exact movement, and legal-move generation that filters out any move leaving one's own king in check (validated by perft against known reference positions incl. Kiwipete). All special moves are implemented: castling (kingside/queenside, with the king-not-in-check / not-through-attacked / not-onto-attacked and empty-between / unmoved-king-and-rook conditions), en passant (incl. refusing it when it would expose the king), and pawn promotion with a piece picker (queen/rook/bishop/knight, not auto-queen). Check, checkmate and stalemate are detected; draws cover stalemate, threefold repetition, the 50-move rule and insufficient material. Pure rules (rules.js) and AI (ai.js) are DOM/network-free and unit-testable in isolation, the same split as games/checkers; the AI is negamax with alpha-beta pruning, a capture-only quiescence search and MVV-LVA move ordering over a material + piece-square-table evaluation (center control, king safety, pawn advancement), with in-place make/unmake so it stays responsive in a browser (Easy/Medium/Hard = depth 2/3/4; Easy/Medium also add randomness and near-best move variety). It can only ever choose from the legal move set, so it never makes an illegal move and always answers a check. The board is a fixed logical-pixel 8x8 grid scaled as a whole via CSS transform (games/checkers fitBoard() pattern) so it always fits without scrolling; pieces are Unicode chess glyphs with a neon glow (White = cyan-white, Black = magenta), no image assets. Sound reuses games/_shared/js/ogh-sfx.js unchanged (place=move, clack=capture, pickup=castle, chain=promotion, zap=check, win/die=game over). RTL (Arabic) mirrors the header/menu/promotion/result chrome only; the a1-h8 board never mirrors (board dir=\"ltr\")."
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Chess — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="cs-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="cs-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="cs-hud" role="status">
+        <div class="ogh-pill" id="netPill">…</div>
+        <div class="ogh-pill" id="turnPill">…</div>
+        <div class="ogh-pill cs-check" id="checkPill" hidden>Check</div>
+      </div>
+      <div class="cs-actions">
+        <button type="button" class="ogh-btn" id="btnMenu" data-i18n="menuBtn">Change mode</button>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNew" data-i18n="newGameBtn">New game</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <main class="ogh-stage cs-stage">
+      <!-- dir="ltr" is deliberate and must stay: the 8x8 board's a1-h8 layout is
+           a fixed, universal spatial convention (row 0 / col 0 is always
+           top-left), not prose — it must never mirror under an RTL UI language
+           (Arabic), same precedent as games/checkers's board. The cell-index
+           math in rules.js always matches physical left-to-right, top-to-bottom
+           regardless of `dir` on <html>. -->
+      <div class="cs-board" id="board" dir="ltr"></div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Tap a piece, then tap a highlighted square.</p>
+
+    <!-- Mode / difficulty picker — shown at launch and via "Change mode" -->
+    <div class="ogh-overlay" id="modeOverlay">
+      <div class="ogh-card cs-mode-card">
+        <h1 data-i18n="chooseModeTitle">Chess</h1>
+        <p data-i18n="chooseModeSub">Play against the computer, pass the device to a friend, or connect over LAN.</p>
+        <div class="cs-mode-list" id="modeList">
+          <button type="button" class="ogh-btn ogh-btn-primary mode-btn" id="btnModeAi" data-i18n="modeAiBtn">vs AI</button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeLocal" data-i18n="modeLocalBtn">Pass &amp; Play</button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeLan" data-i18n="modeLanBtn">LAN Multiplayer</button>
+        </div>
+        <div class="cs-diff-list" id="diffList" hidden>
+          <p class="cs-diff-label" data-i18n="difficultyLabel">Difficulty</p>
+          <button type="button" class="ogh-btn diff-btn" data-diff="easy" data-i18n="diffEasyBtn">Easy</button>
+          <button type="button" class="ogh-btn diff-btn ogh-btn-primary" data-diff="medium" data-i18n="diffMediumBtn">Medium</button>
+          <button type="button" class="ogh-btn diff-btn" data-diff="hard" data-i18n="diffHardBtn">Hard</button>
+          <button type="button" class="ogh-btn cs-back-btn" id="btnDiffBack" data-i18n="backToModesBtn">← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Promotion picker — shown when a pawn reaches the far rank -->
+    <div class="ogh-overlay" id="promoOverlay" hidden>
+      <div class="ogh-card cs-promo-card">
+        <h1 data-i18n="promoteTitle">Promote to…</h1>
+        <div class="cs-promo-grid" id="promoGrid">
+          <button type="button" class="cs-promo-btn" data-piece="q">
+            <span class="cs-promo-glyph" data-glyph="q">♛</span>
+            <span class="cs-promo-name" data-i18n="pieceQueen">Queen</span>
+          </button>
+          <button type="button" class="cs-promo-btn" data-piece="r">
+            <span class="cs-promo-glyph" data-glyph="r">♜</span>
+            <span class="cs-promo-name" data-i18n="pieceRook">Rook</span>
+          </button>
+          <button type="button" class="cs-promo-btn" data-piece="b">
+            <span class="cs-promo-glyph" data-glyph="b">♝</span>
+            <span class="cs-promo-name" data-i18n="pieceBishop">Bishop</span>
+          </button>
+          <button type="button" class="cs-promo-btn" data-piece="n">
+            <span class="cs-promo-glyph" data-glyph="n">♞</span>
+            <span class="cs-promo-name" data-i18n="pieceKnight">Knight</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result overlay -->
+    <div class="ogh-overlay" id="resultOverlay" hidden>
+      <div class="ogh-card">
+        <h1 id="resultTitle">…</h1>
+        <p id="resultStatsLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

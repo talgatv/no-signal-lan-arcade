@@ -3949,6 +3949,92 @@
         "protocol": "ogh-net-v1",
         "notes": "Hidden hands over a dumb relay: the dealer (first joiner) broadcasts only a small integer shuffle seed; both clients run the identical seeded shuffle and each computes ONLY its own 7-tile slice + the shared boneyard, so no hand/tile list is ever sent. Play relays public events only — place {tile,end}, draw (advances the shared boneyard by one; a count, not a tile), pass, and on a blocked game one summed pip count. LAN degrades to local pass-and-play when no host is reachable."
       }
+    },
+    {
+      "id": "chess",
+      "name": "Chess",
+      "names": {
+        "en": "Chess",
+        "ru": "Шахматы",
+        "zh": "国际象棋",
+        "es": "Ajedrez",
+        "ar": "الشطرنج",
+        "fr": "Échecs"
+      },
+      "tagline": "Full standard chess — castling, en passant, promotion, checkmate. Solo vs a real AI, pass-and-play, or LAN.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "board"
+      ],
+      "genres": [
+        "board",
+        "strategy",
+        "classic"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap a piece to select it — its legal destinations glow (a dot for a move, a ring for a capture) — then tap one to move. A pawn reaching the far rank opens a promotion picker (queen/rook/bishop/knight). The king's square glows red while it is in check.",
+          "ru": "Коснись фигуры, чтобы выбрать её — доступные ходы подсвечиваются (точка — ход, кольцо — взятие), затем коснись клетки, чтобы сходить. Пешка, дошедшая до последней горизонтали, открывает выбор превращения (ферзь/ладья/слон/конь). Клетка короля светится красным при шахе."
+        }
+      },
+      "tags": [
+        "solo",
+        "local-multiplayer",
+        "multiplayer",
+        "ai",
+        "board-game",
+        "classic",
+        "experimental"
+      ],
+      "instructions": {
+        "en": "Full standard chess, three ways to play. Every piece moves by the normal rules, and you may never make a move that leaves your own king in check (a pinned piece stays pinned; in check you must respond). All special moves are included: castling (kingside and queenside, only when legal), en passant, and pawn promotion (choose queen, rook, bishop or knight). Deliver checkmate — attack the enemy king so it has no legal escape — to win; a king with no legal move but not in check is stalemate, a draw. Draws also come from threefold repetition, the 50-move rule and insufficient material. Play vs a minimax AI (Easy/Medium/Hard), pass-and-play on one device, or LAN multiplayer over the PC host (first joiner is White, second is Black).",
+        "ru": "Полноценные шахматы, три способа игры. Каждая фигура ходит по обычным правилам, и нельзя делать ход, оставляющий своего короля под шахом (связанная фигура остаётся связанной; под шахом нужно защититься). Реализованы все особые ходы: рокировка (короткая и длинная, только когда она допустима), взятие на проходе и превращение пешки (ферзь, ладья, слон или конь). Побеждает тот, кто ставит мат — атакует короля так, что у него нет допустимого хода; король без ходов, но не под шахом — это пат, ничья. Ничья также по троекратному повторению, правилу 50 ходов и при недостатке материала. Играй против ИИ на минимаксе (Легко/Средне/Сложно), по очереди на одном устройстве или по локальной сети через PC-хост (первый игрок — Белые, второй — Чёрные).",
+        "zh": "完整的标准国际象棋，三种玩法。每种棋子都按常规规则走子，且你永远不能走出让自己的王处于被将军状态的着法（被牵制的子仍被牵制；被将军时必须应将）。所有特殊着法均已实现：王车易位（王翼与后翼，仅在合法时）、吃过路兵，以及兵的升变（可选后、车、象或马）。将死对方的王——攻击其王使其无合法逃脱——即可获胜；王无合法着法但未被将军则为逼和，即平局。平局还包括三次重复局面、50回合规则与子力不足。可对战极小化极大AI（简单/中等/困难）、同设备轮流游玩，或通过PC主机局域网联机（先加入者执白，后加入者执黑）。",
+        "es": "Ajedrez estándar completo, tres formas de jugar. Cada pieza se mueve por las reglas normales y nunca puedes hacer una jugada que deje a tu propio rey en jaque (una pieza clavada sigue clavada; en jaque debes responder). Se incluyen todas las jugadas especiales: enroque (corto y largo, solo cuando es legal), captura al paso y coronación del peón (elige dama, torre, alfil o caballo). Da jaque mate —ataca al rey rival de modo que no tenga escape legal— para ganar; un rey sin jugada legal pero no en jaque es ahogado, tablas. También hay tablas por triple repetición, la regla de las 50 jugadas y material insuficiente. Juega contra una IA minimax (Fácil/Media/Difícil), por turnos en un dispositivo, o multijugador LAN por el host de PC (el primero en unirse juega con Blancas, el segundo con Negras).",
+        "ar": "شطرنج قياسي كامل، بثلاث طرق للعب. تتحرك كل قطعة وفق القواعد المعتادة، ولا يجوز أبدًا أن تلعب نقلة تترك ملكك في كش (القطعة المربوطة تبقى مربوطة؛ وعند الكش يجب أن ترد). كل النقلات الخاصة متوفرة: التبييت (جهة الملك وجهة الوزير، فقط عندما يكون قانونيًا)، والأسر في المرور، وترقية البيدق (اختر الوزير أو الرخ أو الفيل أو الحصان). حقّق كش مات — بمهاجمة ملك الخصم بحيث لا يجد مهربًا قانونيًا — لتفوز؛ والملك الذي لا يملك نقلة قانونية دون أن يكون في كش هو جمود، أي تعادل. كما يأتي التعادل من تكرار الوضع ثلاث مرات وقاعدة الخمسين نقلة وعدم كفاية القطع. العب ضد ذكاء اصطناعي بخوارزمية Minimax (سهل/متوسط/صعب)، أو بالتناوب على جهاز واحد، أو عبر الشبكة المحلية من خلال مضيف الـPC (أول من ينضم يلعب بالأبيض والثاني بالأسود).",
+        "fr": "Échecs standard complets, trois façons de jouer. Chaque pièce se déplace selon les règles normales et vous ne pouvez jamais jouer un coup qui laisse votre propre roi en échec (une pièce clouée reste clouée ; en échec vous devez réagir). Tous les coups spéciaux sont présents : le roque (petit et grand, uniquement quand il est légal), la prise en passant et la promotion du pion (choisissez dame, tour, fou ou cavalier). Faites échec et mat — attaquez le roi adverse pour qu'il n'ait aucune échappatoire légale — pour gagner ; un roi sans coup légal mais pas en échec, c'est pat, une nulle. Il y a aussi nulle par triple répétition, règle des 50 coups et matériel insuffisant. Jouez contre une IA minimax (Facile/Moyen/Difficile), à tour de rôle sur un appareil, ou en multijoueur LAN via l'hôte PC (le premier arrivé joue les Blancs, le second les Noirs)."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [
+        "checkers",
+        "tic-tac-toe"
+      ],
+      "players": {
+        "min": 1,
+        "max": 2,
+        "solo": true
+      },
+      "entry": "chess/client/index.html",
+      "manifest": "chess/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 75.7,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Full, correct standard chess (8x8): all six piece types with exact movement and legal-move generation that filters any move leaving one's own king in check (validated by perft against known reference positions incl. Kiwipete). All special moves: castling (kingside/queenside, with the king-not-in-check / not-through-attacked / not-onto-attacked, empty-between and unmoved-king-and-rook conditions), en passant (incl. refusing it when it would expose the king), and pawn promotion with a piece picker (queen/rook/bishop/knight, not auto-queen). Check, checkmate and stalemate are detected (the checked king glows red); draws cover stalemate, threefold repetition, the 50-move rule and insufficient material. Pure rules (rules.js) + AI (ai.js) are DOM/network-free and unit-tested in isolation (perft-verified), the same split as games/checkers; the AI is negamax with alpha-beta pruning, a capture-only quiescence search and MVV-LVA move ordering over a material + piece-square-table evaluation (center control, king safety, pawn advancement), using in-place make/unmake to stay responsive in a browser (Easy/Medium/Hard = depth 2/3/4; Easy/Medium add randomness and near-best move variety) and can only ever pick from the legal move set. The board is a fixed logical-pixel 8x8 grid scaled as a whole via CSS transform (games/checkers fitBoard() pattern) so it always fits without scrolling; pieces are Unicode chess glyphs with a neon glow (White = cyan-white, Black = magenta), no image assets. Sound reuses games/_shared/js/ogh-sfx.js unchanged (place=move, clack=capture, pickup=castle, chain=promotion, zap=check, win/die=game over). RTL (Arabic) mirrors header/menu/promotion/result chrome only; the a1-h8 board never mirrors (dir=\"ltr\").",
+      "multiplayer": {
+        "status": "ready",
+        "protocol": "ogh-net-v1",
+        "notes": "First joiner = White, second = Black; later joiners spectate. Each move relays as a tiny {from,to,promo} payload. The receiver re-validates every relayed move against its OWN position (only a currently-legal move for the side to move is accepted) before applying, so a stale, duplicate, or out-of-turn relayed move can never desync the boards. Also fully playable offline (vs AI or local pass-and-play); LAN degrades to local pass-and-play when no host is reachable."
+      }
     }
   ]
 }
