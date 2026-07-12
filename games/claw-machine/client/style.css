@@ -1,0 +1,331 @@
+/* Claw Machine — neon-vector page chrome on top of ogh-base.css's shared
+   structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card,
+   .ogh-btn, .ogh-pill). Palette stays the hub default dark neon-vector look
+   (no :root override), same convention as games/paintball and
+   games/mini-golf. Header/HUD/hint/lang-switch layout mirrors
+   games/cross-the-road's ctr-top/ctr-hud/ctr-hint (a normal-flow header +
+   normal-flow hint, NOT ogh-base's fixed .ogh-hint, since this game also
+   has a normal-flow controls bar at the bottom and a fixed hint would sit
+   on top of it). The canvas is left at ogh-base.css's default auto-sizing
+   (720x1000 = the same 0.72 aspect ogh-base's formula assumes), so no
+   landscape-style override is needed here, unlike games/paintball's or
+   games/billiards' landscape tables.
+
+   The whole cabinet (bezel, glass, pit walls/floor, claw rig, prizes) is
+   rendered as Canvas 2D vector shapes with a neon glow by render3d.js — no
+   bitmap assets. This file only styles the DOM chrome around the canvas:
+   header, floating grip-feedback message, hint, D-pad + Drop button
+   cluster, start/results overlay cards, and the prize-type legend. */
+
+.clw-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills + language switch.                     */
+/* ------------------------------------------------------------------ */
+.clw-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 10px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.clw-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.clw-hud .ogh-pill {
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+
+#hudCredits strong { color: var(--ogh-warn); }
+#hudScore strong { color: #ffd166; }
+#hudPrizes strong { color: var(--ogh-good); }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage + canvas — default ogh-base portrait sizing/aspect is correct   */
+/* as-is (see header comment); only a cursor + soft shadow added here.   */
+/* ------------------------------------------------------------------ */
+.ogh-game-canvas {
+  background: #05060c;
+  box-shadow: 0 0 0 1px rgba(92, 225, 255, 0.1), 0 14px 40px rgba(0, 0, 0, 0.45);
+  cursor: default;
+}
+
+/* Grip-feedback message ("Got it!", "Missed!", "It slipped!"...) — an
+   absolutely-positioned floater INSIDE the stage (scoped to it, not the
+   viewport), so it never fights the bottom controls bar for space. Same
+   pop-in/fade-out technique as games/cross-the-road's .ctr-floater, but
+   with a translucent pill backdrop since these are full short phrases
+   (not a single glyph/number) shown over a busy moving scene. */
+.clw-floater {
+  position: absolute;
+  z-index: 2;
+  top: 14%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 88%;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(8, 10, 20, 0.78);
+  border: 1px solid rgba(92, 225, 255, 0.35);
+  font-family: "Montserrat", "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: clamp(14px, 3.6vw, 19px);
+  letter-spacing: 0.01em;
+  color: #e8ecff;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.clw-floater.is-on {
+  animation: clw-floater-pop 1.15s ease-out forwards;
+}
+
+.clw-floater.is-good { border-color: rgba(92, 255, 176, 0.6); color: #5cffb0; }
+.clw-floater.is-bad { border-color: rgba(255, 92, 122, 0.6); color: #ff8ea0; }
+
+@keyframes clw-floater-pop {
+  0% { opacity: 0; transform: translate(-50%, -40%) scale(0.9); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); }
+  30% { transform: translate(-50%, -50%) scale(1); }
+  78% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -58%) scale(1); }
+}
+
+.clw-hint {
+  flex: 0 0 auto;
+  margin: 2px 0 4px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ogh-fg-dim);
+}
+
+/* ------------------------------------------------------------------ */
+/* Controls — D-pad (movement, held-down = continuous move) + a          */
+/* separate circular DROP button, mirroring a real cabinet's joystick +  */
+/* grab button. Deliberately forced LTR regardless of document dir: the  */
+/* left button always steers the claw physically left and "far"/"near"   */
+/* always mean away-from/toward the glass — a spatial control mapping,   */
+/* not text, so it must never mirror under RTL. Same precedent as        */
+/* games/cross-the-road's .ctr-controls and games/neon-drift's           */
+/* .nd-controls (see i18n.js header comment + index.html's dir="ltr").   */
+/* ------------------------------------------------------------------ */
+.clw-controls {
+  flex: 0 0 auto;
+  z-index: 4;
+  display: flex;
+  direction: ltr;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  padding: 6px 16px calc(12px + var(--ogh-safe-bottom));
+}
+
+.clw-dpad {
+  direction: ltr;
+  display: grid;
+  grid-template-columns: 54px 54px 54px;
+  grid-template-rows: 54px 54px 54px;
+  gap: 4px;
+  place-items: center;
+}
+
+.clw-dbtn {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  border: 2px solid rgba(92, 225, 255, 0.35);
+  background: rgba(12, 16, 32, 0.85);
+  color: #e8ecff;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  line-height: 1;
+}
+
+.clw-dbtn:active,
+.clw-dbtn.is-down {
+  transform: scale(0.94);
+  background: rgba(92, 225, 255, 0.2);
+  border-color: rgba(92, 225, 255, 0.7);
+}
+
+.clw-dbtn-far { grid-column: 2; grid-row: 1; }
+.clw-dbtn-left { grid-column: 1; grid-row: 2; }
+.clw-dbtn-right { grid-column: 3; grid-row: 2; }
+.clw-dbtn-near { grid-column: 2; grid-row: 3; }
+
+.clw-dbtn-hub {
+  grid-column: 2;
+  grid-row: 2;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(139, 147, 184, 0.18);
+  border: 1px solid rgba(139, 147, 184, 0.3);
+}
+
+.clw-drop-btn {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 107, 203, 0.6);
+  background: radial-gradient(circle at 35% 30%, rgba(255, 107, 203, 0.35), rgba(120, 10, 60, 0.75));
+  color: #fff;
+  font-family: "Montserrat", "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  box-shadow: 0 0 22px rgba(255, 107, 203, 0.25);
+}
+
+.clw-drop-btn:active,
+.clw-drop-btn.is-down {
+  transform: scale(0.95);
+  box-shadow: 0 0 30px rgba(255, 107, 203, 0.45);
+}
+
+.clw-drop-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards: start / results.                                      */
+/* ------------------------------------------------------------------ */
+.clw-card h1 {
+  font-family: "Montserrat", "Roboto", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.clw-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 14px;
+  margin: 0 0 16px;
+  text-align: left;
+}
+
+.clw-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--ogh-fg-dim);
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+
+.clw-swatch {
+  flex: 0 0 auto;
+  width: 13px;
+  height: 13px;
+  border-radius: 4px;
+  border: 2px solid;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.clw-swatch-ball { border-color: #5ce1ff; border-radius: 50%; }
+.clw-swatch-box { border-color: #ff9d4d; }
+.clw-swatch-bear { border-color: #e8a15c; border-radius: 50%; }
+.clw-swatch-bunny { border-color: #ff8fd6; border-radius: 50%; }
+.clw-swatch-star { border-color: #ffd166; }
+.clw-swatch-gem { border-color: #c68fff; }
+
+.clw-best-line {
+  margin: 0 0 14px !important;
+  font-size: 13px !important;
+  color: var(--ogh-fg-dim) !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  min-height: 1em;
+}
+
+.clw-results-line {
+  margin: 0 0 8px !important;
+  font-size: 1rem !important;
+  font-weight: 700;
+  color: #e8ecff !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+
+.clw-new-best {
+  margin: 0 0 10px !important;
+  font-size: 13px !important;
+  font-weight: 700;
+  color: var(--ogh-warn) !important;
+}
+
+@media (max-width: 380px) {
+  .back { font-size: 12px; }
+  .clw-hud .ogh-pill { font-size: 11px; padding: 5px 8px; }
+  .clw-legend { grid-template-columns: 1fr; }
+  .clw-controls { gap: 16px; }
+  .clw-dpad { grid-template-columns: 46px 46px 46px; grid-template-rows: 46px 46px 46px; }
+  .clw-dbtn { width: 46px; height: 46px; font-size: 17px; }
+  .clw-drop-btn { width: 78px; height: 78px; font-size: 14px; }
+}
+
+@media (max-height: 700px) {
+  .clw-controls { padding-top: 2px; gap: 18px; }
+  .clw-dpad { grid-template-columns: 44px 44px 44px; grid-template-rows: 44px 44px 44px; }
+  .clw-dbtn { width: 44px; height: 44px; font-size: 16px; }
+  .clw-drop-btn { width: 72px; height: 72px; font-size: 13px; }
+}

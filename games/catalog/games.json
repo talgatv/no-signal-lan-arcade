@@ -2230,6 +2230,83 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Fixed-camera lightgun-style shooting gallery, not a scrolling/3D game: a flat canvas scene with 3 static depth lanes (far/mid/near) that shrink in scale and spread toward the horizon for a trapezoidal depth cue, same 'flat scene scaled by distance' trick as games/cross-the-road's render.js applied to static rows instead of a receding road. Targets pop up from behind a lane's cover band (clipped rise/fall animation) at one of 15 fixed slots; four types share one weighted spawn table (targets.js's TARGET_TYPES/waveParams): 'grunt' (common, scores), 'ace' (rare, smaller, faster, drifts sideways while up, scores more), 'civilian' (hands-up silhouette + a small flag — shape, not just color, marks it 'don't shoot' for accessibility; hitting it penalizes score AND adds a strike, 3 strikes ends the run immediately), and 'crate' (instant ammo refill). Difficulty is a pure function of wave index (targets.js's waveParams(), directly inspectable/diffable, same convention as games/cross-the-road's stageParams and games/pop-the-bugs' rampAt): spawn interval, visible duration, max concurrent targets, and the civilian/ace mix all ramp across 8 waves. Firing is hitscan (Pointer Events unify mouse/touch aim+fire, same convention as games/billiards) from a 7-round magazine with a 1.3s reload, auto-triggered on empty or available on demand. Paint splats are randomized irregular blobs (smoothed polygons + scattered droplets) that pop in over ~150-200ms then bake once onto a persistent offscreen canvas layer (cleared each wave) so the per-frame draw list never grows unbounded. No bundled image or audio assets: the whole arena is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js (extended with 'pop'/'splat' patterns; reload/wave-clear/penalty cues reuse existing 'whoosh'/'land'/'win'/'die'). Best score persists via OGHProfile, same convention as games/pop-the-bugs and games/cross-the-road. window.OGH_PAINTBALL exposes live state, waveParams(n), jumpToWave(n), and a forceSpawn(slotIndex, type) test hook for driving real pointer-event hit-testing at a deterministic target position."
+    },
+    {
+      "id": "claw-machine",
+      "name": "Claw Machine",
+      "names": {
+        "en": "Claw Machine",
+        "ru": "Автомат с клешнёй",
+        "zh": "娃娃机",
+        "es": "Máquina de peluches",
+        "ar": "آلة المخلب",
+        "fr": "Machine à pinces"
+      },
+      "tagline": "A pseudo-3D arcade claw machine — steer, drop, and hope the grip holds all the way to the chute.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "pseudo-3d"
+      ],
+      "genres": [
+        "arcade",
+        "skill",
+        "casual"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Hold a D-pad direction (or arrow keys / WASD) to steer the claw over the pit, then press DROP (or Space/Enter) to lower it. On reaching a prize the claw attempts a grip — how centered you were determines the odds — then lifts and carries it to the chute, with a chance it slips free along the way. 8 credits per session; movement is locked out while a drop is in progress, just like a real cabinet.",
+          "ru": "Удерживай направление на джойстике (или стрелки/WASD), чтобы вести клешню над кучей, затем нажми DROP (или Пробел/Enter), чтобы её опустить. Дойдя до приза, клешня пытается его захватить — шансы зависят от точности наведения — затем поднимает и несёт его к жёлобу, по пути рискуя выронить. 8 кредитов за сессию; во время опускания клешни джойстик не действует, как и в настоящем автомате."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "arcade",
+        "skill",
+        "pseudo-3d"
+      ],
+      "instructions": {
+        "en": "Steer the claw over a jumbled pile of prizes — the pit is rendered at an angle, like actually peering through the glass of a real cabinet — using the D-pad (or arrow keys/WASD), then press DROP (or Space/Enter) to lower it. The claw only tries to grab whatever prize is nearest its X/Y position when it stops descending, and the grip is deliberately imperfect: how precisely centered you were determines your odds, and even a successful grab can still slip free during the lift or the carry to the chute — precise play is dramatically more successful than sloppy play, but even a perfect drop doesn't win every time, just like the real thing. A slipped prize tumbles back into the pile with real bounce physics, never teleports. 8 credits per session; each DROP spends one whether it succeeds or not, and movement locks out while a drop is in progress. Clear your credits to see your score, prizes won, and drops used, with a best score saved locally — Play again for a fresh pile.",
+        "ru": "Веди клешню над кучей игрушек — яма показана под углом, будто ты и правда смотришь сквозь стекло настоящего автомата — джойстиком (или стрелками/WASD), затем нажми DROP (или Пробел/Enter), чтобы её опустить. Клешня пытается захватить ближайший к её X/Y-позиции приз в момент остановки, и захват намеренно ненадёжен: шансы зависят от точности центрирования, а даже удачный захват может выскользнуть при подъёме или по пути к жёлобу — точная игра значительно успешнее небрежной, но даже идеальный заход не гарантирует победу, как и в жизни. Выскользнувший приз падает обратно в кучу с настоящей физикой отскока, а не телепортируется. 8 кредитов за сессию; каждый DROP тратит один кредит независимо от результата, а во время опускания клешни джойстик не действует. Когда кредиты закончатся, увидишь счёт, число призов и число попыток, а лучший счёт сохранится локально — «Играть снова» даёт свежую кучу.",
+        "zh": "使用方向键（或 WASD）操控钢爪，越过一堆杂乱的奖品——弹珠台以一定角度呈现，仿佛真的透过实体娃娃机的玻璃向内看——然后按 DROP（或空格/回车）下爪。钢爪停止下降时会尝试抓取其 X/Y 位置附近的奖品，抓取判定刻意做得不完美：越靠近奖品中心，成功率越高；即使抓取成功，在上升或运往出口的途中也可能滑落——精准操作会比随意操作成功率高得多，但即使完美对准也不能保证每次都赢，这正是真实娃娃机的写照。滑落的奖品会以真实的弹跳物理效果掉回堆中，而不是瞬间归位。每局 8 个币，每次 DROP 无论成败都会消耗一个币，操作期间方向键会暂时失效。币用完后会显示得分、获得的奖品数与使用次数，最高分会保存在本地——点击「再玩一次」即可获得全新的奖品堆。",
+        "es": "Dirige la garra sobre un montón desordenado de premios — el pozo se muestra en ángulo, como si de verdad miraras a través del cristal de una máquina real — con la cruceta (o flechas/WASD), y pulsa DROP (o Espacio/Intro) para bajarla. La garra intenta agarrar el premio más cercano a su posición X/Y en el momento en que deja de bajar, y el agarre es deliberadamente imperfecto: cuanto más centrada estuviera, mejores tus probabilidades, e incluso un agarre exitoso puede soltarse durante la subida o el trayecto hasta la rampa — jugar con precisión tiene muchas más probabilidades de éxito que jugar sin cuidado, pero ni siquiera una caída perfecta gana siempre, tal como en la vida real. Un premio que se suelta cae de vuelta al montón con física de rebote de verdad, nunca se teletransporta. 8 créditos por sesión; cada DROP gasta uno, tenga éxito o no, y el movimiento se bloquea mientras la garra está en marcha. Cuando se acaben los créditos verás tu puntuación, premios ganados e intentos usados, con tu mejor puntuación guardada localmente — Jugar de nuevo te da un montón nuevo.",
+        "ar": "وجّه المخلب فوق كومة عشوائية من الجوائز — تُعرض الحفرة بزاوية، وكأنك تنظر فعلاً عبر زجاج آلة حقيقية — باستخدام الأسهم (أو WASD)، ثم اضغط DROP (أو المسافة/إدخال) لإنزاله. يحاول المخلب قبض أقرب جائزة إلى موضعه عند توقفه عن النزول، والقبضة غير موثوقة عمدًا: كلما كنت أكثر توسيطًا زادت فرصتك، وحتى القبضة الناجحة قد تنزلق أثناء الرفع أو في الطريق إلى المزلق — اللعب الدقيق أنجح بكثير من اللعب العشوائي، لكن حتى الإنزال المثالي لا يضمن الفوز دائمًا، تمامًا كما في الواقع. الجائزة المنزلقة تتدحرج عائدة إلى الكومة بفيزياء ارتداد حقيقية، ولا تُنقل فجأة. 8 أرصدة لكل جلسة؛ كل ضغطة DROP تستهلك رصيدًا سواء نجحت أم لا، ويتوقف التحرك أثناء تنفيذ عملية الإنزال. عند نفاد الرصيد ستظهر نتيجتك وعدد الجوائز والمحاولات المستخدمة، مع حفظ أفضل نتيجة محليًا — اختر «العب مرة أخرى» للحصول على كومة جديدة.",
+        "fr": "Dirigez la pince au-dessus d'un tas de peluches en désordre — le bac est affiché en angle, comme si vous regardiez vraiment à travers la vitre d'une vraie machine — avec la croix directionnelle (ou les flèches/WASD), puis appuyez sur DROP (ou Espace/Entrée) pour la faire descendre. La pince essaie de saisir la peluche la plus proche de sa position X/Y au moment où elle s'arrête, et la prise est volontairement imparfaite : plus vous étiez centré, meilleures sont vos chances, et même une prise réussie peut lâcher pendant la montée ou le trajet vers la trémie — jouer avec précision réussit bien mieux que jouer au hasard, mais même une chute parfaite ne gagne pas à tous les coups, comme dans la vraie vie. Une peluche qui glisse retombe dans le tas avec une vraie physique de rebond, jamais de téléportation. 8 crédits par session ; chaque DROP en consomme un, qu'il réussisse ou non, et les déplacements sont bloqués pendant qu'une descente est en cours. Une fois les crédits épuisés, vous verrez votre score, vos peluches gagnées et le nombre d'essais utilisés, avec votre meilleur score sauvegardé localement — Rejouer relance avec un tas neuf."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-11",
+        "updated": "2026-07-11",
+        "released": "2026-07-11"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "claw-machine/client/index.html",
+      "manifest": "claw-machine/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 81.3,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Pseudo-3D claw machine (not flat top-down): a simple oblique 'cabinet-style' projection (render3d.js's project()) maps world (x left/right, y depth 0=near-glass..150=back-wall, z height 0=floor..165=rail) onto the canvas — screen X/Y combine a per-axis pixel scale that ALSO shrinks with depth (depthScale(y): 1.05 near -> 0.58 far) with an additive oblique shear/rise per unit of y, so farther objects are both smaller and pulled up-and-sideways on screen; draw order is back-to-front via a single scalar depth key (y - z*bias) so a low claw over a near prize correctly occludes it. Claw movement (X/Y, continuous while a D-pad button is held, or arrow keys/WASD) only responds while state.claw.phase==='idle'; Drop lowers Z at a fixed speed until it reaches either the pit floor or the top of the nearest prize within its grab window (prizes.js's nearestPrizeAt/grabRadiusFor = prize.radius + a fixed pad). Grip success (prizes.js's gripChance) depends on how centered the claw was over that prize — a falloff curve from ~0.85 at dead-center down to ~0.08 at the edge of the grab window, scaled by a per-prize-type gripMul (round/small/light prizes are forgiving, bulky plush and the rare high-value tokens less so). Even a successful grab carries independent lift- and carry-phase slip risk (slipChance) that ALSO scales with that same centering, so precise play compounds its advantage across both rolls without ever guaranteeing a win (verified statistically via the debug hook: a dead-center grab on an average prize delivers roughly 5x more often end-to-end than one taken near the edge of the grab window, but neither is 0% or 100%). A slipped prize detaches at its real mid-air position and tumbles via simple gravity+bounce physics (prizes.js's stepFallingPrize: decaying multi-bounce, horizontal drag, settles back into the pile) rather than teleporting back. 6 prize types (ball/box/bear/bunny/star/gem — distinct vector silhouettes and point values 60-400) scatter with deliberate pile overlap. 8 credits per session (like coins), tracking score and prizes won, with a results screen once credits run out and a Play Again reset. No bundled image or audio assets: the whole cabinet (bezel, glass, pit shell, claw rig, prizes) is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js's existing patterns entirely (whoosh/thwack/pickup/clack/boing/land/pocket/win/die/tap — no new patterns needed). window.OGH_CLAW_MACHINE exposes live state, the projection function, the grip/slip probability curves, and simulateDrop/runGripTrials/fastForward test hooks for automated verification without waiting out real animation time."
     }
   ]
 }
