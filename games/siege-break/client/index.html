@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Siege Break — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="sb-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="sb-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="sb-hud" role="status">
+        <div class="ogh-pill" id="hudLevel" data-i18n-aria="hudLevelAria">
+          <span data-i18n="levelLabel">Level</span> <strong id="hudLevelVal">1/6</strong>
+        </div>
+        <div class="ogh-pill" id="hudTargets" data-i18n-aria="hudTargetsAria">
+          <span data-i18n="targetsLabel">Targets</span> <strong id="hudTargetsVal">0</strong>
+        </div>
+        <div class="ogh-pill" id="hudAmmo" data-i18n-aria="hudAmmoAria">
+          <span data-i18n="ammoLabel">Boulders</span> <strong id="hudAmmoVal">0</strong>
+        </div>
+        <div class="ogh-pill" id="hudScore" data-i18n-aria="hudScoreAria">
+          <span data-i18n="scoreLabel">Score</span> <strong id="hudScoreVal">0</strong>
+        </div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- The battlefield (catapult on the LEFT, structure on the RIGHT, launch
+         direction left->right) is spatial gameplay drawn in a fixed world
+         space and must never mirror under RTL — dir="ltr" on both the stage
+         and the canvas is deliberate and must stay, same precedent as
+         games/mini-golf and games/penguin-fling (see this game's i18n.js
+         header comment). game.js also forces ctx.direction = 'ltr'. -->
+    <main class="ogh-stage" dir="ltr">
+      <canvas class="ogh-game-canvas" id="game" width="720" height="1000" dir="ltr" aria-label="Battlefield"></canvas>
+    </main>
+
+    <p class="ogh-hint" id="hint">Drag back from the catapult, then release to launch</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <!-- Start -->
+      <div class="ogh-card" id="startCard">
+        <h1 data-i18n="title">Siege Break</h1>
+        <p data-i18n="blurb">Load the catapult, drag back to aim, and let the boulder fly.</p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start siege</button>
+      </div>
+
+      <!-- Level cleared -->
+      <div class="ogh-card" id="levelClearCard" hidden>
+        <h1 data-i18n="levelClearTitle">Stronghold broken!</h1>
+        <div class="sb-stars" id="clearStars" aria-hidden="true"></div>
+        <p class="sb-level-line" id="clearLevelLine"></p>
+        <p class="sb-stat-line" id="clearShotsLine"></p>
+        <p class="sb-stat-line sb-score-line" id="clearScoreLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNextLevel" data-i18n="nextLevelBtn">Next stronghold</button>
+      </div>
+
+      <!-- Level failed (out of boulders) -->
+      <div class="ogh-card" id="levelFailCard" hidden>
+        <h1 class="sb-fail-title" data-i18n="levelFailTitle">Out of boulders</h1>
+        <p data-i18n="levelFailSub">Some targets still stand.</p>
+        <p class="sb-stat-line" id="failTargetsLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnRetry" data-i18n="retryBtn">Retry stronghold</button>
+      </div>
+
+      <!-- Final results -->
+      <div class="ogh-card" id="finalCard" hidden>
+        <h1 data-i18n="winTitle">Siege complete!</h1>
+        <p data-i18n="winSub">Every stronghold has fallen.</p>
+        <p class="sb-final-score" id="finalScoreLine"></p>
+        <p class="sb-stat-line sb-best-line" id="finalBestLine"></p>
+        <p class="sb-new-best" id="finalNewBest" data-i18n="newBestLine" hidden>New best score!</p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

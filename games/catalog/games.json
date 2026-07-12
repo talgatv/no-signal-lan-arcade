@@ -2907,6 +2907,87 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original side-scrolling platformer in the classic 'run, jump on enemies to defeat them, collect coins, reach the flag' 2D tradition (no copied content — original neon-vector art, levels and character). Momentum-based movement: gravity-driven variable-height jumping (a tap is a short hop, holding JUMP through the rise is a full ~3-tile leap — releasing cuts remaining upward velocity), run with real acceleration/deceleration, and one extra movement ability — the WALL-JUMP: press into a wall while falling to wall-slide (fall speed clamped), then JUMP to kick up and away, alternating off two close walls to climb a shaft. Level 4 'The Ascent' is a tall two-walled shaft where wall-jumping is the only route to the exit and flag (not optional), with a shorter nook in level 5 too. client/player.js owns the body physics and axis-separated AABB tile collision plus one-way land-on-top moving-platform collision that carries a rider; client/enemies.js has two behaviours (CRAWLER back-and-forth patroller that reverses at edges/walls; STALKER that charges ~3x speed when the player enters a detection box at similar height but still respects edges). Both are stomped from above and harmful on side/below contact. client/levels.js authors 5 hand-tuned levels from numeric rects (not fragile ASCII) with a reachability lint warning on any un-bridged pit wider than the jump budget; hazards are spikes (a hit), bottomless pits (a life) and moving platforms. A star-shell power-up grants one extra hit. 3 lives, coins/stomps/level-clear score, results screen on game over or full clear, local high score via OGHProfile (games/pop-the-bugs convention). Smoothed follow-camera clamped to level bounds, translate-the-world shape as games/hill-rider / games/neon-drift (follows vertically for the shaft). No bundled image/audio assets: Canvas 2-D neon-vector line-art with glow; sound reuses games/_shared/js/ogh-sfx.js entirely unchanged (hop=jump, boing=wall-jump, thwack=stomp, pickup=coin, chain=power-up, screech=lose shell, die=lose life, win=level clear/victory). RTL (Arabic) flips text/menu chrome only; the level, camera, run direction and LEFT/RIGHT/JUMP button layout never mirror (stage dir=ltr, ctx.direction forced ltr)."
+    },
+    {
+      "id": "siege-break",
+      "name": "Siege Break",
+      "names": {
+        "en": "Siege Break",
+        "ru": "Осадный Пролом",
+        "zh": "破城",
+        "es": "Asalto",
+        "ar": "كسر الحصار",
+        "fr": "Brise-Siège"
+      },
+      "tagline": "Aim a catapult, hurl boulders, and bring real-physics fortresses crashing down onto the enemies inside.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "physics-based",
+        "destruction"
+      ],
+      "genres": [
+        "physics",
+        "puzzle",
+        "action"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Press near the catapult and drag back like a slingshot, then release to launch — power comes from how far you pull (capped), the launch angle from the pull direction. Works the same with mouse or touch. Enter/Space activates the current overlay button (start / next stronghold / retry / play again).",
+          "ru": "Нажми рядом с катапультой и оттяни назад, как рогатку, затем отпусти для запуска — сила зависит от того, насколько далеко ты оттянул (с пределом), угол запуска — от направления оттяжки. Мышь и тач работают одинаково. Enter/Space активирует текущую кнопку экрана (старт / следующая крепость / заново / играть снова)."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "physics",
+        "puzzle",
+        "destruction",
+        "catapult"
+      ],
+      "instructions": {
+        "en": "Load the catapult, drag back like a slingshot to aim, and release to hurl a boulder in a real gravity arc. Smash walls, topple towers and collapse the whole structure onto the enemies holding it — a genuine 2D rigid-body simulation means blocks tip over edges, slide off each other and tumble, and knocking out a support drops everything above it. Defeat every target (by a direct hit or by crushing it under falling debris) to break each of the 6 strongholds. Fewer boulders earns more stars; your best score is saved locally.",
+        "ru": "Заряди катапульту, оттяни назад, как рогатку, для прицела и отпусти — валун летит по настоящей гравитационной дуге. Проламывай стены, роняй башни и обрушивай всю постройку на засевших врагов: честная 2D-физика твёрдых тел заставляет блоки опрокидываться через край, соскальзывать друг с друга и кувыркаться, а выбитая опора роняет всё, что было сверху. Победи все цели (прямым попаданием или раздавив их падающими обломками), чтобы взять каждую из 6 крепостей. Меньше валунов — больше звёзд; лучший результат сохраняется локально.",
+        "zh": "装填投石机，像弹弓一样向后拖拽瞄准，松手让巨石沿真实重力抛物线飞出。砸穿墙壁、掀翻高塔，把整座建筑连同据守其中的敌人一起砸垮——真正的二维刚体模拟让方块会翻过边缘、彼此滑落、翻滚坠地，抽掉支撑就会让上方一切塌落。用直接命中或让坠落的碎石砸中来击败每个目标，攻破全部 6 座要塞。用的巨石越少，星级越高；最高分保存在本地。",
+        "es": "Carga la catapulta, tira hacia atrás como un tirachinas para apuntar y suelta una roca que vuela en un arco de gravedad real. Rompe muros, derriba torres y haz caer toda la estructura sobre los enemigos que la ocupan: una auténtica simulación de cuerpos rígidos en 2D hace que los bloques se vuelquen por los bordes, resbalen unos sobre otros y rueden, y quitar un soporte deja caer todo lo que había encima. Derrota cada objetivo (por impacto directo o aplastándolo con escombros que caen) para quebrar las 6 fortalezas. Menos rocas dan más estrellas; tu mejor puntuación se guarda localmente.",
+        "ar": "حمِّل المنجنيق، واسحب للخلف كأنه مقلاع للتصويب، ثم أفلت الصخرة لتطير في قوس جاذبية حقيقي. حطِّم الجدران، وأسقط الأبراج، وأنزل البناء بأكمله على الأعداء المتحصنين فيه — محاكاة أجسام صلبة ثنائية الأبعاد حقيقية تجعل الكتل تنقلب فوق الحواف وتنزلق فوق بعضها وتتدحرج، وإزالة دعامة تُسقط كل ما فوقها. اهزم كل هدف (بضربة مباشرة أو بسحقه تحت الركام المتساقط) لتكسر الحصون الستة. صخور أقل تعني نجومًا أكثر؛ وتُحفظ أفضل نتيجة محليًا.",
+        "fr": "Charge la catapulte, tire vers l'arrière comme une fronde pour viser, et lâche un rocher qui file selon un arc de gravité réel. Défonce les murs, renverse les tours et fais s'effondrer toute la structure sur les ennemis qui la tiennent : une véritable simulation de corps rigides en 2D fait basculer les blocs par-dessus les bords, glisser les uns sur les autres et culbuter, et retirer un support fait tomber tout ce qui reposait dessus. Bats chaque cible (par un coup direct ou en l'écrasant sous les débris qui tombent) pour briser les 6 forteresses. Moins de rochers rapporte plus d'étoiles ; ton meilleur score est sauvegardé localement."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [
+        "mini-golf",
+        "penguin-fling"
+      ],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "siege-break/client/index.html",
+      "manifest": "siege-break/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 150,
+      "sizeMeasuredKb": 99.5,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original catapult-vs-structure destruction physics game (a fresh take on the Crush the Castle genre — own settings/structures/code/sound, nothing copied). client/physics.js is a pure, DOM-free 2D rigid-body engine: a faithful port of Erin Catto's box2d-lite sequential-impulse solver adapted to y-down pixel space, so oriented-box blocks collide via SAT + reference/incident-face clipping and resolve with warm-started accumulated normal+friction impulses over 12 iterations plus Baumgarte position correction. Because impulses act at contact points offset from each block's center of mass, toppling, support-loss and impact cascades are EMERGENT (a real torque r x P), never scripted: destroy a supporting block and the one above loses its cancelling contact impulse and falls/topples on its own the next tick; an off-center boulder hit spins a block the physically correct way; a knocked block shoves its neighbour down the line (all verified headless via window.OGH_SIEGE_BREAK). Blocks carry material hit points (stone/wood/glass/granite) and take damage from a contact's approach speed, so hard hits and long falls shatter them while gentle settling never does; a snap-to-rest floor keeps settled stacks rock-steady. Six hand-authored structures with real layout variety (client/structures.js: slim watchtower, twin-pillar gate carrying a lintel, an enclosed bunker chamber, a stepped keep, a plank sky-bridge whose target rides an end-supported span, and a combined citadel finale), each with 2-4 target creatures defeated by a direct hit OR by being crushed under falling debris. Drag-back-and-release aiming via Pointer Events (power from drag distance, angle from drag direction) with a real gravity arc and a ballistic trajectory preview, same control idiom as games/mini-golf and games/penguin-fling. Star rating on shots-used efficiency; cumulative score with a local best via games/_shared/js/ogh-profile.js (games/pop-the-bugs convention). No bundled image/audio assets: the whole scene (catapult, boulder, blocks, target creatures, debris) is Canvas 2D vector shapes with a neon glow; sound reuses games/_shared/js/ogh-sfx.js, extended with one new 'crumble' pattern for shattering masonry (launch/heavy-impact/target-down/clear/fail reuse the existing thwack/boom/pickup/win/die). RTL (Arabic) flips only the text chrome; the catapult-left / structure-right battlefield and launch direction are never mirrored (stage+canvas dir=ltr, ctx.direction forced ltr)."
     }
   ]
 }

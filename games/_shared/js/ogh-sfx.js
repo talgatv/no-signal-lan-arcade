@@ -121,6 +121,20 @@ export function createOghSfx() {
     // rarest payoff, so it gets the most physically "large" sound here.
     chain: () => { tone(760, 0.05, 'triangle', 0.05, 1080); setTimeout(() => tone(1080, 0.06, 'triangle', 0.045, 1400), 45); },
     boom: () => { tone(90, 0.32, 'sawtooth', 0.09, 35); tone(600, 0.04, 'square', 0.05, 120); },
+    // Added for games/siege-break — a block/masonry shattering into rubble.
+    // The catapult release, heavy boulder impact, target-defeated and
+    // level-clear/fail cues all deliberately reuse existing patterns instead
+    // of adding more (`thwack` already reads as a launch/release, `boom` — a
+    // low punchy sub-bass hit — already reads as a heavy stone slamming home,
+    // `pickup` already reads as a bright "got one" for a felled target, and
+    // `win`/`die` already read as clear/fail). `crumble` is the one genuinely
+    // new sound this genre needs: a short two-note downward crackle
+    // (sawtooth then square, both sliding down) reading as brittle stone
+    // breaking apart — distinct from the harder single-hit `boom`/`clack`
+    // because it's the sound of something disintegrating, not two solid
+    // bodies meeting. Kept brief since a collapse can shatter several blocks
+    // in quick succession.
+    crumble: () => { tone(300, 0.09, 'sawtooth', 0.05, 90); setTimeout(() => tone(190, 0.08, 'square', 0.045, 70), 42); },
   };
 
   return {
