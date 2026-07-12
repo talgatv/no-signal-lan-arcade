@@ -102,6 +102,25 @@ export function createOghSfx() {
     // never sound alike, reading as liquid filling a tank rather than a
     // score event.
     refuel: () => { tone(260, 0.08, 'sine', 0.05, 190); setTimeout(() => tone(230, 0.1, 'sine', 0.045, 160), 70); },
+    // Added for games/gem-swap — swap/match/special-gem/invalid-swap
+    // feedback all reuse existing patterns unchanged (`tap` for a swap
+    // attempt, `pickup` already reads as a bright "matched" chime, `win`
+    // already reads as an achievement fanfare for creating a special gem,
+    // `whoosh` already reads as a sweep for a row/col special clearing its
+    // line, `tick` already reads as a soft/neutral cue for a board
+    // reshuffle, and `screech` — an abrupt reversal — already reads as
+    // "that swap had to be undone" for an invalid swap snapping back, so no
+    // dedicated buzz/error tone was added). `chain` and `boom` are the two
+    // genuinely new sounds this genre needs. `chain` is a fast two-note
+    // ascending sparkle, pitched higher and quicker than `pickup`, for a
+    // cascade step (a match caused by falling gems, not the direct swap) —
+    // distinct enough that a combo escalating reads as more exciting than a
+    // plain match. `boom` is a low punchy hit (a descending sub-bass tone
+    // plus a brief high crack, same dual-tone shape as `thwack` but pitched
+    // lower/longer) for a color bomb activating — the genre's biggest,
+    // rarest payoff, so it gets the most physically "large" sound here.
+    chain: () => { tone(760, 0.05, 'triangle', 0.05, 1080); setTimeout(() => tone(1080, 0.06, 'triangle', 0.045, 1400), 45); },
+    boom: () => { tone(90, 0.32, 'sawtooth', 0.09, 35); tone(600, 0.04, 'square', 0.05, 120); },
   };
 
   return {

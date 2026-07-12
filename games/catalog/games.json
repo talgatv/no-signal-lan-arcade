@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-07-11",
+  "updated": "2026-07-12",
   "games": [
     {
       "id": "comet",
@@ -2754,6 +2754,86 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original side-view physics hill-climbing driving game in the 'gas and brake are your only inputs, bumpy procedural terrain, don't flip or run out of gas' genre (Hill Climb Racing is the classic reference point for the genre only — original vehicle, rover setting and neon-vector art, no copied content). client/terrain.js's heightAt(x) is a pure function of world-x (layered sine waves + hashed value noise + occasional 'jump' bumps, eased flat for a fair spawn) — no seed or chunk bookkeeping, so the strip is trivially endless. client/vehicle.js's stepVehicle samples terrain under a front and rear wheel offset each frame and derives the chassis angle from the line between those two contact points, so the body visibly tilts to match the slope under it; grounded-vs-airborne is resolved by comparing a ballistic free-fall candidate against that terrain-contact line (one comparison naturally covers rolling-hill driving, launching off a crest, and landing). Gas/brake also apply a small cosmetic nose-up/nose-down tilt while grounded, and while airborne (both wheels off the ground) directly accelerate free rotation instead — the genre's core air-control skill. Crash detection is gated to grounded frames only (tilting past ~95 degrees while touching the terrain, including a hard nose/tail-first landing), so rotating through any angle purely mid-air never crashes on its own. Fuel drains with speed plus a small idle trickle, refilled by low, reliably-reachable canisters; running dry disables gas until the vehicle coasts to a stop. Coins float along the route for score. Distance-based local high score via OGHProfile, same convention as games/pop-the-bugs. Chase camera holds the vehicle at a fixed lead fraction across the screen, same translate-the-world-by-camera-position shape as games/neon-drift. No bundled image/audio assets: sound reuses games/_shared/js/ogh-sfx.js almost entirely unchanged plus one new pattern (refuel). RTL (Arabic) flips text/menu chrome only; the terrain, vehicle direction and camera never mirror (stage dir=ltr, ctx.direction forced ltr)."
+    },
+    {
+      "id": "gem-swap",
+      "name": "Gem Swap",
+      "names": {
+        "en": "Gem Swap",
+        "ru": "Самоцветы",
+        "zh": "宝石交换",
+        "es": "Gemas al Cambio",
+        "ar": "تبديل الجواهر",
+        "fr": "Échange de Gemmes"
+      },
+      "tagline": "Swap adjacent gems into lines of 3+, chain the cascades, and unleash a color bomb.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "grid"
+      ],
+      "genres": [
+        "puzzle",
+        "match-3",
+        "casual"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "none",
+        "mouse": "ok",
+        "notes": {
+          "en": "Drag a gem into a neighbor to swap, or tap a gem then tap an adjacent one. Only swaps that make a match are allowed. No keyboard.",
+          "ru": "Перетащи самоцвет на соседнюю клетку либо тапни один самоцвет и затем соседний. Разрешены только ходы, создающие совпадение. Клавиатура не нужна.",
+          "zh": "把一颗宝石拖到相邻格子即可交换，或先点击一颗宝石再点击相邻的一颗。只有能形成匹配的交换才会生效。无需键盘。",
+          "es": "Arrastra una gema hacia una vecina para intercambiarlas, o toca una gema y luego una adyacente. Solo se permiten intercambios que formen una combinación. Sin teclado.",
+          "ar": "اسحب جوهرة إلى المجاورة لتبديلهما، أو اضغط على جوهرة ثم على المجاورة لها. يُسمح فقط بالتبديلات التي تُحدث تطابقًا. بلا لوحة مفاتيح.",
+          "fr": "Glissez une gemme vers une voisine pour les échanger, ou touchez une gemme puis une gemme adjacente. Seuls les échanges qui créent une combinaison sont autorisés. Pas de clavier."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "puzzle",
+        "match-3",
+        "casual"
+      ],
+      "instructions": {
+        "en": "Swap two adjacent gems (up/down/left/right, no diagonals) to line up 3 or more of the same shape. A swap only happens if it makes a match — anything else animates there and back. Matches clear and score, gems above fall to refill the grid, and a fall can trigger its own new matches: these cascades chain with a rising combo multiplier. Match exactly 4 in a line to create a line-clear special (clears its whole row or column when triggered); match 5 or more for a color bomb — swap it against a normal gem to clear every gem of that color from the board. If the board ever has no possible matching swap, it reshuffles automatically. One session is 25 moves — score as high as you can before they run out. Local high score saved on this device.",
+        "ru": "Меняй местами два соседних самоцвета (вверх/вниз/влево/вправо, по диагонали нельзя), чтобы выстроить 3 и более одинаковых по форме. Обмен произойдёт только если он создаёт совпадение — в остальных случаях самоцветы анимированно вернутся на место. Совпадения очищаются и приносят очки, самоцветы сверху падают и заполняют поле, а падение может вызвать новые совпадения — такие цепочки соединяются в комбо с растущим множителем. Собери ровно 4 в ряд, чтобы создать самоцвет-очиститель линии (при активации очищает всю свою строку или столбец); 5 и более — создаёт цветную бомбу: поменяй её местом с обычным самоцветом, чтобы стереть с поля все самоцветы этого цвета. Если на поле не остаётся ни одного возможного хода — поле перемешивается автоматически. Одна партия — 25 ходов, набери как можно больше очков, пока они не закончатся. Лучший результат сохраняется на этом устройстве.",
+        "zh": "交换两个相邻的宝石（上下左右，不能斜向）以凑齐3个或以上相同形状。只有能形成匹配的交换才会真正发生——其他情况会原样弹回。匹配的宝石会消除并得分，上方的宝石会下落填补空缺，下落还可能触发新的匹配——这类连锁会以不断提升的连击倍率计分。恰好凑齐4连可以生成清线宝石（触发时清空所在整行或整列）；凑齐5连或更多则生成彩色炸弹——将它与普通宝石交换，即可清除棋盘上该颜色的全部宝石。如果棋盘上再也没有可行的匹配交换，会自动重新排列。一局游戏共25步，在步数用完前尽量拿到更高分数。最高分会保存在本设备上。",
+        "es": "Intercambia dos gemas adyacentes (arriba/abajo/izquierda/derecha, sin diagonales) para alinear 3 o más de la misma forma. El intercambio solo ocurre si forma una combinación — en cualquier otro caso, las gemas se animan de ida y vuelta. Las combinaciones se eliminan y suman puntos, las gemas de arriba caen para rellenar el tablero, y una caída puede desencadenar nuevas combinaciones: estas cadenas se combinan con un multiplicador de combo creciente. Combina exactamente 4 en línea para crear una gema especial que limpia una línea (al activarse, limpia toda su fila o columna); combina 5 o más para obtener una bomba de color — intercámbiala con una gema normal para eliminar del tablero todas las gemas de ese color. Si el tablero se queda sin ningún intercambio posible que forme combinación, se vuelve a barajar automáticamente. Una partida son 25 movimientos — consigue la mayor puntuación posible antes de que se agoten. La mejor puntuación se guarda en este dispositivo.",
+        "ar": "بدّل جوهرتين متجاورتين (أعلى/أسفل/يسار/يمين، لا تبديل قطري) لتصطف 3 أو أكثر من نفس الشكل. لا يحدث التبديل إلا إذا أحدث تطابقًا — أي حالة أخرى تعود الجواهر فيها متحركة إلى مكانها. التطابقات تُزال وتمنح نقاطًا، وتسقط الجواهر العلوية لتملأ اللوحة، وقد يُحدث السقوط تطابقات جديدة من تلقاء نفسه — هذه السلاسل المتتابعة تتراكم بمضاعف كومبو متصاعد. طابق 4 بالضبط في خط لتحصل على جوهرة خاصة تُفرغ خطًا (تُفرغ صفها أو عمودها بالكامل عند تفعيلها)؛ طابق 5 أو أكثر لتحصل على قنبلة لونية — بدّلها مع جوهرة عادية لمسح كل جواهر ذلك اللون من اللوحة. إذا لم يعد هناك أي تبديل ممكن يُحدث تطابقًا، يُعاد ترتيب اللوحة تلقائيًا. الجولة الواحدة 25 حركة — حقق أعلى نتيجة ممكنة قبل نفادها. أفضل نتيجة تُحفظ على هذا الجهاز.",
+        "fr": "Échangez deux gemmes adjacentes (haut/bas/gauche/droite, pas en diagonale) pour aligner 3 ou plus de la même forme. L'échange n'a lieu que s'il crée une combinaison — sinon, les gemmes reviennent en place avec une animation. Les combinaisons sont éliminées et comptent des points, les gemmes du dessus tombent pour remplir le plateau, et une chute peut déclencher de nouvelles combinaisons : ces enchaînements se cumulent avec un multiplicateur de combo croissant. Alignez exactement 4 en ligne pour créer une gemme spéciale qui nettoie une ligne (elle vide toute sa rangée ou colonne une fois activée) ; alignez 5 ou plus pour obtenir une bombe de couleur — échangez-la avec une gemme normale pour effacer du plateau toutes les gemmes de cette couleur. Si le plateau n'a plus aucun échange possible créant une combinaison, il se mélange automatiquement. Une partie dure 25 coups — visez le meilleur score possible avant qu'ils ne s'épuisent. Le meilleur score est enregistré sur cet appareil."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "gem-swap/client/index.html",
+      "manifest": "gem-swap/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 80.0,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original match-3 gem puzzle (Bejeweled is the genre reference point only — original vector gem designs, no copied content). client/board.js is pure grid logic: findRuns() scans for maximal 3+ runs; resolveStep() clears them, spawns a row/col line-clear special from a 4-run or a color bomb from a 5-run at the swap's own cell, and chains through any pre-existing specials caught in the sweep (a row/col special caught in a clear sweeps its line; a bomb caught in a sweep clears a random present color) so specials can trigger each other. A bomb's primary activation is a direct swap against a normal gem, deterministically clearing that gem's whole color — wouldMatch() treats any bomb-involved swap as automatically legal. applyGravity() compacts columns and refills the top, returning a per-gem fall log; game.js positions every gem with a CSS-transitioned transform (games/solitaire's 'state drives position' architecture) so swaps, snap-backs, clears and falls all animate from real state changes, including new gems (which start stacked off-board and use the 'set start position, force a reflow, then set the end position' trick to actually animate in). Cascades loop clear/fall/rescan with a rising combo multiplier. hasAnyValidMove() is a localized per-cell check (not a full-board rescan) gating an automatic reshuffle once a resolution settles. 25-move session, local high score via OGHProfile (games/pop-the-bugs convention). No bundled assets: gems are inline SVG vector shapes with a neon glow filter; sound reuses games/_shared/js/ogh-sfx.js almost entirely unchanged plus two new patterns (chain, boom). RTL (Arabic) flips text/menu chrome only; the grid's column order and swap directions never mirror (board dir=ltr)."
     }
   ]
 }
