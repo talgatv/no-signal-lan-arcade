@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Life Forms — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="lf-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="lf-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="lf-hud" role="status">
+        <div class="ogh-pill" id="hudGen" data-i18n-aria="hudGenAria">
+          <span class="lf-lbl" data-i18n="genLabel">GEN</span>
+          <strong id="genVal">0</strong>
+        </div>
+        <div class="ogh-pill" id="hudAlive" data-i18n-aria="hudAliveAria">
+          <span class="lf-lbl" data-i18n="aliveLabel">ALIVE</span>
+          <strong id="aliveVal">0</strong>
+        </div>
+      </div>
+      <button type="button" class="lf-icon-btn" id="btnSound" data-i18n-aria="soundToggleAria" aria-pressed="true">
+        <span id="soundIcon" aria-hidden="true">&#128266;</span>
+      </button>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <!-- The grid is a fixed spatial gameplay convention, not prose: column 0
+         must always be the visual-left column and neighbor adjacency must
+         never mirror, regardless of the document's text direction under
+         Arabic. dir="ltr" here keeps the canvas from ever mirroring; only
+         the header/toolbar/panel text chrome flips for RTL — see i18n.js. -->
+    <main class="ogh-stage lf-stage" dir="ltr">
+      <canvas id="view" class="lf-view" aria-label="Cellular automaton grid, tap or drag to toggle cells"></canvas>
+    </main>
+
+    <footer class="lf-toolbar">
+      <p class="lf-hint" id="hint" data-i18n="hint">Tap or drag to draw while paused · Play to watch it evolve</p>
+      <div class="lf-speed-row">
+        <label for="speedSlider" class="lf-lbl" data-i18n="speedLabel">SPEED</label>
+        <input type="range" id="speedSlider" min="1" max="20" value="8" step="1" />
+        <span class="lf-speed-val" id="speedVal" dir="ltr">8/s</span>
+      </div>
+      <div class="lf-btn-row" role="group">
+        <button type="button" class="ogh-btn lf-btn" id="btnPatterns">
+          <span aria-hidden="true">&#9638;</span> <span data-i18n="patternsBtn">Patterns</span>
+        </button>
+        <button type="button" class="ogh-btn lf-btn" id="btnRandomize">
+          <span aria-hidden="true">&#10022;</span> <span data-i18n="randomizeBtn">Random</span>
+        </button>
+        <button type="button" class="ogh-btn lf-btn" id="btnClear">
+          <span aria-hidden="true">&#10005;</span> <span data-i18n="clearBtn">Clear</span>
+        </button>
+        <button type="button" class="ogh-btn lf-btn" id="btnStep">
+          <span aria-hidden="true">&#9197;</span> <span data-i18n="stepBtn">Step</span>
+        </button>
+        <button type="button" class="ogh-btn ogh-btn-primary lf-btn lf-btn-play" id="btnPlayPause">
+          <span aria-hidden="true" id="playIcon">&#9654;</span> <span id="playLabel">Play</span>
+        </button>
+      </div>
+    </footer>
+
+    <div class="ogh-overlay" id="patternPanel" hidden>
+      <div class="ogh-card lf-pattern-card">
+        <h1 data-i18n="patternsTitle">Patterns</h1>
+        <p data-i18n="patternsSub">Tap a pattern to drop it onto the grid, centered.</p>
+        <div class="lf-pattern-groups" id="patternGroups"></div>
+        <button type="button" class="ogh-btn" id="btnClosePatterns" data-i18n="closeBtn">Close</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

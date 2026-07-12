@@ -3372,6 +3372,86 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "The classic disk-moving puzzle: 3 pegs, move the whole stack from the source peg to a fixed goal peg (visually marked with a distinct rod color + a 'Goal' label) one disk at a time, never a bigger disk on a smaller one. Disk count (3-10) IS the difficulty, chosen via a stepper on the setup screen alongside a live Easy/Medium/Hard/Extreme band label and the theoretical minimum move count (2^n-1, computed directly). canPlace() forbids an illegal placement at every move (not just checked at the end), which is what makes the win check a simple, provably-correct pegs[targetPeg].length === numDisks — verified live (including the specific edge case of a full stack sitting on the middle/auxiliary peg, or still on the source peg, correctly NOT counting as a win; only the labeled goal peg does). Tap-to-select-then-tap-to-place input (games/gem-swap's tap-fallback convention, used here as the sole input): tapping a peg with a disk picks it up (it visually floats above its stack), tapping a different peg attempts to place it, an illegal placement is rejected with sound + a shake + a transient message while keeping the disk 'in hand', and tapping the held peg again cancels the pickup. One persistent DOM element per disk size is positioned with a CSS-transitioned transform; each peg is one large transparent hit-target button spanning its whole column (disks are pointer-events:none decoration) so a tap anywhere in a peg's column registers. Tracks moves plus a live (unpersisted) elapsed-time HUD clock; only fewest-moves is saved as a local best via OGHProfile, tracked separately per disk count. The result screen shows actual moves vs. the optimal count and a distinct 'Perfect!' note when they match (verified live via a real optimal-algorithm solve). No bundled image assets: disks are styled DOM elements with a neon glow keyed by a 10-color rotation; sound reuses games/_shared/js/ogh-sfx.js's existing patterns unchanged (pickup=lift disk, place=valid drop, screech=invalid drop rejected, win=stack completed). RTL (Arabic) flips text/menu chrome only; the peg board itself never mirrors (#board dir=\"ltr\")."
+    },
+    {
+      "id": "life-forms",
+      "name": "Life Forms",
+      "names": {
+        "en": "Life Forms",
+        "ru": "Формы жизни",
+        "zh": "生命形态",
+        "es": "Formas de Vida",
+        "ar": "أشكال الحياة",
+        "fr": "Formes de Vie"
+      },
+      "tagline": "Conway's Game of Life — draw, drop a classic pattern, and watch it evolve.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "grid"
+      ],
+      "genres": [
+        "simulation",
+        "sandbox",
+        "classic"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Tap a cell to toggle it, or drag to paint/erase a run of cells (this pauses the simulation first if it was running). Play, Pause, Step, Clear, Randomize and a Patterns library are all on-screen buttons; a slider sets the speed. No keyboard needed.",
+          "ru": "Тапни клетку, чтобы переключить её, или проведи пальцем, чтобы закрасить/стереть сразу несколько (если шла симуляция, она сначала ставится на паузу). «Играть», «Пауза», «Шаг», «Очистить», «Случайно» и библиотека «Паттерны» — это экранные кнопки; скорость задаётся ползунком. Клавиатура не нужна.",
+          "zh": "点击一个细胞即可切换状态，或拖动以绘制/擦除一连串细胞（如果正在运行会先自动暂停）。播放、暂停、单步、清空、随机以及图案库都是屏幕按钮；速度由滑块控制。无需键盘。",
+          "es": "Toca una célula para alternarla, o arrastra para dibujar/borrar una serie de células (esto pausa la simulación primero si estaba en marcha). Reproducir, Pausa, Paso, Borrar, Aleatorio y una biblioteca de Patrones son botones en pantalla; un control deslizante ajusta la velocidad. No se necesita teclado.",
+          "ar": "اضغط على خلية لتبديل حالتها، أو اسحب لرسم أو مسح سلسلة من الخلايا (يوقف هذا المحاكاة مؤقتًا أولاً إذا كانت تعمل). التشغيل، الإيقاف المؤقت، الخطوة، المسح، العشوائي ومكتبة الأنماط كلها أزرار على الشاشة؛ ينظّم شريط التمرير السرعة. لا حاجة للوحة مفاتيح.",
+          "fr": "Touchez une cellule pour l'activer/désactiver, ou glissez pour dessiner/effacer une série de cellules (cela met d'abord la simulation en pause si elle tournait). Lecture, Pause, Étape, Effacer, Aléatoire et une bibliothèque de Motifs sont des boutons à l'écran ; un curseur règle la vitesse. Aucun clavier nécessaire."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "simulation",
+        "sandbox",
+        "classic"
+      ],
+      "instructions": {
+        "en": "Conway's Game of Life: a live cell with 2 or 3 live neighbors survives, a dead cell with exactly 3 live neighbors is born, everything else dies or stays dead — computed fresh each generation from the previous one. The grid wraps toroidally (the edges connect), so patterns like a glider never hit a hard wall. While paused, tap a cell to toggle it, or drag across cells to paint or erase a run of them; touching the grid while the simulation is running pauses it first. Play advances generations continuously at the speed you set on the slider; Step advances exactly one generation at a time, useful for watching a pattern closely; Randomize scatters a random soup; Clear wipes the grid. The Patterns button drops in a famous preset centered on the grid — still lifes (Block, Beehive) that never change, oscillators (Blinker, Toad, Beacon, Pulsar) that repeat with a fixed period, the Glider spaceship that travels diagonally forever, and the Gosper glider gun that periodically emits new gliders. Cells fade and glow in when born and fade and shrink out when they die, colored along a warm-to-cool gradient by how many generations they've stayed alive — a heatmap of the simulation's history. The generation count and live-cell count are always shown in the header. No score, no win condition — just a calm sandbox for watching a few simple rules create complex behavior.",
+        "ru": "Игра «Жизнь» Конвея: живая клетка с 2 или 3 живыми соседями выживает, мёртвая клетка ровно с 3 живыми соседями рождается, все остальные умирают или остаются мёртвыми — каждое поколение вычисляется заново по предыдущему. Поле замкнуто тором (края соединены), поэтому такие фигуры, как планер, никогда не упираются в стену. На паузе тапни клетку, чтобы переключить её, или проведи пальцем по нескольким клеткам, чтобы закрасить или стереть их; касание поля во время работы симуляции сначала ставит её на паузу. «Играть» непрерывно продвигает поколения со скоростью, заданной ползунком; «Шаг» продвигает ровно одно поколение — удобно для внимательного наблюдения; «Случайно» разбрасывает случайный узор; «Очистить» стирает поле. Кнопка «Паттерны» помещает известную фигуру в центр поля — статичные фигуры (Блок, Улей), которые никогда не меняются, осцилляторы (Мигалка, Жаба, Маяк, Пульсар), повторяющиеся с фиксированным периодом, космический корабль Планер, вечно летящий по диагонали, и пушка Госпера, периодически выпускающая новые планеры. При рождении клетки разгораются и увеличиваются, при гибели — тускнеют и сжимаются, окрашенные по градиенту от тёплого к холодному в зависимости от того, сколько поколений они прожили, — это тепловая карта истории симуляции. Счётчик поколений и счётчик живых клеток всегда показаны в шапке. Без очков и условий победы — просто спокойная песочница, где несколько простых правил порождают сложное поведение.",
+        "zh": "康威生命游戏：拥有2或3个活邻居的活细胞存活，恰好拥有3个活邻居的死细胞诞生，其余细胞死亡或保持死亡——每一代都根据上一代重新计算。棋盘按环面方式环绕（边缘相连），因此像滑翔机这样的图案永远不会撞上硬边界。暂停时，点击一个细胞即可切换其状态，或在多个细胞上拖动以绘制或擦除；在模拟运行时触碰棋盘会先将其暂停。“播放”会以滑块设定的速度持续推进世代；“单步”每次只推进一代，便于仔细观察；“随机”撒下随机的细胞群；“清空”清空棋盘。“图案”按钮会把著名的预设图案放置在棋盘中央——永远不变的静物（方块、蜂巢），以固定周期重复的振荡器（闪烁器、蟾蜍、信标、脉冲星），永远沿对角线移动的滑翔机飞船，以及周期性发射新滑翔机的高斯帕滑翔机枪。细胞诞生时会发光并长大，死亡时会变暗并缩小，并按存活的世代数沿冷暖渐变着色——就像模拟历史的热力图。世代计数和存活细胞计数始终显示在顶部。没有分数，没有胜利条件——只是一个让你静静观察简单规则产生复杂行为的沙盒。",
+        "es": "El Juego de la Vida de Conway: una célula viva con 2 o 3 vecinas vivas sobrevive, una célula muerta con exactamente 3 vecinas vivas nace, todas las demás mueren o siguen muertas — cada generación se calcula de nuevo a partir de la anterior. La cuadrícula se envuelve de forma toroidal (los bordes se conectan), así que patrones como el planeador nunca chocan contra un muro. En pausa, toca una célula para alternarla, o arrastra por varias células para pintarlas o borrarlas; tocar la cuadrícula mientras la simulación está en marcha la pausa primero. Reproducir avanza generaciones de forma continua a la velocidad del control deslizante; Paso avanza exactamente una generación, útil para observar de cerca; Aleatorio esparce una sopa aleatoria; Borrar vacía la cuadrícula. El botón Patrones coloca un preset famoso centrado en la cuadrícula — naturalezas muertas (Bloque, Colmena) que nunca cambian, osciladores (Parpadeador, Sapo, Faro, Púlsar) que se repiten con un período fijo, la nave Planeador que viaja en diagonal para siempre, y el Cañón de Gosper, que emite nuevos planeadores periódicamente. Las células se encienden y crecen al nacer, y se apagan y encogen al morir, coloreadas en un degradado de cálido a frío según cuántas generaciones llevan vivas — un mapa de calor de la historia de la simulación. El contador de generación y el de células vivas siempre se muestran en la cabecera. Sin puntuación ni condición de victoria — solo un sandbox tranquilo para observar cómo unas pocas reglas simples crean comportamientos complejos.",
+        "ar": "لعبة الحياة لكونواي: تبقى الخلية الحية على قيد الحياة إذا كان لديها 2 أو 3 جيران أحياء، وتُولد خلية ميتة إذا كان لديها 3 جيران أحياء بالضبط، وتموت أو تبقى ميتة كل الخلايا الأخرى — يُحسب كل جيل من جديد بناءً على الجيل السابق. تلتف الشبكة على شكل حلقي (تتصل الحواف ببعضها)، لذا لا تصطدم أنماط مثل الطائرة الشراعية بجدار صلب أبدًا. أثناء الإيقاف المؤقت، اضغط على خلية لتبديل حالتها، أو اسحب عبر عدة خلايا لرسمها أو مسحها؛ لمس الشبكة أثناء تشغيل المحاكاة يوقفها مؤقتًا أولاً. «تشغيل» يقدّم الأجيال باستمرار بالسرعة التي يحددها شريط التمرير؛ «خطوة» يقدّم جيلًا واحدًا بالضبط، وهو مفيد للمراقبة الدقيقة؛ «عشوائي» ينثر مزيجًا عشوائيًا؛ «مسح» يفرغ الشبكة. زر «الأنماط» يضع نمطًا مشهورًا في منتصف الشبكة — أشكال ثابتة (مربّع، خلية النحل) لا تتغير أبدًا، وأشكال متذبذبة (ومّاض، ضفدع، منارة، نجم نابض) تتكرر بفترة ثابتة، ومركبة الطائرة الشراعية التي تسافر قطريًا إلى الأبد، ومدفع غوسبر الذي يطلق طائرات شراعية جديدة دوريًا. تتوهج الخلايا وتكبر عند ولادتها، وتخفت وتنكمش عند موتها، وتُلوَّن بتدرج من الدافئ إلى البارد حسب عدد الأجيال التي بقيت فيها حية — كخريطة حرارية لتاريخ المحاكاة. يظهر عدّاد الأجيال وعدّاد الخلايا الحية دائمًا في الأعلى. بلا نقاط ولا شرط للفوز — مجرد ساحة هادئة لمشاهدة قواعد بسيطة تُنتج سلوكًا معقدًا.",
+        "fr": "Le Jeu de la Vie de Conway : une cellule vivante avec 2 ou 3 voisines vivantes survit, une cellule morte avec exactement 3 voisines vivantes naît, toutes les autres meurent ou restent mortes — chaque génération est recalculée à partir de la précédente. La grille s'enroule de façon torique (les bords se rejoignent), donc des motifs comme le planeur ne heurtent jamais un mur. En pause, touchez une cellule pour l'activer/désactiver, ou glissez sur plusieurs cellules pour les dessiner ou les effacer ; toucher la grille pendant que la simulation tourne la met d'abord en pause. Lecture fait avancer les générations en continu à la vitesse du curseur ; Étape avance exactement une génération, utile pour observer de près ; Aléatoire disperse une soupe aléatoire ; Effacer vide la grille. Le bouton Motifs dépose un motif célèbre centré sur la grille — des natures mortes (Bloc, Ruche) qui ne changent jamais, des oscillateurs (Clignotant, Crapaud, Phare, Pulsar) qui se répètent avec une période fixe, le vaisseau Planeur qui voyage indéfiniment en diagonale, et le Canon de Gosper, qui émet périodiquement de nouveaux planeurs. Les cellules s'allument et grandissent à la naissance, puis s'estompent et rétrécissent à la mort, colorées selon un dégradé chaud-froid en fonction du nombre de générations qu'elles ont survécu — une carte thermique de l'historique de la simulation. Le compteur de générations et le compteur de cellules vivantes sont toujours affichés en haut. Pas de score, pas de condition de victoire — juste un bac à sable paisible pour observer quelques règles simples créer un comportement complexe."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "life-forms/client/index.html",
+      "manifest": "life-forms/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 65.1,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Conway's Game of Life as a contemplative sandbox toy (no score/win condition). simulation.js is a pure DOM-free engine exercised headlessly via a throwaway Node harness during development: step() builds each generation into fresh scratch arrays from the previous generation's closed-over alive/age state, so there's no mutation-during-iteration bug. Edges wrap toroidally. patterns.js is a small library spanning all four classic categories (still lifes, oscillators, a spaceship, a gun) each checked against known real behavior before shipping (an attempted lightweight-spaceship pattern failed that check and was dropped rather than shipped broken). Beauty comes from decoupling visual state from simulation state: a per-cell eased Float32Array gives fade-in-on-birth/fade-out-shrink-on-death/smooth interpolation in one mechanism, cells are colored by age along a warm-to-cool gradient, and rendering composites a solid offscreen buffer through two blurred additive passes plus one crisp pass for cheap whole-buffer bloom instead of expensive per-cell shadowBlur. Grid dimensions are fixed at load from the initial viewport; resize only rescales cell pixel size. Sound reuses games/_shared/js/ogh-sfx.js entirely unchanged behind one mute toggle. window.OGH_LIFE_FORMS exposes direct state manipulation for deterministic testing against known Game of Life ground truth (blinker/glider/still-life). RTL (Arabic) flips text/toolbar chrome only; the grid itself never mirrors (stage dir=\"ltr\")."
     }
   ]
 }
