@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Blade Fruit — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bf-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="bf-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="bf-hud" role="status">
+        <div class="ogh-pill" id="hudScore"><span data-i18n="scoreLabel">Score</span> <strong id="scoreVal">0</strong></div>
+        <div class="ogh-pill" id="hudLives"><span data-i18n="livesLabel">Lives</span> <span id="livesVal" class="bf-hearts"></span></div>
+        <div class="ogh-pill" id="hudBest"><span data-i18n="bestLabel">Best</span> <strong id="bestVal">0</strong></div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- The play field is spatial gameplay (where fruit/bombs launch from,
+         the swipe path) — not text — and must never mirror under RTL:
+         dir="ltr" on the stage and canvas is deliberate and must stay, same
+         precedent as games/dash-runner's #game / games/drop-smash's canvas
+         (see this game's i18n.js header comment). game.js also forces
+         ctx.direction = 'ltr' as a second belt-and-suspenders guard. -->
+    <main class="ogh-stage" dir="ltr">
+      <canvas class="ogh-game-canvas" id="game" width="720" height="1000" dir="ltr" aria-label="Play field"></canvas>
+      <div class="bf-combo" id="comboPop" hidden><span id="comboVal"></span></div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Swipe to slice — chain combos, dodge the bomb</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card" id="startCard">
+        <h1 data-i18n="title">Blade Fruit</h1>
+        <p data-i18n="blurb">Fruit launches up from below — swipe to slice it out of the air. Chain hits in one continuous stroke for a rising combo bonus. Never slice the bomb — one cut and the run is over. Miss too many fruit and you're out of lives.</p>
+        <p class="bf-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start</button>
+      </div>
+
+      <div class="ogh-card" id="overCard" hidden>
+        <h1 id="overTitle">Out of Lives!</h1>
+        <p class="bf-stat-line" id="statScoreLine"></p>
+        <p class="bf-stat-line" id="statComboLine"></p>
+        <p class="bf-stat-line" id="statSlicedLine"></p>
+        <p class="bf-new-best" id="newBestLine" hidden data-i18n="newBest">New high score!</p>
+        <p class="bf-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="playAgainBtn">Slice again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

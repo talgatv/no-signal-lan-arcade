@@ -193,6 +193,23 @@ export function createOghSfx() {
     // from `land` (a short, low, punchy thud with almost no slide, reading
     // as an impact) because ducking is a deliberate dodge, not a landing.
     duck: () => tone(480, 0.09, 'sine', 0.045, 160),
+    // Added for games/blade-fruit — a blade slicing through a fruit
+    // mid-air. Combo-continuation, bomb-explosion, miss and game-over
+    // feedback all deliberately reuse existing patterns instead of adding
+    // more (`chain` — gem-swap's cascade sparkle — already reads perfectly
+    // as "another hit landed in the same streak", reused here for the 2nd+
+    // fruit sliced within one continuous swipe; `boom` already reads as a
+    // big, dangerous payoff hit, reused for the bomb going off; `screech`
+    // already reads as "that was a mistake" for a missed fruit costing a
+    // life; `die` already reads as the run-ending sting regardless of
+    // cause), so `slice` is the one genuinely new sound this genre needs:
+    // nothing existing captures a fast, bright blade swish. It's a very
+    // short upward-then-downward pitch sweep (two overlapping fast tone()
+    // sweeps a beat apart, same "sweep approximates a texture" approach as
+    // `zap`/`hop`) — distinct from `clack` (a flat, non-sliding click for
+    // two hard round bodies meeting) because a fruit slice should sound
+    // fast and airy, not like an impact.
+    slice: () => { tone(1400, 0.035, 'sine', 0.05, 2200); setTimeout(() => tone(2000, 0.03, 'sine', 0.035, 900), 18); },
   };
 
   return {

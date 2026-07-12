@@ -1,0 +1,193 @@
+/* Blade Fruit — canvas-game-shell layout. No persistent on-screen control
+   strip is needed (input is a swipe directly on the canvas), so unlike
+   games/dash-runner this uses the shared auto-sizing `.ogh-game-canvas`
+   rule for maximum play area, combined with dash-runner's header/lang-switch
+   pattern. ogh-base.css's `overflow: hidden; touch-action: none;` on
+   html/body is exactly what a fixed-viewport swipe game needs already —
+   not overridden here (touch-action: none is critical: a swipe must never
+   be interpreted as a page scroll/pan). */
+
+.bf-body {
+  background: #07080f;
+  overflow: hidden;
+  touch-action: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills + language switch.                    */
+/* ------------------------------------------------------------------ */
+.bf-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 10px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.bf-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.bf-hud .ogh-pill {
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+
+#hudScore strong { color: #ffd166; }
+#hudBest strong { color: #5ce1ff; }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Lives — heart pips, filled for remaining lives, dim/hollow for lost. */
+/* ------------------------------------------------------------------ */
+.bf-hearts {
+  display: inline-flex;
+  gap: 2px;
+  vertical-align: middle;
+}
+.bf-heart {
+  font-size: 13px;
+  color: var(--ogh-bad);
+  text-shadow: 0 0 6px rgba(255, 92, 122, 0.6);
+}
+.bf-heart.is-lost {
+  color: rgba(139, 147, 184, 0.35);
+  text-shadow: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage + canvas — full-bleed play area (shared .ogh-game-canvas rule);   */
+/* the swipe trail/particles/combo popup all render on top of this.        */
+/* ------------------------------------------------------------------ */
+.ogh-game-canvas {
+  background: radial-gradient(ellipse at 50% 115%, rgba(92, 225, 255, 0.10), rgba(0, 0, 0, 0.28) 60%);
+  box-shadow: 0 0 0 1px rgba(92, 225, 255, 0.14), 0 12px 40px rgba(0, 0, 0, 0.45);
+  cursor: crosshair;
+}
+
+/* Screen-edge flash on a missed fruit (a life lost) — a quick, unmissable
+   readout that something bad just happened even mid-swipe, same idiom as
+   games/dash-runner's .dr-stage.is-flash. */
+.ogh-stage.is-flash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 92, 122, 0.30);
+  pointer-events: none;
+  animation: bf-flash 0.35s ease-out forwards;
+}
+@keyframes bf-flash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Combo popup — a transient banner over the stage center-top, shown for a
+   couple of consecutive hits within one continuous swipe. Absolutely
+   positioned within .ogh-stage (already position:relative in ogh-base.css)
+   so it never disturbs the canvas's own flex centering. */
+.bf-combo {
+  position: absolute;
+  top: 16%;
+  left: 50%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  font-family: "Montserrat", "Roboto", sans-serif;
+  font-weight: 800;
+  font-size: clamp(22px, 6vw, 34px);
+  letter-spacing: 0.03em;
+  color: #fff3b0;
+  text-shadow: 0 0 18px rgba(255, 209, 102, 0.85), 0 0 4px rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+}
+.bf-combo.is-pop {
+  animation: bf-combo-pop 0.62s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+@keyframes bf-combo-pop {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+  18% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
+  32% { transform: translate(-50%, -50%) scale(1); }
+  75% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards                                                        */
+/* ------------------------------------------------------------------ */
+.ogh-card h1 {
+  font-family: "Montserrat", "Roboto", sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.bf-best-line {
+  margin: 0 0 14px !important;
+  font-size: 13px !important;
+  color: var(--ogh-fg-dim) !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+
+.bf-stat-line {
+  margin: 0 0 6px !important;
+  font-size: 0.98rem !important;
+  font-weight: 600;
+  color: #e8ecff !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+
+.bf-new-best {
+  margin: 10px 0 10px !important;
+  font-size: 13px !important;
+  font-weight: 700;
+  color: #ffd166 !important;
+}
+
+@media (max-width: 380px) {
+  .back { font-size: 12px; }
+  .bf-hud .ogh-pill { font-size: 11px; padding: 5px 8px; }
+  .bf-heart { font-size: 11px; }
+}

@@ -3613,6 +3613,86 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Pseudo-3D perspective renderer reusing cross-the-road's exact scale = FOCAL/(FOCAL+depth) projection technique, adapted to a continuous world-distance instead of discrete rows (trail/lane-divider bands are stacked in small depth increments so the curve toward the horizon stays accurate over a longer visible range). Speed is a pure function of distance (track.js's speedForDistance()): ramps 5 -> 11 world-units/s over the first 260 units then holds — endless, distance 5000 is exactly as fast as distance 500. Collision unifies 3 obstacle types (low/high/full) with one interval-overlap test across independent lane/depth/vertical axes — jump uses real gravity integration, duck is a fixed-duration slide, lane-change is an instant logical move with a purely cosmetic tween (same 'instant logical move + cosmetic tween' precedent as cross-the-road). Obstacle generation guarantees by construction that at most 2 of 3 lanes are ever blocked at a single segment, and paces segments with a time-based (not just distance-based) gap floor sized so a worst-case edge-to-edge lane change always has time to complete before the next segment arrives — see track.js's getFairnessReport(). No bundled image or audio assets — canvas vector shapes with a neon glow, sound reuses games/_shared/js/ogh-sfx.js (extended with one new 'duck' pattern). Best distance persists via OGHProfile, same convention as games/cross-the-road and games/pop-the-bugs."
+    },
+    {
+      "id": "blade-fruit",
+      "name": "Blade Fruit",
+      "names": {
+        "en": "Blade Fruit",
+        "ru": "Фруктовый Клинок",
+        "zh": "霓虹斩果",
+        "es": "Corte Neón",
+        "ar": "شفرة النيون",
+        "fr": "Tranche Néon"
+      },
+      "tagline": "Swipe to slice flying fruit, chain combos, and never touch the bomb.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "particles"
+      ],
+      "genres": [
+        "arcade",
+        "reaction",
+        "casual"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Swipe or drag across the screen with your finger or mouse to slice fruit as it launches into the air — a continuous stroke that crosses several fruit in a row scores a rising combo bonus. Never slice the bomb (dark, spiky, with a lit fuse) — one cut ends the run instantly. Miss too many fruit (let them fall back down unsliced) and you're out of lives. Enter/Space starts or restarts from the title/results screen.",
+          "ru": "Проведи пальцем или мышью по экрану, чтобы разрезать фрукты в полёте — один непрерывный росчерк, задевающий несколько фруктов подряд, даёт нарастающий бонус за комбо. Никогда не режь бомбу (тёмная, с шипами и горящим фитилём) — один разрез мгновенно завершает забег. Пропустишь слишком много фруктов (дашь им упасть неразрезанными) — закончатся жизни. Enter/Space запускает игру или начинает заново с экрана старта/результатов.",
+          "zh": "用手指或鼠标在屏幕上滑动，切开腾空而起的水果——一次连续划动命中多个水果可获得递增的连击加成。千万不要切到炸弹（黑色、带刺、拖着燃烧的引线）——切中即刻结束本局。漏掉太多水果（任它们不被切开地落下）会耗尽生命。Enter/Space 可在开始或结算界面开始新的一局。",
+          "es": "Desliza el dedo o el ratón por la pantalla para cortar la fruta mientras vuela por el aire — un trazo continuo que cruza varias frutas seguidas suma un bono de combo creciente. Nunca cortes la bomba (oscura, con púas y una mecha encendida) — un solo corte termina la partida al instante. Si dejas caer demasiadas frutas sin cortar, se te acaban las vidas. Enter/Espacio inicia o reinicia la partida desde la pantalla de inicio o resultados.",
+          "ar": "اسحب إصبعك أو الفأرة عبر الشاشة لتقطيع الفاكهة أثناء انطلاقها في الهواء — حركة سحب متواصلة تعبر عدة قطع فاكهة متتالية تمنحك مكافأة كومبو متصاعدة. لا تقطع القنبلة أبدًا (داكنة وشائكة وفتيلها مشتعل) — قطعة واحدة تُنهي الجولة فورًا. فوّت الكثير من الفاكهة (اتركها تسقط دون تقطيع) وستخسر أرواحك. يبدأ Enter/Space الجولة أو يعيدها من شاشة البداية أو النتائج.",
+          "fr": "Glissez le doigt ou la souris sur l'écran pour trancher les fruits pendant qu'ils s'envolent — un tracé continu qui traverse plusieurs fruits d'affilée rapporte un bonus de combo croissant. Ne tranchez jamais la bombe (sombre, hérissée de pointes, mèche allumée) — une seule coupe termine la partie instantanément. Laissez tomber trop de fruits sans les trancher et vous perdrez toutes vos vies. Entrée/Espace démarre ou relance la partie depuis l'écran de titre ou de résultats."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "arcade",
+        "reaction",
+        "casual"
+      ],
+      "instructions": {
+        "en": "Fruit launches up from random spots near the bottom on a real gravity arc — it rises, slows, and falls, just like a tossed object. Drag a continuous swipe across the screen; any fruit or bomb the stroke crosses is sliced, checked along the whole path as you drag, not just where you start or stop. Chain several fruit within one unbroken swipe for a rising combo multiplier — the Nth fruit hit in a row scores N times its base value. Never slice the bomb (dark, spiky, glowing red, with a lit fuse) — one cut ends the run instantly. Let a fruit fall back past the bottom unsliced and you lose one of 3 lives. Spawn frequency, simultaneous fruit, bomb odds and launch speed all increase the longer you survive. Your best score is saved locally.",
+        "ru": "Фрукты взлетают из случайных точек у нижнего края экрана по настоящей гравитационной дуге — поднимаются, замедляются и падают, как подброшенный предмет. Веди палец или мышь непрерывным свайпом по экрану: любой фрукт или бомба, которых коснулся росчерк, разрезаются — проверка идёт по всему пути свайпа, а не только по его началу и концу. Разрежь несколько фруктов одним непрерывным движением — получишь нарастающий множитель комбо: N-й подряд разрезанный фрукт даёт N базовых очков. Никогда не режь бомбу (тёмная, с шипами, красным свечением и горящим фитилём) — один разрез мгновенно завершает забег. Дашь фрукту упасть за нижний край неразрезанным — потеряешь одну из 3 жизней. Чем дольше длится забег, тем чаще появляются фрукты, тем больше их одновременно, тем выше шанс бомбы и скорость полёта. Лучший результат сохраняется локально.",
+        "zh": "水果从屏幕下方随机位置以真实的抛物线轨迹腾空而起——上升、减速、落下，如同真正被抛出的物体。用手指或鼠标在屏幕上连续滑动，划过的任何水果或炸弹都会被切开——判定覆盖滑动的整条路径，而不仅仅是起点和终点。在一次不间断的滑动中连续切中多个水果可获得递增的连击倍数：连续命中的第 N 个水果得分为其基础分值的 N 倍。千万不要切到炸弹（黑色、带刺、泛着红光、拖着燃烧的引线）——切中即刻结束本局。任由水果落出屏幕下方而未切中，会失去 3 条生命中的一条。存活时间越长，水果出现频率、同屏数量、炸弹概率和飞行速度都会随之提升。最高分会保存在本地。",
+        "es": "La fruta sale volando desde puntos aleatorios cerca de la parte inferior con una trayectoria de gravedad real: sube, frena y cae, igual que un objeto lanzado al aire. Desliza el dedo o el ratón sin soltar por la pantalla; cualquier fruta o bomba que cruce el trazo queda cortada, comprobado a lo largo de todo el recorrido del gesto, no solo en el punto de inicio o final. Encadena varias frutas en un solo trazo continuo para conseguir un multiplicador de combo creciente: la fruta número N cortada seguida vale N veces su valor base. Nunca cortes la bomba (oscura, con púas, brillo rojo y mecha encendida) — un solo corte termina la partida al instante. Si dejas caer una fruta sin cortar más allá del borde inferior, pierdes una de tus 3 vidas. Cuanto más sobrevivas, más frecuentes y numerosas son las frutas, mayor la probabilidad de bomba y mayor la velocidad de lanzamiento. Tu mejor puntuación se guarda localmente.",
+        "ar": "تنطلق الفاكهة من نقاط عشوائية قرب أسفل الشاشة بمسار جاذبية حقيقي — ترتفع، تتباطأ، ثم تسقط، تمامًا كجسم مقذوف. اسحب إصبعك أو الفأرة بحركة متواصلة عبر الشاشة؛ أي فاكهة أو قنبلة تعبرها الحركة تُقطَّع، ويُتحقّق من ذلك على طول مسار السحب بأكمله، لا عند نقطتي البداية والنهاية فقط. اقطع عدة قطع فاكهة ضمن سحبة واحدة متواصلة للحصول على مضاعف كومبو متصاعد: القطعة رقم N المقطوعة توالياً تمنح N أضعاف قيمتها الأساسية. لا تقطع القنبلة أبدًا (داكنة، شائكة، تتوهج بالأحمر، وفتيلها مشتعل) — قطعة واحدة تُنهي الجولة فورًا. إذا سقطت فاكهة إلى ما تحت الحافة السفلية دون أن تُقطَّع، تخسر واحدة من أرواحك الثلاثة. كلما طال بقاؤك، زاد تكرار ظهور الفاكهة وعددها المتزامن واحتمال القنبلة وسرعة الإطلاق. تُحفظ أفضل نتيجة محليًا.",
+        "fr": "Les fruits jaillissent de points aléatoires près du bas de l'écran selon une vraie trajectoire de gravité — ils montent, ralentissent puis retombent, comme un objet lancé en l'air. Glissez le doigt ou la souris sans relâcher sur l'écran ; tout fruit ou bombe traversé par le tracé est tranché, vérifié tout au long du geste, pas seulement à son début ou à sa fin. Enchaînez plusieurs fruits en un seul geste continu pour obtenir un multiplicateur de combo croissant : le Nième fruit touché d'affilée rapporte N fois sa valeur de base. Ne tranchez jamais la bombe (sombre, hérissée de pointes, lueur rouge, mèche allumée) — une seule coupe termine la partie instantanément. Laissez un fruit retomber sous le bord inférieur sans le trancher et vous perdez une de vos 3 vies. Plus vous survivez longtemps, plus les fruits apparaissent souvent et en nombre, plus la bombe est probable et plus le lancer est rapide. Votre meilleur score est sauvegardé localement."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "blade-fruit/client/index.html",
+      "manifest": "blade-fruit/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 77.4,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original fruit-slicing swipe arcade (an own take on the well-known 'fruit arcs up from below, swipe to slice, avoid the bomb' genre — own fruit designs/physics/code/sound, nothing copied from any specific existing game). client/fruits.js is a pure, DOM-free entity module: 5 fruit types (apple, watermelon-wedge, berry cluster, citrus cross-section, kiwi cross-section — distinguished by both silhouette and saturated color) plus a deliberately desaturated, spiky, pulsing-red-glow, lit-fuse bomb, launched with real gravity-arc physics (plain per-frame Euler integration, not a scripted/closed-form path). Sliced-fruit debris (two halves flying apart) reuses each intact fruit's own whole-shape draw() call clipped to one side via canvas clip(), so no fruit type needed a second hand-authored half-shape. client/slicing.js is a second pure module: a swipe-segment-vs-circle-hitbox test called once per new path segment as a pointer drags, so a fast swipe is checked along its whole path, not just its endpoints. Combo scoring: the Nth fruit sliced within one unbroken swipe scores basePoints*N, resetting on pointer-up, so one stroke clearing several fruit scores meaningfully more than the same fruit sliced across separate swipes. Slicing the bomb is instant game over (the higher-stakes classic genre convention); missing a fruit (falling back below the screen unsliced) costs 1 of 3 lives, a missed bomb is free. Difficulty is a pure function of elapsed play time (fruits.js's difficultyForElapsed(), inspectable via window.OGH_BLADE_FRUIT.getDifficulty): spawn interval, simultaneous items per wave, bomb probability and launch speed all ramp over the first 45s then hold. No bundled image or audio assets — Canvas 2D vector shapes with a neon glow, a glowing swipe trail sampled from the live pointer path, and particle bursts (juice on a fruit, a bigger multi-color burst plus screen-shake on the bomb); sound reuses games/_shared/js/ogh-sfx.js, extended with exactly one new 'slice' pattern (a fast bright blade-swish sweep) — combo continuation reuses gem-swap's 'chain' cascade sparkle, the bomb reuses 'boom', a missed fruit reuses 'screech', the run-ending sting reuses 'die'. Score persists locally via games/_shared/js/ogh-profile.js (games/pop-the-bugs convention). RTL (Arabic) flips only the text/menu chrome; the play field (launch positions, swipe path) never mirrors (stage+canvas dir=ltr, ctx.direction forced ltr), same precedent as games/dash-runner and games/drop-smash."
     }
   ]
 }
