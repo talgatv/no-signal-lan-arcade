@@ -1,0 +1,27 @@
+{
+  "id": "sled-lines",
+  "name": "Sled Lines",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["physics", "creative", "sandbox"],
+  "tags": ["solo", "experimental", "physics", "creative", "sandbox"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Press and drag anywhere on the canvas to draw a line (works the same with touch or mouse via Pointer Events). Pick Track / Scenery / Boost / Erase from the toolbar first, then draw or tap-erase. Press Play to run the physics; Edit stops and resets the rider to its start point so you can keep drawing. Keyboard (optional): 1/2/3/4 or T/S/B/E pick a tool, U undoes the last line, C clears everything, Enter/Space toggles Play/Edit.",
+      "ru": "Нажми и веди пальцем или мышью по холсту, чтобы нарисовать линию (тач и мышь работают одинаково через Pointer Events). Сначала выбери на панели инструмент — Трасса / Пейзаж / Ускорение / Ластик, — затем рисуй или стирай касанием. «Играть» запускает физику; «Правка» останавливает симуляцию и возвращает райдера на старт, чтобы можно было рисовать дальше. Клавиатура (опционально): 1/2/3/4 или T/S/B/E — выбор инструмента, U — отмена последней линии, C — очистить всё, Enter/Пробел — переключить Играть/Правка."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "landscape",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js"],
+  "notes": "An original freehand physics-drawing sled toy in the beloved 'draw a line, a rider physics-simulates down it' genre (Line Rider is the classic reference point; this game's rider rig, track tools, code and art are all original — nothing copied). client/physics.js is a pure, DOM-free rider simulator: a 7-point rig (a rigid nose/tail/hip sled-and-seat triangle, a torso braced to hip+nose so it doesn't pendulum-flop, and a head plus two hands hung off the shoulder with a single constraint each so they flail like a loose ragdoll limb) integrated with Verlet position-based dynamics (each point stores only current+previous position; velocity is implicit as the position delta) and relaxed against 8 fixed-length distance constraints a few iterations per tick — Thomas Jakobsen's 'Advanced Character Physics' technique, the standard this entire genre is built on. Every rider point collides with every solid drawn segment via a closest-point-on-segment 'collide and slide' test: push out along the segment normal, damp the along-surface (tangential) speed for sliding friction, zero the into-surface component so contacts never bounce. Each physics tick is internally split into 4 substeps (with gravity/friction correctly rescaled to match, verified headless) so a fast-falling point can't tunnel through a line between two integration steps, a real failure mode confirmed and fixed during development. Three line types: solid track (collides), scenery (purely decorative, the rider passes straight through — verified headless), and a bonus accelerator line (non-collidable, gives a speed boost along its direction when crossed). Toolbar covers draw-track / draw-scenery / draw-boost / erase-near-tap / undo-last-line / clear-all / Play / Edit, with Play always resetting the rider to its start point first and Edit stopping the sim and resetting it back, so editing always resumes from a known-clean state. A modest, non-blocking crash detector (kept deliberately restrained — this toy is about the joy of drawing and watching, not winning) fires on either a hard impact on a core sled/torso point (calibrated empirically against the real simulated dynamics, not idealized kinematics) or a long unbroken fall with no contact, plus a bonus sustained-topple/flip check; a crash freezes the pose (tinted red) until Edit is pressed. No bundled image or audio assets: the whole scene is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js entirely unchanged (tap=draw-start/tool-switch/undo, whoosh=play, die=crash, screech=erase/clear, land=touchdown). i18n across the UN-6 languages; Arabic flips only the text chrome (header, toolbar labels, hint, start card) to RTL — the drawn track, the rider's physics and the toolbar's tool order never mirror."
+}

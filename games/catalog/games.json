@@ -2988,6 +2988,85 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original catapult-vs-structure destruction physics game (a fresh take on the Crush the Castle genre — own settings/structures/code/sound, nothing copied). client/physics.js is a pure, DOM-free 2D rigid-body engine: a faithful port of Erin Catto's box2d-lite sequential-impulse solver adapted to y-down pixel space, so oriented-box blocks collide via SAT + reference/incident-face clipping and resolve with warm-started accumulated normal+friction impulses over 12 iterations plus Baumgarte position correction. Because impulses act at contact points offset from each block's center of mass, toppling, support-loss and impact cascades are EMERGENT (a real torque r x P), never scripted: destroy a supporting block and the one above loses its cancelling contact impulse and falls/topples on its own the next tick; an off-center boulder hit spins a block the physically correct way; a knocked block shoves its neighbour down the line (all verified headless via window.OGH_SIEGE_BREAK). Blocks carry material hit points (stone/wood/glass/granite) and take damage from a contact's approach speed, so hard hits and long falls shatter them while gentle settling never does; a snap-to-rest floor keeps settled stacks rock-steady. Six hand-authored structures with real layout variety (client/structures.js: slim watchtower, twin-pillar gate carrying a lintel, an enclosed bunker chamber, a stepped keep, a plank sky-bridge whose target rides an end-supported span, and a combined citadel finale), each with 2-4 target creatures defeated by a direct hit OR by being crushed under falling debris. Drag-back-and-release aiming via Pointer Events (power from drag distance, angle from drag direction) with a real gravity arc and a ballistic trajectory preview, same control idiom as games/mini-golf and games/penguin-fling. Star rating on shots-used efficiency; cumulative score with a local best via games/_shared/js/ogh-profile.js (games/pop-the-bugs convention). No bundled image/audio assets: the whole scene (catapult, boulder, blocks, target creatures, debris) is Canvas 2D vector shapes with a neon glow; sound reuses games/_shared/js/ogh-sfx.js, extended with one new 'crumble' pattern for shattering masonry (launch/heavy-impact/target-down/clear/fail reuse the existing thwack/boom/pickup/win/die). RTL (Arabic) flips only the text chrome; the catapult-left / structure-right battlefield and launch direction are never mirrored (stage+canvas dir=ltr, ctx.direction forced ltr)."
+    },
+    {
+      "id": "sled-lines",
+      "name": "Sled Lines",
+      "names": {
+        "en": "Sled Lines",
+        "ru": "Санные линии",
+        "zh": "雪橇轨迹",
+        "es": "Líneas de Trineo",
+        "ar": "خطوط الزحافة",
+        "fr": "Lignes de Luge"
+      },
+      "tagline": "Draw a track with your finger, press Play, and watch a Verlet-jointed physics sled ride whatever you drew.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "physics-based",
+        "hand-drawn"
+      ],
+      "genres": [
+        "physics",
+        "creative",
+        "sandbox"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Press and drag anywhere on the canvas to draw a line (works the same with touch or mouse via Pointer Events). Pick Track / Scenery / Boost / Erase from the toolbar first, then draw or tap-erase. Press Play to run the physics; Edit stops and resets the rider to its start point so you can keep drawing. Keyboard (optional): 1/2/3/4 or T/S/B/E pick a tool, U undoes the last line, C clears everything, Enter/Space toggles Play/Edit.",
+          "ru": "Нажми и веди пальцем или мышью по холсту, чтобы нарисовать линию (тач и мышь работают одинаково через Pointer Events). Сначала выбери на панели инструмент — Трасса / Пейзаж / Ускорение / Ластик, — затем рисуй или стирай касанием. «Играть» запускает физику; «Правка» останавливает симуляцию и возвращает райдера на старт, чтобы можно было рисовать дальше. Клавиатура (опционально): 1/2/3/4 или T/S/B/E — выбор инструмента, U — отмена последней линии, C — очистить всё, Enter/Пробел — переключить Играть/Правка."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "physics",
+        "creative",
+        "sandbox"
+      ],
+      "instructions": {
+        "en": "Pick Track, Scenery or Boost from the toolbar and drag across the canvas to draw — press Play and a small physics sled (a jointed rider built from Verlet-integrated points and rigid constraints) rolls, slides and tumbles down exactly what you drew, pulled by real gravity. Track lines are solid; scenery lines are just decoration the rider passes through; boost lines give it a speed kick. Erase removes a line you tap near; Undo and Clear tidy up. Edit always resets the rider back to its start point, so you can keep reshaping the track and try again. Crash hard or fall too far and the ride ends — press Edit to fix the track and go again.",
+        "ru": "Выбери на панели Трассу, Пейзаж или Ускорение и веди пальцем/мышью по холсту, чтобы рисовать — нажми «Играть», и маленькие физические санки (шарнирный райдер из точек с интеграцией Верле и жёсткими связями) покатятся, заскользят и закувыркаются точно по тому, что ты нарисовал, под настоящей гравитацией. Линии трассы твёрдые; пейзаж — просто украшение, райдер проходит сквозь него; линии ускорения придают скорость. Ластик убирает линию рядом с касанием; «Отменить» и «Очистить» наводят порядок. «Правка» всегда возвращает райдера на старт, так что можно перестраивать трассу и пробовать снова. Если врезаться слишком сильно или упасть слишком далеко — заезд закончится; нажми «Правка», чтобы поправить трассу и попробовать ещё раз.",
+        "zh": "在工具栏选择轨道、背景或加速线，然后在画布上拖动绘制——点击“开始”，一个由 Verlet 积分点和刚性约束搭建的关节玩偶雪橇就会在真实重力下沿着你画的路线滚动、滑行、翻滚。轨道线是实心的；背景线只是装饰，雪橇会直接穿过；加速线会让它加速。橡皮擦可以清除你点按附近的线条；撤销和清空用来整理画面。“编辑”总会把雪橇重置回起点，方便你不断修改轨道再试一次。撞得太狠或摔得太远，这一趟就结束了——点击“编辑”修好轨道，再来一次。",
+        "es": "Elige Pista, Decorado o Impulso en la barra de herramientas y arrastra por el lienzo para dibujar — pulsa Jugar y un pequeño trineo físico (un jinete articulado hecho de puntos con integración de Verlet y restricciones rígidas) rueda, resbala y da tumbos exactamente por donde dibujaste, bajo gravedad real. Las líneas de pista son sólidas; las de decorado son solo adorno, el jinete las atraviesa; las de impulso le dan un empujón de velocidad. Borrar quita la línea que toques cerca; Deshacer y Limpiar ordenan el dibujo. Editar siempre devuelve al jinete a su punto de salida, así que puedes seguir dando forma a la pista y probar de nuevo. Si choca fuerte o cae demasiado lejos, la carrera termina — pulsa Editar para arreglar la pista e inténtalo otra vez.",
+        "ar": "اختر من الشريط: مسار أو خلفية أو تسريع، ثم اسحب عبر اللوحة للرسم — اضغط «ابدأ» فتنزلق زحافة فيزيائية صغيرة (راكب مفصلي مبني من نقاط بتكامل فيرلي وقيود صلبة) وتتدحرج وتتزحلق وتتقلب تمامًا فوق ما رسمته، تحت جاذبية حقيقية. خطوط المسار صلبة؛ خطوط الخلفية مجرد زخرفة يمر الراكب عبرها؛ خطوط التسريع تمنحه دفعة سرعة. الممحاة تزيل الخط القريب من لمستك؛ التراجع والمسح الكامل يرتبان الرسم. «تحرير» يعيد الراكب دائمًا إلى نقطة انطلاقه، فتستطيع الاستمرار في إعادة تشكيل المسار والمحاولة من جديد. إذا اصطدم بقوة أو سقط لمسافة طويلة تنتهي الجولة — اضغط «تحرير» لإصلاح المسار وحاول مجددًا.",
+        "fr": "Choisis Piste, Décor ou Boost dans la barre d'outils et fais glisser sur le canevas pour dessiner — appuie sur Jouer et une petite luge physique (un pilote articulé fait de points en intégration de Verlet et de contraintes rigides) roule, glisse et culbute exactement sur ce que tu as dessiné, sous une vraie gravité. Les lignes de piste sont solides ; les lignes de décor ne sont que décoratives, le pilote les traverse ; les lignes de boost lui donnent un coup d'accélération. Gomme retire la ligne touchée à proximité ; Annuler et Effacer tout remettent de l'ordre. Éditer replace toujours le pilote à son point de départ, pour continuer à retravailler la piste et réessayer. Un choc trop violent ou une chute trop longue met fin à la descente — appuie sur Éditer pour corriger la piste et retenter ta chance."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [
+        "hill-rider"
+      ],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "sled-lines/client/index.html",
+      "manifest": "sled-lines/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 76.0,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "An original freehand physics-drawing sled toy in the beloved 'draw a line, a rider physics-simulates down it' genre (Line Rider is the classic reference point; this game's rider rig, track tools, code and art are all original — nothing copied). client/physics.js is a pure, DOM-free rider simulator: a 7-point rig (a rigid nose/tail/hip sled-and-seat triangle, a torso braced to hip+nose so it doesn't pendulum-flop, and a head plus two hands hung off the shoulder with a single constraint each so they flail like a loose ragdoll limb) integrated with Verlet position-based dynamics (each point stores only current+previous position; velocity is implicit as the position delta) and relaxed against 8 fixed-length distance constraints a few iterations per tick -- Thomas Jakobsen's 'Advanced Character Physics' technique, the standard this entire genre is built on. Every rider point collides with every solid drawn segment via a closest-point-on-segment 'collide and slide' test: push out along the segment normal, damp the along-surface (tangential) speed for sliding friction, zero the into-surface component so contacts never bounce. Each physics tick is internally split into 4 substeps (with gravity/friction correctly rescaled to match, verified headless) so a fast-falling point can't tunnel through a line between two integration steps, a real failure mode confirmed and fixed during development (see window.OGH_SLED_LINES for the live debug hook). Three line types: solid track (collides), scenery (purely decorative, the rider passes straight through -- verified headless), and a bonus accelerator line (non-collidable, gives a speed boost along its direction when crossed). Toolbar covers draw-track / draw-scenery / draw-boost / erase-near-tap / undo-last-line / clear-all / Play / Edit, with Play always resetting the rider to its start point first and Edit stopping the sim and resetting it back, so editing always resumes from a known-clean state. A modest, non-blocking crash detector (kept deliberately restrained -- this toy is about the joy of drawing and watching, not winning) fires on either a hard impact on a core sled/torso point (calibrated empirically against the real simulated dynamics, not idealized kinematics) or a long unbroken fall with no contact, plus a bonus sustained-topple/flip check; a crash freezes the pose (tinted red) until Edit is pressed. No bundled image or audio assets: the whole scene is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js entirely unchanged (tap=draw-start/tool-switch/undo, whoosh=play, die=crash, screech=erase/clear, land=touchdown). i18n across the UN-6 languages; Arabic flips only the text chrome (header, toolbar labels, hint, start card) to RTL -- the drawn track, the rider's physics and the toolbar's tool order never mirror."
     }
   ]
 }

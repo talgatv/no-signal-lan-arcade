@@ -1,0 +1,192 @@
+/* Sled Lines — neon-vector page chrome on top of ogh-base.css's shared
+   structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card,
+   .ogh-btn, .ogh-hint). Palette stays the hub default dark neon-vector look
+   (no :root override) — this file adds the header / toolbar / canvas layout.
+
+   Unlike most games here, the canvas IS the whole interactive surface (press
+   + drag to draw), so the toolbar is real page layout, never overlaid on top
+   of it — a tap near a button's edge must never be misread as a draw stroke,
+   and a draw stroke must never accidentally hit a button. The canvas itself
+   is full-bleed and responsive (not the shared fixed-aspect
+   .ogh-game-canvas rule, which bakes in a 0.72 portrait ratio this drawing
+   toy doesn't want — more canvas room is more track to draw), sized in
+   JS via getBoundingClientRect + devicePixelRatio, same approach as
+   games/leap-quest and games/hill-rider's full-bleed play fields. */
+
+.sl-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + language switch.                                */
+/* ------------------------------------------------------------------ */
+.sl-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Toolbar: tool group (track/scenery/boost/erase) + action group      */
+/* (undo/clear/play). Wraps to two rows on narrow screens.             */
+/* ------------------------------------------------------------------ */
+.sl-toolbar {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 10px;
+  padding: 2px 10px 8px;
+}
+
+.sl-tools,
+.sl-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sl-tool-btn,
+.sl-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 40px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: rgba(10, 12, 24, 0.55);
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.sl-tool-btn:active,
+.sl-action-btn:active { transform: scale(0.96); }
+
+.sl-tool-icon { font-size: 15px; line-height: 1; }
+
+/* Active tool. */
+.sl-tool-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+  box-shadow: 0 0 14px rgba(92, 225, 255, 0.4);
+}
+/* Tint each tool button toward the colour of the line it draws, even when
+   not selected, so the palette below (track=cyan / scenery=dim-dashed /
+   boost=amber) is learnable at a glance. */
+#btnToolScenery .sl-tool-icon { color: var(--ogh-fg-dim); }
+#btnToolAccel .sl-tool-icon { color: var(--ogh-warn); }
+#btnToolAccel.is-on { background: var(--ogh-warn); box-shadow: 0 0 14px rgba(255, 209, 102, 0.45); }
+#btnToolErase .sl-tool-icon { color: var(--ogh-bad); }
+#btnToolErase.is-on { background: var(--ogh-bad); box-shadow: 0 0 14px rgba(255, 92, 122, 0.4); }
+
+.sl-tool-btn:disabled,
+.sl-action-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.sl-play-btn {
+  border-color: rgba(92, 255, 176, 0.5);
+  color: var(--ogh-good);
+  background: rgba(92, 255, 176, 0.1);
+  font-weight: 700;
+}
+.sl-play-btn.is-playing {
+  color: var(--ogh-bg);
+  background: var(--ogh-warn);
+  border-color: var(--ogh-warn);
+  box-shadow: 0 0 14px rgba(255, 209, 102, 0.4);
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas — full-bleed, responsive (sized in JS). Cursor hints the      */
+/* active tool for mouse users; touch ignores cursor entirely.          */
+/* ------------------------------------------------------------------ */
+.sl-stage {
+  padding: 0 6px 6px;
+}
+
+.sl-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  background:
+    radial-gradient(120% 90% at 30% 0%, #10182e 0%, #0a0e1c 55%, #06070f 100%);
+  touch-action: none;
+  cursor: crosshair;
+}
+.sl-canvas.tool-erase { cursor: cell; }
+.sl-canvas.mode-play,
+.sl-canvas.mode-crashed { cursor: default; }
+
+/* ------------------------------------------------------------------ */
+/* Start card extras.                                                  */
+/* ------------------------------------------------------------------ */
+.sl-controls-note {
+  margin: -6px 0 18px !important;
+  font-size: 0.82rem !important;
+  color: var(--ogh-fg-dim) !important;
+  line-height: 1.4 !important;
+}
+
+@media (max-width: 460px) {
+  .sl-tool-label,
+  .sl-action-btn .sl-tool-label { display: none; }
+  .sl-tool-btn,
+  .sl-action-btn { padding: 0 10px; min-width: 40px; justify-content: center; }
+}
+
+@media (max-width: 360px) {
+  .back { font-size: 12px; }
+}
