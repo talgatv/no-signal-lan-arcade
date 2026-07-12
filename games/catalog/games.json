@@ -2679,6 +2679,81 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original 3-in-1 retro-LCD handhelds collection (no copied ROMs/assets — original takes on Tanks/Snake/Breakout in this hub's own shared dot-matrix style, a deliberate departure from neon-vector like games/paint-xp's XP skin). client/lcd.js is the shared Screen renderer + palette that makes all three read as one device: chunky dark dots on a pale-olive LCD with a faint 'ghost' unlit-segment grid; the menu draws its icons with the same dots. Tanks (Battle City-style): per-dot-destructible brick walls, indestructible steel, an eagle base whose destruction loses the run instantly even with lives remaining, enemy AI that seeks the base/player and fires when aligned, escalating waves. Snake: grid snake that grows and speeds up on eating, ends on wall/self collision. Breakout: real paddle-position rebound angle (bounceVelocity(off) is the single pure source, test-hooked — centre hit vx≈0, edge hit large |vx| at constant speed) across three cycling layouts. Per-sub-game OGHProfile bests under separate keys (brick-tanks/brick-snake/brick-arkanoid), same convention as games/pop-the-bugs. Sound reuses _shared/js/ogh-sfx.js patterns unchanged (pop/clack/thwack/bounce/pickup/boing/splat/die/win/tap). i18n en/ru/zh/es/ar/fr; RTL (Arabic) flips only text chrome (header/hint/HUD/menu/overlays) — never any game's LCD dot field (canvas dir=ltr) nor the D-pad cluster (dir=ltr). No bitmap/audio asset files. window.OGH_BRICK_GAME exposes shell + active game."
+    },
+    {
+      "id": "hill-rider",
+      "name": "Hill Rider",
+      "names": {
+        "en": "Hill Rider",
+        "ru": "Покоритель холмов",
+        "zh": "丘陵骑手",
+        "es": "Piloto de Colinas",
+        "ar": "راكب التلال",
+        "fr": "Cavalier des Collines"
+      },
+      "tagline": "Gas, brake, and a whole lot of bumpy hill — no steering, just momentum and nerve.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "glow",
+        "side-view",
+        "physics"
+      ],
+      "genres": [
+        "arcade",
+        "physics",
+        "driving",
+        "endless"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "touch": "ok",
+        "notes": {
+          "en": "Touch-first: two large on-screen buttons, BRAKE bottom-left and GAS bottom-right — hold either for continuous input. There's no steering: gas accelerates forward and tips the nose up a touch, brake slows/reverses and tips the nose down. Both also rotate the vehicle while it's airborne (both wheels off the ground), so you can level out before landing. Desktop bonus: Up arrow or W for gas, Down arrow or S for brake.",
+          "ru": "Приоритет — сенсор: две большие кнопки на экране, BRAKE внизу слева и GAS внизу справа — удерживай любую для непрерывного ввода. Руля нет: газ разгоняет и слегка приподнимает нос, тормоз замедляет/даёт задний ход и опускает нос. Обе кнопки также вращают машину в полёте (когда оба колеса оторвались от земли), чтобы выровняться перед приземлением. Бонус для ПК: стрелка вверх или W — газ, стрелка вниз или S — тормоз."
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "physics",
+        "driving",
+        "endless",
+        "arcade"
+      ],
+      "instructions": {
+        "en": "Gas and brake are your only controls — there's no steering. Hold GAS to accelerate (it also tips the vehicle's nose up a touch); hold BRAKE to slow down, reverse, or tip the nose down. The chassis tilts to match the slope under its wheels as you drive, so it visibly leans into climbs and descents instead of just sliding along flat. Get airborne off a crest or a jump and gas/brake instead rotate the vehicle in mid-air — tilt to land level, since landing at too steep an angle (or toppling past about 95 degrees while touching the ground) crashes and ends the run. Fuel drains as you drive and is refilled by canisters along the route, always placed low enough to grab by normal driving; run the tank dry and you'll coast to a stop once gas stops working (braking and air-tilt still work). Coins float along the route for score. Distance is the primary score — see how far you get before crashing or running out of fuel — plus how many coins you grabbed along the way. Desktop bonus: Up arrow or W for gas, Down arrow or S for brake.",
+        "ru": "Газ и тормоз — вот и всё управление, руля нет. Удерживай GAS для разгона (это также слегка приподнимает нос машины); удерживай BRAKE, чтобы притормозить, дать задний ход или опустить нос. Корпус наклоняется по уклону под колёсами прямо во время движения, поэтому машина заметно кренится на подъёмах и спусках, а не просто скользит по прямой. Взлетев с гребня холма или трамплина, те же GAS/BRAKE вращают машину в воздухе — выравнивайся перед приземлением: посадка под слишком крутым углом (или опрокидывание за ~95 градусов при касании земли) — авария и конец заезда. Топливо расходуется по мере движения, канистры вдоль трассы пополняют бак и всегда стоят достаточно низко, чтобы забрать их обычной ездой; опустошишь бак — газ перестанет работать, и машина покатится накатом до остановки (тормоз и вращение в воздухе продолжают работать). Монеты вдоль трассы приносят очки. Главный результат — дистанция: сколько удалось проехать до аварии или до конца топлива — плюс сколько монет собрано по пути. Бонус для ПК: стрелка вверх или W — газ, стрелка вниз или S — тормоз."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "hill-rider/client/index.html",
+      "manifest": "hill-rider/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 100,
+      "sizeMeasuredKb": 65.6,
+      "status": "experimental",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original side-view physics hill-climbing driving game in the 'gas and brake are your only inputs, bumpy procedural terrain, don't flip or run out of gas' genre (Hill Climb Racing is the classic reference point for the genre only — original vehicle, rover setting and neon-vector art, no copied content). client/terrain.js's heightAt(x) is a pure function of world-x (layered sine waves + hashed value noise + occasional 'jump' bumps, eased flat for a fair spawn) — no seed or chunk bookkeeping, so the strip is trivially endless. client/vehicle.js's stepVehicle samples terrain under a front and rear wheel offset each frame and derives the chassis angle from the line between those two contact points, so the body visibly tilts to match the slope under it; grounded-vs-airborne is resolved by comparing a ballistic free-fall candidate against that terrain-contact line (one comparison naturally covers rolling-hill driving, launching off a crest, and landing). Gas/brake also apply a small cosmetic nose-up/nose-down tilt while grounded, and while airborne (both wheels off the ground) directly accelerate free rotation instead — the genre's core air-control skill. Crash detection is gated to grounded frames only (tilting past ~95 degrees while touching the terrain, including a hard nose/tail-first landing), so rotating through any angle purely mid-air never crashes on its own. Fuel drains with speed plus a small idle trickle, refilled by low, reliably-reachable canisters; running dry disables gas until the vehicle coasts to a stop. Coins float along the route for score. Distance-based local high score via OGHProfile, same convention as games/pop-the-bugs. Chase camera holds the vehicle at a fixed lead fraction across the screen, same translate-the-world-by-camera-position shape as games/neon-drift. No bundled image/audio assets: sound reuses games/_shared/js/ogh-sfx.js almost entirely unchanged plus one new pattern (refuel). RTL (Arabic) flips text/menu chrome only; the terrain, vehicle direction and camera never mirror (stage dir=ltr, ctx.direction forced ltr)."
     }
   ]
 }

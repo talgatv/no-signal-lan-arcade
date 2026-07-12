@@ -1,0 +1,27 @@
+{
+  "id": "hill-rider",
+  "name": "Hill Rider",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "physics", "driving", "endless"],
+  "tags": ["solo", "experimental", "physics", "driving", "endless", "arcade"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard"],
+    "keyboard": "optional",
+    "touch": "ok",
+    "notes": {
+      "en": "Touch-first: two large on-screen buttons, BRAKE bottom-left and GAS bottom-right — hold either for continuous input. There's no steering: gas accelerates forward and tips the nose up a touch, brake slows/reverses and tips the nose down. Both also rotate the vehicle while it's airborne (both wheels off the ground), so you can level out before landing. Desktop bonus: Up arrow or W for gas, Down arrow or S for brake.",
+      "ru": "Приоритет — сенсор: две большие кнопки на экране, BRAKE внизу слева и GAS внизу справа — удерживай любую для непрерывного ввода. Руля нет: газ разгоняет и слегка приподнимает нос, тормоз замедляет/даёт задний ход и опускает нос. Обе кнопки также вращают машину в полёте (когда оба колеса оторвались от земли), чтобы выровняться перед приземлением. Бонус для ПК: стрелка вверх или W — газ, стрелка вниз или S — тормоз."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "landscape",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Original side-view physics hill-climbing driving game in the 'gas and brake are your only inputs, bumpy procedural terrain, don't flip or run out of gas' genre (Hill Climb Racing is the classic reference point for the genre only — original vehicle, rover setting and neon-vector art, no copied content). client/terrain.js's heightAt(x) is a pure function of world-x (layered sine waves + a hashed 1-D value noise layer + occasional localized raised-cosine 'jump' bumps, eased flat for the first 500 units so the spawn is always fair) — no seed, no chunk bookkeeping, so the strip is trivially endless: querying further out just evaluates the same formula further along. client/vehicle.js's stepVehicle is the core: every frame it samples terrain height under both a front and a rear wheel offset and derives the chassis angle from the line between those two contact points (so the body visibly tilts to match the slope under it, not just translates), decides grounded-vs-airborne by comparing a ballistic free-fall candidate position against that terrain-contact line (the same comparison naturally covers ordinary rolling-hill driving, launching off a crest that falls away faster than gravity can follow, and landing — no separate takeoff special-case), applies gravity-along-the-slope so climbs cost speed and descents build it, and layers a small cosmetic nose-up-under-gas/nose-down-under-brake tilt on top of the terrain angle while grounded. While airborne (both wheels off the ground) gas/brake instead accelerate free rotation directly — the genre's core air-control skill, used to land level or clear a jump. Crash detection is deliberately gated to grounded frames only: tilting past ~95 degrees while touching/resting on the terrain (including a hard nose- or tail-first landing) ends the run, but rotating through any angle purely in mid-air never does, since that freedom is the entire point of the air-tilt control. Fuel drains with speed (a distance proxy) plus a small idle trickle, refilled by canisters placed low along the route (always reachable by normal driving, never gated behind a risky jump); running dry disables gas (brake and air-tilt still work) and the run ends once the vehicle coasts to a stop. Coins float along the route for score, separate from fuel. Distance-based local high score via OGHProfile, same convention as games/pop-the-bugs. A chase camera holds the vehicle at a fixed lead fraction across the screen (more terrain visible ahead than behind) and follows its height with a little vertical lag, same translate-the-world-by-camera-position shape as games/neon-drift. No bundled image or audio assets: canvas vector line-art with a glow throughout; sound reuses games/_shared/js/ogh-sfx.js almost entirely unchanged (whoosh=engine while accelerating, pickup=coin, die=crash, land=wheels-down thud, tick=coasted-out-of-fuel end) plus one new pattern, refuel (a low descending glug, pitched well below pickup's bright chime). RTL (Arabic) flips text/menu chrome only; the terrain, the vehicle's forward direction and the camera never mirror (stage is dir=ltr, ctx.direction forced to ltr)."
+}

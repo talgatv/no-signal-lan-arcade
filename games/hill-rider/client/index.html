@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Hill Rider — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="hr-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="hr-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="hr-hud" role="status">
+        <div class="ogh-pill hr-distance" id="hudDistance" data-i18n-aria="hudDistanceAria">
+          <span class="hr-lbl" data-i18n="distanceLabel">DIST</span>
+          <strong id="hudDistanceVal">0</strong><span class="hr-unit">m</span>
+        </div>
+        <div class="ogh-pill hr-coins" id="hudCoins" data-i18n-aria="hudCoinsAria">
+          <span class="hr-lbl" data-i18n="coinsLabel">COINS</span>
+          <strong id="hudCoinsVal">0</strong>
+        </div>
+        <div class="ogh-pill hr-fuel" id="hudFuel" data-i18n-aria="hudFuelAria">
+          <span class="hr-lbl" data-i18n="fuelLabel">FUEL</span>
+          <span class="hr-fuel-gauge"><span class="hr-fuel-fill" id="fuelFill"></span></span>
+        </div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <!-- Side-view physics sim with a fixed forward direction, not reading-order
+         text: dir="ltr" here (plus ctx.direction forced 'ltr' in game.js) keeps
+         the canvas, terrain and touch-button layout from ever mirroring under
+         RTL. Only the header/cards/hint text chrome flips for Arabic — see
+         i18n.js. -->
+    <main class="hr-stage" dir="ltr">
+      <canvas id="view" class="hr-view" aria-label="Hill Rider play field"></canvas>
+
+      <div class="hr-touch" id="touchLayer" dir="ltr">
+        <button type="button" class="hr-btn hr-btn-brake" id="btnBrake" data-i18n="btnBrakeAria" data-i18n-aria="btnBrakeAria" aria-label="Brake">Brake</button>
+        <button type="button" class="hr-btn hr-btn-gas" id="btnGas" data-i18n="btnGasAria" data-i18n-aria="btnGasAria" aria-label="Gas">Gas</button>
+      </div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Hold GAS / BRAKE — no steering, the terrain does the rest</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card hr-card" id="startCard">
+        <h1 data-i18n="title">Hill Rider</h1>
+        <p data-i18n="blurb">Gas and brake are your only controls.</p>
+        <div class="hr-legend" role="list">
+          <div class="hr-legend-item" role="listitem"><span class="hr-sw hr-sw-coin"></span><span id="legendCoinTxt">Coin</span></div>
+          <div class="hr-legend-item" role="listitem"><span class="hr-sw hr-sw-fuel"></span><span id="legendFuelTxt">Fuel canister</span></div>
+        </div>
+        <p class="hr-controls-note" data-i18n="controlsNote">Touch and keyboard controls.</p>
+        <p class="hr-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start engine</button>
+      </div>
+
+      <div class="ogh-card hr-card" id="resultCard" hidden>
+        <h1 id="resultTitle">Crashed!</h1>
+        <p id="resultSub"></p>
+        <p class="hr-stats" id="finalDistanceLine"></p>
+        <p class="hr-stats" id="finalCoinsLine"></p>
+        <p class="hr-stats hr-new-best" id="newBestLine" hidden data-i18n="newBestLine">New best distance!</p>
+        <p class="hr-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="playAgainBtn">Ride again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

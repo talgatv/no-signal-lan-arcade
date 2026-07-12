@@ -90,6 +90,18 @@ export function createOghSfx() {
     // deliberately harder/sharper for rigid-object hits elsewhere).
     pop: () => tone(720, 0.045, 'square', 0.045, 260),
     splat: () => { tone(190, 0.09, 'sine', 0.06, 70); setTimeout(() => tone(850, 0.025, 'sine', 0.02), 25); },
+    // Added for games/hill-rider — engine, coin, crash and landing feedback
+    // all reuse existing patterns unchanged (`whoosh` at a fixed interval
+    // while gas is held reads as an engine note, same cadence trick as
+    // void-drift's thrust sound; `pickup` already reads as a bright coin
+    // chime; `die` already reads as a crash; `land` already reads as a
+    // wheels-down thud; `tick` already reads as a soft/neutral end-of-run
+    // cue for coasting out of fuel). `refuel` is the one genuinely new sound
+    // this genre needs: a low two-note descending "glug", pitched well
+    // below `pickup`'s bright ascending chime so a coin and a fuel canister
+    // never sound alike, reading as liquid filling a tank rather than a
+    // score event.
+    refuel: () => { tone(260, 0.08, 'sine', 0.05, 190); setTimeout(() => tone(230, 0.1, 'sine', 0.045, 160), 70); },
   };
 
   return {
