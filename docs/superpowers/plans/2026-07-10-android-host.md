@@ -2,6 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **Layout migration (2026-07-13):** this historical plan was written before
+> programs moved from the repository root into `games/programs/`. Implementers
+> must use the nested source location and canonical `/games/programs/` URLs;
+> the older paths in task snapshots are retained only as historical context.
+
 **Goal:** Build `android/` — a Kotlin/Compose app that turns a phone into the same LAN game host `pc/host.py` already is (embedded HTTP+WebSocket server, same protocol, same content), with Home/Running/Settings screens, then install and smoke-test it on the connected device.
 
 **Architecture:** A framework-agnostic core (`Hub`/`Room`/`Player`/`Dispatcher`, `RouteResolver`, `ContentRoots`) implements the protocol and content-routing logic as plain, unit-testable Kotlin with zero Android/Ktor imports. A thin Ktor CIO adapter (`OghServer`) wires that core to real HTTP/WebSocket traffic. A `HostForegroundService` owns the server's lifecycle. Compose screens (`Home`/`Running`/`Settings`) drive it through a `HostViewModel`.

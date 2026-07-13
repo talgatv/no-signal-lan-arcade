@@ -79,7 +79,7 @@ Set `OGH_OFFLINE=1` to refuse network attempts.
 
 ## Always offline (no download ever)
 
-- Game static files  
+- Game and program static files under `games/`
 - Lobby HTML  
 - LAN WebSocket between phones and PC  
 - Fonts under `games/_shared/fonts/`  

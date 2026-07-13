@@ -16,26 +16,28 @@ Detailed LLM task breakdown: [LLM_DEVELOPMENT_PLAN.md](./LLM_DEVELOPMENT_PLAN.md
 - [x] `pc/host.py` HTTP + WebSocket  
 - [x] Lobby `pc/www` + catalog-driven library  
 - [ ] QR + copy IP  
-- [ ] Turn-based MP reference (tic-tac-toe / connect four)  
+- [x] Turn-based MP reference (`tic-tac-toe`)
 - [ ] Pulse Race online snapshot  
 - [ ] Trivia party  
 
 ## Phase 2 — Android host
 
-- [ ] Gradle Compose skeleton  
-- [ ] Foreground service + HTTP/WS  
-- [ ] QR + IP  
-- [ ] Demo games in assets  
+- [x] Gradle Compose application
+- [x] Foreground service + HTTP/HTTPS + WebSocket host
+- [x] Simple QR/share invitation flow
+- [x] Offline game and program packs in APK assets
 
-## Phase 3 — Catalog v1 (~15–25 games)
+## Phase 3 — Community catalog
 
-- [ ] Lobby filters (genre / players / controls)  
-- [ ] More micro-games (1 PR = 1 game)  
-- [ ] UN-6 i18n in host UI  
+- [x] Catalog expanded beyond the original 15–25 entry goal
+- [x] Library search, sorting, and player/type filters
+- [ ] Keep adding focused micro-games (prefer 1 game per PR)
+- [x] UN-6 i18n in the Android host UI
+- [ ] Expand browser library and game translations
 
 ## Phase 4 — Release polish
 
-- [ ] CI, security notes  
+- [x] Basic catalog/Python validation in CI + security notes
 - [ ] Offline Release zip (runtimes)  
 - [ ] Tag v0.1.0  
 

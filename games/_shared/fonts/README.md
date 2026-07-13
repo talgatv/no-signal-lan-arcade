@@ -3,8 +3,10 @@
 Local files — **no CDN**, offline-first.  
 Sibling of [`../shaders/`](../shaders/) under `_shared`.
 
-Most fonts are **SIL Open Font License 1.1** (OFL).  
-JetBrains Mono is OFL. Free to use in OGH games.
+Five bundled families use the **SIL Open Font License 1.1** (OFL). The bundled
+Roboto files identify themselves as [Apache License 2.0](./APACHE-2.0.txt). See the complete
+[OFL 1.1 text](./OFL-1.1.txt) and the per-family
+[third-party notices](./THIRD_PARTY_NOTICES.md).
 
 ## Bundles
 
@@ -46,9 +48,7 @@ font-family: "Press Start 2P", monospace;
 - **Noto Sans CJK** (full Chinese) — tens of MB; use system UI or an opt-in pack.  
 - Full variable-font mega files — static TTF for simplicity.
 
-## Sources
+## Sources and licenses
 
-- https://github.com/google/fonts  
-- https://github.com/googlefonts/*  
-- https://github.com/JetBrains/JetBrainsMono  
-- https://github.com/JulietaUla/Montserrat  
+See [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md) for the source and
+license of every bundled family.

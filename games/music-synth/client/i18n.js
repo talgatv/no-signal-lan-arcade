@@ -1,7 +1,7 @@
 /**
  * i18n — small string table for Music Synth.
- * Mirrors the pattern used by programs/video-convert/client/i18n.js and
- * programs/speech-tools/client/i18n.js.
+ * Mirrors the pattern used by games/programs/video-convert/client/i18n.js and
+ * games/programs/speech-tools/client/i18n.js.
  */
 
 export const LANGS = ['en', 'ru', 'zh', 'es', 'ar', 'fr'];

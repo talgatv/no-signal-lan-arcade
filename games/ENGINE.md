@@ -18,7 +18,7 @@ This project is **not** Unity. The “engine” is three small pieces:
 | Save progress | [docs/contributing/SAVE_PROGRESS.md](../docs/contributing/SAVE_PROGRESS.md) |
 | API reference | [docs/contributing/ENGINE_API.md](../docs/contributing/ENGINE_API.md) |
 | Copy template | `games/_templates/solo` or `multiplayer` |
-| Scaffold | `python3 tools/new_game.py my-id --title "My Game"` |
+| Scaffold | `python3 tools/new_game.py my-id --title "My Game" --author "Your Name"` |
 | Validate | `python3 tools/validate_catalog.py` |
 
 ## Shared libraries

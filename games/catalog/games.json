@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-07-12",
+  "updated": "2026-07-13",
   "games": [
     {
       "id": "comet",
@@ -115,7 +115,7 @@
       "sizeBudgetKb": 100,
       "sizeMeasuredKb": 19.5,
       "status": "experimental",
-      "license": "TBD",
+      "license": "MIT",
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Uses games/_shared shader bg + sfx."
@@ -234,7 +234,7 @@
       "sizeBudgetKb": 80,
       "sizeMeasuredKb": 19.4,
       "status": "experimental",
-      "license": "TBD",
+      "license": "MIT",
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Low-res framebuffer scaled with image-rendering: pixelated. No WebGL bg (pure pixel sky)."
@@ -319,7 +319,7 @@
       "sizeBudgetKb": 100,
       "sizeMeasuredKb": 31.9,
       "status": "experimental",
-      "license": "TBD",
+      "license": "MIT",
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "LAN shared world planned later."
@@ -413,7 +413,7 @@
       "sizeBudgetKb": 80,
       "sizeMeasuredKb": 19.4,
       "status": "experimental",
-      "license": "TBD",
+      "license": "MIT",
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Requires host /ws for real multiplayer; offline AI works without server logic."
@@ -538,7 +538,7 @@
         "mouse": "ok"
       },
       "instructions": {
-        "en": "Coming soon — place files in programs/compass/ and set status to experimental."
+        "en": "Coming soon — place files in games/programs/compass/ and set status to experimental."
       },
       "authorId": "ogh-team",
       "dates": {
@@ -592,7 +592,7 @@
       "authorInline": null,
       "dates": {
         "added": "2026-07-10",
-        "updated": "2026-07-10"
+        "updated": "2026-07-13"
       },
       "players": {
         "min": 1,
@@ -602,7 +602,10 @@
       "entry": "world-trail/client/index.html",
       "manifest": "world-trail/manifest.json",
       "version": "0.1.0",
+      "sizeBudgetKb": 8000,
+      "sizeMeasuredKb": 5260,
       "status": "experimental",
+      "license": "MIT",
       "familyFriendly": true,
       "tags": [
         "multiplayer",
@@ -2148,7 +2151,7 @@
       "status": "experimental",
       "familyFriendly": true,
       "localeDefault": "en",
-      "notes": "LAN draw-and-guess built on the shared OGHNet room relay (same pattern as programs/lan-chat and games/piece-caller). No central authority beyond 'the current drawer owns the round': turn order is derived deterministically from the roster (players sorted by id) so every client agrees on the drawer; the host only starts the session and names the first drawer. The drawer captures Pointer Events into small stroke-segment batches ({c,s,pts,newStroke}, flushed ~every 45ms or 20 points) broadcast via net.send('stroke', ...); every other client replays them onto a read-only canvas with pixel-identical primitives (round-capped segments between integer backing-space points), so remote canvases reconstruct the drawing live without ever sending a whole-canvas image. WORD SECRECY is a real correctness property: the secret word lives only in the drawer's client; the only word-shaped value on the wire before the reveal is its character length (for the underscore hint), and the concept index is never broadcast in Word Bank mode - the plaintext word appears once, inside the round-end reveal. The drawer (the only client that knows the word) validates guesses locally: case-insensitive with light Levenshtein typo tolerance, and in Word Bank mode accepts the same concept in any of the 6 languages (words.json is concept-indexed) so mixed-language rooms work. Round ends on the first correct guess or a 75s timeout (drawer is the timer authority; each client computes the deadline from local receipt time to sidestep clock skew). Scoring: correct guesser gets 50 + up to 50 scaled by time remaining, drawer gets +25 when someone guesses; identical round-end deltas are applied on every client so scoreboards stay in sync. Word bank: client/data/words.json, 112 family-friendly concretely-drawable concepts translated across all 6 UN languages, concept-indexed. No bundled image/audio assets: Canvas 2D freehand surface (8-colour palette, 3 brush sizes, eraser, synced clear) and sound reuses games/_shared/js/ogh-sfx.js. RTL (Arabic) mirrors header/side-panel/overlay chrome only; the drawing canvas is never mirrored (dir=\"ltr\", ctx.direction='ltr'). Experimental: no mid-round late-join canvas replay (a player joining mid-round sees the drawing from that point on), and turn sequencing assumes the current drawer stays connected through their round.",
+      "notes": "LAN draw-and-guess built on the shared OGHNet room relay (same pattern as games/programs/lan-chat and games/piece-caller). No central authority beyond 'the current drawer owns the round': turn order is derived deterministically from the roster (players sorted by id) so every client agrees on the drawer; the host only starts the session and names the first drawer. The drawer captures Pointer Events into small stroke-segment batches ({c,s,pts,newStroke}, flushed ~every 45ms or 20 points) broadcast via net.send('stroke', ...); every other client replays them onto a read-only canvas with pixel-identical primitives (round-capped segments between integer backing-space points), so remote canvases reconstruct the drawing live without ever sending a whole-canvas image. WORD SECRECY is a real correctness property: the secret word lives only in the drawer's client; the only word-shaped value on the wire before the reveal is its character length (for the underscore hint), and the concept index is never broadcast in Word Bank mode - the plaintext word appears once, inside the round-end reveal. The drawer (the only client that knows the word) validates guesses locally: case-insensitive with light Levenshtein typo tolerance, and in Word Bank mode accepts the same concept in any of the 6 languages (words.json is concept-indexed) so mixed-language rooms work. Round ends on the first correct guess or a 75s timeout (drawer is the timer authority; each client computes the deadline from local receipt time to sidestep clock skew). Scoring: correct guesser gets 50 + up to 50 scaled by time remaining, drawer gets +25 when someone guesses; identical round-end deltas are applied on every client so scoreboards stay in sync. Word bank: client/data/words.json, 112 family-friendly concretely-drawable concepts translated across all 6 UN languages, concept-indexed. No bundled image/audio assets: Canvas 2D freehand surface (8-colour palette, 3 brush sizes, eraser, synced clear) and sound reuses games/_shared/js/ogh-sfx.js. RTL (Arabic) mirrors header/side-panel/overlay chrome only; the drawing canvas is never mirrored (dir=\"ltr\", ctx.direction='ltr'). Experimental: no mid-round late-join canvas replay (a player joining mid-round sees the drawing from that point on), and turn sequencing assumes the current drawer stays connected through their round.",
       "multiplayer": {
         "status": "ready",
         "protocol": "ogh-net-v1",
@@ -3693,6 +3696,106 @@
       "familyFriendly": true,
       "localeDefault": "en",
       "notes": "Original fruit-slicing swipe arcade (an own take on the well-known 'fruit arcs up from below, swipe to slice, avoid the bomb' genre — own fruit designs/physics/code/sound, nothing copied from any specific existing game). client/fruits.js is a pure, DOM-free entity module: 5 fruit types (apple, watermelon-wedge, berry cluster, citrus cross-section, kiwi cross-section — distinguished by both silhouette and saturated color) plus a deliberately desaturated, spiky, pulsing-red-glow, lit-fuse bomb, launched with real gravity-arc physics (plain per-frame Euler integration, not a scripted/closed-form path). Sliced-fruit debris (two halves flying apart) reuses each intact fruit's own whole-shape draw() call clipped to one side via canvas clip(), so no fruit type needed a second hand-authored half-shape. client/slicing.js is a second pure module: a swipe-segment-vs-circle-hitbox test called once per new path segment as a pointer drags, so a fast swipe is checked along its whole path, not just its endpoints. Combo scoring: the Nth fruit sliced within one unbroken swipe scores basePoints*N, resetting on pointer-up, so one stroke clearing several fruit scores meaningfully more than the same fruit sliced across separate swipes. Slicing the bomb is instant game over (the higher-stakes classic genre convention); missing a fruit (falling back below the screen unsliced) costs 1 of 3 lives, a missed bomb is free. Difficulty is a pure function of elapsed play time (fruits.js's difficultyForElapsed(), inspectable via window.OGH_BLADE_FRUIT.getDifficulty): spawn interval, simultaneous items per wave, bomb probability and launch speed all ramp over the first 45s then hold. No bundled image or audio assets — Canvas 2D vector shapes with a neon glow, a glowing swipe trail sampled from the live pointer path, and particle bursts (juice on a fruit, a bigger multi-color burst plus screen-shake on the bomb); sound reuses games/_shared/js/ogh-sfx.js, extended with exactly one new 'slice' pattern (a fast bright blade-swish sweep) — combo continuation reuses gem-swap's 'chain' cascade sparkle, the bomb reuses 'boom', a missed fruit reuses 'screech', the run-ending sting reuses 'die'. Score persists locally via games/_shared/js/ogh-profile.js (games/pop-the-bugs convention). RTL (Arabic) flips only the text/menu chrome; the play field (launch positions, swipe path) never mirrors (stage+canvas dir=ltr, ctx.direction forced ltr), same precedent as games/dash-runner and games/drop-smash."
+    },
+    {
+      "id": "cart-corral",
+      "name": "Cart Corral",
+      "names": {
+        "en": "Cart Corral",
+        "ru": "Сборщик тележек",
+        "zh": "购物车归位",
+        "es": "Corral de Carritos",
+        "ar": "جامع عربات التسوق",
+        "fr": "Rangement des Chariots"
+      },
+      "tagline": "Round up rolling carts, manage your stamina, and keep the parked cars spotless.",
+      "style": "neon-vector",
+      "styles": [
+        "vector",
+        "top-down",
+        "parking-lot",
+        "physics"
+      ],
+      "genres": [
+        "arcade",
+        "physics",
+        "time-management"
+      ],
+      "controls": {
+        "primary": "touch",
+        "supported": [
+          "touch",
+          "mouse",
+          "keyboard"
+        ],
+        "keyboard": "optional",
+        "mouse": "ok",
+        "notes": {
+          "en": "Move with the virtual joystick, WASD, or arrow keys. ACTION / Space grabs the nearest cart or releases your train. Stop completely to recover stamina.",
+          "ru": "Двигайся виртуальным джойстиком, WASD или стрелками. ДЕЙСТВИЕ / пробел цепляет ближайшую тележку либо отпускает состав. Полностью остановись, чтобы восстановить стамину."
+        }
+      },
+      "parameters": {
+        "shiftSeconds": {
+          "type": "fixed",
+          "value": 150
+        },
+        "cartCount": {
+          "type": "fixed",
+          "value": 12
+        },
+        "loadSpeed": {
+          "type": "derived",
+          "description": {
+            "en": "Maximum walking speed falls monotonically with every attached cart and with low stamina.",
+            "ru": "Максимальная скорость монотонно снижается с каждой прицепленной тележкой и при низкой стамине."
+          }
+        }
+      },
+      "tags": [
+        "solo",
+        "experimental",
+        "shopping-carts",
+        "stamina",
+        "touch",
+        "physics"
+      ],
+      "instructions": {
+        "en": "Collect all 12 loose shopping carts before the 150-second shift ends. Move with the virtual joystick, WASD, or arrow keys; press ACTION or Space near a cart to attach it. Attached carts form a physical train and every cart slows you down. Moving drains stamina; standing completely still restores it. A cart that is not attached rolls with momentum when pushed. Bring every cart fully inside the green return zone. Avoid strong player or cart impacts with parked cars: the third strike ends the shift.",
+        "ru": "Собери все 12 тележек до конца 150-секундной смены. Двигайся виртуальным джойстиком, WASD или стрелками; рядом с тележкой нажми ДЕЙСТВИЕ или пробел, чтобы прицепить её. Тележки образуют физический состав, и каждая снижает скорость. Движение расходует стамину, а полная остановка восстанавливает её. Неприцепленная тележка после толчка катится по инерции. Закати все тележки целиком в зелёную зону возврата. Избегай сильных ударов игрока или тележек о припаркованные машины: третий страйк завершает смену.",
+        "zh": "在150秒值班结束前收齐12辆购物车。用虚拟摇杆、WASD或方向键移动；靠近购物车时按操作键或空格键将其挂接。挂接的购物车形成实体车队，每多一辆都会降低速度。移动消耗体力，完全停下可恢复。未挂接的购物车被推动后会凭惯性继续滚动。把每辆车完整送入绿色归还区。玩家或购物车猛烈撞上停放的汽车会被记一次，第三次即结束值班。",
+        "es": "Recoge los 12 carritos antes de que termine el turno de 150 segundos. Muévete con el joystick virtual, WASD o las flechas; pulsa ACCIÓN o Espacio cerca de un carrito para engancharlo. Los carritos enganchados forman un tren físico y cada uno reduce tu velocidad. Moverte gasta resistencia y detenerte por completo la recupera. Un carrito suelto sigue rodando por inercia al empujarlo. Mete todos los carritos completamente en la zona verde. El tercer golpe fuerte contra un coche aparcado termina el turno.",
+        "ar": "اجمع عربات التسوق الـ12 قبل انتهاء الوردية التي مدتها 150 ثانية. تحرّك بعصا التحكم الافتراضية أو WASD أو الأسهم؛ اضغط زر الإجراء أو المسافة قرب عربة لربطها. تكوّن العربات المربوطة قطارًا فيزيائيًا وتخفض كل عربة سرعتك. تستهلك الحركة القدرة ويعيد الوقوف التام شحنها. تستمر العربة الحرة بالتدحرج بعد دفعها. ضع كل عربة بالكامل داخل منطقة الإرجاع الخضراء. تنتهي الوردية عند الاصطدام القوي الثالث بسيارة متوقفة.",
+        "fr": "Rassemblez les 12 chariots avant la fin du service de 150 secondes. Déplacez-vous avec le joystick virtuel, WASD ou les flèches ; appuyez sur ACTION ou Espace près d'un chariot pour l'attacher. Les chariots attachés forment un convoi physique et chacun vous ralentit. Marcher consomme de l'endurance ; rester complètement immobile la restaure. Un chariot libre continue de rouler après une poussée. Placez chaque chariot entièrement dans la zone verte. Le troisième choc violent contre une voiture stationnée termine le service."
+      },
+      "authorId": "ogh-team",
+      "authorInline": null,
+      "dates": {
+        "added": "2026-07-12",
+        "updated": "2026-07-12",
+        "released": "2026-07-12"
+      },
+      "familyId": null,
+      "variantOf": null,
+      "relatedIds": [
+        "claw-machine",
+        "cross-the-road"
+      ],
+      "players": {
+        "min": 1,
+        "max": 1,
+        "solo": true
+      },
+      "entry": "cart-corral/client/index.html",
+      "manifest": "cart-corral/manifest.json",
+      "version": "0.1.0",
+      "sizeBudgetKb": 180,
+      "sizeMeasuredKb": 124.0,
+      "status": "experimental",
+      "license": "MIT",
+      "familyFriendly": true,
+      "localeDefault": "en",
+      "notes": "Original touch-first top-down parking-lot collection game. A pure fixed-step physics module handles free-cart momentum/friction, player-to-cart and cart-to-cart impulses, static parked-car collision, a constrained attached train, full-body drop-zone capture, load-dependent speed, stop-only stamina recovery, strike loss, timer loss, and all-carts win. Canvas 2D draws the entire lot, employee, parked cars, carts, camera, minimap and effects without bitmap assets. Best score/time persist locally through OGHProfile; sound reuses the shared synthesized SFX."
     },
     {
       "id": "keyboard-ninja",

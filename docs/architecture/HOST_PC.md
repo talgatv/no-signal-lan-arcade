@@ -18,6 +18,7 @@ The PC host is the **reference host** for development and LAN parties:
 ThreadingHTTPServer
   ├─ GET  /                  → pc/www/index.html
   ├─ GET  /games/**          → games/**
+  │        /games/programs/** → games/programs/**
   ├─ GET  /docs/**           → docs/**
   ├─ GET  /api/health
   └─ GET  /ws  (Upgrade)     → per-connection WS thread

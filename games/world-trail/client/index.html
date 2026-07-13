@@ -27,9 +27,22 @@
     <main class="wt-stage">
       <canvas id="map" aria-label="World map"></canvas>
       <div id="msg" class="wt-msg" hidden></div>
+      <div id="gpsBanner" class="wt-gps-banner" hidden>
+        <div id="gpsBannerText" class="wt-gps-banner-text"></div>
+        <div class="wt-gps-banner-actions">
+          <button type="button" id="btnEnableGps" class="ogh-btn ogh-btn-primary">
+            Enable GPS
+          </button>
+          <button type="button" id="btnDismissGps" class="ogh-btn">Later</button>
+        </div>
+      </div>
+      <aside id="roster" class="wt-roster" aria-label="Players">
+        <div class="wt-roster-head">Players</div>
+        <ul id="rosterList" class="wt-roster-list"></ul>
+      </aside>
       <div id="layerPanel" class="wt-layers" hidden>
         <label><input type="checkbox" data-layer="land" checked /> Land</label>
-        <label><input type="checkbox" data-layer="rivers" checked /> Rivers / lakes</label>
+        <label><input type="checkbox" data-layer="rivers" checked /> Rivers &amp; lakes</label>
         <label><input type="checkbox" data-layer="roads" checked /> Major roads</label>
         <label><input type="checkbox" data-layer="cities" checked /> Cities</label>
         <label><input type="checkbox" data-layer="trails" checked /> Trails</label>
@@ -38,8 +51,10 @@
     </main>
 
     <footer class="wt-bar">
+      <button type="button" id="btnGps" class="ogh-btn">GPS</button>
       <button type="button" id="btnCenter" class="ogh-btn">Center</button>
       <button type="button" id="btnPin" class="ogh-btn">Pin</button>
+      <button type="button" id="btnPlayers" class="ogh-btn">Players</button>
       <button type="button" id="btnLayers" class="ogh-btn">Layers</button>
       <button type="button" id="btnClearTrail" class="ogh-btn">Clear trail</button>
       <button type="button" id="btnFit" class="ogh-btn">World</button>

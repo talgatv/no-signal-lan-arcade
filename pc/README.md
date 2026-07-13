@@ -2,7 +2,7 @@
 
 Lightweight **LAN server** for Offline Games Hub, written in **Python 3** (standard library only).
 
-- Serves packs from `../games/`
+- Serves game and program packs from `../games/` (`../games/programs/` for programs)
 - Lobby: `http://IP:8080/` (or `https://` with `--https`)
 - WebSocket: `ws://IP:8080/ws` (rooms, ready, `game:action` / `game:state` relay)
 - **Phone GPS / sensors:** run with TLS: `./start.sh --https` then open `https://IP:8080/` and accept the self-signed certificate once.
@@ -77,7 +77,7 @@ python3 host.py --games /path/to/games
 | URL | |
 |-----|--|
 | `GET /` | Lobby |
-| `GET /games/...` | Game packs + catalog |
+| `GET /games/...` | Game/program packs + catalog |
 | `GET /docs/...` | Project documentation |
 | `GET /api/health` | `{ ok, rooms }` |
 | `GET /api/rooms` | Room sizes |

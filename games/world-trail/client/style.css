@@ -98,6 +98,94 @@
   text-overflow: ellipsis;
 }
 
+.wt-roster {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  z-index: 3;
+  min-width: 9.5rem;
+  max-width: min(16rem, 70vw);
+  max-height: 45%;
+  overflow: auto;
+  padding: 0.4rem 0.5rem 0.5rem;
+  border-radius: 10px;
+  background: rgba(8, 14, 28, 0.92);
+  border: 1px solid rgba(0, 229, 255, 0.28);
+  font-size: 0.78rem;
+}
+
+.wt-roster[hidden] {
+  display: none !important;
+}
+
+.wt-roster-head {
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 0.3rem;
+}
+
+.wt-roster-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.wt-roster-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.35rem;
+  border-radius: 6px;
+  cursor: pointer;
+  min-height: 36px;
+}
+
+.wt-roster-list li:active,
+.wt-roster-list li:hover {
+  background: rgba(0, 229, 255, 0.12);
+}
+
+.wt-roster-list li.you {
+  border: 1px solid rgba(0, 229, 255, 0.35);
+}
+
+.wt-roster-list li.stale {
+  opacity: 0.5;
+}
+
+.wt-roster-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.wt-roster-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.wt-roster-name {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+
+.wt-roster-sub {
+  display: block;
+  font-size: 0.65rem;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
 .wt-stage {
   flex: 1 1 auto;
   position: relative;
@@ -130,6 +218,41 @@
   z-index: 3;
   pointer-events: none;
   text-align: center;
+}
+
+.wt-gps-banner {
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 4;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(20, 12, 8, 0.94);
+  border: 1px solid rgba(255, 180, 80, 0.55);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.wt-gps-banner-text {
+  margin-bottom: 0.55rem;
+  color: #ffe8c8;
+}
+
+.wt-gps-banner-text code {
+  font-size: 0.72rem;
+  color: #9fe;
+}
+
+.wt-gps-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.wt-gps-banner-actions .ogh-btn {
+  min-height: 44px;
 }
 
 .wt-layers {

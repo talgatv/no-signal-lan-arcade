@@ -1,5 +1,5 @@
 /**
- * Games hub — library + local profile/progress UI
+ * Games/programs hub — library + local profile/progress UI
  *
  * Works with:
  *  - OGH PC host:  http://host:8080/games/  or /games/hub/
@@ -16,7 +16,7 @@ const drawerStatus = $('drawerStatus');
 let catalog = [];
 let selectedAvatarId = OGHProfile.getProfile().avatarId;
 
-/** @type {{ mode: 'ogh'|'games-root', gamePrefix: string, programPrefix: string|null, catalogUrls: string[] }} */
+/** @type {{ mode: 'ogh'|'games-root', gamePrefix: string, programPrefix: string, catalogUrls: string[] }} */
 let roots = detectRoots();
 
 /**
@@ -34,7 +34,7 @@ function detectRoots() {
     return {
       mode: 'ogh',
       gamePrefix: '/games/',
-      programPrefix: '/programs/',
+      programPrefix: '/games/programs/',
       catalogUrls: ['/games/catalog/games.json'],
     };
   }
@@ -43,7 +43,7 @@ function detectRoots() {
     return {
       mode: 'games-root',
       gamePrefix: '/',
-      programPrefix: null, // programs live outside games/ — need full host
+      programPrefix: '/programs/',
       catalogUrls: [
         '/catalog/games.json',
         '../catalog/games.json',
@@ -55,7 +55,7 @@ function detectRoots() {
   return {
     mode: 'ogh',
     gamePrefix: '/games/',
-    programPrefix: '/programs/',
+    programPrefix: '/games/programs/',
     catalogUrls: [
       '/games/catalog/games.json',
       '/catalog/games.json',
@@ -78,10 +78,6 @@ function entryToPath(g) {
   if (p.startsWith('/')) return p.endsWith('/') ? p : `${p}/`;
 
   if (kind === 'program') {
-    if (!roots.programPrefix) {
-      // Served only under games/ static tree — cannot reach programs/
-      return '#program-needs-ogh-host';
-    }
     p = roots.programPrefix + p;
   } else {
     p = roots.gamePrefix + p;
@@ -249,7 +245,7 @@ function renderGrid() {
   const progressIds = new Set(OGHProfile.listProgress().map((e) => e.gameId));
 
   if (!list.length) {
-    grid.innerHTML = '<p class="hub-empty">No games match your filters.</p>';
+    grid.innerHTML = '<p class="hub-empty">No games or programs match your filters.</p>';
     return;
   }
 
@@ -263,10 +259,8 @@ function renderGrid() {
       const players = g.players ? `${g.players.min}–${g.players.max}` : '?';
       const blurb = g.tagline || g.instructions?.en || '';
       const wip = g.status === 'wip';
-      const brokenProg = path === '#program-needs-ogh-host';
-      const href =
-        wip || brokenProg ? '#' : `${path}?${qsPlay()}`;
-      const disabled = wip || brokenProg;
+      const href = wip ? '#' : `${path}?${qsPlay()}`;
+      const disabled = wip;
       return `
       <a class="hub-card ${disabled ? 'is-wip' : ''}" href="${href}" ${disabled ? 'aria-disabled="true"' : ''}>
         <h2>
@@ -275,13 +269,8 @@ function renderGrid() {
           ${mp ? '<span class="hub-badge mp">MP</span>' : ''}
           ${hasProg ? '<span class="hub-badge prog">saved</span>' : ''}
           ${wip ? '<span class="hub-badge">WIP</span>' : ''}
-          ${brokenProg ? '<span class="hub-badge warn">needs full host</span>' : ''}
         </h2>
-        <p>${escapeHtml(
-          brokenProg
-            ? 'Unavailable here: this page is only the games/ folder. Run: cd pc && ./start.sh → open http://127.0.0.1:8080/games/ then LAN Chat.'
-            : blurb
-        )}</p>
+        <p>${escapeHtml(blurb)}</p>
         <div class="hub-meta">
           <span>${escapeHtml(genres || g.style || '')}</span>
           <span>${players}p</span>
@@ -330,18 +319,6 @@ async function loadCatalog() {
       <span style="font-size:12px;color:#5a6280">${escapeHtml(String(e.message || e))}</span>
     </p>`;
     return;
-  }
-  // remove old banner if reloading
-  document.querySelectorAll('.hub-banner').forEach((n) => n.remove());
-  if (roots.mode === 'games-root') {
-    const bar = document.createElement('p');
-    bar.className = 'hub-banner';
-    bar.innerHTML =
-      '<strong>Limited mode:</strong> this is a plain folder server under <code>games/</code> ' +
-      '(e.g. port 8765). <strong>LAN Chat & programs are disabled</strong> here because they live in <code>programs/</code>.<br/>' +
-      'Fix: stop that server, run <code>cd pc && ./start.sh</code>, open ' +
-      '<code>http://127.0.0.1:8080/games/</code> — then open <strong>LAN Chat &amp; Radio</strong>.';
-    grid.parentElement?.insertBefore(bar, grid);
   }
   renderGrid();
 }

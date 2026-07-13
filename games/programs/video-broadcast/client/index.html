@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Video Broadcast — OGH</title>
+  <link rel="stylesheet" href="../../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="vb-body ogh-font-ui">
+  <header class="vb-top">
+    <a class="back" href="../../../hub/" data-i18n="back">Library</a>
+    <div class="titles">
+      <h1 data-i18n="title">Video Broadcast</h1>
+      <p id="netLine" class="net">connecting…</p>
+    </div>
+    <div class="me">
+      <img id="meAvatar" alt="" width="32" height="32" />
+      <span id="meName">…</span>
+    </div>
+    <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+  </header>
+
+  <p class="tagline" data-i18n="tagline">Live camera and mic, straight between browsers.</p>
+
+  <div id="insecureBanner" class="banner banner-warn" hidden>
+    <p id="insecureMsg" data-i18n="insecureMsg">Camera/mic access needs a secure connection.</p>
+  </div>
+
+  <div id="mediaError" class="banner banner-error" hidden></div>
+
+  <div class="vb-layout">
+    <main class="vb-main">
+      <section id="tileGrid" class="tile-grid">
+        <p id="gridEmpty" class="grid-empty" data-i18n="gridEmptyHint">No one is broadcasting yet.</p>
+      </section>
+    </main>
+
+    <aside class="roster-wrap">
+      <h2 data-i18n="roomHeading">In this room</h2>
+      <ul id="roster" class="roster"><li class="empty" data-i18n="noPeers">No one else here yet</li></ul>
+    </aside>
+  </div>
+
+  <footer class="controls-bar">
+    <button type="button" id="broadcastBtn" class="ogh-btn ogh-btn-primary" data-i18n="startBroadcast">Start broadcasting</button>
+    <button type="button" id="muteBtn" class="ogh-btn" data-i18n="mute" hidden>Mute</button>
+    <button type="button" id="cameraBtn" class="ogh-btn" data-i18n="cameraOff" hidden>Camera off</button>
+    <button type="button" id="flipBtn" class="ogh-btn" data-i18n="flipCamera" hidden>Flip camera</button>
+  </footer>
+
+  <p class="hint privacy" data-i18n="privacyHint">Video and audio go directly between browsers over your LAN.</p>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

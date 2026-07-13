@@ -109,7 +109,10 @@ def main() -> int:
             "instructions": {
                 "en": "Open via PC host lobby. Edit client/game.js to change rules.",
             },
-            "authorId": None if args.author else "ogh-team",
+            # Never silently credit an external contributor's game to the core
+            # team. A contributor can add their public name with --author, or
+            # leave both fields empty and fill attribution in the PR later.
+            "authorId": None,
             "authorInline": (
                 {"name": args.author, "email": None, "site": None, "links": []}
                 if args.author
@@ -124,6 +127,7 @@ def main() -> int:
             "entry": f"{gid}/client/index.html",
             "manifest": f"{gid}/manifest.json",
             "version": "0.1.0",
+            "license": "MIT",
             "status": "experimental",
             "familyFriendly": True,
             "tags": ["multiplayer", "template"] if args.multiplayer else ["beginner"],
@@ -141,6 +145,8 @@ def main() -> int:
     print(f"  mode:  {'multiplayer' if args.multiplayer else 'solo'}")
     if not args.no_catalog:
         print("  catalog: games/catalog/games.json updated")
+        if not args.author:
+            print("  author: not set (add --author or edit authorInline before your PR)")
     print()
     print("Next:")
     print("  cd pc && ./start.sh")

@@ -104,5 +104,5 @@ games/doodle-guess/
 - The UI-chrome i18n (`i18n.js`) is separate from the word bank's per-language
   noun lists (`data/words.json`) — don't conflate them.
 - Multiplayer is built on the shared `OGHNet` room relay
-  (`games/_shared/js/ogh-net.js`), the same pattern as `programs/lan-chat` and
+  (`games/_shared/js/ogh-net.js`), the same pattern as `games/programs/lan-chat` and
   `games/piece-caller`.

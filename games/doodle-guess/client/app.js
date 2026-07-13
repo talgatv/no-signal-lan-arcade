@@ -9,7 +9,7 @@
  *   - 'your': the drawer secretly types their own word.
  *
  * NETWORK MODEL (built on the repo's OGHNet room relay — same pattern as
- * programs/lan-chat and games/piece-caller: net.send(action,payload)
+ * games/programs/lan-chat and games/piece-caller: net.send(action,payload)
  * broadcasts to everyone else; net.on('action', ...) receives; the app does
  * its own recipient filtering). There is no central authority beyond "the
  * current drawer owns the round":

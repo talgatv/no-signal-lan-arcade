@@ -1,152 +1,160 @@
-# Android host stack (decision record)
+# Android host stack (implementation record)
 
-## Selection criteria
+## Current status
 
-1. **Tiny host APK** — shell stays small; games must not force a fat base install.  
-2. **Multi-platform later** — same packs on PC and Android.  
-3. **UN languages** from day one (i18n-ready).  
-4. **Familiar DX** — Kotlin + Compose (as in Dual).  
-5. **Players use the browser** — guests never install the APK.
+Android host **0.2.0** is implemented under [`android/`](../../android/).
+One Android phone runs the local server; every guest joins from a normal browser
+on the same Wi-Fi or phone hotspot. Guests do not install an APK.
 
----
+| Layer | Implemented stack | Role |
+|-------|-------------------|------|
+| Host UI | Kotlin + Jetpack Compose + Material 3 | Start/stop, invitation, help, settings |
+| Lifecycle | Android foreground service | Owns the server, notification, wake lock, and runtime state |
+| HTTP/HTTPS/WS | Ktor server with the Netty engine | One LAN listener and the same routes as the PC host |
+| Host core | Plain Kotlin models and dispatcher | Rooms, players, protocol messages, static-route resolution |
+| Settings | DataStore | Language, port, screen policy, HTTPS |
+| QR | ZXing core | Encodes the direct library invitation |
+| Browser packs | HTML/CSS/vanilla JS | The same `games/` tree used by the PC host |
+| Build | Gradle Version Catalog, JDK 17 | minSdk 26, targetSdk 36 |
 
-## Decision summary
-
-| Layer | Stack | Why |
-|-------|--------|-----|
-| **Android host UI** | Kotlin + Jetpack Compose + Material 3 | Fast UI, Play Store, foreground service, QR |
-| **Local server** | Kotlin HTTP + WebSocket (minimal deps) | No Node/Chromium in the APK |
-| **Lobby + games** | HTML/CSS/vanilla JS | Any phone browser; ≤ 10 MB per pack |
-| **Host strings** | `res/values-XX/strings.xml` | System i18n + RTL for Arabic |
-| **Game dictionaries** | On-demand JSON locale packs | Don’t ship CJK word lists in every pack |
-| **Build** | Gradle Version Catalog, minSdk 26, JDK 17 | Matches Dual-class tooling |
-
-**Reject for host:** Flutter, React Native, Capacitor-as-shell, Electron, embedded Node.  
-**Reject for default games:** Unity / Unreal / full Godot export / huge texture packs.
+There is no embedded Node, Chromium, Flutter engine, Unity runtime, or cloud
+service in the app.
 
 ---
 
-## Target repository layout
+## Runtime shape
 
 ```text
-OFFline_games_app/   (no-signal-lan-arcade)
-├── README.md
-├── docs/
-├── android/                 # this host
-│   └── app/
-├── pc/                      # Python host (shipping now)
-├── games/                   # web packs ≤ 10 MB
-└── ...
+Compose UI
+    │
+    ▼
+HostViewModel + HostRuntime
+    │
+    ▼
+HostForegroundService
+    │
+    ▼
+NettyOghServer ── HTTP / HTTPS / WebSocket on 0.0.0.0:<port>
+    │
+    ├── Hub + Dispatcher          rooms, players, relay
+    ├── RouteResolver             PC-compatible URLs and redirects
+    └── ContentRoots              external override, then APK assets
 ```
 
-`android/` is a **platform shell**. Game logic lives in `games/` HTML packs.
+The foreground service is the source of truth for whether hosting is starting,
+running, stopped, or failed. Reopening the activity or tapping the persistent
+notification therefore returns to the correct invitation state instead of
+starting a second server.
 
----
+## Network transport
 
-## Why not “Dual + Node inside”
+Production uses `NettyOghServer` for both modes:
 
-| Option | Size / pain | Verdict |
-|--------|-------------|---------|
-| Compose + **embedded Node/Bun** | +30–80 MB, nasty builds | ❌ |
-| Compose + **Capacitor** host UI | Extra WebView weight | ❌ |
-| **Flutter** host | Heavier base APK | ❌ |
-| **KMP + Compose Multiplatform** day one | Strong later; slow start | ⏳ phase 2–3 |
-| **Compose + thin Kotlin server** | Host APK realistically **2–8 MB** without games | ✅ |
+- plain HTTP + `ws://`;
+- HTTPS + `wss://`, using a locally generated self-signed certificate whose
+  subject-alternative names include the phone's current LAN addresses;
+- `/api/health`, `/api/rooms`, static packs, lobby, and the v1 WebSocket
+  protocol through one shared Ktor routing function.
 
-Games may ship:
+The repository also retains the earlier Ktor CIO `OghServer` and the custom
+`SSLServerSocket`-based `HttpsOghServer` with its HTTP/1.1 and RFC 6455 codecs.
+They remain useful as tested transport/reference implementations, but the
+foreground service starts the Netty implementation.
 
-- inside APK `assets/games/...` (few demos), or  
-- as external packs — base app stays tiny.
+HTTPS is optional and lives under Advanced settings. A guest browser must accept
+the local self-signed certificate warning before loading the library. HTTPS is
+needed for browser APIs such as phone geolocation when the page is opened from a
+LAN IP rather than `localhost`.
 
-**Philosophy:** “GTA in 10 MB” = procedural/vector art, tiny assets, original rules.  
-10 MB is a **ceiling**; most packs should be **&lt; 500 KB–2 MB**.
+## Content packaging and overrides
 
----
+`syncWebAssets` runs before every Android build and copies:
 
-## Server duties on Android
+- the complete repository `games/` tree, including
+  `games/programs/<id>/`;
+- the PC lobby from `pc/www/`;
+- no game templates and no bundled shared font directory.
 
-1. Listen `0.0.0.0:PORT` (HTTP + WebSocket).  
-2. Serve lobby + `/games/<id>/`.  
-3. Rooms / players / broadcast (same protocol as `pc/host.py`).  
-4. Foreground service + “server running” notification.  
-5. UI: start/stop, IP, QR, language, installed packs.
+The generated destination is `android/app/src/main/assets/web/`. It is build
+output: do not edit or commit it.
 
-**Sparse dependencies:** Coroutines, Compose BOM, optional QR lib, DataStore.  
-No Room required for MVP. No speech SDKs.
+At runtime `ContentRoots` checks the app's external files directory first:
 
-| HTTP/WS approach | Pros | Cons |
-|------------------|------|------|
-| A. Custom ServerSocket + WS | Minimal MB | More code |
-| B. Ktor CIO | Nice API | +size |
-| C. NanoHTTPD + WS | Balance | Maintenance |
+```text
+<external-files>/packs/games/...
+<external-files>/packs/www/...
+```
 
-**MVP:** B or C. Shrink to A if needed.
+A file there overrides the matching bundled asset, which supports development
+and future pack-management flows without changing the routing protocol. There
+is not yet an end-user pack installer or signature/update UI.
 
----
+Canonical program URLs are `/games/programs/<id>/client/`. Legacy
+`/programs/<id>/client/` requests redirect to that tree.
 
-## i18n — UN languages
+## Host experience
+
+The non-technical flow is deliberately short:
+
+1. Tap the large **Play together** button.
+2. Show one QR code to nearby players, or share/copy its link.
+3. Guests join the library on the same Wi-Fi; the host can also play locally.
+4. Open hotspot help only if no usable LAN address is available.
+5. Confirm before stopping the server.
+
+Port and HTTPS controls stay under Advanced settings. The app can keep the
+invitation screen awake while hosting and reports bind/start failures instead
+of optimistically showing a running server.
+
+## Internationalization
+
+The native host ships the six UN languages:
 
 | Code | Language | Notes |
-|------|----------|--------|
-| `en` | English | default |
-| `zh` | Chinese (Simplified) | system CJK fonts |
+|------|----------|-------|
+| `en` | English | Default fallback |
+| `zh` | Chinese (Simplified) | System CJK fonts |
 | `ru` | Russian | |
 | `es` | Spanish | |
-| `ar` | Arabic | **RTL** |
+| `ar` | Arabic | RTL layout |
 | `fr` | French | |
 
-Rules:
+Host copy lives in `res/values-XX/strings.xml`. Browser packs keep their own
+locale tables and reuse system fonts; the APK does not bundle a full CJK font.
 
-1. Host UI = `strings.xml` only.  
-2. Lobby/games = key-based JSON locales.  
-3. Huge word packs load **on demand** per room language.  
-4. Do not bundle full Noto CJK in the APK.
+## Build and size
 
----
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+cd android
+./gradlew :app:assembleDebug
+```
 
-## Dual (reference app)
+When building from a linked worktree, `-PoghWebRoot=/path/to/repository` selects
+the checkout whose current `games/` and `pc/www/` trees should be packaged.
 
-Copy **patterns**, not the subtitle codebase:
+| Artifact | Current policy |
+|----------|----------------|
+| Debug APK with the full catalog | approximately 18 MB |
+| Bundled web library | approximately 11 MB |
+| One pack | hard maximum 10 MB; prefer under 2 MB |
+| Ultra-small pack badge | under 200 KB |
 
-- Gradle catalog, JDK 17, Compose, ViewModel, DataStore  
-- Dark high-contrast UI, large hit targets  
+The application ID is `lol.lan.arcade`; version 0.2.0 uses version code 3.
 
-Do **not** pull Vosk, Room subtitle schemas, etc.
+## Remaining work
 
----
+These are product extensions, not unresolved stack choices:
 
-## Stack comparison
-
-| Host stack | Lightness | MVP speed | Desktop port | Dual familiarity |
-|------------|-----------|-----------|--------------|------------------|
-| **Kotlin + Compose + Kotlin server** | ★★★★★ | ★★★★ | ★★★ | ★★★★★ |
-| KMP + CMP | ★★★★ | ★★★ | ★★★★★ | ★★★★ |
-| Flutter | ★★★ | ★★★★ | ★★★★ | ★★ |
-| Capacitor web host | ★★ | ★★★★ | ★★★ | ★★ |
-
-**Choose row 1 now.** Evolve shared models into KMP later if useful.
-
----
-
-## Size definition of done
-
-| Artifact | Target |
-|----------|--------|
-| Base APK (0–2 demo games) | **&lt; 8–12 MB** install |
-| One game pack | max **10 MB**, aim **&lt; 2 MB** |
-| Ultra badge | **&lt; 200 KB** |
-| Wordpack per language | separate gzip |
-
----
-
-## Open (non-blocking)
-
-1. Ktor vs nano server on first spike.  
-2. Assets vs external packs for demos.  
-3. Final `applicationId` package name.
+1. User-facing import, validation, versioning, and signatures for external packs.
+2. Release signing and distribution automation.
+3. Broader device/network smoke coverage, especially OEM hotspot behavior.
+4. Optional extraction of genuinely shared models to KMP if another native host
+   is implemented.
 
 ## Related
 
-- [CORE.md](./CORE.md)  
-- [../VISION.md](../VISION.md)  
-- [../../android/README.md](../../android/README.md)
+- [Android README](../../android/README.md)
+- [Portable host core](./CORE.md)
+- [LAN multiplayer](./MULTIPLAYER.md)
+- [Vision](../VISION.md)

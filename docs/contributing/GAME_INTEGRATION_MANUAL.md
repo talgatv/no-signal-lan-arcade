@@ -62,7 +62,7 @@ Packs can be:
 | `kind` | Folder | Examples |
 |--------|--------|----------|
 | `game` (default) | `games/<id>/` | Comet, Pulse Race |
-| `program` | `programs/<id>/` | LAN Chat, Compass |
+| `program` | `games/programs/<id>/` | LAN Chat, Compass |
 
 ```text
 ┌──────────────────────────────────────────────┐
@@ -87,14 +87,16 @@ There is **no Unity / Godot project** here. The engine surface is three contract
 
 | Piece | Location | You touch it? |
 |-------|----------|----------------|
-| **Host** | `pc/host.py` (+ future Android) | Rarely |
+| **Host** | `pc/host.py` or the Android app | Rarely |
 | **Catalog** | `games/catalog/games.json` | **Yes** — one object per game |
-| **Your pack** | `games/<id>/` | **Yes** — HTML/CSS/JS |
+| **Your pack** | `games/<id>/` or `games/programs/<id>/` | **Yes** — HTML/CSS/JS |
 
 ### What the host does for you
 
 - Serves `games/<id>/client/index.html` at  
   `http://HOST:8080/games/<id>/client/`  
+- Serves `games/programs/<id>/client/index.html` at
+  `http://HOST:8080/games/programs/<id>/client/`
 - Serves the **library UI** at `/games/` (sort, profile, progress)  
 - Serves the **LAN lobby** at `/` (room nicknames, WebSocket presence)  
 - Relays multiplayer messages on `/ws`  
@@ -178,14 +180,14 @@ From the **repository root**:
 ### Solo game
 
 ```bash
-python3 tools/new_game.py hello-dots --title "Hello Dots"
+python3 tools/new_game.py hello-dots --title "Hello Dots" --author "Your Name"
 python3 tools/validate_catalog.py
 ```
 
 ### Multiplayer-ready game
 
 ```bash
-python3 tools/new_game.py click-party --multiplayer --title "Click Party"
+python3 tools/new_game.py click-party --multiplayer --title "Click Party" --author "Your Name"
 python3 tools/validate_catalog.py
 ```
 
@@ -319,6 +321,14 @@ Path rule from `games/<id>/client/`:
 
 ```text
 ../../_shared/   →   games/_shared/
+```
+
+For a utility program under `games/programs/<id>/client/`, use one more
+parent segment:
+
+```text
+../../../_shared/   →   games/_shared/
+../../../hub/       →   games/hub/
 ```
 
 ### 6.5 `client/game.js` (rules)
@@ -708,6 +718,7 @@ Template: `games/_templates/multiplayer` (shared counter).
 | `/` | LAN lobby (WebSocket presence) |
 | `/games/` | **Main library** (sort/filter + profile) |
 | `/games/<id>/client/` | Your game |
+| `/games/programs/<id>/client/` | Your utility program |
 | `/games/catalog/games.json` | Machine-readable library |
 | `/docs/...` | Documentation via host |
 | `/ws` | WebSocket |
@@ -788,6 +799,7 @@ Before you open a PR, tick what you can:
 | Test | How |
 |------|-----|
 | Loads on host | `/games/<id>/client/` returns 200 |
+| Program loads on host | `/games/programs/<id>/client/` returns 200 (program packs only) |
 | In library | Visible on `/games/` after refresh |
 | Touch | Real phone or devtools device mode |
 | Desktop mouse | Click / drag as designed |
@@ -903,7 +915,7 @@ They don’t scan — they open the host’s IP. Your game appears in `/games/` 
 No.
 
 **What about Android?**  
-Same packs will be served by the future Android host. Write portable web; don’t depend on PC-only APIs.
+The same packs are served by the Android host. Write portable web; don’t depend on PC-only APIs.
 
 **Who reviews PRs?**  
 Maintainers of the public repo. Be patient and keep changes focused.
@@ -987,8 +999,8 @@ games/my-game/
 
 ```bash
 # create
-python3 tools/new_game.py my-game --title "My Game"
-python3 tools/new_game.py my-mp --multiplayer --title "My MP"
+python3 tools/new_game.py my-game --title "My Game" --author "Your Name"
+python3 tools/new_game.py my-mp --multiplayer --title "My MP" --author "Your Name"
 
 # check
 python3 tools/validate_catalog.py

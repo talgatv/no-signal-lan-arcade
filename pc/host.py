@@ -48,7 +48,6 @@ DOCS_DIR = REPO_ROOT / "docs"
 # Mutable config (set in main)
 class _Cfg:
     games_dir: Path = REPO_ROOT / "games"
-    programs_dir: Path = REPO_ROOT / "programs"
 
 
 CFG = _Cfg()
@@ -425,6 +424,19 @@ class OGHHandler(BaseHTTPRequestHandler):
             self.end_headers()
             return
 
+        # Programs moved below games/. Redirect legacy host URLs so relative
+        # imports resolve against the canonical /games/programs/ tree.
+        if path in ("/programs", "/programs/") or path.startswith("/programs/"):
+            target = "/games/hub/"
+            if path.startswith("/programs/") and path != "/programs/":
+                target = "/games/programs/" + path[len("/programs/") :]
+            if parsed.query:
+                target += "?" + parsed.query
+            self.send_response(308)
+            self.send_header("Location", target)
+            self.end_headers()
+            return
+
         if path == "/ws":
             self._upgrade_websocket()
             return
@@ -497,8 +509,6 @@ class OGHHandler(BaseHTTPRequestHandler):
             return CFG.games_dir / "hub" / "index.html"
         if path.startswith("/games/"):
             return safe_join(CFG.games_dir, path[len("/games/") :])
-        if path.startswith("/programs/"):
-            return safe_join(CFG.programs_dir, path[len("/programs/") :])
         if path.startswith("/shared/"):
             # alias games/_shared
             return safe_join(CFG.games_dir / "_shared", path[len("/shared/") :])

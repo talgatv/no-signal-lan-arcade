@@ -1,6 +1,6 @@
 /**
  * i18n — small string table for Paint XP.
- * Mirrors the pattern used by programs/video-convert/client/i18n.js and
+ * Mirrors the pattern used by games/programs/video-convert/client/i18n.js and
  * games/music-synth/client/i18n.js.
  */
 

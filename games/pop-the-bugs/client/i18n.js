@@ -1,7 +1,7 @@
 /**
  * i18n — small string table for Pop the Bugs.
  * Mirrors the pattern used by games/music-synth/client/i18n.js and
- * programs/flashlight/client/i18n.js: a flat STRINGS table per UN-6
+ * games/programs/flashlight/client/i18n.js: a flat STRINGS table per UN-6
  * language, a couple of detect/apply helpers, no framework.
  */
 

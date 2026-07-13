@@ -91,7 +91,7 @@ logical-pixel coordinate space, then the whole board is scaled as a unit via a C
 instead of a `<canvas>`. Each tableau column's card-reveal offset shrinks dynamically
 if needed so a column can never overflow its allotted height, regardless of how many
 cards end up stacked in it. `games/_shared/css/ogh-base.css`'s `overflow: hidden` on
-`html`/`body` is left untouched (like `programs/flashlight`) — the page never needs to
+`html`/`body` is left untouched (like `games/programs/flashlight`) — the page never needs to
 scroll in the first place.
 
 ## i18n

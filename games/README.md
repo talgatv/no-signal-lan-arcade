@@ -1,7 +1,8 @@
 # Games — web packs for Offline Games Hub
 
-Each game is a **folder pack** ≤ **10 MB** (aim ≪ 2 MB, ultra badge &lt; 200 KB).  
-Players open games in a **browser** via the PC host (or future Android host).
+Each game is a **folder pack** ≤ **10 MB** (aim ≪ 2 MB, ultra badge &lt; 200 KB).
+Players open games in a **browser** through either the PC or Android host.
+Utility web packs use the same format under [`programs/`](programs/).
 
 ## Add your game
 
@@ -11,7 +12,7 @@ Players open games in a **browser** via the PC host (or future Android host).
 | [Multiplayer guide](../docs/contributing/ADD_MULTIPLAYER_GAME.md) | ogh-net |
 | [Engine map](./ENGINE.md) | Host + catalog + pack |
 | [Templates](_templates/) | Solo & multiplayer starters |
-| Scaffold | `python3 tools/new_game.py my-id --title "My Game"` |
+| Scaffold | `python3 tools/new_game.py my-id --title "My Game" --author "Your Name"` |
 | Validate | `python3 tools/validate_catalog.py` |
 
 ## Concept
@@ -65,17 +66,22 @@ Example: `comet` ↔ `comet-pixel`.
 **Controls** (`controls` in catalog): `touch` / `mouse` / `keyboard`  
 (`primary`, `supported`, `keyboard: none|optional|required`). Gamepad later.
 
-## Installed packs
+## Pack library
 
-| ID | Name | Style | Controls | Players | Status |
-|----|------|-------|----------|---------|--------|
-| [`comet`](comet/) | Comet | neon-vector | touch / mouse | 1 | ✅ |
-| [`comet-pixel`](comet-pixel/) | Comet Pixel | pixel + grid | touch / mouse | 1 | ✅ |
-| [`rootwork`](rootwork/) | Rootwork | pixel sandbox | touch / mouse / keys | 1 | ✅ |
-| [`pulse-race`](pulse-race/) | Pulse Race | neon racing | touch / keys | 1–4* | ✅ |
-| [`demo-tap`](demo-tap/) | Demo Tap | template sample | touch / mouse | 1 | ✅ sample |
+The hand-written five-pack table that used to live here quickly became stale.
+[`catalog/games.json`](catalog/games.json) is the source of truth for the full,
+growing library: games, multiplayer packs, samples, and utility
+programs. The PC and Android hosts both render that catalog and serve the same
+paths.
 
-\*Pulse Race: 1P+AI now; LAN path via ogh-net when host WS is used.
+Useful entry points:
+
+| Browse | Path |
+|--------|------|
+| All catalog rows | [`catalog/games.json`](catalog/games.json) |
+| Utility programs | [`programs/`](programs/) |
+| Solo starter | [`_templates/solo/`](_templates/solo/) |
+| Multiplayer starter | [`_templates/multiplayer/`](_templates/multiplayer/) |
 
 **Multiplayer docs:** [docs/architecture/MULTIPLAYER.md](../docs/architecture/MULTIPLAYER.md) · client [`_shared/js/ogh-net.js`](_shared/js/ogh-net.js)
 

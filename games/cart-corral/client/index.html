@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#090d0f" />
+  <title>Cart Corral — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="cc-body ogh-font-ui">
+  <div class="ogh-root cc-root" id="root">
+    <header class="cc-top">
+      <div class="cc-nav">
+        <a class="cc-back" href="/games/">
+          <span class="cc-back-arrow" aria-hidden="true">←</span>
+          <span data-i18n="back">Library</span>
+        </a>
+        <span class="cc-wordmark" data-i18n="title">Cart Corral</span>
+        <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+      </div>
+
+      <div class="cc-hud" role="status">
+        <div class="ogh-pill cc-hud-pill cc-delivered" id="hudCarts">
+          <span class="cc-hud-label" data-i18n="cartsPrefix">Delivered</span>
+          <strong id="hudCartsValue">0/12</strong>
+        </div>
+        <div class="ogh-pill cc-hud-pill cc-load" id="hudLoad">
+          <span class="cc-hud-label" data-i18n="loadPrefix">Load</span>
+          <strong id="hudLoadValue">0</strong>
+        </div>
+        <div class="ogh-pill cc-hud-pill cc-time" id="hudTime">
+          <span class="cc-hud-label" data-i18n="timePrefix">Time</span>
+          <strong id="hudTimeValue">02:00</strong>
+        </div>
+        <div class="ogh-pill cc-hud-pill cc-strikes" id="hudStrikes">
+          <span class="cc-hud-label" data-i18n="strikesLabel">Strikes</span>
+          <strong id="hudStrikesValue">0/3</strong>
+        </div>
+      </div>
+
+      <div class="cc-stamina" id="staminaMeter" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+        <div class="cc-stamina-copy">
+          <span data-i18n="staminaLabel">Stamina</span>
+          <strong id="staminaText">100%</strong>
+        </div>
+        <div class="cc-stamina-track" aria-hidden="true">
+          <span class="cc-stamina-fill" id="staminaFill"></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Parking-lot positions and thumb controls are spatial, not reading
+         order. Keep this subtree LTR when the surrounding UI switches to RTL. -->
+    <main class="ogh-stage cc-stage" dir="ltr">
+      <div class="cc-playfield" dir="ltr">
+        <canvas
+          class="cc-game"
+          id="game"
+          width="720"
+          height="1000"
+          dir="ltr"
+          aria-label="Cart Corral parking lot"
+        ></canvas>
+
+        <div class="cc-controls" dir="ltr" aria-hidden="false">
+          <div
+            class="cc-stick-zone"
+            id="stickZone"
+            role="application"
+            data-i18n-aria="joystickAria"
+            aria-label="Movement joystick"
+          >
+            <div class="cc-stick-base" id="stickBase" aria-hidden="true">
+              <span class="cc-stick-ring"></span>
+              <span class="cc-stick-knob" id="stickKnob"></span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="cc-action"
+            id="btnAction"
+            data-i18n-aria="btnActionAria"
+            aria-label="Grab or release cart"
+          >
+            <span class="cc-action-icon" aria-hidden="true"></span>
+            <span class="cc-action-label" id="actionLabel" data-i18n="grabBtn">Grab</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="cc-toast" id="toast" role="status" aria-live="polite" aria-atomic="true" dir="auto"></div>
+      <div class="cc-paused" id="pausedBanner" data-i18n="paused" dir="auto" hidden>Paused</div>
+    </main>
+
+    <div class="ogh-overlay cc-overlay" id="overlay">
+      <section class="ogh-card cc-card" id="startCard" aria-labelledby="cc-title">
+        <div class="cc-card-badge" aria-hidden="true"><span></span></div>
+        <h1 id="cc-title" data-i18n="title">Cart Corral</h1>
+        <p class="cc-blurb" data-i18n="blurb">Round up every loose shopping cart and return the whole train to the drop zone.</p>
+
+        <div class="cc-controls-note">
+          <h2 data-i18n="controlsTitle">How to play</h2>
+          <p data-i18n="controlsBody">Move with the joystick or WASD. Grab carts, avoid parked cars, and stop moving to recover stamina.</p>
+        </div>
+
+        <p class="cc-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary cc-card-button" id="btnStart" data-i18n="startBtn">Start shift</button>
+      </section>
+
+      <section class="ogh-card cc-card" id="endCard" aria-labelledby="endTitle" hidden>
+        <div class="cc-card-badge cc-card-badge-end" aria-hidden="true"><span></span></div>
+        <h1 id="endTitle" data-i18n="winTitle">Corral Complete!</h1>
+        <p class="cc-final-line" id="finalLine"></p>
+        <p class="cc-new-best" id="newBestLine" data-i18n="newBest" hidden>New best shift!</p>
+        <p class="cc-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary cc-card-button" id="btnAgain" data-i18n="againBtn">Work another shift</button>
+      </section>
+    </div>
+  </div>
+
+  <script type="module" src="game.js"></script>
+</body>
+</html>

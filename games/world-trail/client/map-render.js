@@ -195,19 +195,59 @@ export function createMapRenderer(canvas) {
     }
 
     if (layers.rivers && data.rivers) {
+      // Zoom-dependent water detail (Natural Earth scalerank)
+      let maxLakeSr = 3;
+      let maxRiverSr = 4;
+      if (scale >= 0.35) {
+        maxLakeSr = 5;
+        maxRiverSr = 5;
+      }
+      if (scale >= 0.7) {
+        maxLakeSr = 7;
+        maxRiverSr = 7;
+      }
+      if (scale >= 1.4) {
+        maxLakeSr = 9;
+        maxRiverSr = 9;
+      }
+      if (scale >= 2.5) {
+        maxLakeSr = 99;
+        maxRiverSr = 99;
+      }
+
+      // Lakes first (fill under rivers)
       for (const f of data.rivers.features || []) {
-        const k = f.p?.k;
-        if (k === 'l') {
-          ctx.fillStyle = 'rgba(40,100,180,0.55)';
-          ctx.strokeStyle = 'rgba(80,160,220,0.5)';
-          ctx.lineWidth = 0.5;
-          drawGeomPath(f.geometry);
-        } else {
-          ctx.strokeStyle = 'rgba(70,160,230,0.85)';
-          ctx.lineWidth = Math.max(0.8, 1.2 * Math.min(scale, 3));
-          ctx.lineJoin = 'round';
-          drawGeomPath(f.geometry);
-        }
+        if (f.p?.k !== 'l') continue;
+        const sr = f.p?.sr ?? 5;
+        if (sr > maxLakeSr) continue;
+        ctx.fillStyle =
+          sr <= 2
+            ? 'rgba(35,95,175,0.72)'
+            : sr <= 5
+              ? 'rgba(40,100,180,0.55)'
+              : 'rgba(45,105,175,0.42)';
+        ctx.strokeStyle = 'rgba(100,180,240,0.45)';
+        ctx.lineWidth = Math.max(0.4, 0.6 * Math.min(scale, 2));
+        drawGeomPath(f.geometry);
+      }
+
+      // Rivers / lake centerlines
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      for (const f of data.rivers.features || []) {
+        if (f.p?.k === 'l') continue;
+        const sr = f.p?.sr ?? 5;
+        if (sr > maxRiverSr) continue;
+        const major = sr <= 3;
+        ctx.strokeStyle = major
+          ? 'rgba(90,180,255,0.9)'
+          : sr <= 6
+            ? 'rgba(70,160,230,0.75)'
+            : 'rgba(60,140,210,0.55)';
+        ctx.lineWidth = major
+          ? Math.max(1.1, 1.8 * Math.min(scale, 4))
+          : Math.max(0.55, 1.0 * Math.min(scale, 3));
+        drawGeomPath(f.geometry);
       }
     }
 
@@ -225,21 +265,49 @@ export function createMapRenderer(canvas) {
     }
 
     if (layers.cities && data.cities) {
-      const showLabels = scale > 0.9;
+      // Keep the world view readable on phones, then reveal detail as users zoom.
+      // Features are sorted by population, so the collision pass keeps the most
+      // useful city names when several labels compete for the same space.
+      let maxSr = 1;
+      if (scale >= 0.3) maxSr = 2;
+      if (scale >= 0.55) maxSr = 3;
+      if (scale >= 0.85) maxSr = 4;
+      if (scale >= 1.35) maxSr = 6;
+      if (scale >= 2.2) maxSr = 7;
+      if (scale >= 3.5) maxSr = 99;
+      const labelSr =
+        scale >= 4 ? 8 : scale >= 2.2 ? 4 : scale >= 1.35 ? 3 : scale >= 0.85 ? 2 : scale >= 0.3 ? 1 : 0;
+      const labelBoxes = [];
       for (const f of data.cities.features || []) {
+        const sr = f.p?.sr ?? 9;
+        if (sr > maxSr) continue;
         const [lon, lat] = f.geometry.coordinates;
         const s = latLonToScreen(lat, lon);
-        if (s.x < -20 || s.y < -20 || s.x > cssW + 20 || s.y > cssH + 20) continue;
-        const sr = f.p?.sr ?? 5;
-        const r = sr <= 1 ? 4 : sr <= 3 ? 3 : 2;
+        if (s.x < -12 || s.y < -12 || s.x > cssW + 12 || s.y > cssH + 12) continue;
+        const r = sr <= 1 ? 4 : sr <= 3 ? 3 : sr <= 5 ? 2.2 : 1.4;
         ctx.beginPath();
-        ctx.fillStyle = '#e8f0ff';
+        ctx.fillStyle =
+          sr <= 2 ? '#fff6d0' : sr <= 4 ? '#e8f0ff' : 'rgba(180,200,230,0.85)';
         ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
         ctx.fill();
-        if (showLabels && sr <= 3) {
-          ctx.fillStyle = 'rgba(220,230,255,0.85)';
-          ctx.font = `${Math.max(9, 10 * Math.min(dpr, 1.2))}px system-ui,sans-serif`;
-          ctx.fillText(f.p?.n || '', s.x + 5, s.y - 3);
+        if (sr <= labelSr) {
+          ctx.fillStyle =
+            sr <= 2 ? 'rgba(255,245,200,0.95)' : 'rgba(220,230,255,0.82)';
+          ctx.font = `${Math.max(8, (sr <= 2 ? 11 : 9) * Math.min(dpr, 1.2))}px system-ui,sans-serif`;
+          const name = f.p?.n || '';
+          const width = ctx.measureText(name).width;
+          const box = { x: s.x + 3, y: s.y - 15, w: width + 5, h: 15 };
+          const overlaps = labelBoxes.some(
+            (other) =>
+              box.x < other.x + other.w &&
+              box.x + box.w > other.x &&
+              box.y < other.y + other.h &&
+              box.y + box.h > other.y,
+          );
+          if (!overlaps) {
+            ctx.fillText(name, s.x + 4, s.y - 3);
+            labelBoxes.push(box);
+          }
         }
       }
     }
@@ -276,9 +344,10 @@ export function createMapRenderer(canvas) {
       drawPolyline(scene.trail, 'rgba(0,255,200,0.75)', 2.5);
       if (layers.peers) {
         for (const p of scene.peers) {
-          if (Date.now() - p.updated > 60000) continue;
-          ctx.globalAlpha = 0.7;
-          drawPolyline(p.trail || [], p.color, 2);
+          if (!p.hasPos && !(p.trail && p.trail.length)) continue;
+          if (Date.now() - p.updated > 90000) continue;
+          ctx.globalAlpha = 0.75;
+          drawPolyline(p.trail || [], p.color, 2.5);
           ctx.globalAlpha = 1;
         }
       }
@@ -305,21 +374,48 @@ export function createMapRenderer(canvas) {
       }
     }
 
-    // peers
+    // peers (only those with a real position)
     if (layers.peers) {
+      const now = Date.now();
+      const pulse = 1 + 0.15 * Math.sin(now / 280);
       for (const p of scene.peers) {
-        if (Date.now() - p.updated > 60000) continue;
+        if (!p.hasPos) continue;
+        const age = now - p.updated;
+        if (age > 90000) continue;
         const s = latLonToScreen(p.lat, p.lon);
+        if (s.x < -40 || s.y < -40 || s.x > cssW + 40 || s.y > cssH + 40) continue;
+        const stale = age > 25000;
+        const dim = stale || p.online === false;
+        ctx.globalAlpha = dim ? 0.45 : 1;
+
+        // halo
         ctx.beginPath();
         ctx.fillStyle = p.color;
-        ctx.arc(s.x, s.y, 7, 0, Math.PI * 2);
+        ctx.globalAlpha = dim ? 0.15 : 0.28;
+        ctx.arc(s.x, s.y, 14 * pulse, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = dim ? 0.45 : 1;
+
+        // body
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.arc(s.x, s.y, 8, 0, Math.PI * 2);
         ctx.fill();
         ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 2;
         ctx.stroke();
+
+        // name plate
+        const label = p.name || 'peer';
+        ctx.font = 'bold 12px system-ui,sans-serif';
+        const tw = ctx.measureText(label).width;
+        const px = s.x + 11;
+        const py = s.y - 6;
+        ctx.fillStyle = 'rgba(0,10,24,0.75)';
+        ctx.fillRect(px - 3, py - 11, tw + 6, 16);
         ctx.fillStyle = '#fff';
-        ctx.font = '11px system-ui,sans-serif';
-        ctx.fillText(p.name || 'peer', s.x + 9, s.y + 4);
+        ctx.fillText(label, px, py + 1);
+        ctx.globalAlpha = 1;
       }
     }
 

@@ -1,6 +1,6 @@
 # Game catalog — data schema
 
-Living registry of games, variants, families, and authors.  
+Living registry of games, utility programs, variants, families, and authors.
 **Now:** JSON (git-friendly, no SQLite required).  
 **Later:** same fields → SQLite on Android (`games.db`).
 
@@ -8,7 +8,7 @@ Living registry of games, variants, families, and authors.
 
 | File | Role |
 |------|------|
-| [`games.json`](games.json) | Game rows |
+| [`games.json`](games.json) | Game and program rows |
 | [`families.json`](families.json) | Mechanic / franchise families |
 | [`authors.json`](authors.json) | Normalized authors |
 | [`SCHEMA.md`](SCHEMA.md) | This document |
@@ -48,17 +48,20 @@ Schema version: **1**. Each root JSON has `schemaVersion`.
 | `players.solo` | bool | yes | |
 | `entry` | string | yes | Path under pack root: `comet/client/index.html` or `lan-chat/client/index.html` |
 | `manifest` | string | no | Path under pack root to manifest.json |
-
-**Pack root:** `games/<id>/` when `kind` is `game` (or omitted); `programs/<id>/` when `kind` is `program`.
 | `version` | string | no | semver |
 | `sizeBudgetKb` | number | no | Budget |
 | `sizeMeasuredKb` | number | no | Measured `du` |
 | `status` | enum | yes | `idea` \| `wip` \| `experimental` \| `playable` \| `stable` \| `deprecated` |
-| `license` | string | no | MIT, CC0, … |
+| `license` | string | no | MIT, CC0, …; omitted packs inherit the repository MIT license unless their files say otherwise |
 | `familyFriendly` | bool | yes | |
 | `localeDefault` | string | no | `en` |
 | `multiplayer` | object | no | MP metadata |
 | `notes` | string | no | Internal notes |
+
+**Pack root:** `games/<id>/` when `kind` is `game` (or omitted);
+`games/programs/<id>/` when `kind` is `program`. Catalog `entry` and
+`manifest` values remain relative to their kind's root, so a program row uses
+`lan-chat/client/index.html`, not `programs/lan-chat/client/index.html`.
 
 ### `authorInline`
 
@@ -256,6 +259,7 @@ JSON → SQLite import script: when Android host / CLI needs it.
 4. Publish author email only with consent.  
 5. Update `sizeMeasuredKb` after big asset changes.  
 6. Never store binaries inside JSON — paths only.
+7. New community packs should declare `license`; the scaffold defaults to `MIT`.
 
 ## Validation
 
