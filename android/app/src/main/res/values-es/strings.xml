@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jugar juntos</string>
+
+    <string name="notif_channel_name">Juegos juntos</string>
+    <string name="notif_title">Los juegos están listos</string>
+    <string name="notif_text">Toca para invitar a quienes estén cerca</string>
+    <string name="share_chooser">Invitar a jugar</string>
+
+    <string name="home_eyebrow">JUGAR JUNTOS</string>
+    <string name="home_title">Jueguen juntos en sus teléfonos</string>
+    <string name="home_tagline">Todos los que estén cerca pueden entrar desde su propio teléfono. No hace falta instalar ninguna app.</string>
+    <string name="home_step1_title">Conéctense al mismo Wi-Fi</string>
+    <string name="home_step1_text">Conecta a todos al mismo Wi-Fi o activa el punto de acceso de este teléfono.</string>
+    <string name="home_step2_title">Inicia los juegos</string>
+    <string name="home_step2_text">Este teléfono pondrá los juegos al alcance de todos los que estén cerca.</string>
+    <string name="home_step3_title">Invita a quienes estén cerca</string>
+    <string name="home_step3_text">Muéstrales el código QR o comparte el enlace de invitación.</string>
+    <string name="home_start">Empezar a jugar juntos</string>
+    <string name="home_no_internet">No hace falta internet</string>
+
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_intro">Normalmente no necesitas cambiar nada aquí.</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_system_language">Usar el idioma del teléfono</string>
+    <string name="settings_keep_invite_visible">Mantener encendida la pantalla de invitación</string>
+    <string name="settings_advanced">Opciones avanzadas</string>
+    <string name="settings_show_advanced">Mostrar opciones avanzadas</string>
+    <string name="settings_hide_advanced">Ocultar opciones avanzadas</string>
+    <string name="settings_advanced_running">Detén los juegos antes de cambiar estas opciones.</string>
+    <string name="settings_port">Puerto de conexión</string>
+    <string name="settings_port_hint">Deja 8080 salvo que otra app ya lo esté usando.</string>
+    <string name="settings_use_https">Conexión segura (HTTPS)</string>
+    <string name="settings_use_https_hint">Lo necesitan los juegos que usan el micrófono o la ubicación. Los otros teléfonos pueden mostrar un aviso de seguridad una sola vez.</string>
+    <string name="settings_done">Listo</string>
+
+    <string name="running_title">¡Todo listo para jugar!</string>
+    <string name="running_subtitle">Invita a todos los que estén cerca</string>
+    <string name="running_same_wifi">Primero, conecta a todos al mismo Wi-Fi o al punto de acceso de este teléfono.</string>
+    <string name="running_join_hint">Escanea este código QR con otro teléfono</string>
+    <string name="running_qr_description">Código QR para entrar a los juegos</string>
+    <string name="running_open">Jugar en este teléfono</string>
+    <string name="running_share">Compartir enlace de invitación</string>
+    <string name="running_share_message">Únete a jugar: %1$s</string>
+    <string name="running_copy">Copiar enlace</string>
+    <string name="running_link_copied">Enlace copiado</string>
+    <string name="running_help_title">¿No pueden entrar?</string>
+    <string name="running_help_text">Comprueba que ambos teléfonos estén conectados al mismo Wi-Fi. Si no hay Wi-Fi, activa el punto de acceso de este teléfono y conecta los demás a él.</string>
+    <string name="running_hotspot_button">Abrir ajustes del punto de acceso</string>
+    <string name="running_no_ip">Este teléfono aún no está conectado. Conéctalo al Wi-Fi o activa su punto de acceso.</string>
+    <string name="running_https_warning">La primera vez que entren, los otros teléfonos pueden mostrar un aviso de seguridad. Abre los detalles y elige continuar.</string>
+    <string name="running_stop">Terminar los juegos</string>
+    <string name="running_stop_title">¿Terminar los juegos para todos?</string>
+    <string name="running_stop_text">Todos se desconectarán. Puedes volver a empezar cuando quieras.</string>
+    <string name="running_cancel">Seguir jugando</string>
+    <string name="running_confirm">Terminar para todos</string>
+    <string name="running_starting">Preparando los juegos…</string>
+    <string name="running_start_error">No se pudieron iniciar los juegos. Inténtalo de nuevo.</string>
+    <string name="running_check_again">Comprobar de nuevo</string>
+
+</resources>

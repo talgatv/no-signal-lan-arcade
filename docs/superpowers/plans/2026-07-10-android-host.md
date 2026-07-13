@@ -2,10 +2,10 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-> **Layout migration (2026-07-13):** this historical plan was written before
-> programs moved from the repository root into `games/programs/`. Implementers
-> must use the nested source location and canonical `/games/programs/` URLs;
-> the older paths in task snapshots are retained only as historical context.
+> **Layout migration (2026-07-13):** this historical plan predates the move
+> from top-level `programs/` to `games/programs/`. Current builds use the
+> nested source/assets tree and canonical `/games/programs/` URLs; old task
+> snapshots below describe the pre-migration state.
 
 **Goal:** Build `android/` — a Kotlin/Compose app that turns a phone into the same LAN game host `pc/host.py` already is (embedded HTTP+WebSocket server, same protocol, same content), with Home/Running/Settings screens, then install and smoke-test it on the connected device.
 

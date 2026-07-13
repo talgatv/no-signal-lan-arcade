@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">一起玩</string>
+
+    <string name="notif_channel_name">一起玩游戏</string>
+    <string name="notif_title">游戏已准备好</string>
+    <string name="notif_text">点按即可邀请身边的人</string>
+    <string name="share_chooser">邀请大家一起玩</string>
+
+    <string name="home_eyebrow">一起玩</string>
+    <string name="home_title">大家用自己的手机一起玩</string>
+    <string name="home_tagline">身边的人都能用自己的手机加入，无需安装应用。</string>
+    <string name="home_step1_title">连接同一个 Wi-Fi</string>
+    <string name="home_step1_text">让所有人连接同一个 Wi-Fi，或开启这部手机的热点。</string>
+    <string name="home_step2_title">开启游戏</string>
+    <string name="home_step2_text">这部手机会让身边的人都能打开游戏。</string>
+    <string name="home_step3_title">邀请身边的人</string>
+    <string name="home_step3_text">让他们扫描二维码，或分享邀请链接。</string>
+    <string name="home_start">开始一起玩</string>
+    <string name="home_no_internet">无需互联网</string>
+
+    <string name="settings_title">设置</string>
+    <string name="settings_intro">这里通常不需要修改。</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_system_language">使用手机语言</string>
+    <string name="settings_keep_invite_visible">保持邀请界面常亮</string>
+    <string name="settings_advanced">高级设置</string>
+    <string name="settings_show_advanced">显示高级设置</string>
+    <string name="settings_hide_advanced">隐藏高级设置</string>
+    <string name="settings_advanced_running">请先结束游戏，再更改这些设置。</string>
+    <string name="settings_port">连接端口</string>
+    <string name="settings_port_hint">除非被其他应用占用，否则请保留 8080。</string>
+    <string name="settings_use_https">安全连接 (HTTPS)</string>
+    <string name="settings_use_https_hint">使用麦克风或定位的游戏需要此项。其他手机首次加入时可能会看到安全提示。</string>
+    <string name="settings_done">完成</string>
+
+    <string name="running_title">可以开始玩了！</string>
+    <string name="running_subtitle">邀请身边的人加入</string>
+    <string name="running_same_wifi">先让所有人连接同一个 Wi-Fi，或连接这部手机的热点。</string>
+    <string name="running_join_hint">用另一部手机扫描这个二维码</string>
+    <string name="running_qr_description">加入游戏的二维码</string>
+    <string name="running_open">在这部手机上玩</string>
+    <string name="running_share">分享邀请链接</string>
+    <string name="running_share_message">一起来玩：%1$s</string>
+    <string name="running_copy">复制链接</string>
+    <string name="running_link_copied">链接已复制</string>
+    <string name="running_help_title">无法加入？</string>
+    <string name="running_help_text">请确认两部手机连接了同一个 Wi-Fi。如果没有 Wi-Fi，请开启这部手机的热点，并让其他手机连接。</string>
+    <string name="running_hotspot_button">打开热点设置</string>
+    <string name="running_no_ip">这部手机尚未连接。请连接 Wi-Fi 或开启手机热点。</string>
+    <string name="running_https_warning">其他手机首次加入时可能会看到安全提示。请打开详细信息，然后选择继续访问。</string>
+    <string name="running_stop">结束游戏</string>
+    <string name="running_stop_title">要结束所有人的游戏吗？</string>
+    <string name="running_stop_text">所有人都会断开连接。你随时可以重新开始。</string>
+    <string name="running_cancel">继续玩</string>
+    <string name="running_confirm">为所有人结束</string>
+    <string name="running_starting">正在准备游戏…</string>
+    <string name="running_start_error">无法开启游戏，请重试。</string>
+    <string name="running_check_again">再次检查</string>
+
+</resources>

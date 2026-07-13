@@ -7,9 +7,8 @@
 
 > **Layout migration (2026-07-13):** this dated spec records the former
 > top-level `programs/` layout. The current source root is
-> `games/programs/`, with canonical PC-host URLs under `/games/programs/`.
-> Any old `programs/` filesystem examples below must be translated to that
-> nested location when implementing the plan.
+> `games/programs/`, with canonical host URLs under `/games/programs/`.
+> Old filesystem and URL examples below are retained as historical context.
 
 ---
 
@@ -228,6 +227,79 @@ assumed safe by default.
 
 This is **not** a two-phone multiplayer proof (§2 non-goals) — it proves the host serves,
 relays, and survives backgrounding correctly, which is what this session can actually verify.
+
+## 8a. Testing results (this session)
+
+Ran on the connected device: Realme 5 Pro, `afe6cafd`, LineageOS/Android 13 (API 33), real
+Wi-Fi IP `192.168.1.213` (the dev workstation turned out to share the same Wi-Fi, so testing
+used the real LAN path end-to-end, not just an adb-forwarded tunnel — `127.0.0.1` navigation
+from the browser tool is itself blocked as a deliberate safety boundary, which is how this was
+discovered).
+
+**What passed:**
+- `assembleDebug` installs; Home → Running → Settings navigate correctly.
+- Server reachable over real Wi-Fi from a separate machine; `/api/health`, `/api/rooms` correct.
+- Bundled asset (`comet`) and **external-pack-only** content (`world-trail`, not in the APK)
+  both serve correctly — proves the external-pack override actually works on-device, not just
+  in `ContentRootsTest`.
+- Full Game Library hub renders styled, populated from `games/catalog/games.json`, including
+  the "SAVED" badge reflecting locally-persisted progress from the LAN Chat test.
+- LAN Chat: two independent browser tabs joined the same room; a message sent in one appeared
+  in the other in real time, through the phone's WebSocket relay.
+- Video Convert loads with no console errors.
+- Comet (an actual game) loads and is playable (difficulty select, canvas render, Launch).
+- Foreground service survives backgrounding: `/api/health` kept responding after `KEYCODE_HOME`;
+  `dumpsys` showed `isForeground=true` with a real, correctly-fielded notification record.
+- Settings: language switch to Arabic produced full RTL mirroring (radio buttons, text
+  alignment, and the toggle switch all flip sides) and correct translated strings; French was
+  also incidentally exercised (via a mis-tap) and rendered correctly, including escaped
+  apostrophes (`l'écran`, `l'hébergement`).
+- Stop hosting cleanly releases the port (`connection refused` after) and the foreground
+  service record disappears from `dumpsys`.
+
+**Bugs found live and fixed in this session (none were caught by the unit tests written
+before device testing — recorded here as the concrete argument for §8's device-testing step,
+not just `./gradlew test`):**
+
+1. **Content-Type guessed from the pre-fallback path.** `ContentRoots` correctly served
+   directory-style requests (e.g. `/programs/lan-chat/client/`) via its `index.html` fallback,
+   but `OghServer` guessed the HTTP `Content-Type` from the *original* extension-less request
+   path, not the file that actually matched — so real HTML came back as
+   `application/octet-stream`, which Chrome silently refuses to render (the tab reverted to
+   blank/`chrome://newtab` with no console error, which is what made this non-obvious). Fixed
+   by having `ContentRoots.load()` return the actually-matched path (`LoadedResource.matchedPath`)
+   alongside the bytes. This affected essentially every real game/program link the hub UI
+   generates (`games/hub/hub.js`'s `entryToPath()` always produces directory-style URLs), so
+   this was not an edge case — it was the common case for anyone using the library normally.
+   Regression tests: `ContentRootsTest` ("matchedPath reflects the index html fallback...") and
+   `OghServerRouteTest` ("directory-style request gets text-html, not octet-stream").
+2. **Bare hub aliases (`/games/`, `/hub`, `/library`, `/apps`, …) broke their own page.**
+   `games/hub/index.html` uses paths relative to its own folder (`../_shared/css/...`,
+   `hub.css`, `hub.js`). Serving that file's bytes directly at a shallower URL like `/games/`
+   made the browser resolve those relative paths against the wrong base, so `hub.js` 404'd,
+   never executed, and the catalog fetch it triggers never ran — an unstyled page stuck on
+   "Loading catalog…". **This bug is also present in `pc/host.py` as shipped** (verified by
+   running it directly and inspecting the served `href`s) and is reachable from the actual
+   product's main lobby page (`pc/www/index.html` links to `/games/`, not `/games/hub/`), so
+   it was fixed in both hosts rather than faithfully ported into the new one: bare aliases now
+   302-redirect to the canonical `/games/hub/`, matching how a normal web server would handle a
+   directory request without a trailing slash. Regression tests on the Android side:
+   `RouteResolverTest` and `OghServerRouteTest`; verified directly against `pc/host.py` via curl.
+3. **Notification permission was declared but never requested at runtime.** Android 13+
+   requires `POST_NOTIFICATIONS` as a runtime grant, not just a manifest entry. Without it the
+   foreground service and the LAN server both still worked correctly (confirmed independently:
+   `/api/health` kept responding regardless), but the "server is running" notification silently
+   never posted, leaving a real user with no visible confirmation. Fixed by requesting the
+   permission from `HomeScreen` at the point "Start hosting" is tapped; verified the system
+   permission dialog appears, and after granting, the notification is present as a genuine
+   system `NotificationRecord` (`isForeground=true`) with a status-bar icon (the OEM's expanded
+   shade groups it in a way this session did not fully reverse-engineer, but the record-level
+   and status-bar-level evidence is conclusive that the mechanism itself is correct).
+
+**Not tested (explicitly, not silently):** real second-device Wi-Fi join (only one physical
+Android device was available — see §2 non-goals), PTT radio audio capture (needs HTTPS, itself
+a deferred follow-up), multi-hour continuous hosting (foreground-service-type `onTimeout`
+behavior on API 34+ was reasoned about but not exercised — this device is API 33).
 
 ## 9. Follow-ups (explicitly deferred, not silently dropped)
 
