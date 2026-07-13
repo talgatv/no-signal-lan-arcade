@@ -11,7 +11,7 @@ data class LoadedResource(val bytes: ByteArray, val matchedPath: String)
 
 /**
  * Resolves (root, relativePath) to bytes. Checks the external pack directory first
- * (so a pushed full `games/`/`programs/` tree overrides the bundled demo subset for
+ * (so a pushed full `games/` tree, including `games/programs/`, overrides bundled content for
  * local testing), then bundled APK assets. Tries `<path>/index.html` as a fallback
  * when `<path>` itself isn't found, mirroring pc/host.py's directory→index.html
  * behavior without needing real directory-listing on either source.
@@ -23,7 +23,6 @@ class ContentRoots(
     private fun rootDirName(root: RouteResolver.Root): String = when (root) {
         RouteResolver.Root.WWW -> "www"
         RouteResolver.Root.GAMES -> "games"
-        RouteResolver.Root.PROGRAMS -> "programs"
         RouteResolver.Root.SHARED -> "games/_shared"
         RouteResolver.Root.DOCS -> "docs"
     }

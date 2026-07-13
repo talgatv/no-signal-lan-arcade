@@ -139,6 +139,10 @@ class HttpsOghServer(
             respondRedirect(output, "/games/hub/", keepAlive)
             return
         }
+        RouteResolver.legacyProgramsRedirect(request.path)?.let { target ->
+            respondRedirect(output, target, keepAlive)
+            return
+        }
 
         val resolved = RouteResolver.resolve(request.path)
         val loaded = contentRoots.load(resolved.root, resolved.relativePath)

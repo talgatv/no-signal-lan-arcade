@@ -68,19 +68,31 @@ class OghServerRouteTest {
     @Test
     fun `directory-style request gets text-html, not octet-stream`() = testApplication {
         // Regression test for a bug caught during the live device smoke test: the hub
-        // UI (games/hub/hub.js entryToPath()) always links to games/programs with a
-        // trailing slash and no "index.html" — e.g. "/programs/lan-chat/client/". The
+        // UI (games/hub/hub.js entryToPath()) always links to programs inside games/
+        // with a trailing slash and no "index.html" — e.g. "/games/programs/lan-chat/client/". The
         // server resolves that to real HTML via ContentRoots' index.html fallback, but
         // was guessing Content-Type from the pre-fallback request path (no extension),
         // so it answered "application/octet-stream" — which Chrome silently refused to
         // render as a page. Confirmed against the real bug on-device before this fix.
         application {
-            installOghRouting(Hub(), contentRoots("web/programs/lan-chat/client/index.html" to "<html>CHAT</html>"))
+            installOghRouting(Hub(), contentRoots("web/games/programs/lan-chat/client/index.html" to "<html>CHAT</html>"))
         }
-        val res = client.get("/programs/lan-chat/client/")
+        val res = client.get("/games/programs/lan-chat/client/")
         assertEquals(HttpStatusCode.OK, res.status)
         assertEquals(ContentType.Text.Html.withoutParameters(), res.contentType()?.withoutParameters())
         assertEquals("<html>CHAT</html>", res.bodyAsText())
+    }
+
+    @Test
+    fun `legacy program url redirects to canonical path with query intact`() = testApplication {
+        application { installOghRouting(Hub(), contentRoots()) }
+        val noRedirectClient = createClient { followRedirects = false }
+        val res = noRedirectClient.get("/programs/lan-chat/client/?name=Ada&room=main")
+        assertEquals(HttpStatusCode.Found, res.status)
+        assertEquals(
+            "/games/programs/lan-chat/client/?name=Ada&room=main",
+            res.headers["Location"],
+        )
     }
 
     @Test

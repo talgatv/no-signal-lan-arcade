@@ -8,6 +8,7 @@ import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
+import io.ktor.server.request.queryString
 import io.ktor.server.response.respondBytes
 import io.ktor.server.response.respondRedirect
 import io.ktor.server.response.respondText
@@ -67,6 +68,12 @@ fun Application.installOghRouting(hub: Hub, contentRoots: ContentRoots) {
 
         get("/{path...}") {
             val raw = "/" + call.parameters.getAll("path").orEmpty().joinToString("/")
+            val query = call.request.queryString()
+            val requestTarget = if (query.isEmpty()) raw else "$raw?$query"
+            RouteResolver.legacyProgramsRedirect(requestTarget)?.let { target ->
+                call.respondRedirect(target, permanent = false)
+                return@get
+            }
             if (raw in RouteResolver.HUB_REDIRECT_PATHS) {
                 call.respondRedirect("/games/hub/", permanent = false)
                 return@get

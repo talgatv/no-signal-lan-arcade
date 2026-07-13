@@ -13,8 +13,8 @@ android {
         applicationId = "lol.lan.arcade"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 3
+        versionName = "0.2.0"
     }
 
     buildTypes {
@@ -33,6 +33,12 @@ android {
     kotlinOptions { jvmTarget = "17" }
     buildFeatures { compose = true }
 
+    // The app has an in-app language picker. Keep every bundled translation
+    // available even when a release is distributed as an Android App Bundle.
+    bundle {
+        language { enableSplit = false }
+    }
+
     // Netty ships its own META-INF/INDEX.LIST (a JVM jar-indexing hint, unused by
     // Android's own class loading) in multiple sub-artifacts; Android's resource
     // merger refuses to silently pick one, so it must be dropped explicitly.
@@ -45,22 +51,24 @@ android {
 }
 
 val repoRoot = rootDir.parentFile!!
+// Linked worktrees can build an APK from the primary checkout's current web
+// packs without copying them into the Android branch first:
+//   ./gradlew :app:assembleDebug -PoghWebRoot=/path/to/OFFline_games_app
+val webSourceRoot = providers.gradleProperty("oghWebRoot").orNull?.let(::file) ?: repoRoot
 
 val syncWebAssets by tasks.registering(Sync::class) {
     into(layout.projectDirectory.dir("src/main/assets/web"))
 
-    listOf("comet", "comet-pixel", "demo-tap", "piece-caller", "pulse-race", "rootwork", "hub", "catalog")
-        .forEach { name -> from(repoRoot.resolve("games/$name")) { into("games/$name") } }
-
-    from(repoRoot.resolve("games/_shared")) {
-        into("games/_shared")
-        exclude("fonts/**")
+    // games/ is now the single source tree for every browser pack, including
+    // utility programs under games/programs/. Keeping the catalog and payload
+    // in one Sync source prevents cards that point at files absent from the APK.
+    from(webSourceRoot.resolve("games")) {
+        into("games")
+        exclude("_shared/fonts/**")
+        exclude("_templates/**")
     }
 
-    listOf("lan-chat", "video-convert")
-        .forEach { name -> from(repoRoot.resolve("programs/$name")) { into("programs/$name") } }
-
-    from(repoRoot.resolve("pc/www")) { into("www") }
+    from(webSourceRoot.resolve("pc/www")) { into("www") }
 }
 
 tasks.named("preBuild") { dependsOn(syncWebAssets) }

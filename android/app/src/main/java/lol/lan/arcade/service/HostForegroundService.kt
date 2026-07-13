@@ -22,46 +22,73 @@ class HostForegroundService : Service() {
 
     private var server: RunningHostServer? = null
     private var wakeLock: PowerManager.WakeLock? = null
+    private var startFailed: Boolean = false
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val port = intent?.getIntExtra(EXTRA_PORT, DEFAULT_PORT) ?: DEFAULT_PORT
-        val useHttps = intent?.getBooleanExtra(EXTRA_USE_HTTPS, false) ?: false
-        val notification = buildNotification(port, useHttps)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
-        } else {
-            startForeground(NOTIFICATION_ID, notification)
-        }
+        HostRuntime.markStarting()
+        return try {
+            val port = intent?.getIntExtra(EXTRA_PORT, DEFAULT_PORT) ?: DEFAULT_PORT
+            val useHttps = intent?.getBooleanExtra(EXTRA_USE_HTTPS, false) ?: false
+            val notification = buildNotification()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+            } else {
+                startForeground(NOTIFICATION_ID, notification)
+            }
 
-        if (server == null) {
-            val contentRoots = ContentRoots(
-                externalBaseDir = getExternalFilesDir(null) ?: filesDir,
-                loadAssetBytes = { path ->
-                    try {
-                        assets.open(path).use { it.readBytes() }
-                    } catch (e: IOException) {
-                        null
-                    }
-                },
-            )
-            server = NettyOghServer(
-                port = port,
-                contentRoots = contentRoots,
-                useHttps = useHttps,
-                ipAddresses = NetworkUtils.localIpv4Addresses(),
-            )
-            server?.start()
+            if (server == null) {
+                val contentRoots = ContentRoots(
+                    externalBaseDir = getExternalFilesDir(null) ?: filesDir,
+                    loadAssetBytes = { path ->
+                        try {
+                            assets.open(path).use { it.readBytes() }
+                        } catch (e: IOException) {
+                            null
+                        }
+                    },
+                )
+                val createdServer = NettyOghServer(
+                    port = port,
+                    contentRoots = contentRoots,
+                    useHttps = useHttps,
+                    ipAddresses = NetworkUtils.localIpv4Addresses(),
+                )
+                // Keep the reference before start(): if binding fails after partial setup,
+                // the catch block can still stop and release that server instance.
+                server = createdServer
+                createdServer.start()
+            }
+            acquireWakeLock()
+            startFailed = false
+            HostRuntime.markRunning()
+            START_STICKY
+        } catch (error: Exception) {
+            startFailed = true
+            try {
+                server?.stop()
+            } catch (_: Exception) {
+                // Preserve the original startup error for the UI.
+            }
+            server = null
+            releaseWakeLock()
+            HostRuntime.markError(error)
+            stopForeground(STOP_FOREGROUND_REMOVE)
+            stopSelf(startId)
+            START_NOT_STICKY
         }
-        acquireWakeLock()
-        return START_STICKY
     }
 
     override fun onDestroy() {
-        server?.stop()
+        try {
+            server?.stop()
+        } catch (_: Exception) {
+            // Destruction must still release the wake lock and publish the final state.
+        }
         server = null
         releaseWakeLock()
+        if (!startFailed) HostRuntime.markStopped()
         super.onDestroy()
     }
 
@@ -79,7 +106,7 @@ class HostForegroundService : Service() {
         wakeLock = null
     }
 
-    private fun buildNotification(port: Int, useHttps: Boolean): android.app.Notification {
+    private fun buildNotification(): android.app.Notification {
         val channelId = "ogh_host"
         val nm = getSystemService(NotificationManager::class.java)
         if (nm.getNotificationChannel(channelId) == null) {
@@ -90,11 +117,10 @@ class HostForegroundService : Service() {
         val openIntent = PendingIntent.getActivity(
             this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE,
         )
-        val text = if (useHttps) getString(R.string.notif_text_https, port) else getString(R.string.notif_text, port)
         return NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(getString(R.string.notif_title))
-            .setContentText(text)
+            .setContentText(getString(R.string.notif_text))
             .setContentIntent(openIntent)
             .setOngoing(true)
             .build()

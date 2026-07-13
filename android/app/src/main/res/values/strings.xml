@@ -1,29 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Offline Games Host</string>
+    <string name="app_name">Play Together</string>
 
-    <string name="notif_channel_name">Game host</string>
-    <string name="notif_title">Offline Games Host is running</string>
-    <string name="notif_text">Guests: open http://&lt;this phone\'s IP&gt;:%1$d/ in a browser</string>
-    <string name="notif_text_https">Guests: open https://&lt;this phone\'s IP&gt;:%1$d/ in a browser</string>
+    <string name="notif_channel_name">Games together</string>
+    <string name="notif_title">Games are ready</string>
+    <string name="notif_text">Tap to invite people nearby</string>
+    <string name="share_chooser">Invite people to play</string>
 
-    <string name="home_tagline">Start a local game server. Guests join from any browser on the same Wi-Fi — no app to install.</string>
-    <string name="home_start">Start hosting</string>
+    <string name="home_eyebrow">PLAY TOGETHER</string>
+    <string name="home_title">Play together on your own phones</string>
+    <string name="home_tagline">Everyone nearby can join from their own phone. No app to install.</string>
+    <string name="home_step1_title">Get on the same Wi-Fi</string>
+    <string name="home_step1_text">Connect everyone to the same Wi-Fi, or turn on this phone’s hotspot.</string>
+    <string name="home_step2_title">Start the games</string>
+    <string name="home_step2_text">This phone will make the games available to everyone nearby.</string>
+    <string name="home_step3_title">Invite people nearby</string>
+    <string name="home_step3_text">Let them scan the QR code or share the invite link.</string>
+    <string name="home_start">Start playing together</string>
+    <string name="home_no_internet">No internet needed</string>
 
     <string name="settings_title">Settings</string>
+    <string name="settings_intro">You usually don’t need to change anything here.</string>
     <string name="settings_language">Language</string>
-    <string name="settings_port">Port</string>
-    <string name="settings_port_hint">Between 1024 and 65535, 8080 by default.</string>
-    <string name="settings_keep_screen_on">Keep screen on while hosting</string>
-    <string name="settings_use_https">Use HTTPS</string>
-    <string name="settings_use_https_hint">Needed for microphone (radio) and GPS (World Trail) to work for guests. Uses a self-signed certificate — guests will see a one-time browser security warning to accept.</string>
-    <string name="settings_back">Back</string>
+    <string name="settings_system_language">Use phone language</string>
+    <string name="settings_keep_invite_visible">Keep the invite screen on</string>
+    <string name="settings_advanced">Advanced</string>
+    <string name="settings_show_advanced">Show advanced settings</string>
+    <string name="settings_hide_advanced">Hide advanced settings</string>
+    <string name="settings_advanced_running">Stop the games before changing these settings.</string>
+    <string name="settings_port">Connection port</string>
+    <string name="settings_port_hint">Keep 8080 unless another app is already using it.</string>
+    <string name="settings_use_https">Secure connection (HTTPS)</string>
+    <string name="settings_use_https_hint">Needed for games that use the microphone or location. Other phones may show a one-time safety warning.</string>
+    <string name="settings_done">Done</string>
 
-    <string name="running_title">Hosting</string>
-    <string name="running_no_ip">No Wi-Fi network detected yet. Connect to a hotspot or router, then this list refreshes automatically.</string>
-    <string name="running_open_lobby">Open lobby on this phone</string>
-    <string name="running_hotspot_hint">To let others join, turn on this phone\'s Wi-Fi hotspot (or connect to a router), then have them open one of the addresses above.</string>
+    <string name="running_title">Ready to play!</string>
+    <string name="running_subtitle">Invite everyone nearby</string>
+    <string name="running_same_wifi">First, connect everyone to the same Wi-Fi or this phone’s hotspot.</string>
+    <string name="running_join_hint">Scan this QR code with another phone</string>
+    <string name="running_qr_description">QR code for joining the games</string>
+    <string name="running_open">Play on this phone</string>
+    <string name="running_share">Share invite link</string>
+    <string name="running_share_message">Join me for a game: %1$s</string>
+    <string name="running_copy">Copy link</string>
+    <string name="running_link_copied">Link copied</string>
+    <string name="running_help_title">Can’t join?</string>
+    <string name="running_help_text">Check that both phones are on the same Wi-Fi. If there is no Wi-Fi, turn on this phone’s hotspot and connect the other phones to it.</string>
     <string name="running_hotspot_button">Open hotspot settings</string>
-    <string name="running_https_warning">Guests will see a "connection is not private" warning the first time — this is expected with a self-signed certificate. They should tap Advanced (or Show Details) → Proceed / visit this website.</string>
-    <string name="running_stop">Stop hosting</string>
+    <string name="running_no_ip">This phone isn’t connected yet. Connect to Wi-Fi or turn on its hotspot.</string>
+    <string name="running_https_warning">The first time they join, other phones may show a safety warning. Open the details and choose to continue.</string>
+    <string name="running_stop">Stop the games</string>
+    <string name="running_stop_title">Stop the games for everyone?</string>
+    <string name="running_stop_text">Everyone will be disconnected. You can start again at any time.</string>
+    <string name="running_cancel">Keep playing</string>
+    <string name="running_confirm">Stop for everyone</string>
+    <string name="running_starting">Getting the games ready…</string>
+    <string name="running_start_error">The games couldn’t start. Please try again.</string>
+    <string name="running_check_again">Check again</string>
+
 </resources>

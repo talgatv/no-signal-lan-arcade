@@ -26,6 +26,21 @@ class ContentRootsTest {
     }
 
     @Test
+    fun `program assets share the games root for bundled and external content`() {
+        val assetPath = "web/games/programs/lan-chat/client/index.html"
+        val externalDir = File(tmp.root, "packs/games/programs/lan-chat/client").apply { mkdirs() }
+        val roots = ContentRoots(tmp.root, fakeAssets(assetPath to "BUNDLED"))
+
+        val bundled = roots.load(RouteResolver.Root.GAMES, "programs/lan-chat/client/")
+        assertArrayEquals("BUNDLED".toByteArray(), bundled?.bytes)
+        assertEquals("games/programs/lan-chat/client/index.html", bundled?.matchedPath)
+
+        File(externalDir, "index.html").writeText("EXTERNAL")
+        val external = roots.load(RouteResolver.Root.GAMES, "programs/lan-chat/client/")
+        assertArrayEquals("EXTERNAL".toByteArray(), external?.bytes)
+    }
+
+    @Test
     fun `external pack directory overrides a bundled asset with the same path`() {
         val gamesDir = File(tmp.root, "packs/games/comet/client").apply { mkdirs() }
         File(gamesDir, "index.html").writeText("EXTERNAL")

@@ -5,6 +5,11 @@
 **Status:** Approved for implementation (autonomous session — owner stepped away and pre-approved; see §0)
 **Related:** `android/README.md`, `docs/architecture/ANDROID_STACK.md`, `docs/architecture/CORE.md`, `docs/architecture/MULTIPLAYER.md`, `docs/VISION.md`
 
+> **Layout migration (2026-07-13):** this dated spec records the former
+> top-level `programs/` layout. The current source root is
+> `games/programs/`, with canonical host URLs under `/games/programs/`.
+> Old filesystem and URL examples below are retained as historical context.
+
 ---
 
 ## 0. Why this spec skips live review

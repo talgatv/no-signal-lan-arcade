@@ -1,25 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">مركز الألعاب دون اتصال</string>
-    <string name="notif_channel_name">مضيف الألعاب</string>
-    <string name="notif_title">مركز الألعاب دون اتصال قيد التشغيل</string>
-    <string name="notif_text">الضيوف: افتحوا http://&lt;عنوان IP لهذا الهاتف&gt;:%1$d/ في المتصفح</string>
-    <string name="notif_text_https">الضيوف: افتحوا https://&lt;عنوان IP لهذا الهاتف&gt;:%1$d/ في المتصفح</string>
-    <string name="home_tagline">ابدأ خادم ألعاب محلي. ينضم الضيوف من أي متصفح على نفس شبكة Wi-Fi، دون تثبيت أي تطبيق.</string>
-    <string name="home_start">بدء الاستضافة</string>
+    <string name="app_name">نلعب معًا</string>
+
+    <string name="notif_channel_name">اللعب معًا</string>
+    <string name="notif_title">الألعاب جاهزة</string>
+    <string name="notif_text">اضغط لدعوة من حولك</string>
+    <string name="share_chooser">دعوة الآخرين للعب</string>
+
+    <string name="home_eyebrow">اللعب معًا</string>
+    <string name="home_title">العبوا معًا من هواتفكم</string>
+    <string name="home_tagline">يمكن لكل من حولك الانضمام من هاتفه، من دون تثبيت أي تطبيق.</string>
+    <string name="home_step1_title">اتصلوا بشبكة Wi-Fi نفسها</string>
+    <string name="home_step1_text">وصّل الجميع بشبكة Wi-Fi نفسها، أو فعّل نقطة اتصال هذا الهاتف.</string>
+    <string name="home_step2_title">ابدأ الألعاب</string>
+    <string name="home_step2_text">سيتيح هذا الهاتف الألعاب لكل من حولك.</string>
+    <string name="home_step3_title">ادعُ من حولك</string>
+    <string name="home_step3_text">دعهم يمسحون رمز QR أو شارك رابط الدعوة.</string>
+    <string name="home_start">ابدأ اللعب معًا</string>
+    <string name="home_no_internet">لا حاجة إلى الإنترنت</string>
+
     <string name="settings_title">الإعدادات</string>
-    <string name="running_title">الاستضافة نشطة</string>
-    <string name="running_no_ip">لم يتم العثور على شبكة Wi-Fi بعد. اتصل بنقطة اتصال أو راوتر، وستتحدّث هذه القائمة تلقائيًا.</string>
-    <string name="running_open_lobby">افتح الردهة على هذا الهاتف</string>
-    <string name="running_hotspot_hint">لتمكين الآخرين من الانضمام، فعّل نقطة اتصال Wi-Fi لهذا الهاتف (أو اتصل براوتر)، ثم اطلب منهم فتح أحد العناوين أعلاه.</string>
-    <string name="running_hotspot_button">افتح إعدادات نقطة الاتصال</string>
-    <string name="running_https_warning">سيرى الضيوف تحذير "الاتصال غير خاص" في المرة الأولى — هذا أمر متوقع مع شهادة موقّعة ذاتيًا. عليهم النقر على "متقدم" (أو "عرض التفاصيل") ← "المتابعة / زيارة هذا الموقع".</string>
-    <string name="running_stop">إيقاف الاستضافة</string>
+    <string name="settings_intro">غالبًا لن تحتاج إلى تغيير أي شيء هنا.</string>
     <string name="settings_language">اللغة</string>
-    <string name="settings_port">المنفذ</string>
-    <string name="settings_port_hint">من 1024 إلى 65535، الافتراضي 8080.</string>
-    <string name="settings_keep_screen_on">إبقاء الشاشة مضاءة أثناء الاستضافة</string>
-    <string name="settings_use_https">استخدام HTTPS</string>
-    <string name="settings_use_https_hint">مطلوب لعمل الميكروفون (الراديو) و GPS (مسار العالم) لدى الضيوف. يستخدم شهادة موقّعة ذاتيًا — سيرى الضيوف تحذير أمان من المتصفح لمرة واحدة يجب قبوله.</string>
-    <string name="settings_back">رجوع</string>
+    <string name="settings_system_language">استخدام لغة الهاتف</string>
+    <string name="settings_keep_invite_visible">إبقاء شاشة الدعوة مضاءة</string>
+    <string name="settings_advanced">إعدادات متقدمة</string>
+    <string name="settings_show_advanced">عرض الإعدادات المتقدمة</string>
+    <string name="settings_hide_advanced">إخفاء الإعدادات المتقدمة</string>
+    <string name="settings_advanced_running">أوقف الألعاب قبل تغيير هذه الإعدادات.</string>
+    <string name="settings_port">منفذ الاتصال</string>
+    <string name="settings_port_hint">اتركه 8080 ما لم يكن تطبيق آخر يستخدمه بالفعل.</string>
+    <string name="settings_use_https">اتصال آمن (HTTPS)</string>
+    <string name="settings_use_https_hint">تحتاجه الألعاب التي تستخدم الميكروفون أو الموقع. قد تعرض الهواتف الأخرى تحذير أمان مرة واحدة.</string>
+    <string name="settings_done">تم</string>
+
+    <string name="running_title">كل شيء جاهز للعب!</string>
+    <string name="running_subtitle">ادعُ كل من حولك</string>
+    <string name="running_same_wifi">أولًا، وصّل الجميع بشبكة Wi-Fi نفسها أو بنقطة اتصال هذا الهاتف.</string>
+    <string name="running_join_hint">امسح رمز QR هذا بهاتف آخر</string>
+    <string name="running_qr_description">رمز QR للانضمام إلى الألعاب</string>
+    <string name="running_open">العب على هذا الهاتف</string>
+    <string name="running_share">مشاركة رابط الدعوة</string>
+    <string name="running_share_message">انضم إلينا للعب: %1$s</string>
+    <string name="running_copy">نسخ الرابط</string>
+    <string name="running_link_copied">تم نسخ الرابط</string>
+    <string name="running_help_title">هل يتعذر الانضمام؟</string>
+    <string name="running_help_text">تأكد من اتصال الهاتفين بشبكة Wi-Fi نفسها. إذا لم تتوفر شبكة Wi-Fi، فعّل نقطة اتصال هذا الهاتف ووصّل الهواتف الأخرى بها.</string>
+    <string name="running_hotspot_button">فتح إعدادات نقطة الاتصال</string>
+    <string name="running_no_ip">هذا الهاتف غير متصل بعد. اتصل بشبكة Wi-Fi أو فعّل نقطة الاتصال.</string>
+    <string name="running_https_warning">قد تعرض الهواتف الأخرى تحذير أمان عند الانضمام للمرة الأولى. افتح التفاصيل واختر المتابعة.</string>
+    <string name="running_stop">إنهاء الألعاب</string>
+    <string name="running_stop_title">هل تريد إنهاء الألعاب للجميع؟</string>
+    <string name="running_stop_text">سيتم قطع اتصال الجميع. يمكنك البدء مجددًا في أي وقت.</string>
+    <string name="running_cancel">متابعة اللعب</string>
+    <string name="running_confirm">الإنهاء للجميع</string>
+    <string name="running_starting">جارٍ تجهيز الألعاب…</string>
+    <string name="running_start_error">تعذر بدء الألعاب. حاول مرة أخرى.</string>
+    <string name="running_check_again">التحقق مرة أخرى</string>
+
 </resources>

@@ -1,25 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Оффлайн Хаб Игр</string>
-    <string name="notif_channel_name">Игровой хост</string>
-    <string name="notif_title">Оффлайн Хаб Игр запущен</string>
-    <string name="notif_text">Гости: откройте http://&lt;IP этого телефона&gt;:%1$d/ в браузере</string>
-    <string name="notif_text_https">Гости: откройте https://&lt;IP этого телефона&gt;:%1$d/ в браузере</string>
-    <string name="home_tagline">Запустите локальный игровой сервер. Гости подключаются из любого браузера в той же Wi-Fi сети — приложение ставить не нужно.</string>
-    <string name="home_start">Начать хостинг</string>
+    <string name="app_name">Играем вместе</string>
+
+    <string name="notif_channel_name">Игры вместе</string>
+    <string name="notif_title">Игры готовы</string>
+    <string name="notif_text">Нажмите, чтобы пригласить тех, кто рядом</string>
+    <string name="share_chooser">Пригласить поиграть</string>
+
+    <string name="home_eyebrow">ИГРАЕМ ВМЕСТЕ</string>
+    <string name="home_title">Играйте вместе на своих телефонах</string>
+    <string name="home_tagline">Все рядом смогут войти со своего телефона. Устанавливать приложение не нужно.</string>
+    <string name="home_step1_title">Подключитесь к одной сети Wi-Fi</string>
+    <string name="home_step1_text">Подключите всех к одной сети Wi-Fi или включите точку доступа на этом телефоне.</string>
+    <string name="home_step2_title">Запустите игры</string>
+    <string name="home_step2_text">Этот телефон откроет игры для всех рядом.</string>
+    <string name="home_step3_title">Пригласите тех, кто рядом</string>
+    <string name="home_step3_text">Покажите им QR-код или отправьте ссылку.</string>
+    <string name="home_start">Начать играть вместе</string>
+    <string name="home_no_internet">Интернет не нужен</string>
+
     <string name="settings_title">Настройки</string>
-    <string name="running_title">Хостинг активен</string>
-    <string name="running_no_ip">Wi-Fi сеть не найдена. Подключитесь к хотспоту или роутеру — список обновится автоматически.</string>
-    <string name="running_open_lobby">Открыть лобби на этом телефоне</string>
-    <string name="running_hotspot_hint">Чтобы другие могли подключиться, включите Wi-Fi точку доступа на этом телефоне (или подключитесь к роутеру), затем попросите их открыть один из адресов выше.</string>
-    <string name="running_hotspot_button">Открыть настройки точки доступа</string>
-    <string name="running_https_warning">При первом заходе гости увидят предупреждение «Соединение не защищено» — это нормально для самоподписанного сертификата. Им нужно нажать «Дополнительно» (или «Подробнее») → «Перейти на сайт».</string>
-    <string name="running_stop">Остановить хостинг</string>
+    <string name="settings_intro">Обычно здесь ничего менять не нужно.</string>
     <string name="settings_language">Язык</string>
-    <string name="settings_port">Порт</string>
-    <string name="settings_port_hint">От 1024 до 65535, по умолчанию 8080.</string>
-    <string name="settings_keep_screen_on">Не выключать экран во время хостинга</string>
-    <string name="settings_use_https">Использовать HTTPS</string>
-    <string name="settings_use_https_hint">Нужно, чтобы у гостей работали микрофон (рация) и GPS (Мировой Путь). Используется самоподписанный сертификат — гости один раз увидят предупреждение браузера о безопасности, которое нужно принять.</string>
-    <string name="settings_back">Назад</string>
+    <string name="settings_system_language">Язык телефона</string>
+    <string name="settings_keep_invite_visible">Не выключать экран с приглашением</string>
+    <string name="settings_advanced">Дополнительно</string>
+    <string name="settings_show_advanced">Показать дополнительные настройки</string>
+    <string name="settings_hide_advanced">Скрыть дополнительные настройки</string>
+    <string name="settings_advanced_running">Чтобы изменить эти настройки, сначала закончите общую игру.</string>
+    <string name="settings_port">Порт подключения</string>
+    <string name="settings_port_hint">Оставьте 8080, если он не занят другим приложением.</string>
+    <string name="settings_use_https">Защищённое соединение (HTTPS)</string>
+    <string name="settings_use_https_hint">Нужно играм с микрофоном или геолокацией. На других телефонах может один раз появиться предупреждение безопасности.</string>
+    <string name="settings_done">Готово</string>
+
+    <string name="running_title">Можно играть!</string>
+    <string name="running_subtitle">Пригласите всех, кто рядом</string>
+    <string name="running_same_wifi">Сначала подключите всех к одной сети Wi-Fi или к точке доступа этого телефона.</string>
+    <string name="running_join_hint">Отсканируйте этот QR-код другим телефоном</string>
+    <string name="running_qr_description">QR-код для входа в игры</string>
+    <string name="running_open">Играть на этом телефоне</string>
+    <string name="running_share">Поделиться ссылкой</string>
+    <string name="running_share_message">Присоединяйтесь к играм: %1$s</string>
+    <string name="running_copy">Копировать ссылку</string>
+    <string name="running_link_copied">Ссылка скопирована</string>
+    <string name="running_help_title">Не получается подключиться?</string>
+    <string name="running_help_text">Проверьте, что оба телефона подключены к одной сети Wi-Fi. Если Wi-Fi нет, включите точку доступа на этом телефоне и подключите к ней остальные.</string>
+    <string name="running_hotspot_button">Открыть настройки точки доступа</string>
+    <string name="running_no_ip">Телефон пока не подключён. Подключитесь к Wi-Fi или включите точку доступа.</string>
+    <string name="running_https_warning">При первом входе на других телефонах может появиться предупреждение безопасности. Откройте подробности и выберите продолжение.</string>
+    <string name="running_stop">Закончить общую игру</string>
+    <string name="running_stop_title">Закончить игру для всех?</string>
+    <string name="running_stop_text">Все участники отключатся. Вы сможете снова начать в любое время.</string>
+    <string name="running_cancel">Продолжить играть</string>
+    <string name="running_confirm">Закончить для всех</string>
+    <string name="running_starting">Готовим игры…</string>
+    <string name="running_start_error">Не удалось запустить игры. Попробуйте ещё раз.</string>
+    <string name="running_check_again">Проверить ещё раз</string>
+
 </resources>

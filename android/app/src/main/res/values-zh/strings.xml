@@ -1,25 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">离线游戏中心</string>
-    <string name="notif_channel_name">游戏主机</string>
-    <string name="notif_title">离线游戏中心正在运行</string>
-    <string name="notif_text">访客请在浏览器中打开 http://&lt;本机IP&gt;:%1$d/</string>
-    <string name="notif_text_https">访客请在浏览器中打开 https://&lt;本机IP&gt;:%1$d/</string>
-    <string name="home_tagline">启动本地游戏服务器。同一 Wi-Fi 下的访客可用任意浏览器加入——无需安装应用。</string>
-    <string name="home_start">开始托管</string>
+    <string name="app_name">一起玩</string>
+
+    <string name="notif_channel_name">一起玩游戏</string>
+    <string name="notif_title">游戏已准备好</string>
+    <string name="notif_text">点按即可邀请身边的人</string>
+    <string name="share_chooser">邀请大家一起玩</string>
+
+    <string name="home_eyebrow">一起玩</string>
+    <string name="home_title">大家用自己的手机一起玩</string>
+    <string name="home_tagline">身边的人都能用自己的手机加入，无需安装应用。</string>
+    <string name="home_step1_title">连接同一个 Wi-Fi</string>
+    <string name="home_step1_text">让所有人连接同一个 Wi-Fi，或开启这部手机的热点。</string>
+    <string name="home_step2_title">开启游戏</string>
+    <string name="home_step2_text">这部手机会让身边的人都能打开游戏。</string>
+    <string name="home_step3_title">邀请身边的人</string>
+    <string name="home_step3_text">让他们扫描二维码，或分享邀请链接。</string>
+    <string name="home_start">开始一起玩</string>
+    <string name="home_no_internet">无需互联网</string>
+
     <string name="settings_title">设置</string>
-    <string name="running_title">托管中</string>
-    <string name="running_no_ip">尚未检测到 Wi-Fi 网络。请连接热点或路由器，列表会自动刷新。</string>
-    <string name="running_open_lobby">在本机打开大厅</string>
-    <string name="running_hotspot_hint">要让其他人加入，请打开本机的 Wi-Fi 热点(或连接路由器)，然后让他们打开上面的地址之一。</string>
-    <string name="running_hotspot_button">打开热点设置</string>
-    <string name="running_https_warning">访客首次访问时会看到"连接不是私密连接"的警告——这是自签名证书的正常现象。他们应点击"高级"(或"显示详情") → "继续访问"。</string>
-    <string name="running_stop">停止托管</string>
+    <string name="settings_intro">这里通常不需要修改。</string>
     <string name="settings_language">语言</string>
-    <string name="settings_port">端口</string>
-    <string name="settings_port_hint">1024–65535 之间，默认 8080。</string>
-    <string name="settings_keep_screen_on">托管时保持屏幕常亮</string>
-    <string name="settings_use_https">使用 HTTPS</string>
-    <string name="settings_use_https_hint">访客使用麦克风(对讲)和 GPS(世界足迹)功能需要此项。使用自签名证书——访客会看到一次性的浏览器安全警告，需要接受。</string>
-    <string name="settings_back">返回</string>
+    <string name="settings_system_language">使用手机语言</string>
+    <string name="settings_keep_invite_visible">保持邀请界面常亮</string>
+    <string name="settings_advanced">高级设置</string>
+    <string name="settings_show_advanced">显示高级设置</string>
+    <string name="settings_hide_advanced">隐藏高级设置</string>
+    <string name="settings_advanced_running">请先结束游戏，再更改这些设置。</string>
+    <string name="settings_port">连接端口</string>
+    <string name="settings_port_hint">除非被其他应用占用，否则请保留 8080。</string>
+    <string name="settings_use_https">安全连接 (HTTPS)</string>
+    <string name="settings_use_https_hint">使用麦克风或定位的游戏需要此项。其他手机首次加入时可能会看到安全提示。</string>
+    <string name="settings_done">完成</string>
+
+    <string name="running_title">可以开始玩了！</string>
+    <string name="running_subtitle">邀请身边的人加入</string>
+    <string name="running_same_wifi">先让所有人连接同一个 Wi-Fi，或连接这部手机的热点。</string>
+    <string name="running_join_hint">用另一部手机扫描这个二维码</string>
+    <string name="running_qr_description">加入游戏的二维码</string>
+    <string name="running_open">在这部手机上玩</string>
+    <string name="running_share">分享邀请链接</string>
+    <string name="running_share_message">一起来玩：%1$s</string>
+    <string name="running_copy">复制链接</string>
+    <string name="running_link_copied">链接已复制</string>
+    <string name="running_help_title">无法加入？</string>
+    <string name="running_help_text">请确认两部手机连接了同一个 Wi-Fi。如果没有 Wi-Fi，请开启这部手机的热点，并让其他手机连接。</string>
+    <string name="running_hotspot_button">打开热点设置</string>
+    <string name="running_no_ip">这部手机尚未连接。请连接 Wi-Fi 或开启手机热点。</string>
+    <string name="running_https_warning">其他手机首次加入时可能会看到安全提示。请打开详细信息，然后选择继续访问。</string>
+    <string name="running_stop">结束游戏</string>
+    <string name="running_stop_title">要结束所有人的游戏吗？</string>
+    <string name="running_stop_text">所有人都会断开连接。你随时可以重新开始。</string>
+    <string name="running_cancel">继续玩</string>
+    <string name="running_confirm">为所有人结束</string>
+    <string name="running_starting">正在准备游戏…</string>
+    <string name="running_start_error">无法开启游戏，请重试。</string>
+    <string name="running_check_again">再次检查</string>
+
 </resources>

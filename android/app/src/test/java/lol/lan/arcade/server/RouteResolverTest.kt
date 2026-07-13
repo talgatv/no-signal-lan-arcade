@@ -52,10 +52,20 @@ class RouteResolverTest {
     }
 
     @Test
-    fun `programs prefix strips to the programs root`() {
-        val r = RouteResolver.resolve("/programs/lan-chat/client/")
-        assertEquals(RouteResolver.Root.PROGRAMS, r.root)
-        assertEquals("lan-chat/client/", r.relativePath)
+    fun `canonical program path resolves inside the games root`() {
+        val r = RouteResolver.resolve("/games/programs/lan-chat/client/")
+        assertEquals(RouteResolver.Root.GAMES, r.root)
+        assertEquals("programs/lan-chat/client/", r.relativePath)
+    }
+
+    @Test
+    fun `legacy program urls redirect to the canonical tree and preserve query`() {
+        assertEquals(
+            "/games/programs/lan-chat/client/?name=Ada&room=main",
+            RouteResolver.legacyProgramsRedirect("/programs/lan-chat/client/?name=Ada&room=main"),
+        )
+        assertEquals("/games/hub/", RouteResolver.legacyProgramsRedirect("/programs/"))
+        assertNull(RouteResolver.legacyProgramsRedirect("/games/programs/lan-chat/client/"))
     }
 
     @Test

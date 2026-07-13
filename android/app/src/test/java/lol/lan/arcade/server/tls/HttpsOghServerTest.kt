@@ -158,6 +158,30 @@ class HttpsOghServerTest {
     }
 
     @Test
+    fun `legacy program url redirects over TLS and preserves its query`() {
+        startServer()
+        val socket = trustAllClientSocket()
+        socket.outputStream.write(
+            "GET /programs/lan-chat/client/?name=Ada&room=main HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n"
+                .toByteArray(StandardCharsets.US_ASCII),
+        )
+        socket.outputStream.flush()
+        val reader = BufferedReader(InputStreamReader(socket.inputStream, StandardCharsets.UTF_8))
+        val statusLine = reader.readLine()!!
+        assertTrue(statusLine.contains("302"))
+        val headerLines = generateSequence { reader.readLine() }.takeWhile { it.isNotEmpty() }.toList()
+        assertTrue(
+            headerLines.any {
+                it.equals(
+                    "Location: /games/programs/lan-chat/client/?name=Ada&room=main",
+                    ignoreCase = true,
+                )
+            },
+        )
+        socket.close()
+    }
+
+    @Test
     fun `two websocket clients join the same room and relay a message over real TLS`() {
         startServer()
 

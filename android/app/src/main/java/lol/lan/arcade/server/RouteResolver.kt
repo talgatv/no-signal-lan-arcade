@@ -9,7 +9,7 @@ import java.net.URLDecoder
  */
 object RouteResolver {
 
-    enum class Root { WWW, GAMES, PROGRAMS, SHARED, DOCS }
+    enum class Root { WWW, GAMES, SHARED, DOCS }
 
     data class Resolved(val root: Root, val relativePath: String)
 
@@ -30,14 +30,26 @@ object RouteResolver {
         "/hub", "/hub/", "/library", "/library/", "/apps", "/apps/",
     )
 
+    /** Maps the former top-level programs URL to its canonical nested route. */
+    fun legacyProgramsRedirect(rawTarget: String): String? {
+        val path = rawTarget.substringBefore('?')
+        val query = rawTarget.substringAfter('?', missingDelimiterValue = "")
+        val target = when {
+            path == "/programs" || path == "/programs/" -> "/games/hub/"
+            path.startsWith("/programs/") ->
+                "/games/programs/" + path.removePrefix("/programs/")
+            else -> return null
+        }
+        return if (query.isEmpty()) target else "$target?$query"
+    }
+
     fun resolve(rawPath: String): Resolved {
-        val path = rawPath.ifEmpty { "/" }
+        val path = rawPath.substringBefore('?').ifEmpty { "/" }
         return when {
             path in LOBBY_PATHS -> Resolved(Root.WWW, "index.html")
             path in ABOUT_PATHS -> Resolved(Root.WWW, "about.html")
             path == "/games/hub/" -> Resolved(Root.GAMES, "hub/index.html")
             path.startsWith("/games/") -> Resolved(Root.GAMES, path.removePrefix("/games/"))
-            path.startsWith("/programs/") -> Resolved(Root.PROGRAMS, path.removePrefix("/programs/"))
             path.startsWith("/shared/") -> Resolved(Root.SHARED, path.removePrefix("/shared/"))
             path.startsWith("/docs/") -> Resolved(Root.DOCS, path.removePrefix("/docs/"))
             path.startsWith("/www/") -> Resolved(Root.WWW, path.removePrefix("/www/"))
