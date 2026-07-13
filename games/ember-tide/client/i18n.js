@@ -1,0 +1,392 @@
+/**
+ * i18n — string table for Ember & Tide. Same flat shape as
+ * games/sled-lines/client/i18n.js and the other siblings this batch: a STRINGS
+ * table per UN-6 language plus detect/apply helpers, no framework.
+ *
+ * RTL (Arabic) flips the text-bearing UI chrome only — the header/back link,
+ * language switch, mode-select card, HUD pills, hint line and result cards. It
+ * deliberately does NOT mirror the canvas: the level layout, the fire/water
+ * hazard positions, the two characters' spawns and doors, and the on-screen
+ * touch d-pads are a fixed spatial/gameplay convention, not prose. Mirroring
+ * them would silently flip every level (fire door where the water door should
+ * be, "left" moving a character right) — the exact mistake this batch's earlier
+ * games (games/hill-rider, games/gem-swap, games/leap-quest, games/siege-break,
+ * games/sled-lines) already caught and documented. The stage/canvas and the
+ * touch controls are pinned dir="ltr" in the markup; game.js also forces
+ * ctx.direction = 'ltr' for any canvas text as a second guard.
+ */
+
+export const LANGS = ['en', 'ru', 'zh', 'es', 'ar', 'fr'];
+
+export const LANG_LABELS = {
+  en: 'EN', ru: 'RU', zh: '中文', es: 'ES', ar: 'AR', fr: 'FR',
+};
+
+export const RTL_LANGS = new Set(['ar']);
+
+export const STRINGS = {
+  en: {
+    back: 'Library',
+    title: 'Ember & Tide',
+    blurb: 'Guide a fire spirit and a water spirit through the old elemental temple at the same time. Fire wades safe through lava but is doused by water; water flows through pools but boils away in lava. Spikes end them both. Get each spirit to its own matching door.',
+    langSwitchAria: 'Language',
+    ember: 'Ember',
+    tide: 'Tide',
+    // Mode select
+    modeTitle: 'Choose how to play',
+    soloBtn: 'Solo',
+    soloDesc: 'One player, both spirits. Move the active spirit, tap Switch to take control of the other.',
+    duoBtn: 'Local 2-Player',
+    duoDesc: 'Two players on one keyboard. WASD drives Ember, the Arrow keys drive Tide — at the same time.',
+    startBtn: 'Enter the temple',
+    controlsSolo: 'Solo — one active spirit at a time. Move: A/D or ←/→. Jump: W / ↑ / Space. Switch spirit: Shift or Tab. On touch: one d-pad plus a Switch button. R restarts the level.',
+    controlsDuo: 'Local 2-player — both spirits live at once. Ember (fire): A/D move, W jump. Tide (water): ←/→ move, ↑ jump. On touch: two d-pads, Ember left, Tide right. R restarts the level.',
+    // HUD
+    hudLevel: 'Level',
+    hudResets: 'Resets',
+    controlling: 'Now moving',
+    // Hints (bottom line during play)
+    hintSolo: 'Move the glowing spirit · Shift/Tab switches · get each to its matching door',
+    hintDuo: 'Ember: WASD · Tide: Arrows · get each spirit to its matching door',
+    hintTouchSolo: 'Tap Switch to change spirit · guide each to its own door',
+    wrongDoor: 'Wrong door — that one is for the other spirit',
+    bothDoors: 'Both spirits must reach their own doors at once',
+    // Buttons
+    switchBtn: 'Switch',
+    restartBtn: 'Restart',
+    // Overlays
+    clearedTitle: 'Chamber cleared',
+    clearedSub: 'Both spirits reached their doors.',
+    nextBtn: 'Next chamber',
+    deathFire: 'Ember was doused',
+    deathFireSub: 'The fire spirit touched water. The chamber resets.',
+    deathWater: 'Tide boiled away',
+    deathWaterSub: 'The water spirit touched lava. The chamber resets.',
+    deathSpikeFire: 'Ember hit the spikes',
+    deathSpikeWater: 'Tide hit the spikes',
+    deathSpikeSub: 'The spikes are deadly to both spirits. The chamber resets.',
+    deathFallFire: 'Ember fell away',
+    deathFallWater: 'Tide fell away',
+    deathFallSub: 'A spirit fell out of the chamber. It resets.',
+    retryBtn: 'Try again',
+    winTitle: 'The temple is at peace',
+    winSub: 'You guided both spirits through every chamber.',
+    winStats: '{levels} chambers · {resets} resets · {time}',
+    playAgainBtn: 'Play again',
+    menuBtn: 'Main menu',
+    pausedTitle: 'Paused',
+    resumeBtn: 'Resume',
+    // Level names
+    lvl1: 'Twin Springs',
+    lvl2: 'The Sunken Gate',
+    lvl3: "Ember's Bridge",
+    lvl4: 'Give and Take',
+    lvl5: 'Hold the Line',
+    lvl6: 'The Confluence',
+  },
+  ru: {
+    back: 'Библиотека',
+    title: 'Уголёк и Прилив',
+    blurb: 'Проведи духа огня и духа воды через древний храм стихий одновременно. Огонь спокойно идёт по лаве, но гаснет от воды; вода течёт сквозь пруды, но испаряется в лаве. Шипы губят обоих. Приведи каждого духа к своей двери подходящего цвета.',
+    langSwitchAria: 'Язык',
+    ember: 'Уголёк',
+    tide: 'Прилив',
+    modeTitle: 'Выбери режим игры',
+    soloBtn: 'Одиночный',
+    soloDesc: 'Один игрок, оба духа. Двигай активного духа, нажми «Смена», чтобы управлять другим.',
+    duoBtn: 'На двоих',
+    duoDesc: 'Двое за одной клавиатурой. WASD — Уголёк, стрелки — Прилив, одновременно.',
+    startBtn: 'Войти в храм',
+    controlsSolo: 'Одиночный — активен один дух за раз. Движение: A/D или ←/→. Прыжок: W / ↑ / Пробел. Смена духа: Shift или Tab. На сенсоре: одна крестовина и кнопка «Смена». R — заново уровень.',
+    controlsDuo: 'На двоих — оба духа сразу. Уголёк (огонь): A/D — движение, W — прыжок. Прилив (вода): ←/→ — движение, ↑ — прыжок. На сенсоре: две крестовины, Уголёк слева, Прилив справа. R — заново уровень.',
+    hudLevel: 'Уровень',
+    hudResets: 'Сбросы',
+    controlling: 'Управляешь',
+    hintSolo: 'Двигай светящегося духа · Shift/Tab — смена · приведи каждого к своей двери',
+    hintDuo: 'Уголёк: WASD · Прилив: стрелки · приведи каждого духа к своей двери',
+    hintTouchSolo: 'Нажми «Смена», чтобы сменить духа · приведи каждого к своей двери',
+    wrongDoor: 'Не та дверь — она для другого духа',
+    bothDoors: 'Оба духа должны одновременно быть у своих дверей',
+    switchBtn: 'Смена',
+    restartBtn: 'Заново',
+    clearedTitle: 'Зал пройден',
+    clearedSub: 'Оба духа дошли до своих дверей.',
+    nextBtn: 'Следующий зал',
+    deathFire: 'Уголёк погас',
+    deathFireSub: 'Дух огня коснулся воды. Зал сбрасывается.',
+    deathWater: 'Прилив испарился',
+    deathWaterSub: 'Дух воды коснулся лавы. Зал сбрасывается.',
+    deathSpikeFire: 'Уголёк налетел на шипы',
+    deathSpikeWater: 'Прилив налетел на шипы',
+    deathSpikeSub: 'Шипы смертельны для обоих духов. Зал сбрасывается.',
+    deathFallFire: 'Уголёк сорвался',
+    deathFallWater: 'Прилив сорвался',
+    deathFallSub: 'Дух выпал из зала. Он сбрасывается.',
+    retryBtn: 'Ещё раз',
+    winTitle: 'В храме воцарился покой',
+    winSub: 'Ты провёл обоих духов через все залы.',
+    winStats: '{levels} залов · {resets} сбросов · {time}',
+    playAgainBtn: 'Играть снова',
+    menuBtn: 'Главное меню',
+    pausedTitle: 'Пауза',
+    resumeBtn: 'Продолжить',
+    lvl1: 'Двойные источники',
+    lvl2: 'Затонувшие врата',
+    lvl3: 'Мост Уголька',
+    lvl4: 'Взаимная помощь',
+    lvl5: 'Держи рубеж',
+    lvl6: 'Слияние',
+  },
+  zh: {
+    back: '资料库',
+    title: '火烬与潮汐',
+    blurb: '同时引导火之精灵和水之精灵穿过古老的元素神殿。火可安然涉过熔岩，却会被水浇灭；水可流过水池，却会在熔岩中蒸发。尖刺则会终结两者。让每个精灵到达属于自己的同色之门。',
+    langSwitchAria: '语言',
+    ember: '火烬',
+    tide: '潮汐',
+    modeTitle: '选择游玩方式',
+    soloBtn: '单人',
+    soloDesc: '一名玩家，操控两个精灵。移动当前精灵，点击“切换”来控制另一个。',
+    duoBtn: '本地双人',
+    duoDesc: '两名玩家共用一个键盘。WASD 控制火烬，方向键控制潮汐，同时进行。',
+    startBtn: '进入神殿',
+    controlsSolo: '单人——每次只有一个精灵是激活的。移动：A/D 或 ←/→。跳跃：W / ↑ / 空格。切换精灵：Shift 或 Tab。触屏：一个方向键加一个“切换”按钮。R 重开本关。',
+    controlsDuo: '本地双人——两个精灵同时活动。火烬（火）：A/D 移动，W 跳跃。潮汐（水）：←/→ 移动，↑ 跳跃。触屏：两个方向键，火烬在左，潮汐在右。R 重开本关。',
+    hudLevel: '关卡',
+    hudResets: '重置',
+    controlling: '当前操控',
+    hintSolo: '移动发光的精灵 · Shift/Tab 切换 · 让每个到达自己的门',
+    hintDuo: '火烬：WASD · 潮汐：方向键 · 让每个精灵到达自己的门',
+    hintTouchSolo: '点击“切换”更换精灵 · 让每个到达自己的门',
+    wrongDoor: '门不对——那是另一个精灵的门',
+    bothDoors: '两个精灵必须同时到达各自的门',
+    switchBtn: '切换',
+    restartBtn: '重开',
+    clearedTitle: '密室通过',
+    clearedSub: '两个精灵都到达了各自的门。',
+    nextBtn: '下一密室',
+    deathFire: '火烬被浇灭了',
+    deathFireSub: '火之精灵碰到了水。本室重置。',
+    deathWater: '潮汐蒸发了',
+    deathWaterSub: '水之精灵碰到了熔岩。本室重置。',
+    deathSpikeFire: '火烬撞上了尖刺',
+    deathSpikeWater: '潮汐撞上了尖刺',
+    deathSpikeSub: '尖刺对两个精灵都是致命的。本室重置。',
+    deathFallFire: '火烬坠落了',
+    deathFallWater: '潮汐坠落了',
+    deathFallSub: '有精灵掉出了密室。本室重置。',
+    retryBtn: '再试一次',
+    winTitle: '神殿归于安宁',
+    winSub: '你引导两个精灵穿过了每一间密室。',
+    winStats: '{levels} 间密室 · {resets} 次重置 · {time}',
+    playAgainBtn: '再玩一次',
+    menuBtn: '主菜单',
+    pausedTitle: '已暂停',
+    resumeBtn: '继续',
+    lvl1: '双泉',
+    lvl2: '沉没之门',
+    lvl3: '火烬之桥',
+    lvl4: '互助',
+    lvl5: '坚守防线',
+    lvl6: '交汇',
+  },
+  es: {
+    back: 'Biblioteca',
+    title: 'Ascua y Marea',
+    blurb: 'Guía a un espíritu de fuego y a uno de agua por el viejo templo elemental a la vez. El fuego cruza la lava sin daño pero el agua lo apaga; el agua fluye por los charcos pero se evapora en la lava. Los pinchos acaban con ambos. Lleva a cada espíritu a su propia puerta del color que le corresponde.',
+    langSwitchAria: 'Idioma',
+    ember: 'Ascua',
+    tide: 'Marea',
+    modeTitle: 'Elige cómo jugar',
+    soloBtn: 'Individual',
+    soloDesc: 'Un jugador, ambos espíritus. Mueve al espíritu activo y pulsa Cambiar para controlar al otro.',
+    duoBtn: '2 Jugadores local',
+    duoDesc: 'Dos jugadores en un teclado. WASD mueve a Ascua, las flechas mueven a Marea, a la vez.',
+    startBtn: 'Entrar al templo',
+    controlsSolo: 'Individual — un espíritu activo a la vez. Mover: A/D o ←/→. Saltar: W / ↑ / Espacio. Cambiar espíritu: Mayús o Tab. En táctil: una cruceta y un botón Cambiar. R reinicia el nivel.',
+    controlsDuo: '2 jugadores — ambos espíritus a la vez. Ascua (fuego): A/D mover, W saltar. Marea (agua): ←/→ mover, ↑ saltar. En táctil: dos crucetas, Ascua a la izquierda, Marea a la derecha. R reinicia el nivel.',
+    hudLevel: 'Nivel',
+    hudResets: 'Reinicios',
+    controlling: 'Controlas',
+    hintSolo: 'Mueve al espíritu que brilla · Mayús/Tab cambia · lleva a cada uno a su puerta',
+    hintDuo: 'Ascua: WASD · Marea: flechas · lleva a cada espíritu a su puerta',
+    hintTouchSolo: 'Pulsa Cambiar para cambiar de espíritu · lleva a cada uno a su puerta',
+    wrongDoor: 'Puerta equivocada — esa es del otro espíritu',
+    bothDoors: 'Ambos espíritus deben llegar a sus puertas a la vez',
+    switchBtn: 'Cambiar',
+    restartBtn: 'Reiniciar',
+    clearedTitle: 'Cámara superada',
+    clearedSub: 'Ambos espíritus llegaron a sus puertas.',
+    nextBtn: 'Siguiente cámara',
+    deathFire: 'Ascua se apagó',
+    deathFireSub: 'El espíritu de fuego tocó el agua. La cámara se reinicia.',
+    deathWater: 'Marea se evaporó',
+    deathWaterSub: 'El espíritu de agua tocó la lava. La cámara se reinicia.',
+    deathSpikeFire: 'Ascua chocó con los pinchos',
+    deathSpikeWater: 'Marea chocó con los pinchos',
+    deathSpikeSub: 'Los pinchos son mortales para ambos espíritus. La cámara se reinicia.',
+    deathFallFire: 'Ascua se despeñó',
+    deathFallWater: 'Marea se despeñó',
+    deathFallSub: 'Un espíritu cayó fuera de la cámara. Se reinicia.',
+    retryBtn: 'Reintentar',
+    winTitle: 'El templo está en paz',
+    winSub: 'Guiaste a ambos espíritus por todas las cámaras.',
+    winStats: '{levels} cámaras · {resets} reinicios · {time}',
+    playAgainBtn: 'Jugar de nuevo',
+    menuBtn: 'Menú principal',
+    pausedTitle: 'Pausa',
+    resumeBtn: 'Continuar',
+    lvl1: 'Manantiales gemelos',
+    lvl2: 'La puerta hundida',
+    lvl3: 'El puente de Ascua',
+    lvl4: 'Toma y daca',
+    lvl5: 'Aguanta la posición',
+    lvl6: 'La confluencia',
+  },
+  ar: {
+    back: 'المكتبة',
+    title: 'جَمْرة ومَدّ',
+    blurb: 'قُد روح النار وروح الماء عبر معبد العناصر القديم في آن واحد. تعبر النار الحمم بأمان لكن الماء يُطفئها، ويجري الماء في البِرَك لكنه يتبخّر في الحمم. أما الأشواك فتقضي على كليهما. أوصِل كل روح إلى بابها المطابق للونها.',
+    langSwitchAria: 'اللغة',
+    ember: 'جَمْرة',
+    tide: 'مَدّ',
+    modeTitle: 'اختر طريقة اللعب',
+    soloBtn: 'فردي',
+    soloDesc: 'لاعب واحد، كلتا الروحين. حرّك الروح النشطة، واضغط «تبديل» للتحكم بالأخرى.',
+    duoBtn: 'لاعبان محليًا',
+    duoDesc: 'لاعبان على لوحة مفاتيح واحدة. WASD تحرّك جَمْرة، والأسهم تحرّك مَدّ، في آن واحد.',
+    startBtn: 'ادخل المعبد',
+    controlsSolo: 'فردي — روح نشطة واحدة في كل مرة. الحركة: A/D أو ←/→. القفز: W / ↑ / مسافة. تبديل الروح: Shift أو Tab. باللمس: لوحة اتجاهات واحدة وزر «تبديل». R يعيد المرحلة.',
+    controlsDuo: 'لاعبان — كلتا الروحين معًا. جَمْرة (نار): A/D حركة، W قفز. مَدّ (ماء): ←/→ حركة، ↑ قفز. باللمس: لوحتا اتجاهات، جَمْرة يسارًا ومَدّ يمينًا. R يعيد المرحلة.',
+    hudLevel: 'المرحلة',
+    hudResets: 'إعادات',
+    controlling: 'تتحكّم بـ',
+    hintSolo: 'حرّك الروح المتوهّجة · Shift/Tab للتبديل · أوصِل كلاً إلى بابها',
+    hintDuo: 'جَمْرة: WASD · مَدّ: الأسهم · أوصِل كل روح إلى بابها',
+    hintTouchSolo: 'اضغط «تبديل» لتغيير الروح · أوصِل كلاً إلى بابها',
+    wrongDoor: 'باب خاطئ — هذا للروح الأخرى',
+    bothDoors: 'على الروحين الوصول إلى بابيهما في آن واحد',
+    switchBtn: 'تبديل',
+    restartBtn: 'إعادة',
+    clearedTitle: 'تم اجتياز الحجرة',
+    clearedSub: 'وصلت كلتا الروحين إلى بابيهما.',
+    nextBtn: 'الحجرة التالية',
+    deathFire: 'انطفأت جَمْرة',
+    deathFireSub: 'لمست روح النار الماء. تُعاد الحجرة.',
+    deathWater: 'تبخّر مَدّ',
+    deathWaterSub: 'لمست روح الماء الحمم. تُعاد الحجرة.',
+    deathSpikeFire: 'اصطدمت جَمْرة بالأشواك',
+    deathSpikeWater: 'اصطدم مَدّ بالأشواك',
+    deathSpikeSub: 'الأشواك قاتلة لكلتا الروحين. تُعاد الحجرة.',
+    deathFallFire: 'سقطت جَمْرة',
+    deathFallWater: 'سقط مَدّ',
+    deathFallSub: 'سقطت روح خارج الحجرة. تُعاد.',
+    retryBtn: 'حاول مجددًا',
+    winTitle: 'ساد السلام في المعبد',
+    winSub: 'قُدت كلتا الروحين عبر كل الحُجُرات.',
+    winStats: '{levels} حجرات · {resets} إعادات · {time}',
+    playAgainBtn: 'العب مجددًا',
+    menuBtn: 'القائمة الرئيسية',
+    pausedTitle: 'إيقاف مؤقت',
+    resumeBtn: 'استئناف',
+    lvl1: 'النبعان التوأمان',
+    lvl2: 'البوابة الغارقة',
+    lvl3: 'جسر جَمْرة',
+    lvl4: 'أخذ وعطاء',
+    lvl5: 'اثبت في موضعك',
+    lvl6: 'الملتقى',
+  },
+  fr: {
+    back: 'Bibliothèque',
+    title: 'Braise & Marée',
+    blurb: "Guide un esprit de feu et un esprit d'eau à travers le vieux temple élémentaire en même temps. Le feu traverse la lave sans mal mais l'eau l'éteint ; l'eau coule dans les mares mais s'évapore dans la lave. Les piques les tuent tous les deux. Amène chaque esprit à sa propre porte de la bonne couleur.",
+    langSwitchAria: 'Langue',
+    ember: 'Braise',
+    tide: 'Marée',
+    modeTitle: 'Choisis ton mode',
+    soloBtn: 'Solo',
+    soloDesc: "Un joueur, les deux esprits. Déplace l'esprit actif, appuie sur Changer pour piloter l'autre.",
+    duoBtn: '2 joueurs local',
+    duoDesc: 'Deux joueurs sur un clavier. ZQSD/WASD pour Braise, les flèches pour Marée, en même temps.',
+    startBtn: 'Entrer dans le temple',
+    controlsSolo: "Solo — un esprit actif à la fois. Déplacer : A/D ou ←/→. Sauter : W / ↑ / Espace. Changer d'esprit : Maj ou Tab. Au tactile : une croix directionnelle et un bouton Changer. R relance le niveau.",
+    controlsDuo: 'Deux joueurs — les deux esprits en même temps. Braise (feu) : A/D déplacer, W sauter. Marée (eau) : ←/→ déplacer, ↑ sauter. Au tactile : deux croix, Braise à gauche, Marée à droite. R relance le niveau.',
+    hudLevel: 'Niveau',
+    hudResets: 'Réinit.',
+    controlling: 'Tu pilotes',
+    hintSolo: "Déplace l'esprit lumineux · Maj/Tab change · amène chacun à sa porte",
+    hintDuo: 'Braise : WASD · Marée : flèches · amène chaque esprit à sa porte',
+    hintTouchSolo: "Appuie sur Changer pour changer d'esprit · amène chacun à sa porte",
+    wrongDoor: "Mauvaise porte — celle-ci est pour l'autre esprit",
+    bothDoors: 'Les deux esprits doivent atteindre leurs portes en même temps',
+    switchBtn: 'Changer',
+    restartBtn: 'Relancer',
+    clearedTitle: 'Salle franchie',
+    clearedSub: 'Les deux esprits ont atteint leurs portes.',
+    nextBtn: 'Salle suivante',
+    deathFire: 'Braise a été éteinte',
+    deathFireSub: "L'esprit de feu a touché l'eau. La salle se réinitialise.",
+    deathWater: "Marée s'est évaporée",
+    deathWaterSub: "L'esprit d'eau a touché la lave. La salle se réinitialise.",
+    deathSpikeFire: 'Braise a heurté les piques',
+    deathSpikeWater: 'Marée a heurté les piques',
+    deathSpikeSub: 'Les piques sont mortelles pour les deux esprits. La salle se réinitialise.',
+    deathFallFire: 'Braise est tombée',
+    deathFallWater: 'Marée est tombée',
+    deathFallSub: 'Un esprit est tombé hors de la salle. Elle se réinitialise.',
+    retryBtn: 'Réessayer',
+    winTitle: 'Le temple est en paix',
+    winSub: 'Tu as guidé les deux esprits à travers toutes les salles.',
+    winStats: '{levels} salles · {resets} réinit. · {time}',
+    playAgainBtn: 'Rejouer',
+    menuBtn: 'Menu principal',
+    pausedTitle: 'Pause',
+    resumeBtn: 'Reprendre',
+    lvl1: 'Sources jumelles',
+    lvl2: 'La porte engloutie',
+    lvl3: 'Le pont de Braise',
+    lvl4: 'Donnant-donnant',
+    lvl5: 'Tiens la ligne',
+    lvl6: 'Le confluent',
+  },
+};
+
+function qs(name) {
+  try { return new URLSearchParams(location.search).get(name); } catch { return null; }
+}
+
+export function detectLang() {
+  const q = qs('lang');
+  if (q && STRINGS[q]) return q;
+  try {
+    const stored = localStorage.getItem('ogh_ember_tide_lang');
+    if (stored && STRINGS[stored]) return stored;
+  } catch { /* storage may be unavailable */ }
+  const nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
+  return STRINGS[nav] ? nav : 'en';
+}
+
+export function rememberLang(lang) {
+  try { localStorage.setItem('ogh_ember_tide_lang', lang); } catch { /* ignore */ }
+}
+
+/** Translate a key, with optional {placeholder} substitution. */
+export function t(lang, key, vars) {
+  const dict = STRINGS[lang] || STRINGS.en;
+  let s = dict[key] ?? STRINGS.en[key] ?? key;
+  if (vars) {
+    for (const [k, v] of Object.entries(vars)) s = s.replaceAll(`{${k}}`, String(v));
+  }
+  return s;
+}
+
+export function applyStaticStrings(lang) {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = RTL_LANGS.has(lang) ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    el.textContent = t(lang, el.getAttribute('data-i18n'));
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+    el.setAttribute('aria-label', t(lang, el.getAttribute('data-i18n-aria')));
+  });
+}

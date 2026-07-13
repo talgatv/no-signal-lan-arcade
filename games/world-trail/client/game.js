@@ -17,6 +17,11 @@ const elCompassNeedle = document.getElementById('compassNeedle');
 const elPlayers = document.getElementById('players');
 const elMsg = document.getElementById('msg');
 const layerPanel = document.getElementById('layerPanel');
+const rosterEl = document.getElementById('roster');
+const rosterList = document.getElementById('rosterList');
+const gpsBanner = document.getElementById('gpsBanner');
+const gpsBannerText = document.getElementById('gpsBannerText');
+let gpsBannerDismissed = false;
 
 const map = createMapRenderer(canvas);
 const sensors = createSensors();
@@ -55,7 +60,10 @@ async function loadData() {
 
 function updateHud() {
   const s = sensors.state;
-  const src = s.source === 'gps' ? 'GPS' : 'SIM';
+  let src = s.source === 'gps' ? 'GPS' : 'SIM';
+  if (s.acc != null && s.source === 'gps') {
+    src += ` ±${Math.round(s.acc)}m`;
+  }
   elCoords.textContent = `${s.lat.toFixed(4)}°, ${s.lon.toFixed(4)}° · ${src}`;
   if (s.heading != null && Number.isFinite(s.heading)) {
     elCompassNeedle.style.transform = `rotate(${-s.heading}deg)`;
@@ -64,18 +72,124 @@ function updateHud() {
   } else {
     elCompass.classList.remove('live');
   }
+  updateGpsBanner(s);
+}
+
+function updateGpsBanner(s) {
+  if (!gpsBanner || gpsBannerDismissed) {
+    if (gpsBanner && s.source === 'gps') gpsBanner.hidden = true;
+    return;
+  }
+  if (s.source === 'gps') {
+    gpsBanner.hidden = true;
+    return;
+  }
+
+  const httpsHint =
+    location.protocol === 'https:'
+      ? ''
+      : `<p><strong>GPS needs HTTPS:</strong> this page is open over <code>http://</code>. ` +
+        `Phone browsers block location access on plain LAN HTTP.</p>` +
+        `<p>On the host: <code>cd pc && ./start.sh --https</code><br/>` +
+        `Then open <code>https://HOST_IP:port/</code> and accept the local certificate once.</p>`;
+
+  let extra = '';
+  if (s.status === 'insecure' || !s.secure) {
+    extra = httpsHint;
+  } else if (s.error) {
+    extra = `<p>${escapeHtml(s.error)}</p>${httpsHint}`;
+  } else {
+    extra =
+      `<p>GPS is not active yet. Tap <strong>Enable GPS</strong> and allow location access.</p>` +
+      (s.secure ? '' : httpsHint);
+  }
+  extra +=
+    `<p class="wt-gps-sim">No GPS? Tap the map to set a simulated position for LAN play.</p>`;
+
+  gpsBannerText.innerHTML = extra;
+  gpsBanner.hidden = false;
 }
 
 function renderPlayers() {
-  const list = [];
-  if (sync?.net) {
-    list.push(`you (${sync.net.name})`);
-  }
+  const now = Date.now();
+  const names = [];
+  const youName = sync?.net?.name || 'you';
+  names.push(`you (${youName})`);
+
+  const rows = [
+    {
+      id: 'self',
+      name: youName,
+      color: '#00e5ff',
+      you: true,
+      hasPos: true,
+      lat: sensors.state.lat,
+      lon: sensors.state.lon,
+      stale: false,
+      sub: sensors.state.source === 'gps' ? 'GPS' : 'SIM',
+    },
+  ];
+
   for (const p of peers.values()) {
-    if (Date.now() - p.updated > 60000) continue;
-    list.push(p.name || p.id);
+    const age = now - p.updated;
+    if (age > 120000 && !p.online) continue;
+    const stale = age > 25000 || p.online === false;
+    if (p.hasPos) names.push(p.name || p.id);
+    else names.push(`${p.name || p.id}?`);
+    rows.push({
+      id: p.id,
+      name: p.name || p.id,
+      color: p.color,
+      you: false,
+      hasPos: !!p.hasPos,
+      lat: p.lat,
+      lon: p.lon,
+      stale,
+      sub: p.hasPos
+        ? `${p.lat.toFixed(2)}°, ${p.lon.toFixed(2)}°`
+        : p.online
+          ? 'waiting…'
+          : 'offline',
+    });
   }
-  elPlayers.textContent = list.length ? list.join(' · ') : 'solo';
+
+  elPlayers.textContent =
+    names.length <= 1
+      ? `solo · ${youName}`
+      : `${names.length} players · ${names.join(' · ')}`;
+
+  rosterList.innerHTML = '';
+  for (const r of rows) {
+    const li = document.createElement('li');
+    if (r.you) li.classList.add('you');
+    if (r.stale) li.classList.add('stale');
+    li.innerHTML = `
+      <span class="wt-roster-dot" style="background:${r.color}"></span>
+      <span class="wt-roster-meta">
+        <span class="wt-roster-name">${escapeHtml(r.name)}${r.you ? ' (you)' : ''}</span>
+        <span class="wt-roster-sub">${escapeHtml(r.sub)}</span>
+      </span>`;
+    li.addEventListener('click', () => {
+      if (!r.hasPos) {
+        flash(`${r.name}: no position yet`);
+        return;
+      }
+      map.centerOn(r.lat, r.lon);
+      if (map.scale < 1.5) {
+        map.zoomAt(canvas.clientWidth / 2, canvas.clientHeight / 2, 1.5 / map.scale);
+      }
+      flash(`Centered on ${r.name}`);
+    });
+    rosterList.appendChild(li);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function frame() {
@@ -99,6 +213,10 @@ function frame() {
 function onSensor(s) {
   trail.push(s.lat, s.lon);
   updateHud();
+  // Keep roster coords fresh for "you"
+  if (rosterEl && !rosterEl.hidden) renderPlayers();
+  // Nudge network when we first get a GPS fix
+  if (s.source === 'gps') sync?.broadcastSelf?.(false);
 }
 
 function bindPointer() {
@@ -236,13 +354,46 @@ function dropPin(lat, lon, label) {
   flash(`Pin: ${pin.label}`);
 }
 
+async function enableGpsFromUser() {
+  flash('Requesting GPS…', 4000);
+  await sensors.requestCompassPermission();
+  const res = await sensors.requestGps();
+  updateHud();
+  if (res.ok || sensors.state.source === 'gps') {
+    gpsBannerDismissed = true;
+    gpsBanner.hidden = true;
+    map.centerOn(sensors.state.lat, sensors.state.lon);
+    flash('GPS on');
+  } else if (res.reason === 'insecure') {
+    flash('Need HTTPS for GPS — see banner');
+  } else {
+    flash(sensors.state.error || 'GPS failed', 4000);
+  }
+}
+
 function bindUi() {
+  document.getElementById('btnGps')?.addEventListener('click', () => {
+    gpsBannerDismissed = false;
+    enableGpsFromUser();
+  });
+  document.getElementById('btnEnableGps')?.addEventListener('click', () => {
+    enableGpsFromUser();
+  });
+  document.getElementById('btnDismissGps')?.addEventListener('click', () => {
+    gpsBannerDismissed = true;
+    gpsBanner.hidden = true;
+  });
+
   document.getElementById('btnCenter').addEventListener('click', async () => {
     await sensors.requestCompassPermission();
+    // Also re-request GPS on Center (user gesture)
+    if (sensors.state.source !== 'gps') {
+      await sensors.requestGps();
+    }
     const s = sensors.state;
     map.centerOn(s.lat, s.lon);
     if (map.scale < 2) map.zoomAt(canvas.clientWidth / 2, canvas.clientHeight / 2, 2 / map.scale);
-    flash('Centered on you');
+    flash(s.source === 'gps' ? 'Centered on GPS' : 'Centered (SIM) — tap GPS button');
   });
 
   document.getElementById('btnPin').addEventListener('click', () => {
@@ -252,6 +403,16 @@ function bindUi() {
 
   document.getElementById('btnLayers').addEventListener('click', () => {
     layerPanel.hidden = !layerPanel.hidden;
+    if (!layerPanel.hidden) rosterEl.hidden = true;
+  });
+
+  document.getElementById('btnPlayers').addEventListener('click', () => {
+    rosterEl.hidden = !rosterEl.hidden;
+    if (!rosterEl.hidden) {
+      layerPanel.hidden = true;
+      renderPlayers();
+      sync?.broadcastSelf?.(true);
+    }
   });
 
   document.getElementById('btnClearTrail').addEventListener('click', () => {

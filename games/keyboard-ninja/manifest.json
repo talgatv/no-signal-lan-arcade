@@ -1,0 +1,32 @@
+{
+  "id": "keyboard-ninja",
+  "name": "Keyboard Ninja",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 8,
+  "supportsSolo": true,
+  "genres": ["arcade", "typing", "competitive"],
+  "tags": ["solo", "multiplayer", "experimental", "typing", "competitive"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "keyboard",
+    "supported": ["keyboard"],
+    "keyboard": "required",
+    "mouse": "none",
+    "notes": {
+      "en": "Type using a physical keyboard — this is a typing-speed test, so there is deliberately no on-screen keyboard (one would defeat the purpose of measuring real typing speed). Two modes: Solo Practice (a 60-second timed session against a word bank, live WPM/accuracy) and LAN Race (everyone in the room types the same sentence at once, first to finish wins).",
+      "ru": "Печатай на физической клавиатуре — это тест на скорость печати, поэтому экранной клавиатуры здесь осознанно нет (она свела бы на нет смысл измерения реальной скорости печати). Два режима: одиночная тренировка (сессия на 60 секунд по банку слов, скорость и точность в реальном времени) и гонка по локальной сети (все в комнате печатают одно и то же предложение одновременно, побеждает тот, кто закончит первым)."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "Whoever presses Start Race in the lobby picks a random sentence (in their own UI language) and broadcasts {text, lang, startAt}, so every client renders and types the identical passage. Each racer's own client is authoritative for its own progress: keystrokes are scored locally against the shared text (classifyAppends, same helper solo mode uses), and {pct, wpm} is broadcast on a ~300ms throttle for a live progress-bar track, followed by a one-time {wpm, accuracy, elapsedMs} broadcast on completion. elapsedMs is measured by each client's own performance.now() from the instant its own local 3-2-1 countdown reaches GO, not Date.now() (which would be vulnerable to wall-clock skew between devices), so finish-order ranking (sort by elapsedMs ascending) is deterministic and reproduces the same leaderboard on every screen regardless of WebSocket relay/delivery order. A round ends when every racer in the roster frozen at go()-time has finished, or after a 90-second timeout, at which point anyone still unfinished is ranked by live progress. Solo Practice never touches the network; LAN Race degrades automatically to a solo time-trial when no host is reachable, same net.mode-driven offline fallback convention as every sibling game."
+  },
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-net.js", "js/ogh-profile.js", "js/ogh-sfx.js"],
+  "notes": "Typing-speed test with solo practice and a real-time LAN typing race. Pure calculation logic (per-character diff, WPM = (characters typed / 5) / minutes elapsed, accuracy = correct keystrokes / total keystrokes) lives in client/typing-core.js with zero DOM references, directly unit-testable in plain Node, same 'pure logic never touches the DOM' split as games/tic-tac-toe. Content is split from UI chrome: client/data/content.json holds the per-language word bank (80 words/language) and sentence bank (15 sentences/language) the player actually types; client/i18n.js holds only the UI-chrome string table. zh (Chinese) typing content is romanized Hanyu Pinyin, not hanzi: real Chinese characters require an IME composition step (several keystrokes collapse into one candidate-selected character) that the game's 1-keystroke-per-target-character model — and therefore its per-character highlighting and WPM/accuracy formulas — cannot represent, so romanized content is the honestly-functional choice for direct physical-keyboard typing practice, clearly labeled as such in the UI and README. ar (Arabic) content, by contrast, IS native Arabic script: a standard Arabic keyboard layout maps one physical key to one Arabic letter directly with no IME/composition step (the same mechanism as a Cyrillic layout for Russian, just right-to-left), so direct keydown/input capture works correctly — verified empirically that a dir=rtl per-character span overlay plus a dir=rtl <input> render right-to-left while input.value keeps logical/typed character order, so the diff/accuracy logic needed zero RTL-specific branching. The race mode's live progress track is forced dir=ltr regardless of UI language (a racer's position is spatial/comparative gameplay, not prose — same precedent as games/tic-tac-toe's board and games/pop-the-bugs' grid staying un-mirrored under RTL)."
+}

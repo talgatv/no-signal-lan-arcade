@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Gem Swap — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="gs-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="gs-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="gs-hud" role="status">
+        <div class="ogh-pill" id="hudScore" data-i18n-aria="hudScoreAria">
+          <span class="gs-lbl" data-i18n="scoreLabel">SCORE</span>
+          <strong id="hudScoreVal">0</strong>
+        </div>
+        <div class="ogh-pill" id="hudMoves" data-i18n-aria="hudMovesAria">
+          <span class="gs-lbl" data-i18n="movesLabel">MOVES</span>
+          <strong id="hudMovesVal">0</strong>
+        </div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <!-- A match-3 grid is a fixed spatial gameplay convention, not prose:
+         column 0 must always be the visual left column and "swap right"
+         must always mean "toward higher column index", regardless of the
+         document's text direction under Arabic. dir="ltr" here (plus the
+         board's own dir="ltr" — see game.js) keeps the grid, gem positions
+         and drag/tap adjacency from ever mirroring; only the header/cards/
+         hint text chrome flips for RTL languages — see i18n.js. -->
+    <main class="ogh-stage gs-stage" dir="ltr">
+      <div class="gs-board" id="board" dir="ltr"></div>
+      <div class="gs-banner" id="comboBanner" aria-hidden="true"></div>
+      <div class="gs-banner gs-banner-reshuffle" id="reshuffleBanner" aria-hidden="true"></div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Swap two adjacent gems to match 3 or more</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card gs-card" id="startCard">
+        <h1 data-i18n="title">Gem Swap</h1>
+        <p data-i18n="blurb">Swap adjacent gems to line up 3 or more of the same shape.</p>
+        <div class="gs-legend" role="list" id="legend"></div>
+        <p class="gs-controls-note" data-i18n="controlsNote">Drag or tap-then-tap to swap.</p>
+        <p class="gs-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start</button>
+      </div>
+
+      <div class="ogh-card gs-card" id="resultCard" hidden>
+        <h1 data-i18n="resultTitle">Out of Moves</h1>
+        <p data-i18n="resultSub"></p>
+        <p class="gs-stats" id="finalScoreLine"></p>
+        <p class="gs-stats gs-new-best" id="newBestLine" hidden data-i18n="newBestLine">New best score!</p>
+        <p class="gs-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

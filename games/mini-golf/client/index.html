@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Mini Golf — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="mg-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="mg-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="mg-hud" role="status">
+        <div class="ogh-pill" id="hudHole">Hole 1/9</div>
+        <div class="ogh-pill" id="hudPar">Par 3</div>
+        <div class="ogh-pill" id="hudStrokes">Strokes 0</div>
+        <div class="ogh-pill" id="hudTotal">Total E</div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- The course (fairway shape, walls, hazards, cup, aim direction) is
+         spatial gameplay drawn in a fixed world space and must never mirror
+         under RTL — dir="ltr" on both the stage and the canvas is
+         deliberate and must stay, same precedent as games/penguin-fling's
+         canvas and games/cross-the-road's #game (see this game's i18n.js
+         header comment). game.js also forces ctx.direction = 'ltr' as a
+         second belt-and-suspenders guard for any canvas text. -->
+    <main class="ogh-stage" dir="ltr">
+      <canvas class="ogh-game-canvas" id="game" width="720" height="1000" dir="ltr" aria-label="Course"></canvas>
+    </main>
+
+    <div class="mg-toast" id="toast" role="status" aria-live="polite" hidden></div>
+    <p class="ogh-hint" id="hint">Drag back from the ball, then let go to putt</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card" id="startCard">
+        <h1 data-i18n="title">Mini Golf</h1>
+        <p data-i18n="blurb">Drag back from the ball like a slingshot, then let go to putt. Roll around sand, cross water carefully, and sink the cup in as few strokes as you can — 9 holes, real par.</p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start Round</button>
+      </div>
+
+      <div class="ogh-card" id="holeCompleteCard" hidden>
+        <h1 data-i18n="holeCompleteTitle">Hole complete!</h1>
+        <p class="mg-hole-name" id="holeCompleteName"></p>
+        <p class="mg-hole-line" id="holeCompleteLine"></p>
+        <p class="mg-hole-term" id="holeCompleteTerm"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNextHole" data-i18n="nextHoleBtn">Next hole</button>
+      </div>
+
+      <div class="ogh-card mg-scorecard-card" id="finalCard" hidden>
+        <h1 data-i18n="finalTitle">Round complete!</h1>
+        <div class="mg-scorecard-wrap">
+          <table class="mg-scorecard" id="scorecardTable">
+            <thead>
+              <tr>
+                <th data-i18n="scorecardHoleCol">Hole</th>
+                <th data-i18n="scorecardParCol">Par</th>
+                <th data-i18n="scorecardStrokesCol">Strokes</th>
+                <th data-i18n="scorecardDiffCol">+/-</th>
+              </tr>
+            </thead>
+            <tbody id="scorecardBody"></tbody>
+          </table>
+        </div>
+        <p class="mg-final-total" id="finalTotalLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

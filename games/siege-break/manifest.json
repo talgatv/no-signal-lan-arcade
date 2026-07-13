@@ -1,0 +1,27 @@
+{
+  "id": "siege-break",
+  "name": "Siege Break",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["physics", "puzzle", "action"],
+  "tags": ["solo", "experimental", "physics", "puzzle", "destruction"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Press near the catapult and drag back like a slingshot, then release to launch — power comes from how far you pull (capped), the launch angle from the pull direction. Works the same with mouse or touch. Enter/Space activates the current overlay button (start / next stronghold / retry / play again).",
+      "ru": "Нажми рядом с катапультой и оттяни назад, как рогатку, затем отпусти для запуска — сила зависит от того, насколько далеко ты оттянул (с пределом), угол запуска — от направления оттяжки. Мышь и тач работают одинаково. Enter/Space активирует текущую кнопку экрана (старт / следующая крепость / заново / играть снова)."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Catapult-launched structure-destruction physics game (a fresh take on the Crush the Castle genre — original settings/structures/code, nothing copied). physics.js is a pure, DOM-free 2D rigid-body engine: a faithful port of Erin Catto's box2d-lite sequential-impulse solver adapted to this game's y-down pixel space, so oriented-box blocks collide via SAT + reference/incident-face clipping and are resolved with warm-started, accumulated normal+friction impulses over several iterations plus Baumgarte position correction. Because impulses are applied at contact points offset from each block's center of mass, toppling, support-loss and impact cascades are all EMERGENT (a real torque r x P) rather than scripted: destroy a supporting block and the one above it loses its cancelling contact impulse and falls/topples on its own the next tick; an off-center boulder hit spins a block in the physically correct direction; a knocked block shoves its neighbour down the line. Blocks carry material hit points (stone/wood/glass/granite) and take damage from a contact's approach speed, so hard hits and long falls shatter them while gentle settling never does. Six hand-authored structures with real layout variety (slim tower, twin-pillar gate + lintel, an enclosed bunker chamber, a stepped keep, a plank sky-bridge whose target rides an end-supported span, and a combined citadel finale), each with 2-4 target creatures defeated by direct hits OR being crushed by falling debris. Drag-back-and-release aiming via Pointer Events (power from drag distance, angle from drag direction) with a real gravity-based projectile arc and a ballistic trajectory preview, consistent with games/mini-golf and games/penguin-fling. Star rating on shots-used efficiency; cumulative score with a local best persisted via games/_shared/js/ogh-profile.js (same convention as games/pop-the-bugs). No bundled image or audio assets: the whole scene (catapult, boulder, blocks, target creatures, debris) is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js (extended with one new 'crumble' pattern for shattering masonry; launch/heavy-impact/target-down/clear/fail reuse the existing thwack/boom/pickup/win/die patterns). i18n across the UN-6 languages; Arabic flips only the text chrome to RTL — the catapult-left/structure-right battlefield and launch direction are never mirrored."
+}

@@ -1,0 +1,27 @@
+{
+  "id": "flashlight",
+  "name": "Flashlight",
+  "version": "0.1.0",
+  "kind": "program",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["utility", "tool"],
+  "tags": ["program", "flashlight", "light", "torch", "sos", "safety", "offline"],
+  "style": "minimal-line",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap Turn on to fill the screen with bright white light; tap anywhere on the lit screen to turn it off. Tap SOS to blink the international Morse SOS pattern instead — a small Stop SOS button stays reachable while it runs.",
+      "ru": "Нажмите «Включить», чтобы залить экран ярким белым светом; коснитесь экрана, чтобы выключить. Нажмите SOS, чтобы мигать сигналом SOS азбукой Морзе — во время сигнала остаётся доступна маленькая кнопка «Остановить SOS»."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css"],
+  "notes": "Classic screen-as-flashlight trick: fills the display with solid white at maximum brightness rather than controlling any real hardware LED/torch, and cannot change the OS's actual screen-brightness setting (the off-state UI says so). SOS mode blinks the international Morse SOS pattern at a fixed rate chosen to stay under common photosensitive-epilepsy flash-rate guidance (2.5 flashes/second on the dot phase, under the ~3/second threshold WCAG 2.3.1 uses) — see app.js's SOS_TIMING constant for exact values and do not speed them up. Requests a screen wake lock while the light or SOS is active, where supported (navigator.wakeLock), and releases it when turned off; feature-detected, so unsupported browsers just skip it."
+}

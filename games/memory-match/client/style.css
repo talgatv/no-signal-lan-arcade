@@ -1,0 +1,256 @@
+/* Memory Match — plain OGH neon-vector look (no theme override needed).
+   Board/card geometry, the flip animation, the four theme card-face looks,
+   and the setup/result overlay lists are the bespoke parts below; buttons/
+   pills/cards come straight from ogh-base.css. */
+
+body.mm-body {
+  background: radial-gradient(120% 140% at 50% -10%, #10152c 0%, var(--ogh-bg) 70%);
+}
+
+/* header ------------------------------------------------------------- */
+.mm-top {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 10px 14px;
+  background: rgba(7, 8, 15, 0.6);
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.mm-hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mm-hud .ogh-pill {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 13px;
+  padding: 6px 12px;
+  white-space: nowrap;
+}
+
+.mm-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+.mm-actions .ogh-btn {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.lang-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: #071018;
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* stage / board ----------------------------------------------------------
+   .mm-board is a FIXED logical-pixel grid whose column/row count and pixel
+   size are (re)computed per round in app.js (grid size is user-selectable,
+   unlike a fixed board); fitBoard() scales the whole thing via CSS
+   transform to fit whatever real viewport is available — same "virtual
+   viewport" idea as games/solitaire's .sol-board / games/tic-tac-toe's
+   .ttt-board. */
+.mm-stage {
+  overflow: visible;
+}
+
+.mm-board {
+  display: grid;
+  flex: none;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* cards --------------------------------------------------------------- */
+.mm-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  perspective: 700px;
+  touch-action: none;
+  user-select: none;
+}
+.mm-card:disabled { cursor: default; }
+
+.mm-card-inner {
+  /* display:block is load-bearing, not cosmetic: .mm-card-inner is a
+     <span> (inline by default), and width/height are defined by spec to
+     have NO EFFECT on non-replaced inline boxes. Without this, the 100%
+     width/height below are silently dropped, the element collapses to its
+     (empty, since both faces are position:absolute) content size, and the
+     3D flip renders as a no-op — confirmed empirically: computed style
+     still reported the correct rotateY(180deg) matrix3d() on this element
+     the whole time, but nothing visibly rotated, which is what pointed at
+     a box-generation/sizing bug here rather than the transform itself. */
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.mm-card.is-flipped .mm-card-inner,
+.mm-card.is-matched .mm-card-inner {
+  transform: rotateY(180deg);
+}
+
+.mm-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.mm-card-back {
+  background-color: var(--ogh-bg-elevated);
+  background-image:
+    repeating-linear-gradient(45deg, rgba(92, 225, 255, 0.16) 0 5px, transparent 5px 11px),
+    repeating-linear-gradient(-45deg, rgba(255, 107, 203, 0.12) 0 5px, transparent 5px 11px);
+  border: 2px solid rgba(92, 225, 255, 0.4);
+}
+.mm-card-back::after {
+  content: "?";
+  font-family: var(--ogh-display);
+  font-weight: 800;
+  font-size: 28px;
+  color: rgba(232, 236, 255, 0.35);
+}
+
+.mm-card-front {
+  transform: rotateY(180deg);
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.12), rgba(255, 107, 203, 0.06));
+  border: 2px solid rgba(92, 225, 255, 0.5);
+  font-size: 40px;
+  line-height: 1;
+}
+
+.mm-card.is-matched .mm-card-front {
+  opacity: 0.5;
+  border-color: rgba(92, 255, 176, 0.55);
+  background: linear-gradient(160deg, rgba(92, 255, 176, 0.18), rgba(92, 255, 176, 0.05));
+}
+
+.mm-card:not(:disabled):active .mm-card-inner { transform: scale(0.96); }
+.mm-card.is-flipped:not(:disabled):active .mm-card-inner,
+.mm-card.is-matched:not(:disabled):active .mm-card-inner {
+  transform: rotateY(180deg) scale(0.96);
+}
+
+/* theme: letters/animals/tiles are plain glyph text sized above; theme:
+   shapes renders a colored CSS shape instead (no glyph). */
+.mm-glyph-letters .mm-card-front { font-family: var(--ogh-display); font-weight: 800; color: var(--ogh-accent); }
+
+/* theme: shapes ---------------------------------------------------------
+   Simple CSS clip-path/border-radius shapes in a small color rotation —
+   no image assets, no SVG files, just plain elements. */
+.mm-shape {
+  display: block;
+  width: 54%;
+  height: 54%;
+}
+.shape-circle { border-radius: 50%; }
+.shape-square { border-radius: 8px; }
+.shape-triangle { clip-path: polygon(50% 6%, 6% 94%, 94% 94%); }
+.shape-diamond { clip-path: polygon(50% 4%, 96% 50%, 50% 96%, 4% 50%); }
+.shape-pentagon { clip-path: polygon(50% 2%, 98% 38%, 80% 98%, 20% 98%, 2% 38%); }
+.shape-hexagon { clip-path: polygon(25% 4%, 75% 4%, 98% 50%, 75% 96%, 25% 96%, 2% 50%); }
+.shape-star { clip-path: polygon(50% 2%, 62% 36%, 98% 36%, 68% 58%, 80% 94%, 50% 72%, 20% 94%, 32% 58%, 2% 36%, 38% 36%); }
+.shape-cross { clip-path: polygon(36% 2%, 64% 2%, 64% 36%, 98% 36%, 98% 64%, 64% 64%, 64% 98%, 36% 98%, 36% 64%, 2% 64%, 2% 36%, 36% 36%); }
+
+.mm-c0 { background: var(--ogh-accent); }
+.mm-c1 { background: var(--ogh-accent-2); }
+.mm-c2 { background: var(--ogh-warn); }
+
+/* setup overlay ----------------------------------------------------------- */
+.mm-setup-card { width: min(520px, 100%); }
+
+.mm-group-label {
+  margin: 14px 0 8px;
+  font-size: 0.8rem;
+  color: var(--ogh-fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: start;
+}
+
+.mm-choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.choice-btn {
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+.choice-btn.is-on {
+  border-color: var(--ogh-accent);
+  box-shadow: 0 0 18px rgba(92, 225, 255, 0.2);
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.28), rgba(255, 107, 203, 0.12));
+}
+
+.mm-start-btn { width: 100%; margin-top: 18px; }
+
+/* result overlay ----------------------------------------------------------- */
+#resultStatsLine {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-fg);
+  opacity: 0.85;
+}
+.mm-best-line {
+  color: var(--ogh-good);
+  font-weight: 700;
+  min-height: 1.2em;
+}
+
+@media (max-width: 420px) {
+  .mm-actions .ogh-btn { min-height: 34px; padding: 0 10px; font-size: 12px; }
+  .back { font-size: 13px; }
+  .mm-card-back::after { font-size: 22px; }
+  .mm-card-front { font-size: 30px; }
+}

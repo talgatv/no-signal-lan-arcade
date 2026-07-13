@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Billiards — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bl-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="bl-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="bl-hud" role="status">
+        <div class="ogh-pill" id="hudTurn" hidden>Player 1's turn</div>
+        <div class="ogh-pill" id="hudGroup" hidden>Open table</div>
+        <div class="ogh-pill" id="hudRemaining" hidden>15 left</div>
+      </div>
+      <button type="button" class="ogh-btn bl-new-rack-btn" id="btnNewRack" data-i18n="newRackBtn" hidden>New Rack</button>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- The table (rail/pocket positions, ball layout, aim direction) is
+         spatial gameplay drawn in a fixed world space and must never mirror
+         under RTL — dir="ltr" on both the stage and the canvas is
+         deliberate and must stay, same precedent as games/mini-golf's and
+         games/penguin-fling's canvas (see this game's i18n.js header
+         comment). game.js also forces ctx.direction = 'ltr' as a second
+         belt-and-suspenders guard for any canvas text. -->
+    <main class="ogh-stage" dir="ltr">
+      <canvas class="ogh-game-canvas" id="game" width="1000" height="560" dir="ltr" aria-label="Pool table"></canvas>
+    </main>
+
+    <div class="bl-toast" id="toast" role="status" aria-live="polite" hidden></div>
+    <p class="ogh-hint" id="hint">Drag back from the cue ball, then let go to shoot</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card" id="modeCard">
+        <h1 data-i18n="title">Billiards</h1>
+        <p data-i18n="blurb">Top-down 8-ball pool with real physics — drag back from the cue ball like a slingshot, let go to shoot, and pocket your balls before the 8-ball. Solo practice or pass-and-play 2-player.</p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnSolo" data-i18n="modeSoloBtn">Solo Practice</button>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btn8Ball" data-i18n="mode8BallBtn">2-Player 8-Ball</button>
+      </div>
+
+      <div class="ogh-card" id="gameOverCard" hidden>
+        <h1 id="gameOverTitle">Player 1 wins!</h1>
+        <p class="bl-gameover-line" id="gameOverLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+        <button type="button" class="ogh-btn" id="btnChangeMode" data-i18n="changeModeBtn">Change mode</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

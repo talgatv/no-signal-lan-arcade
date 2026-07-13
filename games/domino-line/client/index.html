@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Dominoes — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dom-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="dom-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="dom-hud" role="status">
+        <div class="ogh-pill" id="netPill">…</div>
+        <div class="ogh-pill" id="turnPill">…</div>
+      </div>
+      <div class="dom-actions">
+        <button type="button" class="ogh-btn" id="btnMenu" data-i18n="menuBtn">Change mode</button>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNew" data-i18n="newGameBtn">New game</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- dir="ltr" is deliberate and must stay: the domino line grows
+         left/right and pips read in a fixed order — this is spatial gameplay,
+         not prose, and must never mirror under an RTL UI language (Arabic),
+         same precedent as games/tic-tac-toe's board. -->
+    <main class="ogh-stage dom-stage" dir="ltr">
+      <div class="dom-opp" id="oppRow" aria-label="Opponent tiles"></div>
+
+      <div class="dom-mid">
+        <div class="dom-boneyard" id="boneyard" aria-label="Boneyard"></div>
+        <div class="dom-line-wrap">
+          <button type="button" class="dom-endzone left" id="endLeft" aria-label="Left end"></button>
+          <div class="dom-line-scroll">
+            <div class="dom-line" id="line"></div>
+          </div>
+          <button type="button" class="dom-endzone right" id="endRight" aria-label="Right end"></button>
+        </div>
+      </div>
+
+      <div class="dom-hand" id="hand" aria-label="Your tiles"></div>
+
+      <div class="dom-controls" id="controls">
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnDraw" data-i18n="drawBtn" hidden>Draw</button>
+        <button type="button" class="ogh-btn" id="btnPass" data-i18n="passBtn" hidden>Pass</button>
+      </div>
+
+      <!-- kept inside the stage (in normal flow) so it never overlaps the hand
+           row the way a position:fixed hint would on a short viewport -->
+      <p class="ogh-hint dom-hint" id="hint" data-i18n="hint">Tap a playable tile, then choose an end if needed.</p>
+    </main>
+
+    <!-- Mode picker — shown at launch and via "Change mode" -->
+    <div class="ogh-overlay" id="modeOverlay">
+      <div class="ogh-card dom-mode-card">
+        <h1 data-i18n="chooseModeTitle">Dominoes</h1>
+        <p data-i18n="chooseModeSub">Double-six block dominoes.</p>
+        <div class="dom-mode-list">
+          <button type="button" class="ogh-btn ogh-btn-primary mode-btn" id="btnModeAi" data-i18n="modeAiBtn">vs AI</button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeLocal" data-i18n="modeLocalBtn">Pass &amp; Play</button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeLan" data-i18n="modeLanBtn">LAN Multiplayer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pass-the-device gate (local pass & play only) -->
+    <div class="ogh-overlay" id="gateOverlay" hidden>
+      <div class="ogh-card">
+        <h1 id="gateTitle" data-i18n="passDeviceTitle">Pass the device</h1>
+        <p id="gateSub"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnGateReady" data-i18n="passDeviceBtn">I'm ready</button>
+      </div>
+    </div>
+
+    <!-- Win / result overlay -->
+    <div class="ogh-overlay" id="resultOverlay" hidden>
+      <div class="ogh-card">
+        <h1 id="resultTitle">…</h1>
+        <p id="resultReasonLine"></p>
+        <p id="resultStatsLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

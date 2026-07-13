@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Speech Tools — OGH</title>
+  <link rel="stylesheet" href="../../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="st-body ogh-font-ui">
+  <header class="st-top">
+    <a class="back" href="../../../hub/">← <span data-i18n="back">Library</span></a>
+    <div class="titles">
+      <h1 data-i18n="title">Speech Tools</h1>
+      <p class="sub" data-i18n="tagline">Text-to-speech &amp; speech-to-text · built into your browser</p>
+    </div>
+    <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+  </header>
+
+  <div class="st-tabs" role="tablist">
+    <button type="button" class="st-tab is-on" id="tabTts" role="tab" aria-selected="true" aria-controls="panelTts" data-i18n="tabTts">Text → Speech</button>
+    <button type="button" class="st-tab" id="tabStt" role="tab" aria-selected="false" aria-controls="panelStt" data-i18n="tabStt">Speech → Text</button>
+  </div>
+
+  <main class="st-main">
+    <!-- ============================= TTS panel ============================= -->
+    <section id="panelTts" class="st-panel" role="tabpanel" aria-labelledby="tabTts">
+      <div class="card">
+        <label class="field-block" for="ttsText">
+          <span class="field-label" data-i18n="textareaLabel">Text</span>
+        </label>
+        <textarea id="ttsText" class="st-textarea" dir="auto" data-i18n-placeholder="textareaPlaceholder" placeholder="Type or paste text to speak…"></textarea>
+        <p class="hint" id="ttsEmptyHint" data-i18n="emptyTextHint">Type some text above to enable playback.</p>
+      </div>
+
+      <div class="card" id="ttsUnsupportedCard" hidden>
+        <p class="warn" id="ttsUnsupportedMsg" data-i18n="ttsUnsupportedMsg">This browser does not support speech synthesis.</p>
+      </div>
+
+      <div class="card" id="ttsVoiceCard">
+        <div class="field-row">
+          <span class="field-label" data-i18n="voiceLabel">Voice</span>
+          <select id="voiceSelect" class="ctrl"></select>
+        </div>
+        <p class="hint" id="voiceLoadingMsg" data-i18n="voiceLoading">Loading voices…</p>
+        <p class="warn" id="noVoicesMsg" data-i18n="noVoicesMsg" hidden>No voices installed.</p>
+      </div>
+
+      <div class="card">
+        <div class="slider-row">
+          <label class="field-label" for="rateRange" data-i18n="rateLabel">Rate</label>
+          <input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="1" />
+          <span class="slider-val" id="rateVal">1.0×</span>
+        </div>
+        <div class="slider-row">
+          <label class="field-label" for="pitchRange" data-i18n="pitchLabel">Pitch</label>
+          <input type="range" id="pitchRange" min="0" max="2" step="0.1" value="1" />
+          <span class="slider-val" id="pitchVal">1.0</span>
+        </div>
+        <div class="slider-row">
+          <label class="field-label" for="volumeRange" data-i18n="volumeLabel">Volume</label>
+          <input type="range" id="volumeRange" min="0" max="1" step="0.05" value="1" />
+          <span class="slider-val" id="volumeVal">100%</span>
+        </div>
+      </div>
+
+      <div class="st-actions">
+        <button type="button" class="ogh-btn ogh-btn-primary" id="ttsPlayBtn" data-i18n="playBtn" disabled>Play</button>
+        <button type="button" class="ogh-btn" id="ttsPauseBtn" data-i18n="pauseBtn" disabled>Pause</button>
+        <button type="button" class="ogh-btn" id="ttsResumeBtn" data-i18n="resumeBtn" disabled>Resume</button>
+        <button type="button" class="ogh-btn ghost" id="ttsStopBtn" data-i18n="stopBtn" disabled>Stop</button>
+      </div>
+      <p class="st-status" id="ttsStatus" data-i18n="ttsStatusIdle">Idle</p>
+    </section>
+
+    <!-- ============================= STT panel ============================= -->
+    <section id="panelStt" class="st-panel" role="tabpanel" aria-labelledby="tabStt" hidden>
+      <p class="note" id="offlineNote" data-i18n="notFullyOfflineNote">
+        Unlike the rest of this offline-first hub, speech-to-text isn't guaranteed to work fully offline.
+      </p>
+
+      <div class="card" id="sttUnsupportedCard" hidden>
+        <p class="warn" id="sttUnsupportedMsg" data-i18n="sttUnsupportedMsg">This browser does not support speech recognition.</p>
+      </div>
+
+      <div class="card" id="sttInsecureCard" hidden>
+        <p class="warn" id="sttInsecureMsg" data-i18n-html="insecureMsg">Speech-to-text needs a secure connection.</p>
+      </div>
+
+      <div class="card" id="sttControlsCard">
+        <div class="field-row">
+          <span class="field-label" data-i18n="sttLangLabel">Recognition language</span>
+          <select id="sttLangSelect" class="ctrl"></select>
+        </div>
+
+        <div class="mic-row">
+          <button type="button" class="mic-btn" id="sttToggleBtn" disabled>
+            <span class="mic-dot" id="micDot" aria-hidden="true"></span>
+            <span id="sttToggleLabel" data-i18n="startBtn">Start listening</span>
+          </button>
+          <span class="mic-state" id="sttStateLabel" data-i18n="sttIdle">Not listening</span>
+        </div>
+
+        <p class="warn" id="sttErrorMsg" hidden></p>
+      </div>
+
+      <div class="card">
+        <div class="field-row">
+          <span class="field-label" data-i18n="transcriptLabel">Transcript</span>
+        </div>
+        <div id="transcriptBox" class="transcript-box is-empty" dir="auto" aria-live="polite">
+          <span id="finalSpan"></span><span id="interimSpan" class="interim"></span><span id="transcriptPlaceholder" class="placeholder" data-i18n="transcriptPlaceholder">Your speech will appear here…</span>
+        </div>
+        <div class="st-actions">
+          <button type="button" class="ogh-btn" id="copyBtn" data-i18n="copyBtn" disabled>Copy to clipboard</button>
+          <button type="button" class="ogh-btn" id="saveBtn" data-i18n="saveBtn" disabled>Save as .txt</button>
+          <button type="button" class="ogh-btn ghost" id="clearBtn" data-i18n="clearBtn" disabled>Clear</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

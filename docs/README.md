@@ -1,6 +1,7 @@
 # Documentation index
 
-All project documentation is written in **English**.
+Most project documentation is maintained in **English**. A concise Russian
+beginner guide is also available below, and community translations are welcome.
 
 ## Start here
 
@@ -17,6 +18,7 @@ All project documentation is written in **English**.
 | [contributing/README.md](./contributing/README.md) | Hub for pack authors |
 | [contributing/GAME_INTEGRATION_MANUAL.md](./contributing/GAME_INTEGRATION_MANUAL.md) | **Long manual: integrate a game end-to-end** |
 | [contributing/ADD_A_GAME.md](./contributing/ADD_A_GAME.md) | Beginner solo guide (short) |
+| [contributing/ADD_A_GAME.ru.md](./contributing/ADD_A_GAME.ru.md) | Краткая инструкция на русском |
 | [contributing/ADD_MULTIPLAYER_GAME.md](./contributing/ADD_MULTIPLAYER_GAME.md) | Multiplayer packs |
 | [contributing/ENGINE_API.md](./contributing/ENGINE_API.md) | Manifests, URLs, OGHNet |
 | [contributing/CHECKLIST.md](./contributing/CHECKLIST.md) | PR checklist |
@@ -58,7 +60,7 @@ All project documentation is written in **English**.
 |-----|--|
 | [../pc/README.md](../pc/README.md) | Run PC host |
 | [../pc/OFFLINE.md](../pc/OFFLINE.md) | Offline / USB distribution |
-| [../android/README.md](../android/README.md) | Future Android host |
+| [../android/README.md](../android/README.md) | Android host app |
 
 ## Repo
 

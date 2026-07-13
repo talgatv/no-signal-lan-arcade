@@ -1,0 +1,28 @@
+{
+  "id": "cart-corral",
+  "name": "Cart Corral",
+  "version": "0.1.0",
+  "license": "MIT",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "physics", "time-management"],
+  "tags": ["solo", "top-down", "parking-lot", "shopping-carts", "touch", "time-attack"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse", "keyboard"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Move with the virtual joystick, WASD, or arrow keys. Press the ACTION button or Space to grab the nearest free cart or release the attached train. Stop completely to recover stamina.",
+      "ru": "Двигайся виртуальным джойстиком, клавишами WASD или стрелками. Кнопка действия или пробел цепляет ближайшую свободную тележку либо отпускает весь состав. Полностью остановись, чтобы восстановить стамину."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Offline solo top-down parking-lot physics game. Return all 12 shopping carts fully inside the drop zone before the 150-second shift ends. A longer attached cart train reduces player speed; stamina drains only while moving and recovers only while stopped. Loose carts keep rolling after a push, collide with one another, and rebound from static parked cars. Three strong impacts with parked cars end the shift. The scene is drawn entirely as responsive Canvas 2D vector art, with touch-first controls and keyboard/mouse alternatives. Best score and completion time persist locally through OGHProfile; no network, remote assets, or CDN dependencies."
+}

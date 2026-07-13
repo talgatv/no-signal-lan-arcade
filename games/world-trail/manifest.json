@@ -2,6 +2,7 @@
   "id": "world-trail",
   "name": "World Trail",
   "version": "0.1.0",
+  "license": "MIT",
   "minPlayers": 1,
   "maxPlayers": 8,
   "supportsSolo": true,

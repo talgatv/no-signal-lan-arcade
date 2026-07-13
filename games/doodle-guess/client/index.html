@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Doodle Guess — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dg-body ogh-font-ui">
+  <div class="ogh-root dg-root">
+    <header class="dg-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="dg-hud" role="status">
+        <div class="ogh-pill" id="hudRound">—</div>
+        <div class="ogh-pill" id="hudWord" hidden></div>
+        <div class="ogh-pill" id="hudTime" hidden></div>
+      </div>
+      <div class="dg-net offline" id="netLine">—</div>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <main class="dg-main">
+      <!-- Drawing surface. The drawing is spatial content and must NEVER be
+           mirrored under RTL — dir="ltr" on both the stage and the canvas is
+           deliberate (app.js also pins ctx.direction = 'ltr'). -->
+      <section class="dg-stage-wrap">
+        <div class="ogh-stage dg-stage" id="stage" dir="ltr">
+          <canvas class="dg-canvas" id="board" width="800" height="600" dir="ltr" aria-label="Drawing canvas"></canvas>
+          <div class="dg-choosing" id="choosingNote" hidden></div>
+        </div>
+
+        <!-- Drawer-only toolbar: palette + brush sizes + eraser + clear. -->
+        <div class="dg-tools" id="tools" hidden>
+          <div class="dg-colors" id="colors" role="group" data-i18n-aria="colorLabel"></div>
+          <div class="dg-brushes" id="brushes" role="group" data-i18n-aria="brushLabel"></div>
+          <button type="button" class="dg-tool-btn" id="btnEraser" data-i18n-title="eraserBtn" aria-label="Eraser">⌫</button>
+          <button type="button" class="dg-tool-btn dg-clear" id="btnClear" data-i18n="clearBtn">Clear</button>
+        </div>
+      </section>
+
+      <aside class="dg-side">
+        <section class="dg-scores">
+          <h2 class="dg-side-title" data-i18n="scoresTitle">Scores</h2>
+          <ul class="dg-score-list" id="scoreList"></ul>
+        </section>
+        <section class="dg-feed-wrap">
+          <h2 class="dg-side-title" data-i18n="feedTitle">Guesses</h2>
+          <div class="dg-feed" id="feed" aria-live="polite"></div>
+        </section>
+        <form class="dg-guess" id="guessForm">
+          <input class="dg-guess-input" id="guessInput" type="text" autocomplete="off"
+                 autocapitalize="off" spellcheck="false" data-i18n-ph="guessPlaceholder" disabled />
+          <button type="submit" class="ogh-btn dg-guess-btn" id="guessBtn" data-i18n="guessSend" disabled>Guess</button>
+        </form>
+      </aside>
+    </main>
+
+    <!-- Start / mode-select overlay -->
+    <div class="ogh-overlay" id="overlayStart">
+      <div class="ogh-card dg-start-card">
+        <h1 data-i18n="title">Doodle Guess</h1>
+        <p data-i18n="blurb">A LAN draw-and-guess party game.</p>
+        <div class="dg-mode-pick" id="modePick" role="group">
+          <button type="button" class="dg-mode-btn is-on" data-mode="bank" data-i18n="modeWordBank">Word Bank</button>
+          <button type="button" class="dg-mode-btn" data-mode="your" data-i18n="modeYourWord">Your Word</button>
+        </div>
+        <p class="dg-mode-desc" id="modeDesc"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startGameBtn">Start Game</button>
+        <p class="dg-start-note" id="startNote"></p>
+      </div>
+    </div>
+
+    <!-- Drawer's private word-choose overlay -->
+    <div class="ogh-overlay" id="overlayChoose" hidden>
+      <div class="ogh-card dg-choose-card">
+        <h1 id="chooseTitle" data-i18n="yourTurnTitle">Your turn to draw</h1>
+        <div id="bankChoose" hidden>
+          <p class="dg-word-big" id="bankWord"></p>
+          <button type="button" class="ogh-btn dg-new-word" id="btnNewWord" data-i18n="newWordBtn">New word</button>
+        </div>
+        <div id="yourChoose" hidden>
+          <p class="dg-choose-label" data-i18n="typeSecretLabel">Only you can see this.</p>
+          <input class="dg-secret-input" id="secretInput" type="text" autocomplete="off"
+                 autocapitalize="off" spellcheck="false" data-i18n-ph="secretPlaceholder" />
+        </div>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStartDraw" data-i18n="startDrawingBtn">Start drawing</button>
+      </div>
+    </div>
+
+    <!-- Round reveal overlay -->
+    <div class="ogh-overlay" id="overlayReveal" hidden>
+      <div class="ogh-card dg-reveal-card">
+        <h1 data-i18n="revealTitle">Round over</h1>
+        <p class="dg-reveal-word"><span data-i18n="wordWas">The word was</span>: <strong id="revealWord"></strong></p>
+        <p class="dg-reveal-line" id="revealLine"></p>
+        <p class="dg-next-in" id="nextIn"></p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

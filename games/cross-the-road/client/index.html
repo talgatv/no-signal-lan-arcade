@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Cross the Road — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="ctr-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="ctr-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="ctr-hud" role="status">
+        <div class="ogh-pill" id="hudStage" data-i18n-aria="stageAria"><span aria-hidden="true">▲</span> <strong id="stageVal">1</strong></div>
+        <div class="ogh-pill" id="hudDistance" data-i18n-aria="distanceAria"><span aria-hidden="true">→</span> <strong id="distanceVal">0</strong></div>
+        <div class="ogh-pill" id="hudBest" data-i18n-aria="bestAria"><span aria-hidden="true">★</span> <strong id="bestVal">0</strong></div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- dir="ltr" is deliberate and must stay: this is a spatial gameplay
+         viewport (road lanes, traffic direction, dodge left/right), not
+         prose — it must never mirror under an RTL UI language (e.g.
+         Arabic). Same risk category / precedent as games/pop-the-bugs'
+         #grid and games/neon-drift's #game. render.js also never reads
+         document direction, and game.js's canvas 2D context forces
+         ctx.direction='ltr' as a second belt-and-suspenders guard. -->
+    <main class="ogh-stage ctr-stage" dir="ltr">
+      <canvas class="ctr-canvas" id="game" width="720" height="1000" dir="ltr" aria-label="Road"></canvas>
+      <div class="ctr-floater" id="stageFloater" aria-live="polite"></div>
+    </main>
+
+    <p class="ctr-hint" id="hint" data-i18n="hint">Tap to hop forward · swipe or tap left/right to dodge</p>
+
+    <!-- Touch controls — deliberately forced LTR regardless of document dir
+         (see style.css .ctr-controls): the left button always dodges
+         physically left, matching the un-mirrored road above. -->
+    <div class="ctr-controls" id="controls">
+      <button type="button" class="ctr-btn ctr-btn-side" id="btnLeft" data-i18n-aria="btnLeftAria" aria-label="Dodge left">◀</button>
+      <button type="button" class="ctr-btn ctr-btn-fwd" id="btnForward" data-i18n-aria="btnForwardAria" aria-label="Hop forward">▲</button>
+      <button type="button" class="ctr-btn ctr-btn-side" id="btnRight" data-i18n-aria="btnRightAria" aria-label="Dodge right">▶</button>
+    </div>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card ctr-card" id="startCard">
+        <h1 data-i18n="title">Cross the Road</h1>
+        <p data-i18n="blurb">Hop forward lane by lane and dodge the traffic. Every stage the road gets wider and faster — how far can you get?</p>
+        <p class="ctr-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start</button>
+      </div>
+
+      <div class="ogh-card ctr-card" id="overCard" hidden>
+        <h1 data-i18n="gameOverTitle">Crashed!</h1>
+        <p class="ctr-final-line" id="finalStatsLine"></p>
+        <p class="ctr-new-best" id="newBestLine" hidden data-i18n="newBest">New best distance!</p>
+        <p class="ctr-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

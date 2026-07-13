@@ -10,6 +10,7 @@ Solo and multiplayer both use the same shape; multiplayer also uses `ogh-net`.
 |-------|-----|------|
 | **Full integration manual (recommended)** | [GAME_INTEGRATION_MANUAL.md](./GAME_INTEGRATION_MANUAL.md) | 45–90 min read |
 | **Beginner — short path** | [ADD_A_GAME.md](./ADD_A_GAME.md) | 30–60 min |
+| **Начинающим — по-русски** | [ADD_A_GAME.ru.md](./ADD_A_GAME.ru.md) | краткая инструкция |
 | **Multiplayer game** | [ADD_MULTIPLAYER_GAME.md](./ADD_MULTIPLAYER_GAME.md) | +1–2 h |
 | **Save progress / profile** | [SAVE_PROGRESS.md](./SAVE_PROGRESS.md) | localStorage + export file |
 | **API reference** | [ENGINE_API.md](./ENGINE_API.md) | reference |
@@ -30,8 +31,8 @@ games/_templates/multiplayer/    → ogh-net room demo
 Scaffold with a script:
 
 ```bash
-python3 tools/new_game.py my-cool-game --title "My Cool Game"
-python3 tools/new_game.py click-duel --multiplayer --title "Click Duel"
+python3 tools/new_game.py my-cool-game --title "My Cool Game" --author "Your Name"
+python3 tools/new_game.py click-duel --multiplayer --title "Click Duel" --author "Your Name"
 ```
 
 Validate before PR:
@@ -44,7 +45,7 @@ python3 tools/validate_catalog.py
 
 ```text
 ┌─────────────────────────────────────────┐
-│  PC host (or future Android host)       │
+│  PC or Android host                     │
 │  serves files + WebSocket rooms         │
 └──────────────────┬──────────────────────┘
                    │

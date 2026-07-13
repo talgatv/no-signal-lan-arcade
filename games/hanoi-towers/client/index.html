@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Towers of Hanoi — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="ht-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="ht-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="ht-hud" role="status">
+        <div class="ogh-pill" id="hudMoves" data-i18n-aria="hudMovesAria">
+          <span class="ht-lbl" data-i18n="movesLabel">MOVES</span>
+          <strong id="movesVal">0</strong>
+        </div>
+        <div class="ogh-pill" id="hudOptimal" data-i18n-aria="hudOptimalAria">
+          <span class="ht-lbl" data-i18n="optimalLabelShort">OPT</span>
+          <strong id="optimalVal">0</strong>
+        </div>
+        <div class="ogh-pill" id="hudTime" data-i18n-aria="hudTimeAria">
+          <span class="ht-lbl" data-i18n="timeLabel">TIME</span>
+          <strong id="timeVal">00:00</strong>
+        </div>
+      </div>
+      <div class="ht-actions">
+        <button type="button" class="ogh-btn" id="btnRestart" data-i18n="newGameBtn">Restart</button>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnChangeSize" data-i18n="changeSizeBtn">Change disks</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <!-- The peg board is a fixed spatial gameplay convention, not prose: peg 0
+         (holding the starting stack) must always be the visual left peg and
+         peg 2 (the goal) must always be the visual right peg, regardless of
+         the document's text direction under Arabic. dir="ltr" here keeps the
+         board from ever mirroring; only the header/cards/hint text chrome
+         flips for RTL languages — see i18n.js. -->
+    <main class="ogh-stage ht-stage">
+      <div class="ht-board" id="board" dir="ltr"></div>
+      <div class="ht-banner" id="invalidBanner" aria-hidden="true"></div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Tap a peg to pick up its top disk, tap another peg to place it.</p>
+
+    <div class="ogh-overlay" id="setupOverlay">
+      <div class="ogh-card ht-setup-card">
+        <h1 data-i18n="setupTitle">Towers of Hanoi</h1>
+        <p data-i18n="setupSub">Choose how many disks to move — that’s your difficulty.</p>
+
+        <p class="ht-group-label" data-i18n="diskCountLabel">Disks</p>
+        <div class="ht-stepper">
+          <button type="button" class="ogh-btn ht-step-btn" id="btnDiskMinus" aria-label="-">−</button>
+          <div class="ht-disk-readout" id="diskCountVal">4</div>
+          <button type="button" class="ogh-btn ht-step-btn" id="btnDiskPlus" aria-label="+">+</button>
+        </div>
+        <p class="ht-diff-preview" id="diffPreview"></p>
+
+        <p class="ht-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary ht-start-btn" id="btnStart" data-i18n="startBtn">Start</button>
+      </div>
+    </div>
+
+    <div class="ogh-overlay" id="resultOverlay" hidden>
+      <div class="ogh-card">
+        <h1 data-i18n="winTitle">Solved!</h1>
+        <p id="resultStatsLine"></p>
+        <p id="perfectLine" class="ht-perfect" hidden data-i18n="perfectSolve">Perfect! You matched the optimal solution!</p>
+        <p id="newBestLine" class="ht-new-best" hidden></p>
+        <p id="bestLineEnd" class="ht-best-line"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

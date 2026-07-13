@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Barrel Climb — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bc-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="bc-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="bc-hud" role="group" aria-label="Status">
+        <div class="ogh-pill" id="hudStage" data-i18n-aria="hudStageAria" aria-label="Current stage">
+          <span data-i18n="stageLabel">Stage</span> <strong id="stageVal">1</strong>
+        </div>
+        <div class="ogh-pill" id="hudLives" data-i18n-aria="hudLivesAria" aria-label="Lives remaining">
+          <span id="livesVal" class="bc-lives"></span>
+        </div>
+        <div class="ogh-pill" id="hudScore" data-i18n-aria="hudScoreAria" aria-label="Score">
+          <span data-i18n="scoreLabel">Score</span> <strong id="scoreVal">0</strong>
+        </div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria" aria-label="Language"></div>
+    </header>
+
+    <!-- The tower is fixed spatial gameplay drawn in a 720x1000 world:
+         climbing is always toward the top of the screen and "right" always
+         walks the figure right. It must never mirror under RTL — dir="ltr"
+         on the stage and canvas is deliberate and must stay, same precedent
+         as games/fight-arena's stage and games/cross-the-road's road (see
+         i18n.js header). game.js also forces ctx.direction = 'ltr'. -->
+    <main class="ogh-stage" dir="ltr">
+      <canvas class="ogh-game-canvas" id="game" width="720" height="1000" dir="ltr" aria-label="Barrel Climb tower"></canvas>
+      <div class="bc-hammer-badge" id="hammerBadge" hidden data-i18n="hammerHud">HAMMER!</div>
+      <div class="bc-stage-banner" id="stageBanner" hidden>
+        <div class="bc-stage-banner-title" id="stageBannerTitle"></div>
+        <div class="bc-stage-banner-sub" data-i18n="stageClearSub"></div>
+      </div>
+    </main>
+
+    <div class="bc-touch" id="touch" dir="ltr">
+      <div class="bc-touch-pad" role="group" aria-label="Movement">
+        <button type="button" class="bc-tbtn bc-t-up" data-act="up" data-i18n-aria="btnUpAria" aria-label="Climb up">▲</button>
+        <button type="button" class="bc-tbtn bc-t-left" data-act="left" data-i18n-aria="btnLeftAria" aria-label="Move left">◀</button>
+        <button type="button" class="bc-tbtn bc-t-down" data-act="down" data-i18n-aria="btnDownAria" aria-label="Climb down">▼</button>
+        <button type="button" class="bc-tbtn bc-t-right" data-act="right" data-i18n-aria="btnRightAria" aria-label="Move right">▶</button>
+      </div>
+      <button type="button" class="bc-jbtn" id="btnJump" data-i18n-aria="btnJumpAria" aria-label="Jump">JUMP</button>
+    </div>
+
+    <p class="ogh-hint" id="hint" data-i18n="hintTitle"></p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card bc-card" id="startCard">
+        <h1 data-i18n="title">Barrel Climb</h1>
+        <p data-i18n="blurb">Climb the scrapyard signal tower, dodge Warden-9's rolling drums, and reach Mira at the top.</p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start Climb</button>
+        <p class="bc-note" id="bestLineStart"></p>
+        <p class="bc-note" data-i18n="controlsNote">Touch: on-screen buttons. Keyboard: Arrows/WASD to move, Up/Down to climb, Space to jump.</p>
+      </div>
+
+      <div class="ogh-card bc-card" id="overCard" hidden>
+        <h1 data-i18n="gameOverTitle">Tower Lost</h1>
+        <p id="finalStatsLine"></p>
+        <p id="gemsLine"></p>
+        <p class="bc-note is-good" id="newBestLine" data-i18n="newBestLine" hidden>New best score!</p>
+        <p class="bc-note" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="playAgainBtn">Climb Again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

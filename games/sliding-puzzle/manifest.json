@@ -1,0 +1,27 @@
+{
+  "id": "sliding-puzzle",
+  "name": "Sliding Puzzle",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["puzzle", "classic"],
+  "tags": ["solo", "experimental", "puzzle", "classic"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap a tile in the blank's row or column to slide it (a tile two away slides the whole line at once). Choose a grid size on the setup screen — that's the difficulty.",
+      "ru": "Тапни плитку в строке или столбце пустой клетки, чтобы её сдвинуть (плитка через одну сдвигает сразу весь ряд). Размер поля на экране настройки — это и есть сложность."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "The classic 15-puzzle family (8/15/24-puzzle via a 3x3/4x4/5x5 grid size choice, which IS the difficulty). shuffledBoard() in client/app.js never permutes tile values directly — it starts from the solved array and performs size*size*60 random *legal* blank-slides, which is what mathematically guarantees the shuffled result is always solvable (a raw random permutation is unsolvable about half the time). isSolvable()/countInversions() implement the standard independent inversion-count + blank-row-parity check purely as a self-verifying belt-and-suspenders (asserted against every shuffle, also exposed via window.OGH_SLIDING_PUZZLE for a test harness). One persistent DOM <button> per tile number (not per board cell) is positioned with a CSS-transitioned transform, so a tap on any tile in the blank's row/column slides that whole line to the blank in one fluid animated move (a single-tile slide is just the distance-1 case of the same lineTo() code path) — games/gem-swap's 'state drives position, the browser interpolates' architecture. Tiles sitting in their correct final slot get a soft green glow, a small progress-at-a-glance touch. Tracks moves and elapsed time, plus a local best-moves/best-time per grid size via OGHProfile (games/memory-match's per-grid-size convention). No bundled image assets: tiles are styled DOM buttons with a neon glow; sound reuses games/_shared/js/ogh-sfx.js's existing patterns unchanged (place=single-tile slide, whoosh=multi-tile line slide, win=solved). RTL (Arabic) flips text/menu chrome only; the tile grid itself never mirrors (#board dir=\"ltr\"), same precedent as games/gem-swap and games/memory-match."
+}

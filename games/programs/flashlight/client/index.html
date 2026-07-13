@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Flashlight — OGH</title>
+  <link rel="stylesheet" href="../../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="fl-body ogh-font-ui">
+  <!-- Everything in here is hidden the instant the light (steady or SOS) is
+       on — per spec, the lit screen shows nothing but color. -->
+  <div id="offScreen" class="fl-off">
+    <header class="fl-top">
+      <a class="back" href="../../../hub/">← <span data-i18n="back">Library</span></a>
+      <div class="titles">
+        <h1 data-i18n="title">Flashlight</h1>
+        <p class="sub" data-i18n="tagline">A plain white screen — the classic phone-flashlight trick</p>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <main class="fl-main">
+      <div class="fl-buttons">
+        <button type="button" class="fl-turn-on-btn" id="turnOnBtn" data-i18n="turnOnBtn">Turn on</button>
+        <button type="button" class="fl-sos-btn" id="sosBtn" data-i18n="sosBtn">SOS</button>
+      </div>
+      <p class="fl-disclaimer" data-i18n="brightnessNote">
+        This can't change your device's actual screen-brightness setting — it just fills the screen with white. Turn your device's own brightness all the way up for the brightest effect.
+      </p>
+      <p class="fl-wake-note" id="wakeNote" data-i18n="wakeNoteUnsupported" hidden>
+        This browser can't automatically keep the screen from timing out — you may want to check your device's screen-timeout setting.
+      </p>
+    </main>
+  </div>
+
+  <!-- Low-profile SOS stop control: only shown while SOS is blinking, stays
+       reachable through both the bright and dark flash phases (tapping
+       anywhere also stops it — see app.js — this is a visible, steady
+       target for that same action). -->
+  <button type="button" class="fl-sos-corner" id="sosCornerBtn" data-i18n="sosStopBtn" hidden>Stop SOS</button>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

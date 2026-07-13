@@ -1,0 +1,27 @@
+{
+  "id": "blade-fruit",
+  "name": "Blade Fruit",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "reaction", "casual"],
+  "tags": ["solo", "experimental", "arcade", "reaction", "casual"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Swipe or drag across the screen with your finger or mouse to slice fruit as it launches into the air — a continuous stroke that crosses several fruit in a row scores a rising combo bonus. Never slice the bomb (dark, spiky, with a lit fuse) — one cut ends the run instantly. Miss too many fruit (let them fall back down unsliced) and you're out of lives. Enter/Space starts or restarts from the title/results screen.",
+      "ru": "Проведи пальцем или мышью по экрану, чтобы разрезать фрукты в полёте — один непрерывный росчерк, задевающий несколько фруктов подряд, даёт нарастающий бонус за комбо. Никогда не режь бомбу (тёмная, с шипами и горящим фитилём) — один разрез мгновенно завершает забег. Пропустишь слишком много фруктов (дашь им упасть неразрезанными) — закончатся жизни. Enter/Space запускает игру или начинает заново с экрана старта/результатов."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Original fruit-slicing swipe arcade (an own take on the well-known 'fruit arcs up from below, swipe to slice, avoid the bomb' genre — own fruit designs/physics/code/sound, nothing copied from any specific existing game). client/fruits.js is a pure, DOM-free entity module (no pointer/game-state): 5 fruit types (apple, watermelon-wedge, berry cluster, citrus cross-section, kiwi cross-section — distinguished by both silhouette and saturated color) plus a deliberately desaturated, spiky, pulsing-red-glow, lit-fuse bomb, launched from random spots near the bottom with real gravity-arc physics (plain per-frame Euler integration — vy += GRAVITY*dt each tick, not a scripted/closed-form path, so it genuinely rises/decelerates/falls). Sliced-fruit debris (two halves flying apart) reuses the exact same whole-fruit draw() call each intact fruit uses, just clipped to one side via canvas clip(), so no fruit type needed a second hand-authored half-shape. client/slicing.js is a second pure module: a swipe-segment-vs-circle-hitbox test (findHits), called once per new path segment as a pointer drags (every pointermove, using getCoalescedEvents() when available), so a fast swipe is checked along its whole path, not just its start/end. Combo scoring: consecutive fruit sliced within one unbroken swipe multiply — the Nth fruit hit in a single gesture scores basePoints*N — so one stroke clearing 3 fruit scores more than the same 3 fruit sliced across 3 separate swipes; the multiplier resets on pointer-up. Slicing the bomb is instant game over (classic higher-stakes genre convention); missing a fruit (falling back below the screen unsliced) costs 1 of 3 lives, bombs falling off-screen unsliced are free. Difficulty is a pure function of elapsed play time (fruits.js's difficultyForElapsed(), directly inspectable via window.OGH_BLADE_FRUIT.getDifficulty): spawn interval, simultaneous items per wave, bomb probability and launch speed all ramp over the first 45s then hold (endless-safe). No bundled image or audio assets — Canvas 2D vector shapes with a neon glow, a glowing swipe trail sampled from the live pointer path, and particle bursts (juice on a fruit, a bigger multi-color burst plus screen-shake on the bomb); sound reuses games/_shared/js/ogh-sfx.js, extended with exactly one new 'slice' pattern (a fast bright blade-swish sweep) — combo continuation reuses gem-swap's 'chain' cascade sparkle, the bomb reuses 'boom', a missed fruit reuses 'screech', and the run-ending sting reuses 'die'. Score persists locally via games/_shared/js/ogh-profile.js (games/pop-the-bugs convention). i18n across the UN-6 languages; Arabic flips only the text/menu chrome to RTL — the play field (launch positions, swipe path) is spatial gameplay and never mirrors (stage+canvas dir=ltr, ctx.direction forced ltr), same precedent as games/dash-runner and games/drop-smash."
+}

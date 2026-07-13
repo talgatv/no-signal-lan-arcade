@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Fight Arena — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="fa-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="fa-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria" aria-label="Language"></div>
+    </header>
+
+    <!-- The fight stage is fixed spatial gameplay drawn in a 960x540 world:
+         Player 1 is ALWAYS on the left, Player 2 on the right, "right" always
+         moves a figure right, and each control scheme keeps its physical key
+         meaning. It must never mirror under RTL — dir="ltr" on the stage and
+         canvas (and on the touch pad below) is deliberate and must stay, same
+         precedent as games/billiards' table and games/claw-machine's pit (see
+         i18n.js header). game.js also forces ctx.direction = 'ltr'. -->
+    <main class="ogh-stage" dir="ltr">
+      <canvas class="ogh-game-canvas" id="game" width="960" height="540" dir="ltr" aria-label="Fight stage"></canvas>
+    </main>
+
+    <!-- On-screen touch controls: a fallback for the solo vs-AI mode on a
+         phone only (keyboard is primary — see manifest/README). Shown by
+         game.js when the vs-AI match is played on a coarse-pointer device. -->
+    <div class="fa-touch" id="touch" dir="ltr" hidden>
+      <div class="fa-touch-pad" role="group" aria-label="Movement">
+        <button type="button" class="fa-tbtn fa-t-up" data-act="up" data-i18n-aria="btnJumpAria" aria-label="Jump">▲</button>
+        <button type="button" class="fa-tbtn fa-t-left" data-act="left" data-i18n-aria="btnLeftAria" aria-label="Move left">◀</button>
+        <button type="button" class="fa-tbtn fa-t-down" data-act="down" data-i18n-aria="btnCrouchAria" aria-label="Crouch">▼</button>
+        <button type="button" class="fa-tbtn fa-t-right" data-act="right" data-i18n-aria="btnRightAria" aria-label="Move right">▶</button>
+      </div>
+      <div class="fa-touch-atk" role="group" aria-label="Attacks">
+        <button type="button" class="fa-abtn fa-a-lp" data-act="lp" data-i18n-aria="btnLPAria" aria-label="Light punch">LP</button>
+        <button type="button" class="fa-abtn fa-a-hp" data-act="hp" data-i18n-aria="btnHPAria" aria-label="Heavy punch">HP</button>
+        <button type="button" class="fa-abtn fa-a-lk" data-act="lk" data-i18n-aria="btnLKAria" aria-label="Light kick">LK</button>
+        <button type="button" class="fa-abtn fa-a-hk" data-act="hk" data-i18n-aria="btnHKAria" aria-label="Heavy kick">HK</button>
+        <button type="button" class="fa-abtn fa-a-sp" data-act="special" data-i18n-aria="btnSpecialAria" aria-label="Special move">SP</button>
+      </div>
+    </div>
+
+    <p class="ogh-hint" id="hint"></p>
+
+    <div class="fa-sr" id="srStatus" role="status" aria-live="polite"></div>
+
+    <div class="ogh-overlay" id="overlay">
+      <!-- Character select -->
+      <div class="ogh-card fa-card fa-select" id="selectCard">
+        <h1 data-i18n="title">Fight Arena</h1>
+        <p class="fa-blurb" data-i18n="blurb">A side-view versus fighting game. Pick a fighter, close the gap, and read your opponent. Best of three rounds.</p>
+
+        <div class="fa-modes" role="group" aria-label="Mode">
+          <button type="button" class="fa-mode-btn is-on" id="modeLocal" data-i18n="modeLocalBtn">Local 2-Player</button>
+          <button type="button" class="fa-mode-btn" id="modeAi" data-i18n="modeAiBtn">Vs Computer</button>
+        </div>
+
+        <div class="fa-pickers">
+          <div class="fa-picker" id="pickerP1">
+            <div class="fa-picker-label"><span class="fa-pnum fa-pnum-1">P1</span> <span data-i18n="p1Label">Player 1</span></div>
+            <div class="fa-roster" id="rosterP1" role="group" aria-label="Player 1 fighter"></div>
+            <div class="fa-preview" id="previewP1"></div>
+          </div>
+          <div class="fa-vs" aria-hidden="true" data-i18n="vsLabel">VS</div>
+          <div class="fa-picker" id="pickerP2">
+            <div class="fa-picker-label"><span class="fa-pnum fa-pnum-2">P2</span> <span id="p2Label" data-i18n="p2Label">Player 2</span></div>
+            <div class="fa-roster" id="rosterP2" role="group" aria-label="Player 2 fighter"></div>
+            <div class="fa-preview" id="previewP2"></div>
+          </div>
+        </div>
+
+        <button type="button" class="ogh-btn ogh-btn-primary fa-fight-btn" id="btnFight" data-i18n="startBtn">Fight!</button>
+        <p class="fa-controls-note" id="controlsNote"></p>
+      </div>
+
+      <!-- Match end -->
+      <div class="ogh-card fa-card" id="matchCard" hidden>
+        <h1 id="matchTitle">Player 1 wins!</h1>
+        <p class="fa-match-line" id="matchLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnRematch" data-i18n="rematchBtn">Rematch</button>
+        <button type="button" class="ogh-btn" id="btnChange" data-i18n="changeBtn">Change fighters</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

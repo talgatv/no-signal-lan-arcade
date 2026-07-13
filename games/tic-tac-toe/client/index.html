@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Tic-Tac-Toe — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="ttt-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="ttt-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="ttt-hud" role="status">
+        <div class="ogh-pill" id="netPill">…</div>
+        <div class="ogh-pill" id="turnPill">…</div>
+        <div class="ogh-pill ttt-score" id="scorePill">X 0 · O 0 · = 0</div>
+      </div>
+      <div class="ttt-actions">
+        <button type="button" class="ogh-btn" id="btnMenu" data-i18n="menuBtn">Change mode</button>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNew" data-i18n="newRoundBtn">New round</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <main class="ogh-stage ttt-stage">
+      <!-- dir="ltr" is deliberate and must stay: the 3x3 grid is a fixed
+           spatial gameplay convention (cell 0 is always top-left), not
+           prose — it must never mirror under an RTL UI language (e.g.
+           Arabic), same precedent as games/solitaire's #board and
+           games/pop-the-bugs' .pb-grid. Cell order in the DOM (and the
+           minimax board-index math in app.js) always matches physical
+           left-to-right, top-to-bottom regardless of `dir` on <html>. -->
+      <div class="ttt-board" id="board" dir="ltr">
+        <button type="button" class="ttt-cell" data-i="0" aria-label="1"></button>
+        <button type="button" class="ttt-cell" data-i="1" aria-label="2"></button>
+        <button type="button" class="ttt-cell" data-i="2" aria-label="3"></button>
+        <button type="button" class="ttt-cell" data-i="3" aria-label="4"></button>
+        <button type="button" class="ttt-cell" data-i="4" aria-label="5"></button>
+        <button type="button" class="ttt-cell" data-i="5" aria-label="6"></button>
+        <button type="button" class="ttt-cell" data-i="6" aria-label="7"></button>
+        <button type="button" class="ttt-cell" data-i="7" aria-label="8"></button>
+        <button type="button" class="ttt-cell" data-i="8" aria-label="9"></button>
+      </div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Tap an empty square to place your mark.</p>
+
+    <!-- Mode / difficulty picker — shown at launch and via "Change mode" -->
+    <div class="ogh-overlay" id="modeOverlay">
+      <div class="ogh-card ttt-mode-card">
+        <h1 data-i18n="chooseModeTitle">Choose a mode</h1>
+        <p data-i18n="chooseModeSub">Play against the computer, pass the device to a friend, or connect over LAN.</p>
+        <div class="ttt-mode-list" id="modeList">
+          <button type="button" class="ogh-btn ogh-btn-primary mode-btn" id="btnModeAi" data-i18n="modeAiBtn">vs AI</button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeLocal" data-i18n="modeLocalBtn">Pass &amp; Play</button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeLan" data-i18n="modeLanBtn">LAN Multiplayer</button>
+        </div>
+        <div class="ttt-diff-list" id="diffList" hidden>
+          <p class="ttt-diff-label" data-i18n="difficultyLabel">Difficulty</p>
+          <button type="button" class="ogh-btn diff-btn" data-diff="easy" data-i18n="diffEasyBtn">Easy</button>
+          <button type="button" class="ogh-btn diff-btn" data-diff="medium" data-i18n="diffMediumBtn">Medium</button>
+          <button type="button" class="ogh-btn diff-btn ogh-btn-primary" data-diff="unbeatable" data-i18n="diffUnbeatableBtn">Unbeatable</button>
+          <button type="button" class="ogh-btn ttt-back-btn" id="btnDiffBack" data-i18n="backToModesBtn">← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Win / draw overlay -->
+    <div class="ogh-overlay" id="resultOverlay" hidden>
+      <div class="ogh-card">
+        <h1 id="resultTitle">…</h1>
+        <p id="resultStatsLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

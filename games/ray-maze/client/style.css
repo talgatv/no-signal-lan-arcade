@@ -1,0 +1,277 @@
+/* Ray Maze — neon-vector chrome on top of ogh-base.css.
+ *
+ * Layout: a top header bar (back + HUD pills + language switch), a flex-filling
+ * stage that the raycast canvas fills edge-to-edge, and a bottom hint. The
+ * touch controls (left stick zone, right look zone, fire/reload) overlay the
+ * stage. The stage is dir="ltr" so nothing spatial mirrors under RTL — only the
+ * header/cards/hint flip for Arabic (which flexbox handles for free). */
+
+.rm-body {
+  background: var(--ogh-bg);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.rm-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.rm-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.rm-hud .ogh-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+
+.rm-lbl {
+  color: var(--ogh-fg-dim);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+
+.rm-hp strong { color: var(--ogh-good); }
+.rm-hp.is-low strong { color: var(--ogh-bad); }
+.rm-sector strong { color: var(--ogh-accent); }
+
+.rm-exit {
+  color: var(--ogh-warn);
+  font-size: 11.5px !important;
+}
+.rm-exit.is-open {
+  color: var(--ogh-good);
+  border-color: rgba(92, 255, 120, 0.5);
+  box-shadow: 0 0 14px rgba(92, 255, 120, 0.18);
+}
+
+/* ammo pips */
+.rm-pips {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+}
+.rm-pip {
+  width: 4px;
+  height: 13px;
+  border-radius: 2px;
+  background: var(--ogh-accent);
+  box-shadow: 0 0 6px rgba(92, 225, 255, 0.5);
+}
+.rm-pip.is-spent {
+  background: rgba(120, 140, 180, 0.28);
+  box-shadow: none;
+}
+.rm-reload {
+  color: var(--ogh-warn);
+  font-size: 10.5px;
+  letter-spacing: 0.03em;
+}
+
+/* language switch */
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ── Stage + canvas ─────────────────────────────────────────────────── */
+.rm-stage {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: #05060d;
+}
+
+.rm-view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* low internal resolution upscaled -> soft neon glow (authentic + fast) */
+  image-rendering: auto;
+}
+
+/* ── Touch controls ─────────────────────────────────────────────────── */
+.rm-touch {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.rm-stick-zone,
+.rm-look-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  touch-action: none;
+}
+.rm-stick-zone { left: 0; width: 44%; }
+.rm-look-zone { right: 0; width: 56%; }
+
+.rm-stick-base {
+  position: absolute;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  border: 2px solid rgba(92, 225, 255, 0.4);
+  background: radial-gradient(circle, rgba(92, 225, 255, 0.08), rgba(8, 10, 22, 0.35));
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.rm-stick-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--ogh-accent);
+  background: rgba(92, 225, 255, 0.25);
+  box-shadow: 0 0 16px rgba(92, 225, 255, 0.35);
+  transform: translate(-50%, -50%);
+}
+
+.rm-actions {
+  position: absolute;
+  right: 18px;
+  bottom: calc(20px + var(--ogh-safe-bottom));
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  z-index: 3;
+}
+
+.rm-abtn {
+  border-radius: 50%;
+  border: 1px solid rgba(92, 225, 255, 0.35);
+  background: rgba(12, 16, 30, 0.72);
+  color: var(--ogh-fg);
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+.rm-abtn:active { transform: scale(0.94); }
+
+.rm-reload-btn {
+  width: 54px;
+  height: 54px;
+  color: var(--ogh-warn);
+  border-color: rgba(255, 209, 102, 0.4);
+}
+.rm-fire-btn {
+  width: 84px;
+  height: 84px;
+  font-size: 34px;
+  color: var(--ogh-accent-2);
+  border-color: rgba(255, 107, 203, 0.55);
+  background: radial-gradient(circle, rgba(255, 107, 203, 0.22), rgba(12, 16, 30, 0.72));
+  box-shadow: 0 0 22px rgba(255, 107, 203, 0.22);
+}
+
+/* ── Overlay cards ──────────────────────────────────────────────────── */
+.rm-card h1 {
+  font-family: "Montserrat", "Roboto", sans-serif;
+}
+.rm-card {
+  width: min(460px, 100%);
+}
+.rm-card p {
+  font-size: 0.9rem;
+}
+
+.rm-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  margin: 4px 0 16px;
+  text-align: left;
+}
+.rm-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ogh-fg-dim);
+}
+.rm-sw {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.rm-sw-drone { background: #ff60c8; box-shadow: 0 0 8px rgba(255, 96, 200, 0.6); }
+.rm-sw-sentry { background: #ffb85c; box-shadow: 0 0 8px rgba(255, 184, 92, 0.6); }
+.rm-sw-health { background: #5cffb0; box-shadow: 0 0 8px rgba(92, 255, 176, 0.6); }
+.rm-sw-exit { background: #5cff78; box-shadow: 0 0 8px rgba(92, 255, 120, 0.6); }
+
+.rm-controls-note {
+  font-size: 11.5px !important;
+  color: var(--ogh-fg-dim);
+  line-height: 1.45;
+  margin-bottom: 18px !important;
+}
+
+.rm-stats {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-accent);
+  font-size: 13px !important;
+  margin-bottom: 16px !important;
+}
+
+@media (max-width: 560px) {
+  .rm-legend { grid-template-columns: 1fr; }
+  .back { font-size: 12px; }
+  .rm-hud .ogh-pill { font-size: 11.5px; padding: 5px 9px; }
+}

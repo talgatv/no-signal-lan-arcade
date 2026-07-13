@@ -1,0 +1,31 @@
+{
+  "id": "video-convert",
+  "name": "Video Convert",
+  "version": "0.1.0",
+  "kind": "program",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["utility", "media"],
+  "tags": ["program", "video", "converter", "offline", "media", "ffmpeg-free"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap to pick a video, choose an operation, then Run. Drag sliders for trim/speed.",
+      "ru": "Выбери видео, выбери операцию, нажми Run. Слайдеры — обрезка и скорость.",
+      "zh": "点击选择视频，选择操作，然后点 Run。拖动滑块可调整剪辑/速度。",
+      "es": "Elige un vídeo, elige una operación y toca Run. Arrastra los controles para recorte/velocidad.",
+      "ar": "اضغط لاختيار فيديو، اختر عملية، ثم اضغط Run. اسحب المنزلقات للقص/السرعة.",
+      "fr": "Touchez pour choisir une vidéo, choisissez une opération, puis Run. Glissez les curseurs pour la découpe/vitesse."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css"],
+  "notes": "100% in-browser video toolkit: convert/compress, trim, extract audio, make GIF, grab frames, rotate/flip, change speed, mute. Files never leave the device — no servers, no uploads, no ffmpeg.wasm."
+}

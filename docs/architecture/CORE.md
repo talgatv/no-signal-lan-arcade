@@ -4,7 +4,7 @@
 
 A **host core** that:
 
-- serves HTTP (lobby + static game packs);
+- serves HTTP (lobby + static game and program packs);
 - runs a WebSocket hub (rooms, players, relay);
 - does **not** depend on Android / iOS / desktop UI chrome.
 
@@ -20,7 +20,7 @@ A **platform shell** only provides: process lifecycle, foreground service, hotsp
 │  HOST CORE                                              │
 │  HTTP static │ WebSocket hub │ Rooms │ Game registry    │
 │                      │                                  │
-│              Game packs (plugins)                       │
+│          Game/program web packs (plugins)               │
 │         manifest + client HTML (+ optional logic)       │
 └─────────────────────────────────────────────────────────┘
          │ LAN
@@ -32,9 +32,9 @@ A **platform shell** only provides: process lifecycle, foreground service, hotsp
 
 | Layer | Choice | Why |
 |-------|--------|-----|
-| **PC host (now)** | Python 3 **stdlib** (`pc/host.py`) | No Node/pip; offline portable runtimes |
-| **Android host (planned)** | Kotlin + Compose + thin HTTP/WS | Small APK; Dual-like DX |
-| **Lobby + games** | Vanilla HTML/CSS/JS + canvas/SVG | Universal phones; ≤ 10 MB packs |
+| **PC host** | Python 3 **stdlib** (`pc/host.py`) | No Node/pip; offline portable runtimes |
+| **Android host 0.2.0** | Kotlin + Compose + Ktor Netty HTTP/HTTPS/WS | Foreground service, QR invitation, same protocol |
+| **Lobby + web packs** | Vanilla HTML/CSS/JS + canvas/SVG | Universal phones; ≤ 10 MB packs |
 | **Net client** | `games/_shared/js/ogh-net.js` | One API for all multiplayer packs |
 | **i18n goal** | en, zh, ru, es, ar, fr | Host strings + game JSON locales |
 
@@ -54,6 +54,9 @@ games/
       ...
     server/           # optional future: authoritative host logic
     assets/
+
+  programs/
+    <id>/               # utility web packs use the same format
 ```
 
 ### manifest.json (example)
@@ -87,7 +90,7 @@ See [contributing/ENGINE_API.md](../contributing/ENGINE_API.md).
 | Channel | Role |
 |---------|------|
 | `GET /` | Lobby UI |
-| `GET /games/...` | Static packs |
+| `GET /games/...` | Static game and program packs |
 | `GET /games/catalog/games.json` | Library metadata |
 | `WS /ws` | Realtime |
 
@@ -121,11 +124,24 @@ Details: [MULTIPLAYER.md](./MULTIPLAYER.md).
 - Cloud accounts or matchmaking.  
 - Auto-update games while offline.
 
-## Open decisions
+## Implemented host adapters
 
-1. Android HTTP: Ktor vs minimal ServerSocket.  
-2. Per-game authoritative server modules vs host-player trust.  
-3. APK ships few demo packs vs external pack install.
+The two shipping hosts implement the same v1 wire contract and URL layout:
+
+- `pc/host.py` uses Python's standard library;
+- Android 0.2.0 uses a Compose shell, foreground service, and Ktor Netty for
+  HTTP/HTTPS/WebSocket;
+- Android bundles the complete `games/` tree at build time and can override an
+  individual asset from its external `packs/` directory.
+
+The protocol and pack format are shared; the Python and Kotlin implementations
+remain platform-specific so neither host carries another platform's runtime.
+
+## Remaining decisions
+
+1. Per-game authoritative server modules versus host-player trust.
+2. External pack import, validation, signatures, and update policy.
+3. Whether future native hosts justify extracting shared models to KMP.
 
 ## Related
 

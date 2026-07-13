@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0a1018" />
+  <title>LAN Chat & Radio — OGH</title>
+  <link rel="stylesheet" href="../../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="chat-body ogh-font-ui">
+  <header class="chat-top">
+    <a class="back" href="../../../hub/">← Library</a>
+    <div class="titles">
+      <h1>LAN Chat & Radio</h1>
+      <p id="netLine" class="net">connecting…</p>
+    </div>
+    <div class="me">
+      <img id="meAvatar" alt="" width="36" height="36" />
+      <span id="meName">…</span>
+    </div>
+  </header>
+
+  <div class="chat-layout">
+    <aside class="roster">
+      <h2>Room</h2>
+      <ul id="roster"><li>…</li></ul>
+      <p class="hint">Same room name = same channel. Text always works online; PTT needs mic permission.</p>
+    </aside>
+
+    <section class="main">
+      <div class="mode-tabs" role="tablist">
+        <button type="button" class="tab is-on" data-mode="text" id="tabText">Text</button>
+        <button type="button" class="tab" data-mode="radio" id="tabRadio">Radio</button>
+      </div>
+
+      <div id="log" class="log" aria-live="polite"></div>
+
+      <div id="panelText" class="panel">
+        <form id="form" class="composer">
+          <input id="input" type="text" maxlength="500" placeholder="Message…" autocomplete="off" />
+          <button type="submit" class="send">Send</button>
+        </form>
+      </div>
+
+      <div id="panelRadio" class="panel" hidden>
+        <p class="radio-status" id="radioStatus">Idle · hold to talk</p>
+        <button type="button" class="ptt" id="btnPtt">TALK</button>
+        <p class="hint center">Push-to-talk · max ~8 seconds · LAN only</p>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

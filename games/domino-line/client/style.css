@@ -1,0 +1,244 @@
+/* Dominoes — OGH neon-vector look. Header/pills/cards/buttons come from
+   ogh-base.css; this file lays out the table (opponent row / boneyard / the
+   scrolling line / your hand / controls) and draws the domino tiles as pure
+   vector shapes (pip dots in a 3x3 grid), no image assets. The stage is a
+   flex column sized to the viewport; only the line scrolls, horizontally,
+   inside its own container — the page itself never scrolls. */
+
+body.dom-body {
+  background: radial-gradient(120% 140% at 50% -10%, #101a2c 0%, var(--ogh-bg) 70%);
+}
+
+/* header ------------------------------------------------------------- */
+.dom-top {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 10px 14px;
+  background: rgba(7, 8, 15, 0.6);
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+.back { color: var(--ogh-accent); text-decoration: none; font-size: 14px; white-space: nowrap; font-weight: 600; }
+.dom-hud { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dom-hud .ogh-pill { font-family: "JetBrains Mono", var(--ogh-mono); font-size: 13px; padding: 6px 12px; white-space: nowrap; }
+.dom-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-inline-start: auto; }
+.dom-actions .ogh-btn { min-height: 38px; padding: 0 14px; font-size: 13px; }
+.lang-switch { display: flex; gap: 4px; flex-wrap: wrap; }
+.lang-btn {
+  min-height: 30px; padding: 0 10px; border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.3); background: transparent;
+  color: var(--ogh-fg-dim); font-family: inherit; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.02em; cursor: pointer;
+}
+.lang-btn.is-on { color: #071018; background: var(--ogh-accent); border-color: var(--ogh-accent); }
+
+/* stage layout --------------------------------------------------------- */
+.dom-stage {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 10px 12px calc(10px + var(--ogh-safe-bottom));
+  overflow: hidden;
+}
+
+.dom-opp {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  min-height: 40px;
+  max-height: 84px;
+  overflow: hidden;
+}
+
+.dom-mid {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dom-boneyard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--ogh-fg-dim);
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.dom-line-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dom-line-scroll {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 10px 4px;
+  scrollbar-width: thin;
+}
+.dom-line {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  width: max-content;
+  margin: 0 auto;
+}
+.dom-line:empty::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 40px;
+  border: 2px dashed rgba(92, 225, 255, 0.25);
+  border-radius: 8px;
+}
+
+/* end-drop zones flanking the line (used when a tile matches both ends) */
+.dom-endzone {
+  flex: none;
+  width: 26px;
+  height: 58px;
+  border-radius: 8px;
+  border: 2px dashed rgba(92, 225, 255, 0.2);
+  background: transparent;
+  color: var(--ogh-accent);
+  cursor: default;
+  opacity: 0.35;
+  transition: opacity 0.15s ease, box-shadow 0.15s ease;
+}
+.dom-endzone.is-active {
+  opacity: 1;
+  cursor: pointer;
+  border-color: var(--ogh-good);
+  border-style: solid;
+  box-shadow: 0 0 16px rgba(92, 255, 176, 0.5);
+  animation: domPulse 1s ease-in-out infinite;
+}
+@keyframes domPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+/* hand + controls ------------------------------------------------------ */
+.dom-hand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 2px;
+  max-height: 132px;
+  overflow-y: auto;
+}
+.dom-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  min-height: 4px;
+}
+.dom-controls .ogh-btn { min-height: 42px; padding: 0 24px; }
+
+/* Override the shared position:fixed hint so it flows at the bottom of the
+   stage column instead of overlapping the hand row on short viewports. */
+.dom-hint {
+  position: static;
+  transform: none;
+  left: auto;
+  bottom: auto;
+  max-width: 100%;
+  margin: 2px auto 0;
+  min-height: 15px;
+}
+
+/* domino tiles --------------------------------------------------------- */
+.dom-tile {
+  --half: 28px;
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(160deg, #12203a, #0b1526);
+  border: 1.5px solid rgba(92, 225, 255, 0.4);
+  border-radius: 7px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(92, 225, 255, 0.05);
+  padding: 3px;
+  gap: 0;
+  flex: none;
+}
+.dom-half {
+  width: var(--half);
+  height: var(--half);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  place-items: center;
+  padding: 2px;
+}
+.dom-half + .dom-half { border-inline-start: 1.5px solid rgba(92, 225, 255, 0.28); }
+.dom-slot { width: 100%; height: 100%; }
+.dom-slot.on {
+  border-radius: 50%;
+  width: 74%;
+  height: 74%;
+  background: radial-gradient(circle at 35% 30%, #eafbff, var(--ogh-accent) 70%);
+  box-shadow: 0 0 6px rgba(92, 225, 255, 0.8);
+}
+
+/* face-down tile (opponent hand + boneyard) */
+.dom-tile.back {
+  background: repeating-linear-gradient(135deg, #0e1830, #0e1830 5px, #132546 5px, #132546 10px);
+  border-color: rgba(92, 225, 255, 0.25);
+}
+.dom-tile.back .dom-half { visibility: hidden; }
+.dom-tile.mini { --half: 18px; padding: 2px; }
+.dom-tile.mini .dom-half + .dom-half { border-inline-start-width: 1px; }
+
+/* hand tile states */
+.dom-hand .dom-tile { cursor: default; transition: transform 0.08s ease, box-shadow 0.15s ease; }
+.dom-hand .dom-tile.playable {
+  cursor: pointer;
+  border-color: var(--ogh-good);
+  box-shadow: 0 0 14px rgba(92, 255, 176, 0.4), inset 0 0 12px rgba(92, 255, 176, 0.06);
+}
+.dom-hand .dom-tile.playable:active { transform: translateY(2px); }
+.dom-hand .dom-tile.selected {
+  border-color: var(--ogh-warn);
+  box-shadow: 0 0 18px rgba(255, 209, 102, 0.6);
+  transform: translateY(-6px);
+}
+.dom-hand .dom-tile.dim { opacity: 0.45; }
+
+/* the two just-placed open-end tiles get a soft marker */
+.dom-line .dom-tile.end-left { box-shadow: -3px 0 14px rgba(92, 225, 255, 0.35), 0 2px 8px rgba(0,0,0,0.4); }
+.dom-line .dom-tile.end-right { box-shadow: 3px 0 14px rgba(92, 225, 255, 0.35), 0 2px 8px rgba(0,0,0,0.4); }
+
+/* overlays ------------------------------------------------------------- */
+.dom-mode-card { width: min(460px, 100%); }
+.dom-mode-list { display: flex; flex-direction: column; gap: 10px; }
+.mode-btn { width: 100%; }
+#resultReasonLine { color: var(--ogh-fg); margin-bottom: 6px; }
+#resultStatsLine {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-fg);
+  opacity: 0.85;
+}
+
+@media (max-width: 460px) {
+  .dom-actions .ogh-btn { min-height: 34px; padding: 0 10px; font-size: 12px; }
+  .back { font-size: 13px; }
+  .dom-tile { --half: 24px; }
+}
+@media (max-height: 620px) {
+  .dom-tile { --half: 22px; }
+  .dom-hand { max-height: 96px; }
+}

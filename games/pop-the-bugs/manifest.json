@@ -1,0 +1,27 @@
+{
+  "id": "pop-the-bugs",
+  "name": "Pop the Bugs",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "reaction", "casual"],
+  "tags": ["solo", "experimental", "arcade", "reaction"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "none",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap/click a bug the instant it pops up. Avoid the red trap bug. No keyboard.",
+      "ru": "Тапай/кликай жука сразу как он появился. Избегай красного жука-ловушки. Клавиатура не нужна."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "60-second timed reaction round on a 4x4 grid of holes. Good bugs score points, the red trap bug costs points, a rare golden bug is worth a bonus. Difficulty (spawn interval + visible duration) ramps over the round down to a humanly-reactable floor. No bundled assets — bugs are inline SVG shapes with a neon glow filter."
+}

@@ -1,0 +1,302 @@
+/* Towers of Hanoi — neon-vector chrome on top of ogh-base.css (see
+   games/comet and games/gem-swap for the palette/token precedent this
+   follows).
+
+   Board: a FIXED logical-pixel stage (see app.js's computeLayout()),
+   scaled as a whole via CSS transform to fit any viewport with zero
+   scrolling — the same "virtual viewport" idea as games/solitaire's
+   .sol-board / games/memory-match's .mm-board. Every disk is a persistent
+   DOM element (one per disk size, not per peg slot) positioned with
+   `transform: translate()`; picking up or placing a disk just updates that
+   transform, and the CSS transition below animates the move for free — the
+   same "state drives position, the browser interpolates" architecture as
+   games/gem-swap's gems and games/sliding-puzzle's tiles. Each peg is one
+   large invisible hit-target button spanning its whole column (disks are
+   purely decorative, pointer-events:none) so a tap lands on "peg i"
+   wherever it lands in that column, not just on a disk's own bounding box. */
+
+body.ht-body {
+  background: radial-gradient(120% 140% at 50% -10%, #10152c 0%, var(--ogh-bg) 70%);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.ht-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 10px 14px;
+  background: rgba(7, 8, 15, 0.6);
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.ht-hud {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ht-hud .ogh-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+
+.ht-lbl {
+  color: var(--ogh-fg-dim);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+
+#hudMoves strong { color: var(--ogh-accent); }
+#hudOptimal strong { color: var(--ogh-good); }
+#hudTime strong { color: var(--ogh-warn); }
+
+.ht-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+.ht-actions .ogh-btn {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.lang-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: #071018;
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ── Stage + board ──────────────────────────────────────────────────── */
+.ht-stage {
+  position: relative;
+  overflow: visible;
+}
+
+.ht-board {
+  position: relative;
+  flex: none;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Decorative base plate spanning the whole board, and one rod per peg. */
+.ht-base {
+  position: absolute;
+  left: 0;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(92, 225, 255, 0.28), rgba(92, 225, 255, 0.08));
+  box-shadow: 0 0 18px rgba(92, 225, 255, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.ht-rod {
+  position: absolute;
+  top: 0;
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(232, 236, 255, 0.5), rgba(92, 225, 255, 0.28));
+  box-shadow: 0 0 10px rgba(92, 225, 255, 0.25);
+}
+.ht-rod.is-target {
+  background: linear-gradient(180deg, rgba(92, 255, 176, 0.65), rgba(92, 255, 176, 0.28));
+  box-shadow: 0 0 14px rgba(92, 255, 176, 0.4);
+}
+
+.ht-target-label {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ogh-good);
+  text-shadow: 0 0 8px rgba(92, 255, 176, 0.5);
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Peg hit-target: transparent, covers the whole column so a tap anywhere in
+   a peg's area (empty rod space or on top of a disk) registers as "tap peg
+   i" — see file header. */
+.ht-peg-hit {
+  position: absolute;
+  top: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  touch-action: none;
+  z-index: 5;
+}
+.ht-peg-hit.is-selected {
+  background: radial-gradient(closest-side, rgba(92, 225, 255, 0.14), transparent 70%);
+}
+
+@keyframes ht-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(3px); }
+}
+.ht-peg-hit.is-shake { animation: ht-shake 340ms ease-in-out; }
+
+/* ── Disks ──────────────────────────────────────────────────────────── */
+.ht-disk {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 26px;
+  border-radius: 13px;
+  background: linear-gradient(160deg, var(--disk-color), rgba(0, 0, 0, 0.25));
+  border: 2px solid var(--disk-color);
+  /* Same "reference the custom property directly in box-shadow/filter,
+     don't try to compute an alpha-blended variant" convention as
+     games/gem-swap's [data-type] -> --gem-color glow (drop-shadow(0 0 5px
+     var(--gem-color))) — the blur radius alone is what fades the glow, no
+     color-mix()/alpha math needed, and it keeps this in line with what
+     every other neon-vector game here already does. */
+  box-shadow: 0 0 12px var(--disk-color), inset 0 2px 4px rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  transition: transform 220ms cubic-bezier(0.32, 1.1, 0.4, 1);
+  z-index: 10;
+}
+.ht-disk.is-held {
+  z-index: 20;
+  box-shadow: 0 0 20px var(--disk-color), inset 0 2px 4px rgba(255, 255, 255, 0.45);
+}
+
+/* ── Invalid-move banner ────────────────────────────────────────────── */
+.ht-banner {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 250;
+  pointer-events: none;
+  text-align: center;
+  font-family: "Montserrat", "Roboto", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  font-size: clamp(14px, 3.6vmin, 19px);
+  color: var(--ogh-bad);
+  text-shadow: 0 0 14px rgba(255, 92, 122, 0.7), 0 0 4px rgba(255, 92, 122, 0.9);
+  opacity: 0;
+  white-space: nowrap;
+  max-width: 90vw;
+}
+.ht-banner.is-showing { animation: ht-banner-fade 1s ease-out both; }
+@keyframes ht-banner-fade {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Overlay cards ──────────────────────────────────────────────────── */
+.ht-setup-card { width: min(460px, 100%); }
+
+.ht-group-label {
+  margin: 14px 0 8px;
+  font-size: 0.8rem;
+  color: var(--ogh-fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: start;
+}
+
+.ht-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+.ht-step-btn {
+  width: 52px;
+  min-width: 52px;
+  padding: 0;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+.ht-disk-readout {
+  min-width: 64px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--ogh-accent);
+  text-shadow: 0 0 14px rgba(92, 225, 255, 0.4);
+}
+
+.ht-diff-preview {
+  margin: 10px 0 0 !important;
+  font-size: 12.5px !important;
+  color: var(--ogh-accent) !important;
+}
+
+.ht-best-line {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-good);
+  font-size: 12.5px !important;
+  margin: 14px 0 0 !important;
+}
+
+.ht-start-btn { width: 100%; margin-top: 18px; }
+
+/* ── Result overlay ─────────────────────────────────────────────────── */
+#resultStatsLine {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-fg);
+  opacity: 0.85;
+}
+.ht-perfect {
+  color: var(--ogh-good) !important;
+  font-weight: 700;
+}
+.ht-new-best {
+  color: var(--ogh-warn) !important;
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .ht-actions .ogh-btn { min-height: 34px; padding: 0 10px; font-size: 12px; }
+  .back { font-size: 12px; }
+}

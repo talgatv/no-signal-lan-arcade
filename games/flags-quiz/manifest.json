@@ -1,0 +1,27 @@
+{
+  "id": "flags-quiz",
+  "name": "Flags & Capitals",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["quiz", "trivia", "geography", "educational"],
+  "tags": ["solo", "experimental", "quiz", "geography", "educational"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap an answer option in the quiz; tap a country card in the Atlas for its info sheet. Keyboard optional (Esc closes a card).",
+      "ru": "Тапай вариант ответа в викторине; тапай карточку страны в Атласе для справки. Клавиатура опциональна (Esc закрывает карточку)."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "World geography quiz + reference atlas over all 195 countries (193 UN members + Holy See and State of Palestine, the standard 'complete list of countries' scope). Three multiple-choice modes (flag→country, country→capital, flag→capital) with region-plausible distractors, 15-question scored rounds, and an optional region filter. A searchable/region-filterable Atlas gives every country an info card (flag, name in the current UN-6 language, capital, population, area, languages, currency). All 195 flags are hand-written inline SVG built from geometric primitives (stripes/cross/star/crescent/…) — no bundled image assets; ~64 flags with intricate heraldry render the correct base with a simplified emblem, marked in the data. Country display names are localized to all six UN languages from data/countries.json; capitals are English. High score per mode persists via OGHProfile."
+}

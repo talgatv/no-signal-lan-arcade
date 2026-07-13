@@ -1,0 +1,300 @@
+/* Life Forms — neon-vector chrome on top of ogh-base.css (see games/comet,
+ * games/void-drift for the palette/glow precedent this follows).
+ *
+ * Layout: a compact top header (back + GEN/ALIVE HUD pills + sound toggle +
+ * language switch), a flex-filling stage whose canvas fills it edge-to-edge
+ * (games/void-drift's full-bleed `.vd-view` pattern — the grid IS the
+ * background here, there's nothing behind it to show through), and a bottom
+ * toolbar (hint, speed slider, transport buttons) as a normal flex-column
+ * child rather than a floating `.ogh-hint` (there's a real button row down
+ * there, not just a caption). The stage carries dir="ltr" so the simulation
+ * grid's column order and neighbor adjacency never mirror under RTL — only
+ * this file's text-bearing chrome flips for Arabic. All of the actual
+ * "beautiful effects" work (per-cell glow/bloom, age-color gradient, smooth
+ * fade in/out) happens in canvas draw calls in app.js, not here — this file
+ * is chrome only.
+ */
+
+body.lf-body {
+  background: radial-gradient(120% 140% at 50% -10%, #10152c 0%, var(--ogh-bg) 70%);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.lf-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding: 10px 14px;
+  background: rgba(7, 8, 15, 0.6);
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.lf-hud {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.lf-hud .ogh-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+
+.lf-lbl {
+  color: var(--ogh-fg-dim);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+
+#hudGen strong { color: var(--ogh-accent); }
+#hudAlive strong { color: var(--ogh-good); }
+
+.lf-icon-btn {
+  flex: 0 0 auto;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: rgba(8, 10, 22, 0.7);
+  color: var(--ogh-fg);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lf-icon-btn[aria-pressed="false"] {
+  color: var(--ogh-fg-dim);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+.lf-icon-btn:active { transform: scale(0.94); }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+.lang-btn {
+  min-height: 28px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ── Stage + canvas ─────────────────────────────────────────────────── */
+.lf-stage {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: #05060d;
+}
+
+.lf-view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+/* ── Bottom toolbar ─────────────────────────────────────────────────── */
+.lf-toolbar {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px calc(10px + var(--ogh-safe-bottom));
+  background: rgba(7, 8, 15, 0.68);
+  border-top: 1px solid rgba(92, 225, 255, 0.16);
+}
+
+.lf-hint {
+  margin: 0;
+  font-size: 11.5px;
+  color: var(--ogh-fg-dim);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.lf-speed-row {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--ogh-fg-dim);
+  letter-spacing: 0.03em;
+}
+.lf-speed-row label { flex: 0 0 auto; text-transform: uppercase; }
+.lf-speed-row input[type="range"] { flex: 1; min-width: 0; }
+.lf-speed-val {
+  flex: 0 0 auto;
+  min-width: 34px;
+  text-align: right;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-accent);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ogh-fg);
+  border: 2px solid var(--ogh-accent);
+  cursor: pointer;
+  margin-top: -1px;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ogh-fg);
+  border: 2px solid var(--ogh-accent);
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-track {
+  height: 5px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.lf-btn-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lf-btn {
+  min-height: 44px;
+  padding: 0 12px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.lf-btn-play {
+  min-width: 108px;
+  justify-content: center;
+  font-weight: 700;
+}
+.lf-btn-play.is-running {
+  border-color: rgba(255, 209, 102, 0.55);
+  background: linear-gradient(160deg, rgba(255, 209, 102, 0.22), rgba(255, 107, 203, 0.12));
+  box-shadow: 0 0 22px rgba(255, 209, 102, 0.18);
+}
+
+/* ── Pattern-library panel ─────────────────────────────────────────── */
+.lf-pattern-card {
+  width: min(460px, 100%);
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+}
+.lf-pattern-card p { font-size: 0.85rem; }
+
+.lf-pattern-groups {
+  overflow-y: auto;
+  margin: 4px 0 16px;
+  padding-right: 2px;
+  text-align: start;
+}
+
+.lf-pattern-group + .lf-pattern-group { margin-top: 14px; }
+
+.lf-pattern-group-title {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ogh-fg-dim);
+  margin: 0 0 8px;
+}
+
+.lf-pattern-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lf-pattern-btn {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(92, 225, 255, 0.28);
+  background: rgba(10, 12, 24, 0.7);
+  color: var(--ogh-fg);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.lf-pattern-btn:active {
+  transform: scale(0.96);
+  background: rgba(92, 225, 255, 0.16);
+}
+
+@media (max-width: 560px) {
+  .back { font-size: 12px; }
+  .lf-hud .ogh-pill { font-size: 11.5px; padding: 5px 9px; }
+  .lf-btn { min-height: 42px; padding: 0 10px; font-size: 12.5px; }
+  .lf-btn-play { min-width: 92px; }
+}
+
+@media (max-width: 380px) {
+  .lf-btn span:last-child { display: inline; }
+  .lf-btn { padding: 0 8px; gap: 4px; }
+}

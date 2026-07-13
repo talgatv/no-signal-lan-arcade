@@ -1,0 +1,27 @@
+{
+  "id": "gem-swap",
+  "name": "Gem Swap",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["puzzle", "match-3", "casual"],
+  "tags": ["solo", "experimental", "puzzle", "match-3", "casual"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "none",
+    "mouse": "ok",
+    "notes": {
+      "en": "Drag a gem into a neighbor to swap, or tap a gem then tap an adjacent one. Only swaps that make a match of 3+ are allowed — anything else animates back. 25 moves per session.",
+      "ru": "Перетащи самоцвет на соседнюю клетку либо тапни один самоцвет и затем соседний. Разрешены только ходы, создающие совпадение из 3+ — остальные анимированно откатываются обратно. 25 ходов за партию."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Original match-3 gem puzzle in the 'swap adjacent gems to form lines of 3+, gravity-fall cascades, chain combos' genre (Bejeweled is the classic reference point for the genre only — original vector gem designs, no copied content). An 8x8 grid of six shape+color gems (circle/diamond/star/square/triangle/hexagon — shape-coded, not just color, for colorblind-accessible play). client/board.js is pure grid/match/gravity logic (no DOM): findRuns() scans for maximal 3+ same-type runs, resolveStep() clears them, spawns a row/col line-clear special from a 4-run or a color-bomb from a 5-run at the swap's own cell (or the run's middle cell during a cascade), and chains through any pre-existing specials caught in the sweep via a worklist (a row/col special caught in a clear sweeps its whole row/column; a bomb caught in a sweep clears a random present color) so specials can trigger each other. A color bomb's primary activation is a direct swap against a normal gem, which deterministically clears every gem of that gem's color — wouldMatch() treats any bomb-involved swap as automatically legal, no ordinary 3-line required. applyGravity() compacts each column and refills the top with fresh gems, returning a per-gem fall-distance log; game.js's DOM layer positions every gem with a CSS-transitioned transform (games/solitaire's 'state drives position, the browser interpolates' architecture), so swaps, snap-backs, clears and gravity falls all animate from real state changes rather than a hand-rolled tween — including new gems, which start stacked off-board above their column and use the 'set start position, force a synchronous reflow, then set the end position' trick to actually animate falling in instead of popping into place. Cascades loop the clear/fall/rescan cycle with an increasing score multiplier per step. hasAnyValidMove() (localized per-cell run-length checks, not a full board rescan, so it isn't confused by an unrelated pre-existing run elsewhere) gates a no-valid-move reshuffle after every resolution settles. 25-move session, score-based, local high score via OGHProfile (same convention as games/pop-the-bugs). No bundled image/audio assets: gems are inline SVG vector shapes with a neon glow filter (games/pop-the-bugs' [data-type] -> CSS custom property convention); sound reuses games/_shared/js/ogh-sfx.js almost entirely unchanged (tap=swap, screech=invalid-swap-reverts, pickup=match, whoosh=row/col-special-activates, win=special-gem-created, tick=reshuffle) plus two new patterns this genre needed (chain=cascade step, boom=bomb-activates). RTL (Arabic) flips text/menu chrome only; the grid's column order and swap-direction logic never mirror (board and stage both dir=ltr) — column 0 is always the visual-left column regardless of language."
+}

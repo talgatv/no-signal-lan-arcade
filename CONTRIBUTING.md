@@ -28,9 +28,9 @@ Humans and AI agents are both welcome — same rules.
 ### Fastest path
 
 ```bash
-python3 tools/new_game.py my-cool-game --title "My Cool Game"
+python3 tools/new_game.py my-cool-game --title "My Cool Game" --author "Your Name"
 # multiplayer:
-python3 tools/new_game.py my-mp-game --multiplayer --title "My MP Game"
+python3 tools/new_game.py my-mp-game --multiplayer --title "My MP Game" --author "Your Name"
 python3 tools/validate_catalog.py
 cd pc && ./start.sh
 # → http://127.0.0.1:8080/
@@ -53,7 +53,9 @@ cd pc && ./start.sh
 - [ ] Short `README.md` in the game folder  
 - [ ] Works via PC host: `cd pc && ./start.sh` → open `/games/<id>/client/`  
 - [ ] Update `sizeMeasuredKb` if you can  
-- [ ] Optional: list in `pc/www/index.html` until catalog UI exists  
+- [ ] If you want public credit, use `--author "Your Name"` or edit
+      `authorInline`. You may leave both author fields empty; reserve
+      `authorId: "ogh-team"` for work authored by the core team.
 
 ## Development loop
 
@@ -61,8 +63,8 @@ cd pc && ./start.sh
 # host
 cd pc && ./start.sh
 
-# lobby
-open http://127.0.0.1:8080/
+# paste into a browser
+# http://127.0.0.1:8080/
 
 # phones on same Wi‑Fi
 # http://<lan-ip>:8080/
@@ -85,11 +87,10 @@ Label ideas (maintainers): `game`, `host`, `docs`, `good first issue`, `help wan
 
 By contributing, you agree your contributions are licensed under the **MIT License** ([LICENSE](LICENSE)), unless a file says otherwise (e.g. OFL fonts).
 
-## Code of conduct (short)
+## Code of conduct
 
-- Assume good intent.  
-- No harassment, hate, or NSFW dumps into the default catalog.  
-- Credit authors in catalog `authors.json` when you want public attribution.
+Participation is governed by the project [Code of Conduct](CODE_OF_CONDUCT.md).
+Be respectful, keep feedback constructive, and credit authors accurately.
 
 ---
 

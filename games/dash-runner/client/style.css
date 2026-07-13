@@ -1,0 +1,233 @@
+/* Dash Runner — canvas-game-shell layout. Mirrors games/cross-the-road's
+   header/lang-switch/fixed-touch-controls pattern (this game also needs a
+   persistent on-screen button cluster, so — like cross-the-road — it does
+   NOT use the shared auto-sizing `.ogh-game-canvas` rule, and instead sizes
+   #game to explicitly leave room below it for the controls). ogh-base.css's
+   `overflow: hidden; touch-action: none;` on html/body is exactly what a
+   fixed-viewport swipe game needs already — not overridden here. */
+
+.dr-body {
+  background: #04050b;
+  overflow: hidden;
+  touch-action: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills + language switch.                    */
+/* ------------------------------------------------------------------ */
+.dr-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 10px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.dr-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.dr-hud .ogh-pill {
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+
+#hudDistance strong { color: #5ce1ff; }
+#hudCoins strong { color: #fff3b0; }
+#hudBest strong { color: #ffd166; }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage + canvas. Width/height both derive from the same viewport      */
+/* budget so the internal 720x1000 (aspect 0.72) canvas never distorts, */
+/* same min()-with-multiplication technique ogh-base.css's shared       */
+/* .ogh-game-canvas rule uses, just with an extra fixed offset carved   */
+/* out for the header/hint/controls chrome around it.                   */
+/* ------------------------------------------------------------------ */
+.dr-stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: box-shadow 0.2s ease;
+}
+
+.dr-canvas {
+  display: block;
+  width: min(94vw, calc((100vh - 250px) * 0.72));
+  height: min(calc(100vh - 250px), calc(94vw / 0.72));
+  max-width: 100%;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 1px rgba(92, 225, 255, 0.18), 0 12px 40px rgba(0, 0, 0, 0.45);
+  touch-action: none;
+  cursor: pointer;
+}
+
+/* A temporary "blaze" (invincibility) glow around the whole stage — a
+   clear, ambient readout of the power-up that doesn't depend on reading a
+   HUD number, mirrored by the player sprite's own flicker in render.js. */
+.dr-stage.is-invincible .dr-canvas {
+  box-shadow: 0 0 0 2px rgba(92, 225, 255, 0.6), 0 0 34px rgba(255, 107, 203, 0.55);
+}
+
+.dr-hint {
+  flex: 0 0 auto;
+  margin: 2px 0 4px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ogh-fg-dim);
+}
+
+/* ------------------------------------------------------------------ */
+/* Touch controls — a fixed plus/D-pad layout, deliberately forced LTR  */
+/* regardless of document dir: the left button always switches to the   */
+/* physically-left lane (a spatial control mapping, not text), and must */
+/* never swap sides under RTL. Same precedent as cross-the-road's       */
+/* .ctr-controls.                                                       */
+/* ------------------------------------------------------------------ */
+.dr-controls {
+  flex: 0 0 auto;
+  z-index: 4;
+  display: grid;
+  direction: ltr;
+  grid-template-columns: 60px 60px 60px;
+  grid-template-rows: 60px 60px 60px;
+  gap: 8px;
+  justify-content: center;
+  align-content: center;
+  padding: 8px 12px calc(10px + var(--ogh-safe-bottom));
+}
+
+.dr-btn {
+  border-radius: 16px;
+  border: 2px solid rgba(92, 225, 255, 0.35);
+  background: rgba(12, 16, 32, 0.85);
+  color: #e8ecff;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  line-height: 1;
+}
+
+.dr-btn-jump { grid-column: 2; grid-row: 1; border-color: rgba(92, 255, 176, 0.55); color: #5cffb0; }
+.dr-btn-left { grid-column: 1; grid-row: 2; }
+.dr-btn-right { grid-column: 3; grid-row: 2; }
+.dr-btn-duck { grid-column: 2; grid-row: 3; border-color: rgba(255, 107, 203, 0.55); color: #ff6bcb; }
+
+.dr-btn:active,
+.dr-btn.is-down {
+  transform: scale(0.94);
+  background: rgba(92, 225, 255, 0.18);
+}
+
+/* ------------------------------------------------------------------ */
+/* Crash flash — brief full-stage red pulse on collision.               */
+/* ------------------------------------------------------------------ */
+.dr-stage.is-flash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 92, 122, 0.35);
+  pointer-events: none;
+  animation: dr-flash 0.4s ease-out forwards;
+}
+
+@keyframes dr-flash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards                                                        */
+/* ------------------------------------------------------------------ */
+.dr-card h1 {
+  font-family: "Montserrat", "Roboto", sans-serif;
+  letter-spacing: 0.06em;
+}
+
+.dr-best-line {
+  margin: 0 0 14px !important;
+  font-size: 13px !important;
+  color: var(--ogh-fg-dim) !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+
+.dr-final-line {
+  margin: 0 0 8px !important;
+  font-size: 1.05rem !important;
+  font-weight: 700;
+  color: #e8ecff !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+
+.dr-new-best {
+  margin: 0 0 10px !important;
+  font-size: 13px !important;
+  font-weight: 700;
+  color: #ffd166 !important;
+}
+
+@media (max-width: 380px) {
+  .back { font-size: 12px; }
+  .dr-hud .ogh-pill { font-size: 11px; padding: 5px 9px; }
+  .dr-controls { grid-template-columns: 52px 52px 52px; grid-template-rows: 52px 52px 52px; gap: 6px; }
+  .dr-btn { font-size: 18px; }
+}
+
+@media (max-height: 640px) {
+  .dr-canvas {
+    width: min(94vw, calc((100vh - 210px) * 0.72));
+    height: min(calc(100vh - 210px), calc(94vw / 0.72));
+  }
+}

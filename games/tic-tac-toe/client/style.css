@@ -1,0 +1,193 @@
+/* Tic-Tac-Toe — plain OGH neon-vector look (no theme override needed, this
+   is a small, familiar grid; unlike games/solitaire or games/mahjong there's
+   no strong genre argument for a bespoke skin). Almost everything below is
+   board/cell geometry and the mode/result overlay lists; buttons/pills/cards
+   come straight from ogh-base.css. */
+
+body.ttt-body {
+  background: radial-gradient(120% 140% at 50% -10%, #10152c 0%, var(--ogh-bg) 70%);
+}
+
+/* header ------------------------------------------------------------- */
+.ttt-top {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 10px 14px;
+  background: rgba(7, 8, 15, 0.6);
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.ttt-hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ttt-hud .ogh-pill {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 13px;
+  padding: 6px 12px;
+  white-space: nowrap;
+}
+
+.ttt-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+.ttt-actions .ogh-btn {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.lang-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.3);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: #071018;
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* stage / board --------------------------------------------------------
+   .ttt-board is a FIXED logical-pixel 3x3 grid; app.js's fitBoard() scales
+   it as a whole via CSS transform to fit whatever real viewport is
+   available, so it's always fully visible with zero scrolling regardless
+   of screen size — same "virtual viewport" idea as games/solitaire's
+   .sol-board / games/comet's canvas sizing. */
+.ttt-stage {
+  overflow: visible;
+}
+
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 12px;
+  flex: none;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.ttt-cell {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  border: 2px solid rgba(92, 225, 255, 0.28);
+  background: linear-gradient(160deg, rgba(92, 225, 255, 0.06), rgba(255, 107, 203, 0.03));
+  color: var(--ogh-fg);
+  font-family: var(--ogh-display);
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  user-select: none;
+  touch-action: none;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
+}
+
+.ttt-cell:active:not(:disabled) { transform: scale(0.96); }
+.ttt-cell:disabled { cursor: default; }
+
+.ttt-cell.mark-x { color: var(--ogh-accent); text-shadow: 0 0 18px rgba(92, 225, 255, 0.55); }
+.ttt-cell.mark-o { color: var(--ogh-accent-2); text-shadow: 0 0 18px rgba(255, 107, 203, 0.55); }
+
+.ttt-cell.is-win {
+  border-color: var(--ogh-good);
+  background: linear-gradient(160deg, rgba(92, 255, 176, 0.22), rgba(92, 255, 176, 0.06));
+  box-shadow: 0 0 24px rgba(92, 255, 176, 0.25);
+}
+
+.ttt-cell.is-playable {
+  border-color: rgba(92, 225, 255, 0.55);
+}
+
+/* mode / difficulty overlay -------------------------------------------- */
+.ttt-mode-card { width: min(460px, 100%); }
+
+.ttt-mode-list,
+.ttt-diff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* JS toggles these panels via the plain `hidden` DOM property/attribute;
+   without this, the `display: flex` above would outrank the UA default
+   `[hidden] { display: none }` (author styles always beat UA styles,
+   regardless of selector specificity) and the panel would stay visible —
+   same fix as ogh-base.css's `.ogh-overlay[hidden]` and games/solitaire's
+   `.sol-actions .ogh-btn[hidden]`. */
+.ttt-mode-list[hidden],
+.ttt-diff-list[hidden] {
+  display: none;
+}
+
+.ttt-diff-list { margin-top: 6px; }
+
+.ttt-diff-label {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: var(--ogh-fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.mode-btn,
+.diff-btn {
+  width: 100%;
+}
+
+.ttt-back-btn {
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
+/* result overlay --------------------------------------------------------- */
+#resultStatsLine {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-fg);
+  opacity: 0.85;
+}
+
+@media (max-width: 420px) {
+  .ttt-actions .ogh-btn { min-height: 34px; padding: 0 10px; font-size: 12px; }
+  .back { font-size: 13px; }
+  .ttt-cell { font-size: 52px; }
+}

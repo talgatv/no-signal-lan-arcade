@@ -7,6 +7,9 @@ Thumbs.db
 .vscode/
 *.iml
 
+# --- Git worktrees (local dev isolation, not repo content) ---
+.worktrees/
+
 # --- Python ---
 __pycache__/
 *.py[cod]
@@ -34,6 +37,7 @@ keystore.properties
 captures/
 .externalNativeBuild/
 .cxx/
+android/app/src/main/assets/web/
 
 # --- PC portable Python (large; keep on disk for offline USB, not in git) ---
 # Re-download: pc/runtimes/download_*.sh|ps1
@@ -49,3 +53,6 @@ pc/runtimes/*.tar.gz
 *.log
 *.tmp
 .cache/
+
+# Local TLS for phone GPS
+pc/.certs/

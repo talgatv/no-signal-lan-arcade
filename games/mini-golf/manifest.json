@@ -1,0 +1,27 @@
+{
+  "id": "mini-golf",
+  "name": "Mini Golf",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["sports", "physics", "puzzle"],
+  "tags": ["solo", "experimental", "sports", "physics", "mini-golf"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Press near the ball and drag back like a slingshot, then release to putt — power comes from how far you pull (capped), direction from the pull angle. Works the same with mouse or touch. Enter/Space activates the current overlay button (start round / next hole / play again).",
+      "ru": "Нажми рядом с мячом и оттяни его назад, как рогатку, затем отпусти для удара — сила зависит от того, насколько далеко ты оттянул (с пределом), направление — от угла оттяжки. Мышь и тач работают одинаково. Enter/Space активирует текущую кнопку экрана (начать раунд / следующая лунка / играть снова)."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js"],
+  "notes": "Top-down 2D mini-golf: 9 hand-authored holes (straight, dogleg-right, wide-open bumper field, sand gauntlet, water crossing with a marked drop zone, single-blade windmill, a Z-shaped double dogleg, a sliding gate, and a grand-finale hole combining sand/water/a 4-blade windmill), each with its own par and tee/cup. physics.js is a pure, DOM-free simulation (canvas-pixel units, no camera): exponential rolling friction (much stronger inside sand zones), proper circle-vs-wall reflection (angle of incidence = angle of reflection about the contact normal, scaled by a restitution factor so bounces lose energy), water zones that reset the ball with a 1-stroke penalty, and cup capture that requires both proximity AND a low-enough speed so a fast putt can legitimately skip over the hole. Moving obstacles (rotating windmill blades, a sliding gate) are walls parameterized by a monotonic game-clock that keeps advancing while the player is still aiming, so timing a shot around them is part of the puzzle; their instantaneous contact velocity (via finite difference) is folded into the bounce so a sweeping blade can genuinely knock the ball, not just push it. Strokes are tracked per hole against par (with real-golf scoring terms — eagle/birdie/par/bogey), a running total tracks the whole round, and a final scorecard table lists every hole with a 'Play again' reset. No bundled image or audio assets: the whole course (fairway, walls, sand, water, cup, ball, moving obstacles) is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js (extended with 'bounce'/'splash' patterns; the shot and sink cues reuse penguin-fling's 'thwack' and the existing 'win' chime)."
+}

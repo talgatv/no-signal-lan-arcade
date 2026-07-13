@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Sliding Puzzle — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="spz-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="spz-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="spz-hud" role="status">
+        <div class="ogh-pill" id="hudMoves" data-i18n-aria="hudMovesAria">
+          <span class="spz-lbl" data-i18n="movesLabel">MOVES</span>
+          <strong id="movesVal">0</strong>
+        </div>
+        <div class="ogh-pill" id="hudTime" data-i18n-aria="hudTimeAria">
+          <span class="spz-lbl" data-i18n="timeLabel">TIME</span>
+          <strong id="timeVal">00:00</strong>
+        </div>
+      </div>
+      <div class="spz-actions">
+        <button type="button" class="ogh-btn" id="btnShuffle" data-i18n="newGameBtn">Shuffle</button>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnChangeSize" data-i18n="changeSizeBtn">Change size</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <!-- A sliding puzzle's grid is a fixed spatial gameplay convention, not
+         prose: tile (0,0) must always be the visual top-left cell and
+         "slide right" must always mean "toward higher column index",
+         regardless of the document's text direction under Arabic. dir="ltr"
+         here keeps the grid and tap-adjacency from ever mirroring; only the
+         header/cards/hint text chrome flips for RTL languages — see i18n.js. -->
+    <main class="ogh-stage spz-stage">
+      <div class="spz-board" id="board" dir="ltr"></div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Tap a tile in the blank’s row or column to slide it.</p>
+
+    <div class="ogh-overlay" id="setupOverlay">
+      <div class="ogh-card spz-setup-card">
+        <h1 data-i18n="setupTitle">Sliding Puzzle</h1>
+        <p data-i18n="setupSub">Choose a grid size — that’s your difficulty.</p>
+
+        <p class="spz-group-label" data-i18n="sizeLabel">Grid size</p>
+        <div class="spz-choice-row" id="sizeChoices">
+          <button type="button" class="ogh-btn choice-btn" data-size="3" data-i18n="sizeEasyBtn">3×3 · 8-puzzle</button>
+          <button type="button" class="ogh-btn choice-btn" data-size="4" data-i18n="sizeMediumBtn">4×4 · 15-puzzle</button>
+          <button type="button" class="ogh-btn choice-btn" data-size="5" data-i18n="sizeHardBtn">5×5 · 24-puzzle</button>
+        </div>
+
+        <p class="spz-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary spz-start-btn" id="btnStart" data-i18n="startBtn">Start</button>
+      </div>
+    </div>
+
+    <div class="ogh-overlay" id="resultOverlay" hidden>
+      <div class="ogh-card">
+        <h1 data-i18n="winTitle">Solved!</h1>
+        <p id="resultStatsLine"></p>
+        <p id="newBestLine" class="spz-new-best" hidden></p>
+        <p id="bestLineEnd" class="spz-best-line"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Paintball — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="pb-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="pb-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="pb-hud" role="status">
+        <div class="ogh-pill" id="hudWave" data-i18n-aria="waveAria"><span aria-hidden="true">▲</span> <strong>1/8</strong></div>
+        <div class="ogh-pill" id="hudScore" data-i18n-aria="scoreAria"><span aria-hidden="true">★</span> <strong>0</strong></div>
+        <div class="ogh-pill pb-ammo-pill" id="hudAmmo" data-i18n-aria="ammoAria">
+          <span aria-hidden="true">●</span>
+          <span class="pb-ammo-pips" id="ammoPips"></span>
+          <span class="pb-reload-label" id="reloadLabel" data-i18n="reloadingLabel" hidden>Reloading…</span>
+          <span class="pb-reload-bar" id="reloadBar" hidden><span class="pb-reload-fill" id="reloadFill"></span></span>
+        </div>
+        <div class="ogh-pill" id="hudStrikes" data-i18n-aria="strikesAria"><span aria-hidden="true">✕</span> <strong>0/3</strong></div>
+      </div>
+      <button type="button" class="ogh-btn pb-reload-btn" id="btnReload" data-i18n-aria="btnReloadAria" aria-label="Reload">
+        <span aria-hidden="true">⟳</span>
+      </button>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- The arena (lane positions, target layout, aim/fire coordinates) is
+         spatial gameplay drawn in a fixed world space and must never mirror
+         under RTL — dir="ltr" on both the stage and the canvas is
+         deliberate and must stay, same precedent as games/billiards' and
+         games/cross-the-road's canvas (see this game's i18n.js header
+         comment). game.js also forces ctx.direction = 'ltr' as a second
+         belt-and-suspenders guard for any canvas text (score popups). -->
+    <main class="ogh-stage pb-stage" dir="ltr">
+      <canvas class="ogh-game-canvas" id="game" width="1000" height="600" dir="ltr" aria-label="Shooting gallery"></canvas>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Aim, then tap or click to fire · reload before you run dry · never hit a civilian</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card pb-card" id="startCard">
+        <h1 data-i18n="title">Paintball</h1>
+        <p data-i18n="blurb">A fixed-camera paintball shooting gallery. Aim with your mouse or finger and fire before targets duck away — score on marks and rare bonus targets, grab crates for ammo, and never hit a civilian.</p>
+        <div class="pb-legend" role="list">
+          <div class="pb-legend-item" role="listitem"><span class="pb-swatch pb-swatch-grunt"></span><span data-i18n="legendGrunt">Target</span></div>
+          <div class="pb-legend-item" role="listitem"><span class="pb-swatch pb-swatch-ace"></span><span data-i18n="legendAce">Bonus target</span></div>
+          <div class="pb-legend-item" role="listitem"><span class="pb-swatch pb-swatch-civilian"></span><span data-i18n="legendCivilian">Don't shoot!</span></div>
+          <div class="pb-legend-item" role="listitem"><span class="pb-swatch pb-swatch-crate"></span><span data-i18n="legendCrate">Ammo crate</span></div>
+        </div>
+        <p class="pb-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start</button>
+      </div>
+
+      <div class="ogh-card pb-card" id="waveClearCard" hidden>
+        <h1 id="waveClearTitle">Wave 1 clear!</h1>
+        <p class="pb-wave-clear-line" id="waveClearLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNextWave" data-i18n="nextWaveBtn">Next wave</button>
+      </div>
+
+      <div class="ogh-card pb-card" id="resultsCard" hidden>
+        <h1 id="resultsTitle">Course cleared!</h1>
+        <p class="pb-results-line" id="resultsScoreLine"></p>
+        <p class="pb-results-line" id="resultsAccuracyLine"></p>
+        <p class="pb-results-line" id="resultsWavesLine"></p>
+        <p class="pb-new-best" id="newBestLine" hidden data-i18n="newBest">New best score!</p>
+        <p class="pb-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

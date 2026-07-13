@@ -1,0 +1,27 @@
+{
+  "id": "life-forms",
+  "name": "Life Forms",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["simulation", "sandbox", "classic"],
+  "tags": ["solo", "experimental", "simulation", "sandbox", "classic"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap a cell to toggle it, drag to paint or erase a run of cells (while paused). Play advances generations continuously, Step advances exactly one. Randomize scatters a random soup; Clear wipes the grid; Patterns drops in a famous preset.",
+      "ru": "Тапни клетку, чтобы переключить её, или проведи пальцем, чтобы закрасить/стереть сразу несколько (на паузе). «Играть» непрерывно продвигает поколения, «Шаг» — ровно одно. «Случайно» разбрасывает случайный узор; «Очистить» стирает поле; «Паттерны» помещает известную фигуру."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js"],
+  "notes": "Conway's Game of Life as a contemplative sandbox toy, not a scored game. simulation.js is a pure, DOM-free engine (createGrid/step/setCellAlive/randomizeGrid/etc, exercised headlessly via a throwaway Node harness during development, not just in-browser): step() computes each generation as a clean snapshot into fresh Uint8Array/Uint16Array scratch buffers built entirely from the previous generation's closed-over alive/age arrays, so there is no read-after-write mutation-during-iteration bug — the classic pitfall this simulation genre invites. Edges wrap toroidally (countLiveNeighbors mods coordinates by cols/rows). patterns.js is a small verified library of famous, well-documented patterns spanning all four classic categories: still lifes (block, beehive), oscillators (blinker period 2, toad period 2, beacon period 2, pulsar period 3 built from its 4-fold symmetry rather than hand-typed), a spaceship (glider, period 4 diagonal translation), and a gun (Gosper glider gun, 36 cells, periodically emits gliders) — every one of these was checked against its known real-world behavior (still lifes unchanged, oscillators return to their exact starting cell-set after their documented period, the glider's bounding box shifts by exactly one cell diagonally every 4 generations with constant population 5, the gun's live-cell count keeps growing as it emits) before shipping; an initially-attempted lightweight-spaceship pattern failed that check (population grew instead of staying constant) and was dropped rather than shipped broken. The 'beautiful effects' the task asked for come from decoupling *visual* state from simulation state: a per-cell Float32Array `vis` eases toward 1 (alive) or 0 (dead) every animation frame independent of the generation-step cadence, which gives fade-in-glow-on-birth, fade-out/shrink-on-death and smooth generation-to-generation interpolation all from one mechanism — a `lastAge` array freezes each cell's most recent alive age so a dying cell fades out in its own color instead of flashing to 'newborn' the instant the simulation zeroes its age. Cells are colored along an age-based warm-to-cool gradient (newborn near-white-gold through amber/pink/cyan to a deep violet for long survivors), a heatmap of each cell's history. Rendering draws solid cells once into an offscreen buffer canvas, then composites that buffer onto the visible canvas three times (two `ctx.filter='blur()'` + `globalCompositeOperation='lighter'` passes at different radii for a soft glow halo, one crisp pass on top) — a single whole-buffer blur raster is far cheaper than per-cell shadowBlur at the hundreds-to-low-thousands of live cells a dense soup or a running gun produces. Grid dimensions are computed once at load from the initial viewport (clamped to sensible bounds) and never change afterward; resize/orientation-change only rescales cell pixel size and recenters, so an in-progress pattern is never lost or remapped mid-session. Pointer input (tap toggles a cell, drag paints/erases a run, first-cell-touched decides paint-vs-erase for the whole stroke, line-interpolated between move events so a fast drag doesn't skip cells, setPointerCapture so a stroke that leaves the canvas bounds keeps delivering events) is paused-only per the task spec, enforced by auto-pausing on pointerdown rather than dead-ending the gesture. Sound reuses games/_shared/js/ogh-sfx.js entirely unchanged (tap=cell toggle, tick=generation step throttled to a max ~11/sec of audible cadence so high playback speeds don't turn into a buzz, place=pattern dropped/randomized) behind a single persisted mute toggle, deliberately with no new patterns added since the existing library already covered every cue this toy needed. window.OGH_LIFE_FORMS exposes direct state manipulation (setAliveCells/getCell/getAliveCells/boundingBox/step/placePattern) for deterministic testing of exact, known Game of Life ground truth. RTL (Arabic) flips text/toolbar chrome only; the simulation grid itself never mirrors (stage dir=\"ltr\") since column order and neighbor adjacency are a fixed spatial convention, not prose."
+}

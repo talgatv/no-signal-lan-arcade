@@ -1,0 +1,331 @@
+/* Pop the Bugs — neon-vector whack-a-mole. Built on top of ogh-base.css
+   tokens/classes (.ogh-root/.ogh-stage/.ogh-hud pattern, .ogh-pill,
+   .ogh-btn, .ogh-overlay, .ogh-card, .ogh-hint). No bundled assets — bugs
+   are inline SVG shapes colored via CSS custom properties. */
+
+body.pb-body { display: flex; flex-direction: column; }
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + live HUD (time/score/best) + language switch.   */
+/* Kept intentionally compact (no separate title row) so the grid below */
+/* keeps the lion's share of a non-scrolling viewport (see CRITICAL CSS */
+/* note in the task: html/body overflow:hidden is correct here as long  */
+/* as we don't let the chrome grow taller than it needs to).            */
+/* ------------------------------------------------------------------ */
+.pb-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.pb-hud {
+  /* Deliberately `nowrap` (unlike most other flex rows in this file): with
+     `wrap` here, a narrow .pb-top could wrap this block onto its own line
+     via the outer flex-wrap AND *then* wrap its own 3 pills onto separate
+     sub-lines, cascading into 3-4 total header rows and pushing the grid
+     below tall enough to overlap/clip the fixed-position hint text (see
+     games/pop-the-bugs testing notes — reproduced at a 374x474 viewport).
+     Three short pills always fit on one line on any real phone width, so
+     nowrap here just makes the wrap behavior of the header predictable:
+     at most one wrap point per block (back / hud / lang-switch), never a
+     cascade inside a block. */
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.pb-hud .ogh-pill {
+  padding: 6px 12px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+#hudScore strong { color: var(--ogh-good); }
+#hudBest strong { color: var(--ogh-warn); }
+#hudTime strong { color: var(--ogh-accent); }
+
+.lang-switch {
+  /* nowrap for the same reason as .pb-hud above — 6 short buttons always
+     fit on one line on any real phone width; letting them wrap internally
+     is what caused the cascading-header-height bug. */
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 28px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage / grid                                                        */
+/* ------------------------------------------------------------------ */
+.pb-stage {
+  padding: 4px;
+}
+
+/* Hint paragraph: normal flow (see the comment on #hint in index.html for
+   why this is deliberately not the shared position:fixed .ogh-hint). */
+.pb-hint {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 2px 16px calc(10px + var(--ogh-safe-bottom));
+  text-align: center;
+  font-size: 13px;
+  color: var(--ogh-fg-dim);
+  pointer-events: none;
+}
+
+.pb-grid {
+  /* Force LTR regardless of document dir: hole positions are a fixed
+     spatial layout (gameplay, not text) and must never mirror for RTL
+     languages — without this, `direction: rtl` inherited from
+     <html dir="rtl"> would reverse CSS Grid's own auto-placement flow
+     and silently swap every hole's on-screen column. Matches the
+     dir="ltr" on this element in index.html and the precedent set by
+     games/music-synth's `.pk-piano { direction: ltr }`. */
+  direction: ltr;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 3.2vmin;
+  /* Static fallback only (covers the instant before app.js's sizeGrid()
+     runs, and belt-and-suspenders if JS ever fails to run at all). The
+     authoritative size is set inline by sizeGrid(), which measures
+     .pb-stage's *actual* available box — a pure-CSS vw/vh guess can't
+     account for the header's wrapped height (varies with language/lang
+     button count) or the hint's height without either overlapping one of
+     them on short viewports or under-using space on tall ones. See
+     app.js for the measurement logic. */
+  width: min(92vw, 60vh, 480px);
+  height: min(92vw, 60vh, 480px);
+  transition: transform 60ms ease-in-out;
+}
+
+.pb-grid.is-shake { animation: pb-shake 240ms ease-in-out; }
+@keyframes pb-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2.4%); }
+  40% { transform: translateX(2%); }
+  60% { transform: translateX(-1.6%); }
+  80% { transform: translateX(1.2%); }
+}
+
+.pb-hole {
+  position: relative;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, rgba(24, 28, 50, 0.95), rgba(4, 5, 12, 0.98) 72%);
+  box-shadow:
+    inset 0 0 0 2px rgba(92, 225, 255, 0.16),
+    inset 0 8px 16px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pb-hole::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(92, 225, 255, 0.12);
+  pointer-events: none;
+}
+
+.pb-hole.is-up::after { border-color: rgba(92, 225, 255, 0.3); }
+.pb-hole[data-type="bad"].is-up::after { border-color: rgba(255, 92, 122, 0.4); }
+.pb-hole[data-type="golden"].is-up::after { border-color: rgba(255, 209, 102, 0.45); }
+
+/* ------------------------------------------------------------------ */
+/* Bug — one inline SVG per hole, two silhouette groups toggled by     */
+/* [data-type]: rounded/friendly (good, golden) vs spiky/hostile (bad).*/
+/* Color comes from --bug-color, set per data-type below.              */
+/* ------------------------------------------------------------------ */
+[data-type="good"] { --bug-color: var(--ogh-good); }
+[data-type="golden"] { --bug-color: var(--ogh-warn); }
+[data-type="bad"] { --bug-color: var(--ogh-bad); }
+
+.pb-bug-round, .pb-bug-spiky { display: none; }
+[data-type="good"] .pb-bug-round,
+[data-type="golden"] .pb-bug-round { display: block; }
+[data-type="bad"] .pb-bug-spiky { display: block; }
+
+.pb-body, .pb-head { fill: var(--bug-color); stroke: rgba(255, 255, 255, 0.4); stroke-width: 1.4; }
+.pb-seam { stroke: rgba(4, 5, 12, 0.45); stroke-width: 2; }
+.pb-spot { fill: rgba(4, 5, 12, 0.55); }
+.pb-eye, .pb-eye-spiky { fill: #05060e; }
+.pb-antenna { stroke: var(--bug-color); stroke-width: 3; stroke-linecap: round; fill: none; opacity: 0.9; }
+.pb-legs line {
+  stroke: var(--bug-color);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+
+.pb-body-spiky { fill: var(--bug-color); stroke: rgba(255, 255, 255, 0.32); stroke-width: 1.4; }
+.pb-legs-spiky polyline {
+  stroke: var(--bug-color);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  opacity: 0.9;
+}
+.pb-brow { stroke: #2a0007; stroke-width: 2.6; stroke-linecap: round; }
+
+.pb-sparkle { display: none; }
+[data-type="golden"] .pb-sparkle { display: block; }
+.pb-sparkle path {
+  fill: #fff6d6;
+  animation: pb-twinkle 1.05s ease-in-out infinite;
+  transform-origin: center;
+}
+.pb-sparkle path:nth-child(2) { animation-delay: 0.28s; }
+.pb-sparkle path:nth-child(3) { animation-delay: 0.56s; }
+@keyframes pb-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.6); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.pb-bug {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 70%;
+  height: 70%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -20%) scale(0.35);
+  transition: transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 110ms ease-out;
+  filter:
+    drop-shadow(0 0 7px var(--bug-color))
+    drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+}
+
+.pb-hole.is-up .pb-bug {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.pb-hole.is-popped .pb-bug {
+  transition: transform 170ms ease-out, opacity 170ms ease-out;
+  opacity: 0;
+  transform: translate(-50%, -68%) scale(1.35);
+}
+
+.pb-hole.is-escaped .pb-bug {
+  transition: transform 230ms ease-in, opacity 230ms ease-in;
+  opacity: 0;
+  transform: translate(-50%, -12%) scale(0.5);
+}
+
+/* Floating score popup on a successful/failed tap. */
+.pb-float {
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  transform: translate(-50%, 0);
+  font-weight: 800;
+  font-size: clamp(13px, 3.4vmin, 18px);
+  font-family: var(--ogh-mono);
+  pointer-events: none;
+  animation: pb-float-rise 650ms ease-out forwards;
+  text-shadow: 0 0 6px currentColor;
+  z-index: 2;
+}
+.pb-float.is-pos { color: var(--ogh-good); }
+.pb-float.is-neg { color: var(--ogh-bad); }
+@keyframes pb-float-rise {
+  0% { opacity: 0; transform: translate(-50%, 8px) scale(0.8); }
+  22% { opacity: 1; transform: translate(-50%, -4px) scale(1.05); }
+  100% { opacity: 0; transform: translate(-50%, -30px) scale(1); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards (start / round-over) — reuse .ogh-overlay/.ogh-card   */
+/* ------------------------------------------------------------------ */
+.pb-card p { margin: 0 0 14px; }
+
+.pb-legend {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 2px 0 18px;
+  flex-wrap: wrap;
+}
+
+.pb-legend-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 78px;
+  font-size: 11.5px;
+  color: var(--ogh-fg-dim);
+  font-family: var(--ogh-mono);
+}
+
+.pb-legend-item .pb-bug {
+  position: static;
+  width: 42px;
+  height: 42px;
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.pb-best-line {
+  font-size: 13px;
+  color: var(--ogh-fg-dim);
+  font-family: var(--ogh-mono);
+}
+
+.pb-final-score {
+  font-size: 1.3rem !important;
+  font-weight: 800;
+  color: var(--ogh-fg);
+  font-family: var(--ogh-mono);
+}
+
+.pb-new-best {
+  color: var(--ogh-warn) !important;
+  font-weight: 800;
+  font-size: 14px !important;
+  text-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+}
+
+@media (max-width: 380px) {
+  .pb-legend-item { width: 68px; font-size: 10.5px; }
+  .back { font-size: 12px; }
+}

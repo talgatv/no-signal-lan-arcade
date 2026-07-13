@@ -1,0 +1,353 @@
+/* Gem Swap — neon-vector chrome on top of ogh-base.css (see games/comet and
+   games/void-drift for the palette/token precedent this follows).
+
+   Board: a FIXED logical-pixel grid (see game.js's CELL/BOARD_PAD/BOARD_W/H),
+   scaled as a whole via CSS transform to fit any viewport with zero
+   scrolling — the same "virtual viewport" idea as games/solitaire's
+   .sol-board, applied to a grid instead of a card layout. Every gem is a
+   persistent DOM element positioned with `transform: translate()`; state
+   changes just update that transform (or a gem's inner SVG markup), and the
+   CSS transition below animates swaps, falls and snap-backs for free —
+   again mirroring solitaire's "state drives position, the browser
+   interpolates" architecture. */
+
+body.gs-body { background: var(--ogh-bg); }
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.gs-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(92, 225, 255, 0.16);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.gs-hud {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.gs-hud .ogh-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.gs-lbl {
+  color: var(--ogh-fg-dim);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+
+#hudScore strong { color: var(--ogh-warn); }
+#hudMoves strong { color: var(--ogh-accent); }
+#hudMoves.is-low strong { color: var(--ogh-bad); }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+.lang-btn {
+  min-height: 28px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ── Stage + board ──────────────────────────────────────────────────── */
+.gs-stage {
+  position: relative;
+  overflow: visible;
+}
+
+.gs-board {
+  position: relative;
+  flex: none;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.gs-cell {
+  position: absolute;
+  border-radius: 12px;
+  border: 1.5px solid rgba(92, 225, 255, 0.14);
+  background: rgba(10, 12, 24, 0.55);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+}
+
+.gs-cell.is-armed {
+  border-color: var(--ogh-good);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.35), 0 0 14px rgba(92, 255, 176, 0.55);
+}
+
+/* ── Gems ───────────────────────────────────────────────────────────── */
+.gs-gem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  transition: transform 170ms cubic-bezier(0.34, 1.2, 0.4, 1);
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  z-index: 10;
+}
+.gs-gem.is-falling { transition-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+.gs-gem.is-dragging { transition: none; z-index: 200; }
+.gs-gem.is-selected { z-index: 50; }
+
+.gs-gem-inner {
+  position: absolute;
+  inset: 6%;
+  transform-origin: center;
+}
+.gs-gem-inner svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 5px var(--gem-color)) drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.55));
+}
+
+.gs-shape {
+  fill: var(--gem-color);
+  fill-opacity: 0.32;
+  stroke: var(--gem-color);
+  stroke-width: 3.4;
+  stroke-linejoin: round;
+}
+
+/* Gem color identity (data-attribute-driven custom property, same
+   convention as games/pop-the-bugs' [data-type] -> --bug-color). Shape is
+   the primary identity signal (colorblind-safe); color reinforces it. */
+[data-type="circle"] { --gem-color: #5ce1ff; }
+[data-type="diamond"] { --gem-color: #ff6bcb; }
+[data-type="star"] { --gem-color: #ffd166; }
+[data-type="square"] { --gem-color: #5cffb0; }
+[data-type="triangle"] { --gem-color: #ff5c7a; }
+[data-type="hexagon"] { --gem-color: #b98bff; }
+[data-type="bomb"] { --gem-color: #f4f0ff; }
+
+.gs-special-overlay path {
+  fill: #ffffff;
+  opacity: 0.92;
+  filter: drop-shadow(0 0 3px #ffffff);
+}
+.gs-gem[data-special="row"] .gs-gem-inner,
+.gs-gem[data-special="col"] .gs-gem-inner {
+  animation: gs-special-glow 1.1s ease-in-out infinite;
+}
+
+.gs-bomb-spike { fill: var(--gem-color); opacity: 0.85; }
+.gs-bomb-core { fill: var(--gem-color); stroke: #ffffff; stroke-width: 2; }
+.gs-bomb-glint { fill: rgba(255, 255, 255, 0.85); }
+.gs-gem[data-type="bomb"] .gs-gem-inner {
+  animation: gs-special-glow 0.85s ease-in-out infinite;
+}
+.gs-gem[data-type="bomb"] .gs-gem-inner::before {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #5ce1ff, #ff6bcb, #ffd166, #5cffb0, #ff5c7a, #b98bff, #5ce1ff);
+  filter: blur(5px);
+  opacity: 0.75;
+  z-index: -1;
+  animation: gs-bomb-spin 2.6s linear infinite;
+}
+
+@keyframes gs-bomb-spin { to { transform: rotate(360deg); } }
+@keyframes gs-special-glow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.45); }
+}
+
+/* Tap-selected gem: a pulsing outline so the "waiting for a second tap"
+   state is unambiguous even without any pointer still down. */
+.gs-gem.is-selected .gs-gem-inner svg {
+  animation: gs-selected-pulse 0.7s ease-in-out infinite;
+}
+@keyframes gs-selected-pulse {
+  0%, 100% { filter: drop-shadow(0 0 5px var(--gem-color)) drop-shadow(0 0 1.5px #fff); }
+  50% { filter: drop-shadow(0 0 13px var(--gem-color)) drop-shadow(0 0 4px #fff); }
+}
+
+/* Match clear: quick pop-and-burst on the inner element only, so it never
+   fights the outer element's position transition. */
+.gs-gem.is-clearing .gs-gem-inner {
+  animation: gs-pop 260ms ease-in forwards;
+}
+@keyframes gs-pop {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  35% { transform: scale(1.3) rotate(8deg); opacity: 1; }
+  100% { transform: scale(0.1) rotate(24deg); opacity: 0; }
+}
+
+/* A cleared cell's shape brightens hard right before it pops — reads as a
+   little spark of energy releasing. */
+.gs-gem.is-clearing .gs-gem-inner svg { animation: gs-flash 260ms ease-in forwards; }
+@keyframes gs-flash {
+  0% { filter: brightness(1) drop-shadow(0 0 5px var(--gem-color)); }
+  40% { filter: brightness(2.6) drop-shadow(0 0 16px var(--gem-color)); }
+  100% { filter: brightness(3) drop-shadow(0 0 2px var(--gem-color)); opacity: 0; }
+}
+
+/* A cell that just turned into a special: a bright growth pulse. */
+.gs-gem.is-spawning-special .gs-gem-inner {
+  animation: gs-spawn-special 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes gs-spawn-special {
+  0% { transform: scale(0.3); }
+  55% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* ── Floating score popups + combo/reshuffle banners ───────────────── */
+.gs-float {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: 800;
+  font-size: 15px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-warn);
+  text-shadow: 0 0 6px rgba(255, 209, 102, 0.7);
+  pointer-events: none;
+  z-index: 300;
+  animation: gs-float-rise 750ms ease-out forwards;
+}
+@keyframes gs-float-rise {
+  0% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
+  20% { opacity: 1; transform: translate(-50%, -6px) scale(1.05); }
+  100% { opacity: 0; transform: translate(-50%, -42px) scale(1); }
+}
+
+.gs-banner {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 250;
+  pointer-events: none;
+  text-align: center;
+  font-family: "Montserrat", "Roboto", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  font-size: clamp(18px, 6vmin, 30px);
+  color: var(--ogh-accent);
+  text-shadow: 0 0 16px rgba(92, 225, 255, 0.7), 0 0 4px rgba(92, 225, 255, 0.9);
+  opacity: 0;
+  white-space: nowrap;
+}
+.gs-banner.is-showing { animation: gs-banner-fade 1.1s ease-out both; }
+.gs-banner.gs-banner-reshuffle {
+  color: var(--ogh-warn);
+  text-shadow: 0 0 16px rgba(255, 209, 102, 0.7), 0 0 4px rgba(255, 209, 102, 0.9);
+  white-space: normal;
+  max-width: 80vw;
+  font-size: clamp(14px, 4.4vmin, 20px);
+}
+.gs-banner.gs-banner-reshuffle.is-showing { animation: gs-banner-fade 1.5s ease-out both; }
+@keyframes gs-banner-fade {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Overlay cards ──────────────────────────────────────────────────── */
+.gs-card h1 { font-family: "Montserrat", "Roboto", sans-serif; }
+.gs-card { width: min(440px, 100%); }
+.gs-card p { font-size: 0.9rem; }
+
+.gs-legend {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 4px 0 16px;
+  text-align: left;
+}
+.gs-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--ogh-fg-dim);
+}
+.gs-legend-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  position: relative;
+}
+.gs-legend-icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.gs-controls-note {
+  font-size: 11.5px !important;
+  color: var(--ogh-fg-dim);
+  line-height: 1.45;
+  margin-bottom: 12px !important;
+}
+
+.gs-best-line {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-accent);
+  font-size: 12.5px !important;
+  margin-bottom: 14px !important;
+}
+
+.gs-stats {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-fg);
+  font-size: 15px !important;
+  margin-bottom: 8px !important;
+}
+.gs-new-best {
+  color: var(--ogh-warn) !important;
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .back { font-size: 12px; }
+  .gs-hud .ogh-pill { font-size: 11.5px; padding: 5px 9px; }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Claw Machine — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="clw-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="clw-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="clw-hud" role="status">
+        <div class="ogh-pill" id="hudCredits" data-i18n-aria="creditsAria"><span aria-hidden="true">🪙</span> <strong>8</strong></div>
+        <div class="ogh-pill" id="hudScore" data-i18n-aria="scoreAria"><span aria-hidden="true">★</span> <strong>0</strong></div>
+        <div class="ogh-pill" id="hudPrizes" data-i18n-aria="prizesAria"><span aria-hidden="true">🎁</span> <strong>0</strong></div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- The pit/claw scene (pseudo-3D world space: x left/right, y depth,
+         z height) is spatial gameplay and must never mirror under RTL —
+         dir="ltr" here and on the canvas, plus `direction: ltr` on
+         .clw-controls below, are deliberate and must stay. Same precedent
+         as games/paintball's arena and games/mini-golf's course (see this
+         game's i18n.js header comment). game.js also forces
+         ctx.direction = 'ltr' as a second belt-and-suspenders guard. -->
+    <main class="ogh-stage clw-stage" dir="ltr">
+      <canvas class="ogh-game-canvas" id="game" width="720" height="1000" dir="ltr" aria-label="Claw machine cabinet"></canvas>
+      <div class="clw-floater" id="toast" aria-live="polite"></div>
+    </main>
+
+    <p class="clw-hint" id="hint" data-i18n="hint">D-pad to steer · DROP to grab · center the claw for a better grip</p>
+
+    <div class="clw-controls" id="controls" dir="ltr">
+      <div class="clw-dpad" role="group" aria-label="Claw movement">
+        <button type="button" class="clw-dbtn clw-dbtn-far" id="btnFar" data-i18n-aria="btnFarAria" aria-label="Move away">▲</button>
+        <button type="button" class="clw-dbtn clw-dbtn-left" id="btnLeft" data-i18n-aria="btnLeftAria" aria-label="Move left">◀</button>
+        <div class="clw-dbtn-hub" aria-hidden="true"></div>
+        <button type="button" class="clw-dbtn clw-dbtn-right" id="btnRight" data-i18n-aria="btnRightAria" aria-label="Move right">▶</button>
+        <button type="button" class="clw-dbtn clw-dbtn-near" id="btnNear" data-i18n-aria="btnNearAria" aria-label="Move closer">▼</button>
+      </div>
+      <button type="button" class="clw-drop-btn" id="btnDrop" data-i18n-aria="btnDropAria" aria-label="Drop the claw">
+        <!-- Deliberately NOT data-i18n: "DROP" is compact universal arcade
+             button jargon, same convention as games/pulse-race's untranslated
+             GAS/BRK button labels — the aria-label above is fully localized. -->
+        <span>DROP</span>
+      </button>
+    </div>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card clw-card" id="startCard">
+        <h1 data-i18n="title">Claw Machine</h1>
+        <p data-i18n="blurb">A real arcade claw machine, viewed at an angle through the glass. Steer the claw over the pile, drop it, and hope the grip holds all the way to the chute — just like the real thing, a dead-center grab still doesn't always win.</p>
+        <div class="clw-legend" role="list">
+          <div class="clw-legend-item" role="listitem"><span class="clw-swatch clw-swatch-ball"></span><span data-i18n="legendBall">Ball</span> · 60</div>
+          <div class="clw-legend-item" role="listitem"><span class="clw-swatch clw-swatch-box"></span><span data-i18n="legendBox">Gift box</span> · 140</div>
+          <div class="clw-legend-item" role="listitem"><span class="clw-swatch clw-swatch-bear"></span><span data-i18n="legendBear">Bear plush</span> · 220</div>
+          <div class="clw-legend-item" role="listitem"><span class="clw-swatch clw-swatch-bunny"></span><span data-i18n="legendBunny">Bunny plush</span> · 240</div>
+          <div class="clw-legend-item" role="listitem"><span class="clw-swatch clw-swatch-star"></span><span data-i18n="legendStar">Star token</span> · 320</div>
+          <div class="clw-legend-item" role="listitem"><span class="clw-swatch clw-swatch-gem"></span><span data-i18n="legendGem">Gem</span> · 400</div>
+        </div>
+        <p class="clw-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Insert credits</button>
+      </div>
+
+      <div class="ogh-card clw-card" id="resultsCard" hidden>
+        <h1 id="resultsTitle">Out of credits!</h1>
+        <p class="clw-results-line" id="resultsScoreLine"></p>
+        <p class="clw-results-line" id="resultsPrizesLine"></p>
+        <p class="clw-results-line" id="resultsAttemptsLine"></p>
+        <p class="clw-new-best" id="newBestLine" hidden data-i18n="newBest">New best score!</p>
+        <p class="clw-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

@@ -87,6 +87,7 @@
       background: #161a30; border: 1px solid rgba(92, 225, 255, 0.18);
     }
     .game:hover { border-color: rgba(92, 225, 255, 0.45); }
+    .game.is-wip { opacity: 0.55; cursor: default; }
     .game strong { display: block; margin-bottom: 4px; color: #e8ecff; }
     .game span { font-size: 13px; color: #8b93b8; }
     .mp { color: #5cffb0; font-size: 11px; margin-left: 6px; }
@@ -130,9 +131,9 @@
     </div>
 
     <div class="panel">
-      <h2>Game library</h2>
+      <h2>Library</h2>
       <p class="sub" style="margin-bottom:12px;font-size:0.85rem">
-        Loaded from <code>games/catalog/games.json</code> — add a pack + catalog row and it appears here.
+        Loaded from <code>games/catalog/games.json</code> — add a game/program pack + catalog row and it appears here.
         <a href="/docs/contributing/ADD_A_GAME.md" style="color:#5ce1ff">How to add a game</a>
       </p>
       <div class="games" id="games">
@@ -156,12 +157,14 @@
       return `name=${name}&room=${room}`;
     }
 
-    function entryToPath(entry) {
-      // entry like "comet/client/index.html" → "/games/comet/client/"
+    function entryToPath(entry, kind = "game") {
+      // Entries are relative to their pack type root.
+      // game: comet/... → /games/comet/...
+      // program: lan-chat/... → /games/programs/lan-chat/...
       if (!entry) return "#";
       let p = entry.replace(/index\.html$/i, "");
-      if (!p.startsWith("/")) p = "/games/" + p;
-      else p = "/games" + p;
+      const root = kind === "program" ? "/games/programs/" : "/games/";
+      p = root + p.replace(/^\/+/, "");
       if (!p.endsWith("/")) p += "/";
       return p;
     }
@@ -175,15 +178,19 @@
 
     function renderGames() {
       if (!GAMES.length) {
-        $("games").innerHTML = "<span class='tag'>No games in catalog (or failed to load).</span>";
+        $("games").innerHTML = "<span class='tag'>No packs in catalog (or failed to load).</span>";
         return;
       }
-      $("games").innerHTML = GAMES.map((g) => `
-        <a class="game" href="${g.path}?${qs()}">
+      $("games").innerHTML = GAMES.map((g) => {
+        const wip = g.status === "wip";
+        const tag = wip ? "div" : "a";
+        const target = wip ? 'aria-disabled="true"' : `href="${g.path}?${qs()}"`;
+        return `
+        <${tag} class="game${wip ? " is-wip" : ""}" ${target}>
           <strong>${g.title}${g.mp ? '<span class="mp">MP</span>' : ""}</strong>
-          <span>${g.blurb}</span>
-        </a>
-      `).join("");
+          <span>${g.blurb}${wip ? " · WIP" : ""}</span>
+        </${tag}>`;
+      }).join("");
     }
 
     async function loadCatalog() {
@@ -191,12 +198,14 @@
         const res = await fetch("/games/catalog/games.json", { cache: "no-store" });
         if (!res.ok) throw new Error("HTTP " + res.status);
         const data = await res.json();
-        const list = (data.games || []).filter((g) => g.status !== "deprecated" && g.status !== "idea");
+        const list = (data.games || []).filter((g) =>
+          g.entry && g.status !== "deprecated" && g.status !== "idea"
+        );
         GAMES = list.map((g) => ({
           id: g.id,
           title: g.name || g.id,
           blurb: g.tagline || (g.instructions && (g.instructions.en || Object.values(g.instructions)[0])) || "",
-          path: entryToPath(g.entry),
+          path: entryToPath(g.entry, g.kind),
           mp: isMp(g),
           status: g.status || "",
         }));

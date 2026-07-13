@@ -1,0 +1,26 @@
+name: Validate project
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate catalog and Python sources
+        run: |
+          python3 tools/validate_catalog.py
+          python3 -m py_compile pc/host.py tools/*.py
+          python3 -m unittest discover -s tools/tests -v

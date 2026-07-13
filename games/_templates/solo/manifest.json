@@ -2,6 +2,7 @@
   "id": "TEMPLATE_ID",
   "name": "TEMPLATE_NAME",
   "version": "0.1.0",
+  "license": "MIT",
   "minPlayers": 1,
   "maxPlayers": 1,
   "supportsSolo": true,

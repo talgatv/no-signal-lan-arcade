@@ -1,0 +1,148 @@
+/* Siege Break — neon-vector page chrome on top of ogh-base.css's shared
+   structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card,
+   .ogh-btn, .ogh-pill, .ogh-hint). Palette stays the hub default dark
+   neon-vector look (no :root override) — this file only adds the header /
+   lang-switch / overlay layout, mirroring games/mini-golf's real-flow header
+   pattern (a normal header that takes layout space, not a fixed overlay), so
+   the HUD never sits on top of the battlefield near the top of the canvas.
+   The whole scene (catapult, boulder, blocks, target creatures, debris) is
+   Canvas 2D vector shapes with a neon glow — no bitmap assets. */
+
+.sb-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills + language switch.                    */
+/* ------------------------------------------------------------------ */
+.sb-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 10px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.sb-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.sb-hud .ogh-pill {
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+.sb-hud .ogh-pill span { color: var(--ogh-fg-dim); }
+#hudLevelVal { color: var(--ogh-accent); }
+#hudTargetsVal { color: var(--ogh-bad); }
+#hudAmmoVal { color: var(--ogh-warn); }
+#hudScoreVal { color: var(--ogh-good); }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas — uses the shared auto-sizing .ogh-game-canvas rule as-is     */
+/* (the internal 720x1000 resolution matches that rule's 0.72 portrait  */
+/* aspect, so it scales to fit with no distortion and no override).     */
+/* ------------------------------------------------------------------ */
+.ogh-game-canvas {
+  background:
+    radial-gradient(120% 80% at 50% 12%, #10182e 0%, #0a0e1c 55%, #06070f 100%);
+  cursor: grab;
+  touch-action: none;
+}
+.ogh-game-canvas.is-dragging { cursor: grabbing; }
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards — level-clear stars, stat lines, results.              */
+/* ------------------------------------------------------------------ */
+.sb-stars {
+  font-size: 2.2rem;
+  letter-spacing: 0.14em;
+  margin: 2px 0 10px;
+  color: var(--ogh-warn);
+  text-shadow: 0 0 18px rgba(255, 209, 102, 0.5);
+  min-height: 1.2em;
+}
+.sb-stars .off { color: rgba(139, 147, 184, 0.4); text-shadow: none; }
+
+.sb-level-line {
+  margin: -2px 0 12px !important;
+  font-size: 13px !important;
+  color: var(--ogh-fg-dim) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sb-stat-line {
+  margin: 4px 0 !important;
+  font-size: 0.98rem !important;
+  color: var(--ogh-fg) !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+.sb-score-line { color: var(--ogh-good) !important; font-weight: 800; }
+
+.sb-fail-title { background: linear-gradient(120deg, var(--ogh-bad), var(--ogh-warn)) !important; -webkit-background-clip: text; background-clip: text; }
+
+.sb-final-score {
+  margin: 8px 0 6px !important;
+  font-size: 1.3rem !important;
+  font-weight: 800;
+  color: var(--ogh-good) !important;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+.sb-best-line { color: var(--ogh-fg-dim) !important; margin-top: 0 !important; }
+.sb-new-best {
+  margin: 6px 0 2px !important;
+  font-weight: 800;
+  color: var(--ogh-accent) !important;
+  font-size: 0.95rem !important;
+}
+
+@media (max-width: 400px) {
+  .back { font-size: 12px; }
+  .sb-hud .ogh-pill { font-size: 11px; padding: 5px 8px; }
+}

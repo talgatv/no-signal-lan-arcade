@@ -1,0 +1,27 @@
+{
+  "id": "claw-machine",
+  "name": "Claw Machine",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "skill", "casual"],
+  "tags": ["solo", "experimental", "arcade", "skill", "pseudo-3d"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse", "keyboard"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Hold a D-pad direction (or arrow keys / WASD) to steer the claw over the pit, then press DROP (or Space/Enter) to lower it. On reaching a prize the claw attempts a grip — how centered you were determines the odds — then lifts and carries it to the chute, with a chance it slips free along the way. 8 credits per session; movement is locked out while a drop is in progress, just like a real cabinet.",
+      "ru": "Удерживай направление на джойстике (или стрелки/WASD), чтобы вести клешню над кучей, затем нажми DROP (или Пробел/Enter), чтобы её опустить. Дойдя до приза, клешня пытается его захватить — шансы зависят от точности наведения — затем поднимает и несёт его к жёлобу, по пути рискуя выронить. 8 кредитов за сессию; во время опускания клешни джойстик не действует, как и в настоящем автомате."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Pseudo-3D claw machine (not flat top-down): a simple oblique 'cabinet-style' projection (render3d.js's project()) maps world (x left/right, y depth 0=near-glass..150=back-wall, z height 0=floor..165=rail) onto the canvas — screen X/Y combine a per-axis pixel scale that ALSO shrinks with depth (depthScale(y): 1.05 near -> 0.58 far) with an additive oblique shear/rise per unit of y, so farther objects are both smaller and pulled up-and-sideways on screen; draw order is back-to-front via a single scalar depth key (y - z*bias) so a low claw over a near prize correctly occludes it. Claw movement (X/Y, continuous while a D-pad button is held, or arrow keys/WASD) only responds while state.claw.phase==='idle'; Drop lowers Z at a fixed speed until it reaches either the pit floor or the top of the nearest prize within its grab window (prizes.js's nearestPrizeAt/grabRadiusFor = prize.radius + a fixed pad). Grip success (prizes.js's gripChance) depends on how centered the claw was over that prize — a falloff curve from ~0.85 at dead-center down to ~0.08 at the edge of the grab window, scaled by a per-prize-type gripMul (round/small/light prizes are forgiving, bulky plush and the rare high-value tokens less so). Even a successful grab carries independent lift- and carry-phase slip risk (slipChance) that ALSO scales with that same centering, so precise play compounds its advantage across both rolls without ever guaranteeing a win (verified statistically via the debug hook: a dead-center grab on an average prize delivers roughly 5x more often end-to-end than one taken near the edge of the grab window, but neither is 0% or 100%). A slipped prize detaches at its real mid-air position and tumbles via simple gravity+bounce physics (prizes.js's stepFallingPrize: decaying multi-bounce, horizontal drag, settles back into the pile) rather than teleporting back. 6 prize types (ball/box/bear/bunny/star/gem — distinct vector silhouettes and point values 60-400) scatter with deliberate pile overlap. 8 credits per session (like coins), tracking score and prizes won, with a results screen once credits run out and a Play Again reset. No bundled image or audio assets: the whole cabinet (bezel, glass, pit shell, claw rig, prizes) is Canvas 2D vector shapes with a neon glow, and sound reuses games/_shared/js/ogh-sfx.js's existing patterns entirely (whoosh/thwack/pickup/clack/boing/land/pocket/win/die/tap — no new patterns needed). window.OGH_CLAW_MACHINE exposes live state, the projection function, the grip/slip probability curves, and simulateDrop/runGripTrials/fastForward test hooks for automated verification without waiting out real animation time."
+}

@@ -1,0 +1,27 @@
+{
+  "id": "dash-runner",
+  "name": "Dash Runner",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "endless", "reaction"],
+  "tags": ["solo", "experimental", "arcade", "endless", "pseudo-3d"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Swipe left/right on the trail (or the ◀/▶ buttons) to change lanes; swipe up (or ▲) to jump, swipe down (or ▼) to duck. Arrow keys / WASD work too — Left/Right change lanes, Up jumps, Down ducks.",
+      "ru": "Свайпай влево/вправо по тропе (или кнопки ◀/▶), чтобы сменить полосу; свайп вверх (или ▲) — прыжок, свайп вниз (или ▼) — подкат. Стрелки / WASD тоже работают: влево/вправо — смена полосы, вверх — прыжок, вниз — подкат."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "portrait",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Pseudo-3D perspective renderer (render.js), reusing cross-the-road's exact scale = FOCAL/(FOCAL+depth) projection: the trail narrows toward a horizon, sprites/obstacles scale by depth, camera rides with the player. Auto-runs forward at an ever-increasing speed — speed is a pure function of distance (track.js's speedForDistance()), ramping from 5 to 11 world-units/s over the first 260 units then holding (endless). 3 lanes, swipe/tap/keys to change lanes (smooth tween), jump (real gravity arc) over low obstacles, duck (timed slide) under overhead obstacles, or dodge lanes around full-height pillars — collision unifies all three via one interval-overlap test across lane/depth/vertical axes. Obstacle generation guarantees by construction that at most 2 of 3 lanes are ever blocked at a segment, and paces segments by a time-based (not just distance-based) gap floor so a worst-case edge-to-edge lane change always has time to complete — see track.js's getFairnessReport() and the README's Fairness section. No bundled image or audio assets — canvas vector shapes with a neon glow, sound reuses games/_shared/js/ogh-sfx.js (extended with one new 'duck' pattern). Best distance persists via OGHProfile, same convention as games/cross-the-road and games/pop-the-bugs."
+}

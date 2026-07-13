@@ -1,0 +1,27 @@
+{
+  "id": "media-player",
+  "name": "Media Player",
+  "version": "0.1.0",
+  "kind": "program",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["utility", "media"],
+  "tags": ["program", "media", "player", "video", "audio", "playlist", "offline"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "ok",
+    "mouse": "ok",
+    "notes": {
+      "en": "Pick or drop files to build a playlist, tap a track to play it. Space=play/pause, arrows=seek/volume, F=fullscreen, M=mute.",
+      "ru": "Выбери или перетащи файлы — получится плейлист, нажми на трек, чтобы включить. Пробел — пауза, стрелки — перемотка/громкость, F — полный экран, M — без звука."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css"],
+  "notes": "100% local playlist media player: a single <video> element plays both video and audio-only files via object URLs. No transcoding — supported formats depend entirely on the browser's native decoder (see Video Convert for on-device re-encoding). Files never leave the device."
+}

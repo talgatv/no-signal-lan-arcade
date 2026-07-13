@@ -3,12 +3,12 @@
 ## Short answer
 
 **No game needs its own “network discovery engine”.**  
-You need **one host server** (PC Python today, Android later) + a **shared protocol** (WebSocket).  
+You need **one host server** (PC Python or Android) + a **shared protocol** (WebSocket).
 Browsers connect to **one host IP** — that is how players “find” each other.  
 Games only send/receive messages through a thin client (`ogh-net`).
 
 ```text
-  [Host PC or phone]  HTTP serves lobby + games/*
+  [Host PC or phone]  HTTP serves lobby + games/**
          │
          │  WebSocket /ws
          ▼
@@ -28,14 +28,15 @@ Games **must not** scan Wi‑Fi themselves (browsers cannot do this reliably).
 
 | Exists | Still improving |
 |--------|-----------------|
-| Static games (Comet, Rootwork, …) | Android host process |
-| PC host HTTP + WebSocket (`pc/host.py`) | Host-authoritative sim for races |
-| Catalog + lobby UI | Private messages / roles |
+| Static games and utility programs | Host-authoritative sim for races |
+| PC host HTTP + WebSocket (`pc/host.py`) | Private messages / roles |
+| Android 0.2.0 HTTP/HTTPS + WebSocket host | External pack management |
+| Catalog + lobby UI | Reconnect and late-join recovery |
 | `ogh-net` client | More MP game examples |
 | Action relay between clients | Server-side game modules |
 
 Plain `python -m http.server` serves files only — it does **not** connect players.  
-Use **`pc/host.py`** (or future Android host) for WS + broadcast.
+Use **`pc/host.py`** or the Android host for WS + broadcast.
 
 ---
 
@@ -45,12 +46,13 @@ Use **`pc/host.py`** (or future Android host) for WS + broadcast.
 
 Responsibilities:
 
-- HTTP: `/`, `/games/<id>/`, catalog, docs  
+- HTTP: `/`, `/games/<id>/`, `/games/programs/<id>/`, and catalog
+- PC-only documentation route: `/docs/**`
 - WebSocket: join, leave, room state, `game:action`, `game:state`  
 - Game registry via catalog  
 - Rooms: `roomId`, `gameId`, `players[]`
 
-Language: **Python on PC** now; **Kotlin on Android** later.  
+Language: **Python on PC**; **Kotlin + Ktor Netty on Android**.
 Protocol stays stable so games do not care which host binary runs.
 
 ### 2. Browser game runtime (per pack)
@@ -96,19 +98,19 @@ Until then Pulse Race runs **offline** with AI, while still calling `ogh-net`.
 
 ## How players meet in practice
 
-1. Host runs `./start.sh` (or Android Start).  
-2. UI shows QR and `http://192.168.x.x:8080`.  
-3. Guests open that URL on the same Wi‑Fi.  
-4. Lobby: name → Ready → open a game.  
+1. Host runs `./start.sh` or taps **Play together** in the Android app.
+2. The PC shows its LAN URL; Android shows one QR plus share/copy actions.
+3. Guests open the invitation on the same Wi-Fi.
+4. Library/profile: choose a name and open a game.
 5. Game loads `/games/<id>/client/?name=&room=`  
 6. `ogh-net` joins the room; play starts.
 
 **mDNS / “scan for games”** from a pure browser is unreliable.  
-MVP discovery = **QR + IP**.
+Current discovery = **QR + IP**.
 
 ---
 
-## Minimal protocol (draft)
+## Protocol v1
 
 Client → server:
 
@@ -152,7 +154,7 @@ Author guide: [../contributing/ADD_MULTIPLAYER_GAME.md](../contributing/ADD_MULT
 4. ⬜ Pulse Race online snapshot  
 5. ⬜ Trivia party  
 6. ⬜ Rootwork shared dig  
-7. ⬜ Android host + QR  
+7. ✅ Android host + QR/share invitation
 
 ---
 

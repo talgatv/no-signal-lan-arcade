@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Pop the Bugs — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="pb-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="pb-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="pb-hud" role="status">
+        <div class="ogh-pill" id="hudTime"><span aria-hidden="true">⏱</span> <strong id="timeVal">60</strong></div>
+        <div class="ogh-pill" id="hudScore"><span aria-hidden="true">★</span> <strong id="scoreVal">0</strong></div>
+        <div class="ogh-pill" id="hudBest"><span aria-hidden="true">☆</span> <strong id="bestVal">0</strong></div>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <main class="ogh-stage pb-stage">
+      <!-- dir="ltr" is deliberate and must stay: this is a spatial gameplay
+           grid (hole positions bugs spawn at), not prose — it must not
+           mirror when the UI language is RTL (e.g. Arabic), same risk
+           category as games/music-synth's `.pk-piano` pitch-order grid.
+           See style.css .pb-grid for the matching `direction: ltr`
+           (belt-and-suspenders for CSS Grid's own auto-flow direction). -->
+      <div class="pb-grid" id="grid" dir="ltr" aria-label="Bug grid"></div>
+    </main>
+
+    <!-- Deliberately NOT .ogh-hint: that shared class is position:fixed
+         (floats over the stage), which would let the grid below size itself
+         via the stage's full flex-allocated height and visually overlap the
+         hint text on short viewports. Keeping this in normal flex flow (a
+         real 3rd child of .ogh-root, after .pb-stage) makes .pb-stage's
+         flex-computed height correctly exclude it, so the grid (sized from
+         that measured box in app.js's sizeGrid()) can never overlap it. -->
+    <p class="pb-hint" id="hint" data-i18n="hint">Tap fast — bugs don't stick around long!</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card pb-card" id="startCard">
+        <h1 data-i18n="title">Pop the Bugs</h1>
+        <p data-i18n="blurb">Tap bugs the instant they pop up to score. Avoid the red trap bug. Ready?</p>
+
+        <div class="pb-legend" id="legend">
+          <div class="pb-legend-item" data-type="good">
+            <svg class="pb-bug" viewBox="0 0 100 100" aria-hidden="true"></svg>
+            <span id="legendGoodTxt"></span>
+          </div>
+          <div class="pb-legend-item" data-type="golden">
+            <svg class="pb-bug" viewBox="0 0 100 100" aria-hidden="true"></svg>
+            <span id="legendGoldenTxt"></span>
+          </div>
+          <div class="pb-legend-item" data-type="bad">
+            <svg class="pb-bug" viewBox="0 0 100 100" aria-hidden="true"></svg>
+            <span id="legendBadTxt"></span>
+          </div>
+        </div>
+
+        <p class="pb-best-line" id="bestLineStart"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start</button>
+      </div>
+
+      <div class="ogh-card pb-card" id="overCard" hidden>
+        <h1 data-i18n="roundOverTitle">Time's up!</h1>
+        <p class="pb-final-score" id="finalScoreLine"></p>
+        <p class="pb-new-best" id="newBestLine" hidden data-i18n="newBest">New best!</p>
+        <p class="pb-best-line" id="bestLineEnd"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

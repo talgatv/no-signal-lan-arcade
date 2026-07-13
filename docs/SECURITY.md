@@ -15,11 +15,14 @@ It is **not** hardened for hostile public Wi‑Fi or the open internet.
 - No cloud accounts, no telemetry required to play  
 - No CDN dependencies for gameplay  
 - Games are static files + optional WebSocket messages  
+- PC and Android hosts can use optional self-signed HTTPS/WSS for browser
+  features that require a secure context
 
 ## What we do not do (yet)
 
 - Passwords / room PINs  
-- TLS on LAN (HTTP/WS cleartext on local IPs)  
+- Publicly trusted certificates or automatic peer identity verification; the
+  optional local certificate is self-signed
 - Player authentication  
 - Sandbox isolation beyond the browser  
 
@@ -30,9 +33,13 @@ It is **not** hardened for hostile public Wi‑Fi or the open internet.
 3. Stop the server when the party ends.  
 4. Review third-party game PRs for unexpected network calls.  
 
-## Reporting issues
+## Reporting vulnerabilities
 
-Open a GitHub Issue with the `security` label on  
-https://github.com/talgatv/no-signal-lan-arcade  
+Please use GitHub's private **Report a vulnerability** form:
 
-Do not file critical exploit details in public issues if impact is severe — request a private contact in the issue body.
+https://github.com/talgatv/no-signal-lan-arcade/security/advisories/new
+
+Include affected versions, reproduction steps, impact, and any suggested fix.
+Do not publish exploit details in a public Issue. If GitHub does not show the
+private reporting form, open an Issue asking only for a private contact method;
+do not include sensitive details in that Issue.

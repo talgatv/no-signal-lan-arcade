@@ -1,0 +1,185 @@
+/* Storm Warden — neon-vector chrome on top of ogh-base.css, tuned toward a
+ * moodier, more desaturated night-storm palette (deep indigo/near-black)
+ * than the hub's usual bright neon, so the lightning bolts and the
+ * village's lit windows read as the scene's one bright, warm/cool accent
+ * against a dark backdrop instead of competing with a bright UI.
+ *
+ * Layout: a top header bar (back + HUD pills + language switch), a
+ * flex-filling stage the canvas fills edge-to-edge (sky, rain, village,
+ * every bolt — all drawn there), and a bottom hint. The canvas is the
+ * entire input surface (tap/click a building), so unlike some siblings
+ * there is no on-screen D-pad layer. The stage is dir="ltr" so the village
+ * order, rain direction and number-key mapping never mirror under RTL;
+ * only the header/cards/hint flip for Arabic (flexbox handles that for
+ * free). Same precedent as games/void-drift's stage.
+ */
+
+.sw-body {
+  background: #05060d;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.sw-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.sw-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.sw-hud .ogh-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+  background: rgba(8, 10, 22, 0.72);
+  border-color: rgba(140, 160, 230, 0.22);
+}
+
+.sw-lbl {
+  color: var(--ogh-fg-dim);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+
+.sw-score strong { color: #ffcf7d; } /* warm window-glow amber */
+.sw-saved strong { color: #7fe8c8; } /* cool safe-teal */
+.sw-time strong { color: #b7a8ff; } /* soft storm violet */
+
+/* language switch */
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(140, 160, 230, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: #07080f;
+  background: #8fe8ff;
+  border-color: #8fe8ff;
+}
+
+/* ── Stage + canvas ─────────────────────────────────────────────────── */
+.sw-stage {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: #05060d;
+}
+
+.sw-view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+/* ── Overlay cards ──────────────────────────────────────────────────── */
+.sw-card h1 {
+  font-family: "Montserrat", "Roboto", sans-serif;
+  background: linear-gradient(120deg, #8fe8ff, #b7a8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.sw-card {
+  width: min(460px, 100%);
+}
+.sw-card p {
+  font-size: 0.9rem;
+}
+
+.sw-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 4px 0 16px;
+  text-align: left;
+}
+.sw-legend-item {
+  padding: 6px 10px;
+  border-left: 3px solid var(--ogh-fg-dim);
+  font-size: 12px;
+  color: var(--ogh-fg-dim);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.sw-legend-early { border-left-color: #6a7fd8; }
+.sw-legend-good { border-left-color: #8fe8ff; }
+.sw-legend-perfect { border-left-color: #ffcf7d; }
+
+/* RTL: the legend text itself flips reading direction with the rest of the
+   chrome, but keep the accent bar visually on the "leading" edge (browsers
+   handle this automatically via border-left staying physical-left, which
+   reads fine as a plain accent stripe either direction). */
+
+.sw-controls-note {
+  font-size: 11.5px !important;
+  color: var(--ogh-fg-dim);
+  line-height: 1.45;
+  margin-bottom: 12px !important;
+}
+
+.sw-best-line {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: #8fe8ff;
+  font-size: 12.5px !important;
+  margin-bottom: 14px !important;
+}
+
+.sw-stats {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: #8fe8ff;
+  font-size: 13px !important;
+  margin-bottom: 10px !important;
+}
+.sw-new-best {
+  color: #ffcf7d !important;
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .back { font-size: 12px; }
+  .sw-hud .ogh-pill { font-size: 11.5px; padding: 5px 9px; }
+}

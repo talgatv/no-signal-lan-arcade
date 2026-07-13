@@ -27,7 +27,7 @@ Phone C ──┘
 ## 1. Scaffold
 
 ```bash
-python3 tools/new_game.py click-party --multiplayer --title "Click Party"
+python3 tools/new_game.py click-party --multiplayer --title "Click Party" --author "Your Name"
 ```
 
 Or copy:

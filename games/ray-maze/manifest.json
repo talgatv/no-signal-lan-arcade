@@ -1,0 +1,28 @@
+{
+  "id": "ray-maze",
+  "name": "Ray Maze",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["shooter", "fps", "action"],
+  "tags": ["solo", "experimental", "shooter", "raycasting", "first-person"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "keyboard", "mouse"],
+    "keyboard": "optional",
+    "mouse": "optional",
+    "touch": "ok",
+    "notes": {
+      "en": "Touch-first (the deliberate primary for this hub): a floating virtual joystick on the LEFT half moves and strafes, dragging the RIGHT half looks/turns, and on-screen FIRE (hold to auto-fire) and ⟳ reload buttons sit bottom-right. Desktop bonus: WASD / arrow keys move (A/D strafe, ← → or Q/E turn), drag the right side or ← → to look, double-click the right side for pointer-lock mouse-look (then click to fire), Space fires, R reloads.",
+      "ru": "Приоритет — сенсор (осознанно основной режим для этого хаба): плавающий виртуальный джойстик в ЛЕВОЙ половине — движение и шаги вбок, перетаскивание ПРАВОЙ половины — обзор/поворот, экранные кнопки ОГОНЬ (удерживай для авто-огня) и ⟳ перезарядка внизу справа. Бонус для ПК: WASD / стрелки — движение (A/D — вбок, ← → или Q/E — поворот), перетаскивание правой части или ← → — обзор, двойной клик по правой части включает мышиный обзор с захватом указателя (затем клик — огонь), пробел — огонь, R — перезарядка."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "landscape",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js"],
+  "notes": "Original first-person raycasting maze shooter in the 1990s corridor-shooter genre (Wolfenstein 3D is the technique reference only — the setting, constructs and neon-vector art are our own). client/raycaster.js is a from-scratch DDA (Digital Differential Analysis) renderer: per screen column it forms a ray from the player's position + facing + camera plane, walks the grid one cell boundary at a time to the first solid cell, and draws a vertical wall slice of height H/perpendicular-distance — the distance is the ray's projection onto the camera direction (fisheye-corrected), not the raw Euclidean ray length. Walls are solid neon colors shaded darker on N/S faces and faded toward a dark fog with distance (no bitmap textures). Enemies and pickups are billboarded sprites (flat vector shapes scaled by distance, always facing the camera) drawn in a second pass with a per-column z-buffer for correct occlusion behind walls. Two enemy types: Drone (fast, low-HP melee swarmer) and Sentry (tougher ranged construct that holds a standoff distance and fires slow bolts); AI detects the player by range + a grid line-of-sight raycast and being shot alerts them. Combat is hitscan (a ray from the player picks the nearest enemy in the crosshair, in front of the wall), with a 7-round magazine + reload. Clear every construct in a sector to bring its exit online, then reach the exit; 3 hand-built maze layouts. HUD: a top-down minimap (walls, player facing, enemies, exit), health and ammo. Touch-primary (left virtual stick + right drag-look + fire/reload buttons); WASD/arrows + pointer-lock mouse-look are desktop bonuses. No bundled image or audio assets: everything is Canvas 2D neon-vector drawing and sound reuses games/_shared/js/ogh-sfx.js unchanged (pop=fire, thwack=enemy hit, pocket=enemy destroyed, screech=alert, splat=player hurt, pickup=repair cell, place/tick=reload, win=sector clear, die=game over). RTL (Arabic) flips only the header/cards/hint text chrome; the first-person view, the minimap and all movement/turn directions never mirror (stage is dir=ltr, ctx.direction forced to ltr)."
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Sled Lines — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="sl-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="sl-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <!-- Toolbar is real page layout (not overlaid on the canvas) so a tap
+         near the edge of a tool button is never mistaken for a draw stroke,
+         and vice versa. dir="ltr" pinned: this is a spatial tool palette,
+         not prose, and its order must not mirror under RTL (see i18n.js). -->
+    <div class="sl-toolbar" id="toolbar" dir="ltr">
+      <div class="sl-tools" role="group" data-i18n-aria="toolsGroupAria">
+        <button type="button" class="sl-tool-btn is-on" id="btnToolTrack" data-tool="track" data-i18n-aria="toolTrackAria" aria-pressed="true">
+          <span class="sl-tool-icon" aria-hidden="true">╱</span><span class="sl-tool-label" data-i18n="toolTrackBtn">Track</span>
+        </button>
+        <button type="button" class="sl-tool-btn" id="btnToolScenery" data-tool="scenery" data-i18n-aria="toolSceneryAria" aria-pressed="false">
+          <span class="sl-tool-icon" aria-hidden="true">┄</span><span class="sl-tool-label" data-i18n="toolSceneryBtn">Scenery</span>
+        </button>
+        <button type="button" class="sl-tool-btn" id="btnToolAccel" data-tool="accel" data-i18n-aria="toolAccelAria" aria-pressed="false">
+          <span class="sl-tool-icon" aria-hidden="true">⚡</span><span class="sl-tool-label" data-i18n="toolAccelBtn">Boost</span>
+        </button>
+        <button type="button" class="sl-tool-btn" id="btnToolErase" data-tool="erase" data-i18n-aria="toolEraseAria" aria-pressed="false">
+          <span class="sl-tool-icon" aria-hidden="true">⌫</span><span class="sl-tool-label" data-i18n="toolEraseBtn">Erase</span>
+        </button>
+      </div>
+      <div class="sl-actions" role="group">
+        <button type="button" class="sl-action-btn" id="btnUndo" data-i18n-aria="undoAria">
+          <span class="sl-tool-icon" aria-hidden="true">↺</span><span class="sl-tool-label" data-i18n="undoBtn">Undo</span>
+        </button>
+        <button type="button" class="sl-action-btn" id="btnClear" data-i18n-aria="clearAria">
+          <span class="sl-tool-icon" aria-hidden="true">✕</span><span class="sl-tool-label" data-i18n="clearBtn">Clear</span>
+        </button>
+        <button type="button" class="sl-action-btn sl-play-btn" id="btnPlay" data-i18n-aria="playAria">
+          <span class="sl-tool-icon" aria-hidden="true" id="playIcon">▶</span><span class="sl-tool-label" id="playLabel" data-i18n="playBtn">Play</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- The drawn track, the rider's physics and the toolbar order above are
+         all spatial gameplay content and must NEVER mirror under RTL —
+         dir="ltr" here (plus ctx.direction forced 'ltr' in game.js) keeps the
+         canvas from flipping. Only header/toolbar TEXT and card prose flip
+         for Arabic. -->
+    <main class="ogh-stage sl-stage" dir="ltr">
+      <canvas class="sl-canvas" id="game" dir="ltr" aria-label="Drawing canvas"></canvas>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hintTrack">Press and drag to draw a track line</p>
+
+    <div class="ogh-overlay" id="overlay">
+      <div class="ogh-card" id="startCard">
+        <h1 data-i18n="title">Sled Lines</h1>
+        <p data-i18n="blurb">Draw a track with your finger or mouse, then press Play and watch a physics sled ride it.</p>
+        <p class="sl-controls-note" data-i18n="controlsNote">Touch or mouse: press and drag to draw. Pick a tool below first.</p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnStart" data-i18n="startBtn">Start drawing</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

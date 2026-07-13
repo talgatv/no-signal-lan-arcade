@@ -1,0 +1,193 @@
+/* Penguin Fling — deliberate visual-style exception for this hub, same
+   rationale as games/paint-xp: a warm, cartoonish winter scene reads much
+   better for this concept than the hub's usual dark neon-vector look. Still
+   built entirely on ogh-base.css's shared structure/classes (.ogh-root,
+   .ogh-stage, .ogh-overlay, .ogh-card, .ogh-btn, .ogh-pill, .ogh-hint) —
+   only the palette and a handful of hardcoded-rgba rules in ogh-base.css
+   are overridden here, the layout skeleton is untouched. No bitmap image
+   assets anywhere: the whole scene is Canvas 2D paths/gradients (see
+   game.js), this stylesheet is only page chrome. */
+
+:root {
+  --ogh-bg: #aee2ff;
+  --ogh-bg-elevated: #ffffff;
+  --ogh-fg: #1c3350;
+  --ogh-fg-dim: #4d6a8a;
+  --ogh-accent: #2f9bea;
+  --ogh-accent-2: #17c2b8;
+  --ogh-good: #219a63;
+  --ogh-bad: #e0523f;
+  --ogh-warn: #ff9a3d;
+}
+
+body.pf-body {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #7cc8ff 0%, #bfe8ff 55%, #eaf8ff 100%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + live HUD (wind/best) + language switch.         */
+/* ------------------------------------------------------------------ */
+.pf-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(47, 155, 234, 0.25);
+}
+
+.back {
+  color: #1c6fa8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pf-hud {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.pf-hud .ogh-pill {
+  padding: 6px 12px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+#hudWind strong { color: var(--ogh-accent); }
+#hudBest strong { color: var(--ogh-warn); }
+
+.pf-wind-arrow {
+  display: inline-block;
+  transition: transform 200ms ease;
+}
+.pf-wind-arrow.is-neg { transform: scaleX(-1); }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 28px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(47, 155, 234, 0.3);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: #ffffff;
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared-class overrides — ogh-base.css bakes the dark-neon palette in  */
+/* as literal rgba() on a few rules (not all of them read the --ogh-*   */
+/* custom properties), so those need explicit re-skinning here; anything */
+/* that already reads var(--ogh-accent) etc. picked up the :root        */
+/* redeclaration above for free.                                        */
+/* ------------------------------------------------------------------ */
+.ogh-pill {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(47, 155, 234, 0.35);
+  box-shadow: 0 2px 8px rgba(20, 60, 100, 0.12);
+}
+
+.ogh-btn {
+  border: 1px solid rgba(47, 155, 234, 0.4);
+  background: linear-gradient(160deg, #f2fbff, #cdeeff);
+  color: #16466b;
+  font-weight: 800;
+  box-shadow: 0 3px 0 rgba(22, 52, 84, 0.18), 0 4px 10px rgba(22, 52, 84, 0.15);
+}
+.ogh-btn:active { transform: translateY(1px) scale(0.98); box-shadow: 0 1px 0 rgba(22, 52, 84, 0.18); }
+
+.ogh-btn-primary {
+  border-color: #1f8fe0;
+  background: linear-gradient(160deg, #5fcaff, #1f8fe0);
+  color: #ffffff;
+  box-shadow: 0 4px 0 #146d9c, 0 6px 18px rgba(20, 112, 159, 0.4);
+}
+
+.ogh-overlay { background: rgba(170, 217, 255, 0.55); backdrop-filter: blur(5px); }
+
+.ogh-card {
+  border: 2px solid rgba(47, 155, 234, 0.35);
+  border-radius: 22px;
+  box-shadow: 0 20px 50px rgba(20, 60, 100, 0.28), inset 0 0 0 4px #ffffff;
+}
+
+.ogh-hint {
+  color: #205074;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+.ogh-game-canvas {
+  background: #dff3ff;
+  border-radius: 20px;
+  box-shadow: 0 18px 46px rgba(20, 60, 100, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.6);
+  cursor: grab;
+}
+.ogh-game-canvas.is-dragging { cursor: grabbing; }
+
+/* ------------------------------------------------------------------ */
+/* Result / start card text                                            */
+/* ------------------------------------------------------------------ */
+.pf-card p { margin: 0 0 14px; }
+
+.pf-best-line {
+  font-size: 13px;
+  color: var(--ogh-fg-dim);
+  font-family: var(--ogh-mono);
+}
+
+.pf-final-distance {
+  font-size: 1.6rem !important;
+  font-weight: 800;
+  color: var(--ogh-fg);
+  font-family: var(--ogh-mono);
+}
+
+.pf-new-best {
+  color: #c9781a !important;
+  font-weight: 800;
+  font-size: 14px !important;
+  text-shadow: 0 0 10px rgba(255, 154, 61, 0.35);
+}
+
+.pf-bonus-line {
+  color: var(--ogh-good) !important;
+  font-weight: 800;
+  font-size: 14px !important;
+}
+
+.pf-comparison {
+  font-style: italic;
+  font-size: 13px !important;
+  color: var(--ogh-fg-dim);
+}
+
+@media (max-width: 380px) {
+  .back { font-size: 12px; }
+  .pf-final-distance { font-size: 1.35rem !important; }
+}

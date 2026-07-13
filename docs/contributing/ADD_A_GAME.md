@@ -56,7 +56,7 @@ You should see the lobby. Leave this terminal running while you develop.
 From the **repo root**:
 
 ```bash
-python3 tools/new_game.py hello-dots --title "Hello Dots"
+python3 tools/new_game.py hello-dots --title "Hello Dots" --author "Your Name"
 ```
 
 This creates:
@@ -173,7 +173,7 @@ Inside the `"games": [ ... ]` array, add an object (comma-separated).
   "instructions": {
     "en": "Tap or click the button to score points."
   },
-  "authorId": "ogh-team",
+  "authorId": null,
   "dates": { "added": "2026-07-10" },
   "players": { "min": 1, "max": 1, "solo": true },
   "entry": "hello-dots/client/index.html",
@@ -184,9 +184,15 @@ Inside the `"games": [ ... ]` array, add an object (comma-separated).
 }
 ```
 
-### Step F — author credit (optional but nice)
+### Step F — author credit (optional)
 
-Edit `games/catalog/authors.json` or use `authorInline` on your game:
+The scaffold's `--author "Your Name"` option creates `authorInline`. Public
+credit is optional, so you may leave both author fields empty. If you add a
+credit, check the generated catalog row before committing. `authorId:
+"ogh-team"` is reserved for work authored by the core project team.
+
+You can also edit `games/catalog/authors.json` and use its author id, or set
+`authorInline` on your game:
 
 ```json
 "authorInline": {

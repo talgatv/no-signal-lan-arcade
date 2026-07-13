@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#20242c" />
+  <title>Brick Game — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-body ogh-font-ui">
+  <div class="ogh-root">
+    <header class="bg-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="lang-switch" id="langSwitch" role="group" data-i18n-aria="langSwitchAria"></div>
+    </header>
+
+    <main class="bg-stage">
+      <div class="bg-console">
+        <!-- Fixed Latin brand plate — dir=ltr so the "3 IN 1" badge never
+             reorders under RTL (it's a logo, not translatable chrome). -->
+        <div class="bg-brand" dir="ltr">
+          <span class="bg-brand-name">BRICK GAME</span>
+          <span class="bg-brand-badge">★ 3 IN 1 ★</span>
+        </div>
+
+        <!-- The screen bezel. The <canvas> and the flash banner are dir-neutral
+             (canvas rendering is forced ltr in lcd.js); the HUD/menu/overlay
+             text inherit the document dir so they flip to RTL for Arabic. -->
+        <div class="bg-screen">
+          <div class="bg-hud" id="hud" role="status" hidden></div>
+          <canvas class="bg-canvas" id="screen" aria-label="Brick Game screen"></canvas>
+          <div class="bg-menu-wrap" id="menu"></div>
+          <div class="bg-banner" id="banner" aria-hidden="true"></div>
+
+          <div class="bg-overlay" id="startCard" hidden>
+            <div class="bg-card">
+              <h2 id="startTitle">Tanks</h2>
+              <p class="bg-blurb" id="startBlurb"></p>
+              <p class="bg-controls-note" id="startControls"></p>
+              <p class="bg-best" id="startBest"></p>
+              <button type="button" class="bg-ui-btn" id="startBtn">Press A to start</button>
+            </div>
+          </div>
+
+          <div class="bg-overlay" id="overCard" hidden>
+            <div class="bg-card">
+              <h2 id="overTitle">Game Over</h2>
+              <p class="bg-sub" id="overSub"></p>
+              <p class="bg-score" id="overScore"></p>
+              <p class="bg-newbest" id="overNew" hidden>New best!</p>
+              <p class="bg-best" id="overBest"></p>
+              <div class="bg-card-btns">
+                <button type="button" class="bg-ui-btn" id="overAgain">Play again</button>
+                <button type="button" class="bg-ui-btn bg-ui-btn-ghost" id="overMenu">Menu</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Physical controls. dir="ltr" so the D-pad never mirrors under RTL. -->
+        <div class="bg-controls" dir="ltr">
+          <div class="bg-dpad" role="group" aria-label="Direction pad">
+            <button type="button" class="bg-db bg-db-up" id="btnUp" data-i18n-aria="dpadUpAria" aria-label="Up"><span aria-hidden="true">▲</span></button>
+            <button type="button" class="bg-db bg-db-left" id="btnLeft" data-i18n-aria="dpadLeftAria" aria-label="Left"><span aria-hidden="true">◀</span></button>
+            <span class="bg-db-mid" aria-hidden="true"></span>
+            <button type="button" class="bg-db bg-db-right" id="btnRight" data-i18n-aria="dpadRightAria" aria-label="Right"><span aria-hidden="true">▶</span></button>
+            <button type="button" class="bg-db bg-db-down" id="btnDown" data-i18n-aria="dpadDownAria" aria-label="Down"><span aria-hidden="true">▼</span></button>
+          </div>
+
+          <div class="bg-action-cluster">
+            <button type="button" class="bg-menu-btn" id="btnMenu" data-i18n-aria="menuBtnAria" aria-label="Menu">▤</button>
+            <button type="button" class="bg-a-btn" id="btnA" data-i18n-aria="aBtnAria" aria-label="Action">A</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <p class="ogh-hint" id="hint">Pick a game — D-pad to choose, A to play</p>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

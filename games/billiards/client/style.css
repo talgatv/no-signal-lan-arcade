@@ -1,0 +1,189 @@
+/* Billiards — neon-vector page chrome on top of ogh-base.css's shared
+   structure/classes (.ogh-root, .ogh-stage, .ogh-overlay, .ogh-card,
+   .ogh-btn, .ogh-pill, .ogh-hint). Palette stays the hub default dark
+   neon-vector look (no :root override) — same convention as games/mini-golf
+   and games/comet. This file only adds the header/lang-switch/toast/
+   game-over layout plus a LANDSCAPE override of the shared auto-sizing
+   canvas rule (a pool table is ~2:1 wide, the opposite aspect of
+   games/mini-golf's/games/comet's portrait 720x1000 canvas, so the
+   default `.ogh-game-canvas` width/height formula in ogh-base.css — tuned
+   for a taller-than-wide canvas — would letterbox this one far smaller
+   than necessary). The whole table (felt, rails, pockets, balls, cue
+   guideline) is rendered as Canvas 2D vector shapes with a neon glow — no
+   bitmap assets. */
+
+.bl-body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ogh-bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: back link + HUD pills + New Rack button + language switch.   */
+/* ------------------------------------------------------------------ */
+.bl-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 10px 6px;
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.bl-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.bl-hud .ogh-pill {
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+
+#hudTurn { color: var(--ogh-accent); }
+#hudGroup { color: var(--ogh-accent-2); }
+#hudRemaining { color: var(--ogh-good); }
+#hudGroup.is-eight-next { color: var(--ogh-warn); }
+
+.bl-new-rack-btn {
+  min-height: 30px;
+  padding: 0 12px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas — landscape override (~1.7857:1, matches the 1000x560 table   */
+/* physics.js/game.js draw). Selector deliberately repeats ogh-base.css's*/
+/* own `.ogh-stage canvas.ogh-game-canvas` (not just `.ogh-game-canvas`) */
+/* to MATCH its specificity — a single-class selector here would lose    */
+/* the cascade to that more specific shared rule (ancestor class +       */
+/* element + class) regardless of load order, silently keeping the       */
+/* shared portrait sizing and stretching this landscape canvas into a    */
+/* portrait box (caught visually: balls rendered as squashed ellipses).  */
+/*                                                                       */
+/* Sizing itself deliberately does NOT reuse ogh-base.css's              */
+/* min(100vw, 100vh*ratio) / min(100vh, 100vw/ratio) formula: those two  */
+/* expressions are computed independently and then independently capped */
+/* by max-width/max-height:100%, which can desync whenever the stage's   */
+/* real available height is less than 100vh (exactly the case here —     */
+/* the header/hint bars around the stage eat vertical space) — width     */
+/* ends up computed against the WRONG (too generous) height, and only    */
+/* height gets clamped back down, breaking the locked aspect ratio       */
+/* (measured ~1.87 rendered vs. 1.7857 intended in testing). Instead,    */
+/* this relies on the canvas's OWN intrinsic aspect ratio (from its      */
+/* width=1000/height=560 content attributes in index.html) via the       */
+/* standard replaced-element auto-sizing algorithm — the same            */
+/* `max-width:100%; height:auto`-style pattern responsive <img> uses —   */
+/* which cannot desync because there is only one aspect ratio in play,   */
+/* not two independently-clamped formulas. min-width/min-height:0        */
+/* override the flex item's default auto-min-size so it can actually     */
+/* shrink below its intrinsic 1000x560 on a small viewport.              */
+/* ------------------------------------------------------------------ */
+.ogh-stage canvas.ogh-game-canvas {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background: #060a08;
+  cursor: grab;
+  touch-action: none;
+}
+.ogh-game-canvas.is-dragging { cursor: grabbing; }
+.ogh-game-canvas.is-placing { cursor: crosshair; }
+
+/* ------------------------------------------------------------------ */
+/* Toast — brief "Scratch!" / "Foul" / "Rack cleared!" message,         */
+/* independent of the persistent aim hint below it.                     */
+/* ------------------------------------------------------------------ */
+.bl-toast {
+  position: fixed;
+  z-index: 3;
+  left: 50%;
+  bottom: calc(58px + var(--ogh-safe-bottom));
+  transform: translateX(-50%);
+  max-width: 92vw;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(10, 12, 24, 0.85);
+  border: 1px solid rgba(255, 92, 122, 0.4);
+  color: #ffd9df;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.bl-toast.is-on { opacity: 1; }
+.bl-toast.is-good {
+  border-color: rgba(92, 255, 176, 0.45);
+  color: #d7ffe9;
+}
+
+/* ------------------------------------------------------------------ */
+/* Overlay cards: mode select + game over.                              */
+/* ------------------------------------------------------------------ */
+#modeCard .ogh-btn { margin-top: 10px; }
+
+.bl-gameover-line {
+  font-size: 1rem !important;
+  font-weight: 700;
+  color: var(--ogh-fg-dim) !important;
+  font-family: var(--ogh-mono);
+}
+
+#gameOverTitle {
+  font-size: 1.6rem;
+}
+
+@media (max-width: 380px) {
+  .back { font-size: 12px; }
+  .bl-hud .ogh-pill { font-size: 11px; padding: 5px 8px; }
+  .bl-new-rack-btn { font-size: 11px; padding: 0 9px; }
+}

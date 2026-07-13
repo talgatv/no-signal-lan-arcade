@@ -1,0 +1,28 @@
+{
+  "id": "storm-warden",
+  "name": "Storm Warden",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 1,
+  "supportsSolo": true,
+  "genres": ["arcade", "reaction", "atmospheric"],
+  "tags": ["solo", "experimental", "arcade", "reaction", "atmospheric"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "touch": "ok",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap or click the building where a wild charge is flickering, before it peaks. Timing matters (closer to peak = a higher Early/Good/Perfect score) and so does placement (the tap has to land on the threatened building, not just anywhere). A caught charge arcs safely to the village's grounding spire; an untouched or wrongly-placed one strikes home and that building goes dark for the rest of the storm. Desktop bonus: number keys 1-6 cast on the matching building, left to right.",
+      "ru": "Коснись или щёлкни по дому, над которым мерцает дикий заряд, пока он не достиг пика. Важен тайминг (ближе к пику — выше оценка Рано/Хорошо/Идеально) и важна точность места (нужно попасть именно по дому под угрозой, а не куда угодно). Пойманный вовремя заряд безопасно уходит дугой в громоотвод деревни; нетронутый или пойманный не в том месте — бьёт по дому, и тот гаснет до конца бури. Бонус для ПК: цифры 1-6 бьют по соответствующему дому слева направо."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-sfx.js", "js/ogh-profile.js"],
+  "notes": "Original atmospheric precision timing-and-placement game (own storm/village concept — not a clone of any existing title). A silhouetted village sleeps at the bottom of a rainy night sky; the storm periodically threatens one of six buildings at a time with a wild charge that flickers to life above its roof and builds toward a peak over a fair 1.5-3s (shrinking as the session progresses) telegraph window — see client/lightning.js's difficultyAt()/createThreat()/advanceThreat(), a pure dt-accumulator charge model (never wall-clock) so it is frame-exact testable via window.OGH_STORM_WARDEN. Tapping the threatened building before peak casts a controlled bolt that arcs to the village's one non-targetable grounding spire; client/lightning.js's scoreForCharge()/ratingForCharge() reward casting closer to peak (Early/Good/Perfect) the same way a rhythm game's timing window does, just framed the other way — there is no 'too late that still counts', since charge reaching 1 IS the strike. Tapping the wrong building does nothing (placement genuinely matters, verified independently of timing); an unresolved peak strikes the building, which goes dark/scorched (charred fill, windows out, a few rising smoke particles) for the rest of the session and counts toward a buildings-lost tally capped at 4 of 6 (a defeat before the 100s session clock runs out at all). client/village.js procedurally builds the six-building skyline (5 roofline silhouette profiles, randomized per-building height/width, a scattered lit-window grid) plus the spire, purely as data (game.js does all drawing). client/rain.js is a two-depth-layer falling-raindrop particle system (back layer behind the village, front layer in front) for a 'looking through rain' read. client/lightning.js's generateBoltPath()/generateBranches() are a recursive midpoint-displacement fractal line generator (the classic jagged-lightning technique) shared by the small flickering charge filament, the cast bolt, the strike bolt and their branches, all drawn through the same two-pass neon-vector glow stroke. No bundled image or audio assets: sound reuses games/_shared/js/ogh-sfx.js's existing tick (charge pulse)/screech (wasted cast)/win/die/tap patterns plus two new patterns added this session (zap = successful cast, thunder = a noise-like layered-low-oscillator strike crack). Local high score via OGHProfile, same convention as games/pop-the-bugs and games/void-drift. RTL (Arabic) flips text/menu chrome only; the storm scene — village order, number-key mapping, rain direction — never mirrors (stage is dir=\"ltr\", ctx.direction forced to 'ltr')."
+}

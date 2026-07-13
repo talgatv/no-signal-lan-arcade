@@ -1,0 +1,260 @@
+/* Leap Quest — neon-vector chrome on top of ogh-base.css.
+ *
+ * Layout: a top header bar (back + HUD pills + language switch), a
+ * flex-filling stage the canvas fills edge-to-edge, and a bottom hint. Touch
+ * controls (LEFT/RIGHT cluster bottom-left, JUMP bottom-right) overlay the
+ * stage. The stage and the touch layer are dir="ltr" so nothing spatial —
+ * the level, the camera, the run-toward-the-flag direction, the button
+ * layout — ever mirrors under RTL; only the header/cards/hint text flip for
+ * Arabic (flexbox handles that for free). Same precedent as
+ * games/hill-rider's stage.
+ */
+
+.lq-body { background: var(--ogh-bg); }
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.lq-top {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px 6px;
+}
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.lq-hud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+.lq-hud .ogh-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  font-size: 12.5px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  white-space: nowrap;
+}
+.lq-lbl {
+  color: var(--ogh-fg-dim);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+.lq-lives strong { color: var(--ogh-bad); }
+.lq-coins strong { color: var(--ogh-warn); }
+.lq-level strong { color: var(--ogh-fg); }
+.lq-score strong { color: var(--ogh-accent); }
+
+/* language switch */
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 255, 0.25);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: var(--ogh-bg);
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* ── Stage + canvas ─────────────────────────────────────────────────── */
+.lq-stage {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: #04060f;
+}
+.lq-view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Touch controls ─────────────────────────────────────────────────── */
+.lq-touch {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 16px calc(18px + var(--ogh-safe-bottom));
+  pointer-events: none;
+}
+.lq-dpad {
+  display: flex;
+  gap: 12px;
+}
+.lq-btn {
+  pointer-events: auto;
+  width: 74px;
+  height: 74px;
+  border-radius: 18px;
+  border: 1px solid rgba(92, 225, 255, 0.35);
+  background: rgba(12, 16, 30, 0.66);
+  color: var(--ogh-fg);
+  cursor: pointer;
+  position: relative;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+  backdrop-filter: blur(4px);
+}
+.lq-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 800;
+  opacity: 0.85;
+}
+.lq-btn:active,
+.lq-btn.is-active { transform: scale(0.94); }
+.lq-btn-left::before { content: "\25C0"; }
+.lq-btn-right::before { content: "\25B6"; }
+.lq-btn-jump {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border-color: rgba(92, 255, 176, 0.5);
+  color: var(--ogh-good);
+}
+.lq-btn-jump::before { content: "\2B06"; font-size: 34px; color: var(--ogh-good); }
+.lq-btn-left.is-active,
+.lq-btn-right.is-active {
+  background: rgba(92, 225, 255, 0.2);
+  box-shadow: 0 0 22px rgba(92, 225, 255, 0.25);
+}
+.lq-btn-jump.is-active {
+  background: rgba(92, 255, 176, 0.2);
+  box-shadow: 0 0 26px rgba(92, 255, 176, 0.3);
+}
+
+/* ── Overlay cards ──────────────────────────────────────────────────── */
+.lq-card h1 { font-family: "Montserrat", "Roboto", sans-serif; }
+.lq-card { width: min(470px, 100%); }
+.lq-card p { font-size: 0.9rem; }
+
+.lq-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 12px;
+  margin: 6px 0 14px;
+  text-align: left;
+}
+.lq-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--ogh-fg-dim);
+}
+.lq-sw {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}
+.lq-sw-coin {
+  border-radius: 50%;
+  background: var(--ogh-warn);
+  box-shadow: 0 0 8px rgba(255, 209, 102, 0.75);
+}
+.lq-sw-star {
+  background: #ffe27a;
+  box-shadow: 0 0 8px rgba(255, 226, 122, 0.8);
+  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+.lq-sw-flag {
+  background: var(--ogh-accent);
+  box-shadow: 0 0 8px rgba(92, 225, 255, 0.7);
+  clip-path: polygon(0 0, 100% 22%, 0 44%);
+}
+.lq-sw-crawler {
+  border-radius: 5px;
+  background: var(--ogh-bad);
+  box-shadow: 0 0 8px rgba(255, 92, 122, 0.7);
+}
+.lq-sw-stalker {
+  background: #b78bff;
+  box-shadow: 0 0 8px rgba(183, 139, 255, 0.7);
+  transform: rotate(45deg);
+}
+.lq-sw-spike {
+  background: var(--ogh-bad);
+  box-shadow: 0 0 8px rgba(255, 92, 122, 0.7);
+  clip-path: polygon(0 100%, 25% 30%, 50% 100%, 75% 30%, 100% 100%);
+}
+
+.lq-ability {
+  font-size: 12px !important;
+  color: var(--ogh-accent);
+  line-height: 1.45;
+  margin-bottom: 8px !important;
+}
+.lq-controls-note {
+  font-size: 11.5px !important;
+  color: var(--ogh-fg-dim);
+  line-height: 1.45;
+  margin-bottom: 12px !important;
+}
+.lq-best-line {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-accent);
+  font-size: 12.5px !important;
+  margin-bottom: 14px !important;
+}
+.lq-stats {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-accent);
+  font-size: 13px !important;
+  margin-bottom: 6px !important;
+}
+.lq-new-best {
+  color: var(--ogh-warn) !important;
+  font-weight: 700;
+  margin-top: 4px !important;
+}
+
+@media (max-width: 560px) {
+  .lq-legend { grid-template-columns: 1fr; }
+  .back { font-size: 12px; }
+  .lq-hud .ogh-pill { font-size: 11.5px; padding: 5px 9px; }
+}
+@media (max-height: 430px) {
+  .lq-btn { width: 62px; height: 62px; }
+  .lq-btn-jump { width: 80px; height: 80px; }
+}

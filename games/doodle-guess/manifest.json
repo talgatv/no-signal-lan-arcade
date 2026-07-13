@@ -1,0 +1,32 @@
+{
+  "id": "doodle-guess",
+  "name": "Doodle Guess",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 2,
+  "maxPlayers": 8,
+  "supportsSolo": false,
+  "genres": ["party", "drawing", "multiplayer"],
+  "tags": ["multiplayer", "experimental", "party", "drawing", "lan", "family-friendly"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "ok",
+    "mouse": "ok",
+    "notes": {
+      "en": "The drawer draws with touch or mouse (palette, brush size, eraser, clear). Everyone else types guesses into the text box — so a keyboard (on-screen or physical) is needed to guess.",
+      "ru": "Художник рисует пальцем или мышью (палитра, толщина кисти, ластик, очистка). Остальные печатают догадки в поле ввода — поэтому для угадывания нужна клавиатура (экранная или обычная)."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "The current drawer owns the round: it holds the secret word (never broadcast in cleartext until the round-end reveal), streams compact stroke-segment messages (net.send('stroke', {c,s,pts,newStroke})) that every other client replays onto a read-only canvas in real time, validates incoming guesses against the word locally, and ends the round with a single round-end message carrying the reveal + score deltas + who draws next. Turn order is derived deterministically from the roster (players sorted by id) so every client agrees on the drawer without a central authority; the host only starts the session and names the first drawer. Needs 2+ players — no solo mode."
+  },
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-net.js", "js/ogh-profile.js", "js/ogh-sfx.js"],
+  "notes": "Two modes share one drawing/guessing engine: 'Word Bank' deals the drawer a random word from client/data/words.json (112 concretely-drawable concepts, each translated across all 6 UN languages, concept-indexed so a word index means the same thing in every language), and 'Your Word' lets the drawer secretly type their own word. The word is only ever known to the drawer's client — the only word-shaped value on the wire before the reveal is its character length (for the underscore hint); the concept index is never broadcast in Word Bank mode. Correct-guess detection is case-insensitive with light typo tolerance (Levenshtein <=1 for 4-5 char words, <=2 for 6+), and in Word Bank mode accepts the same concept in any of the 6 languages so mixed-language rooms still work. Scoring: the correct guesser gets 50 + up to 50 more scaled by time remaining, the drawer gets a 25-point bonus when someone guesses; identical round-end deltas are applied on every client so scoreboards stay in sync. No bundled image or audio assets: the drawing surface is a plain Canvas 2D freehand tool (8-color palette, 3 brush sizes, eraser, clear) and sound reuses games/_shared/js/ogh-sfx.js. RTL (Arabic) mirrors the header/side-panel/overlay chrome only; the drawing canvas itself is never mirrored (dir=\"ltr\", ctx.direction='ltr')."
+}

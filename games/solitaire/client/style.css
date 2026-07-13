@@ -1,0 +1,265 @@
+/* Klondike Solitaire — deliberate style exception for this hub (like
+   games/paint-xp and games/penguin-fling): a felt-green classic-card-table
+   look instead of the usual neon-vector theme, which fits this specific
+   genre much better. Achieved almost entirely by overriding the shared
+   --ogh-* design tokens, so .ogh-btn/.ogh-pill/.ogh-card/.ogh-overlay from
+   ogh-base.css reskin for free — only the board/card geometry below is
+   genuinely bespoke. Text still uses the shared ogh-fonts.css stack (no
+   reason to deviate there too; unlike paint-xp this isn't impersonating a
+   specific OS chrome). */
+:root {
+  --ogh-bg: #0b3d24;
+  --ogh-bg-elevated: #123423;
+  --ogh-fg: #f5f1e2;
+  --ogh-fg-dim: #b9c9b6;
+  --ogh-accent: #e2c568;
+  --ogh-accent-2: #f4e6b8;
+  --ogh-good: #6fd88a;
+  --ogh-bad: #e6716f;
+  --ogh-warn: #e2c568;
+
+  --sol-felt-hi: #145c34;
+  --sol-felt-lo: #082915;
+  --sol-card-bg: #fbf8ef;
+  --sol-card-border: #cabf9d;
+  --sol-card-shadow: rgba(0, 0, 0, 0.45);
+  --sol-red: #b3242c;
+  --sol-black: #201d1a;
+  --sol-back: #7c1420;
+  --sol-back-line: rgba(226, 197, 104, 0.35);
+  --sol-back-border: #e2c568;
+  --sol-slot-line: rgba(245, 241, 226, 0.28);
+}
+
+body.sol-body {
+  background: radial-gradient(120% 140% at 50% -10%, var(--sol-felt-hi) 0%, var(--sol-felt-lo) 70%);
+}
+
+.sol-body .ogh-card h1,
+.sol-body .ogh-card p {
+  color: inherit;
+}
+
+/* header --------------------------------------------------------------- */
+.sol-top {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 10px 14px;
+  background: rgba(4, 20, 11, 0.55);
+  border-bottom: 1px solid rgba(226, 197, 104, 0.18);
+}
+
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.sol-hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sol-hud .ogh-pill {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.sol-draw-btn {
+  border: 1px solid rgba(226, 197, 104, 0.35);
+  cursor: pointer;
+  font-weight: 700;
+}
+.sol-draw-btn:active { transform: scale(0.96); }
+
+.sol-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+.sol-actions .ogh-btn {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.sol-actions .ogh-btn[hidden] { display: none !important; }
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.lang-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 197, 104, 0.3);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: #142313;
+  background: var(--ogh-accent);
+  border-color: var(--ogh-accent);
+}
+
+/* stage / board ---------------------------------------------------------
+   .sol-board is a FIXED logical-pixel canvas (see layout.js BOARD_W/H);
+   app.js's fitBoard() scales it as a whole via CSS transform to fit
+   whatever real viewport is available, so the entire board is always
+   fully visible with zero scrolling regardless of screen size — same
+   "virtual viewport" idea as games/comet's canvas width/height, applied to
+   a DOM subtree instead of a <canvas>. */
+.sol-stage {
+  overflow: visible;
+}
+
+.sol-board {
+  position: relative;
+  flex: none;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Slots: empty-pile outlines. Cards render on top at a higher z-index
+   (see app.js render()); a slot stays visible whenever its pile is empty. */
+.sol-slot {
+  position: absolute;
+  width: 100px;
+  height: 140px;
+  border-radius: 10px;
+  border: 2px dashed var(--sol-slot-line);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  color: var(--sol-slot-line);
+  /* pointer-events stays auto (the default): when a pile is empty, its
+     slot is the ONLY element there and must be tappable as a placement
+     destination (e.g. a King onto an empty column). When the pile has
+     cards, a card (z-index 10+, see app.js render()) always paints above
+     the slot (z-index auto/0) and naturally intercepts the hit first —
+     no pointer-events juggling needed either way. */
+  user-select: none;
+  touch-action: none;
+}
+
+.sol-slot-foundation[data-suit="S"]::after { content: "♠"; }
+.sol-slot-foundation[data-suit="H"]::after { content: "♥"; }
+.sol-slot-foundation[data-suit="D"]::after { content: "♦"; }
+.sol-slot-foundation[data-suit="C"]::after { content: "♣"; }
+
+.sol-slot-stock::after { content: ""; }
+.sol-slot-stock.has-recycle::after {
+  content: "↻";
+  color: var(--ogh-accent);
+}
+
+/* cards ------------------------------------------------------------------ */
+.sol-card {
+  position: absolute;
+  width: 100px;
+  height: 140px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  background: var(--sol-card-bg);
+  border: 1px solid var(--sol-card-border);
+  box-shadow: 0 2px 5px var(--sol-card-shadow);
+  cursor: grab;
+  touch-action: none; /* a card drag must never be mistaken for a page pan/scroll gesture */
+  transition: left 0.16s ease, top 0.16s ease, box-shadow 0.12s ease, transform 0.12s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sol-card.is-red { color: var(--sol-red); }
+.sol-card.is-black { color: var(--sol-black); }
+
+.sol-corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  font-weight: 800;
+}
+.sol-corner-tl { top: 6px; left: 7px; }
+.sol-corner-br { bottom: 6px; right: 7px; transform: rotate(180deg); }
+.sol-rank { font-size: 16px; }
+.sol-suit { font-size: 14px; margin-top: 1px; }
+
+.sol-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  opacity: 0.24;
+}
+
+/* Face-down: swap to a card back and hide the (still-present, so it can
+   reappear instantly on flip with no rebuild) rank/suit content. */
+.sol-card.is-facedown {
+  background-color: var(--sol-back);
+  background-image:
+    repeating-linear-gradient(45deg, var(--sol-back-line) 0 5px, transparent 5px 11px),
+    repeating-linear-gradient(-45deg, var(--sol-back-line) 0 5px, transparent 5px 11px);
+  border-color: var(--sol-back-border);
+  box-shadow: inset 0 0 0 4px rgba(245, 241, 226, 0.14), 0 2px 5px var(--sol-card-shadow);
+  cursor: default;
+}
+.sol-card.is-facedown .sol-corner,
+.sol-card.is-facedown .sol-center {
+  visibility: hidden;
+}
+
+.sol-card.is-selected {
+  box-shadow: 0 0 0 3px var(--ogh-accent), 0 6px 14px var(--sol-card-shadow);
+  transform: translateY(-6px);
+}
+
+.sol-card.is-dragging {
+  transition: none;
+  cursor: grabbing;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+}
+
+.sol-card.is-drop-ok {
+  box-shadow: 0 0 0 3px var(--ogh-good), 0 6px 14px var(--sol-card-shadow);
+}
+.sol-slot.is-drop-ok {
+  border-color: var(--ogh-good);
+  color: var(--ogh-good);
+}
+
+/* win overlay ------------------------------------------------------------ */
+.sol-win-card #winStatsLine {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  color: var(--ogh-fg);
+  opacity: 0.85;
+}
+
+@media (max-width: 420px) {
+  .sol-actions .ogh-btn { min-height: 34px; padding: 0 10px; font-size: 12px; }
+  .back { font-size: 13px; }
+}

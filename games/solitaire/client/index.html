@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0b3d24" />
+  <title>Klondike Solitaire — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="sol-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="sol-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="sol-hud" role="status">
+        <div class="ogh-pill" id="hudMoves" data-i18n-title="movesAria" title="Moves"><span aria-hidden="true">↷</span> <strong id="movesVal">0</strong></div>
+        <div class="ogh-pill" id="hudTime" data-i18n-title="timeAria" title="Time"><span aria-hidden="true">⏱</span> <strong id="timeVal">00:00</strong></div>
+        <button type="button" class="ogh-pill sol-draw-btn" id="btnDraw" data-i18n-title="drawAria" title="Draw mode"></button>
+      </div>
+      <div class="sol-actions">
+        <button type="button" class="ogh-btn" id="btnUndo" data-i18n="undoBtn">Undo</button>
+        <button type="button" class="ogh-btn" id="btnAutoFinish" data-i18n="autoFinishBtn" hidden>Auto-finish</button>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnNew" data-i18n="newGameBtn">New game</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <main class="ogh-stage sol-stage">
+      <!-- dir="ltr" is deliberate and must stay: the board layout (stock/
+           waste/foundation slot order, tableau column order) is a fixed
+           spatial gameplay convention, not prose — it must never mirror
+           under an RTL UI language (e.g. Arabic), same risk category as
+           games/pop-the-bugs' .pb-grid and games/music-synth's .pk-piano.
+           In practice all card positions are set via plain left/top (always
+           physical-left regardless of `dir`), so this is belt-and-suspenders
+           against any future flex/logical-property addition, not load-bearing
+           today — see style.css .sol-board for the matching note. -->
+      <div class="sol-board" id="board" dir="ltr">
+        <div class="sol-slot sol-slot-stock" data-zone="stock" id="slotStock"></div>
+        <div class="sol-slot sol-slot-waste" data-zone="waste" id="slotWaste"></div>
+        <div class="sol-slot sol-slot-foundation" data-zone="foundation" data-suit="S" id="slotF-S"></div>
+        <div class="sol-slot sol-slot-foundation" data-zone="foundation" data-suit="H" id="slotF-H"></div>
+        <div class="sol-slot sol-slot-foundation" data-zone="foundation" data-suit="D" id="slotF-D"></div>
+        <div class="sol-slot sol-slot-foundation" data-zone="foundation" data-suit="C" id="slotF-C"></div>
+        <div class="sol-slot sol-slot-tableau" data-zone="tableau" data-col="0" id="slotT-0"></div>
+        <div class="sol-slot sol-slot-tableau" data-zone="tableau" data-col="1" id="slotT-1"></div>
+        <div class="sol-slot sol-slot-tableau" data-zone="tableau" data-col="2" id="slotT-2"></div>
+        <div class="sol-slot sol-slot-tableau" data-zone="tableau" data-col="3" id="slotT-3"></div>
+        <div class="sol-slot sol-slot-tableau" data-zone="tableau" data-col="4" id="slotT-4"></div>
+        <div class="sol-slot sol-slot-tableau" data-zone="tableau" data-col="5" id="slotT-5"></div>
+        <div class="sol-slot sol-slot-tableau" data-zone="tableau" data-col="6" id="slotT-6"></div>
+        <!-- 52 .sol-card elements are injected here once by app.js and then
+             repositioned in place for the rest of the session (never
+             rebuilt), so CSS position transitions animate every move. -->
+      </div>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hint">Drag a card, or tap to select then tap a destination.</p>
+
+    <div class="ogh-overlay" id="winOverlay" hidden>
+      <div class="ogh-card sol-win-card">
+        <h1 data-i18n="winTitle">You win!</h1>
+        <p id="winStatsLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

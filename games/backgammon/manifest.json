@@ -1,0 +1,32 @@
+{
+  "id": "backgammon",
+  "name": "Backgammon",
+  "version": "0.1.0",
+  "kind": "game",
+  "minPlayers": 1,
+  "maxPlayers": 2,
+  "supportsSolo": true,
+  "genres": ["board", "strategy", "classic", "dice"],
+  "tags": ["solo", "local-multiplayer", "multiplayer", "board-game", "dice", "classic", "experimental"],
+  "style": "neon-vector",
+  "controls": {
+    "primary": "touch",
+    "supported": ["touch", "mouse"],
+    "keyboard": "optional",
+    "mouse": "ok",
+    "notes": {
+      "en": "Tap the dice (or Roll) to roll, then tap one of your checkers to select it — its legal destination points glow — and tap a point to move it there. Doubles give four moves. If you have a checker on the bar you must re-enter it in the opponent's home first. Once all fifteen checkers are in your home board, bear them off from the highlighted tray.",
+      "ru": "Коснись костей (или «Бросить»), затем коснись своей шашки, чтобы выбрать её — доступные пункты подсвечиваются — и коснись пункта, чтобы сходить. Дубль даёт четыре хода. Если шашка на баре, сначала введи её в доме соперника. Когда все пятнадцать шашек в твоём доме, выводи их в подсвеченный трей."
+    }
+  },
+  "entry": { "client": "client/index.html" },
+  "orientation": "any",
+  "familyFriendly": true,
+  "multiplayer": {
+    "status": "ready",
+    "protocol": "ogh-net-v1",
+    "notes": "First joiner = White, second = Black; later joiners spectate. The player whose turn it is rolls the dice locally and broadcasts the roll ({d1,d2}) — the one piece of information that can't be re-derived — so only one authoritative roll exists per turn; each single-die checker move then relays as a tiny {from,to,die} payload. The receiver re-validates every relayed move against its OWN board and remaining dice before applying, and BOTH sides derive turn changes (and a no-legal-move pass) from the shared board with no separate end-turn message, so a stale, duplicate, or out-of-turn relay can never desync the boards. Also fully playable offline (vs AI or local pass-and-play); LAN degrades to local pass-and-play automatically when no host is reachable."
+  },
+  "shared": ["css/ogh-base.css", "css/ogh-fonts.css", "js/ogh-net.js", "js/ogh-profile.js", "js/ogh-sfx.js"],
+  "notes": "Full, correct standard Backgammon on the 24-point board: the exact standard opening position (each side 2/5/3/5 on the 24/13/8/6 points in its own numbering), two-dice movement with doubles giving four moves, and the complete rule set — open/blocked points, hitting a blot to the bar, forced bar re-entry into the opponent's home before any other move, bearing off once all fifteen checkers are home (including the rule that a higher die may bear off a lower point when no checker sits on a higher one), and the 'use as many dice as possible' forcing rule with the non-double must-play-the-larger-die tie-break. A checker hit back to the bar mid-bear-off correctly must re-enter and come home before bearing off resumes. Win by bearing off all fifteen (no doubling cube / gammon scoring — deliberately out of scope). Pure rules (rules.js) and AI (ai.js) are DOM/network-free and unit-testable in isolation, the same split as games/chess and games/checkers; the AI enumerates every maximal legal move sequence for its roll and picks the best by a heuristic (race/pip lead, made and home-board points, primes, hitting/pinning enemy blots, blot-exposure safety), so it always plays legal, sound moves and obeys the forcing rule (Easy/Medium add randomness and near-best variety; Hard is deterministic-best). The board is drawn on a single <canvas> with neon glows (points, checkers, dice, bar and bear-off trays — White = cyan, Black = magenta) scaled as a whole via CSS transform so it always fits without scrolling; no image assets. Sound reuses games/_shared/js/ogh-sfx.js (place=move, clack=hit, pocket=bear-off, win/die=game over) plus one added pattern (dice=roll rattle). RTL (Arabic) mirrors the header/menu/result chrome only; the 24-point board never mirrors (canvas dir=\"ltr\")."
+}

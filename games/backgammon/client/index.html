@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07080f" />
+  <title>Backgammon — OGH</title>
+  <link rel="stylesheet" href="../../_shared/css/ogh-fonts.css" />
+  <link rel="stylesheet" href="../../_shared/css/ogh-base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-body ogh-font-ui">
+  <div class="ogh-root" id="root">
+    <header class="bg-top">
+      <a class="back" href="/games/">← <span data-i18n="back">Library</span></a>
+      <div class="bg-hud" role="status">
+        <div class="ogh-pill" id="netPill">…</div>
+        <div class="ogh-pill" id="turnPill">…</div>
+        <div class="ogh-pill bg-count" id="countPill">◎ 0 · 0</div>
+      </div>
+      <div class="bg-actions">
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnRoll" data-i18n="rollBtn" hidden>Roll dice</button>
+        <button type="button" class="ogh-btn" id="btnMenu" data-i18n="menuBtn">Change mode</button>
+        <button type="button" class="ogh-btn" id="btnNew" data-i18n="newGameBtn">New game</button>
+      </div>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language"></div>
+    </header>
+
+    <main class="ogh-stage bg-stage">
+      <!-- dir="ltr" is deliberate and must stay: the 24-point board is a fixed,
+           universal spatial gameplay convention (point 1 is always bottom-right,
+           point 24 top-right; White runs 24->1, Black 1->24) — it must never
+           mirror under an RTL UI language (Arabic), same precedent as
+           games/chess's board. All hit-test / draw math is in physical pixels
+           regardless of `dir` on <html>. -->
+      <canvas class="bg-board" id="board" dir="ltr"></canvas>
+    </main>
+
+    <p class="ogh-hint" id="hint" data-i18n="hintRoll">Tap the dice (or Roll) to roll.</p>
+
+    <!-- Mode / difficulty picker — shown at launch and via "Change mode" -->
+    <div class="ogh-overlay" id="modeOverlay">
+      <div class="ogh-card bg-mode-card">
+        <h1 data-i18n="chooseModeTitle">Backgammon</h1>
+        <p data-i18n="chooseModeSub">Play against the computer, pass the device to a friend, or connect over LAN.</p>
+        <div class="bg-mode-list" id="modeList">
+          <button type="button" class="ogh-btn ogh-btn-primary mode-btn" id="btnModeAi" data-i18n="modeAiBtn">vs AI</button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeLocal" data-i18n="modeLocalBtn">Pass &amp; Play</button>
+          <button type="button" class="ogh-btn mode-btn" id="btnModeLan" data-i18n="modeLanBtn">LAN Multiplayer</button>
+        </div>
+        <div class="bg-diff-list" id="diffList" hidden>
+          <p class="bg-diff-label" data-i18n="difficultyLabel">Difficulty</p>
+          <button type="button" class="ogh-btn diff-btn" data-diff="easy" data-i18n="diffEasyBtn">Easy</button>
+          <button type="button" class="ogh-btn diff-btn ogh-btn-primary" data-diff="medium" data-i18n="diffMediumBtn">Medium</button>
+          <button type="button" class="ogh-btn diff-btn" data-diff="hard" data-i18n="diffHardBtn">Hard</button>
+          <button type="button" class="ogh-btn bg-back-btn" id="btnDiffBack" data-i18n="backToModesBtn">← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result overlay -->
+    <div class="ogh-overlay" id="resultOverlay" hidden>
+      <div class="ogh-card">
+        <h1 id="resultTitle">…</h1>
+        <p id="resultStatsLine"></p>
+        <button type="button" class="ogh-btn ogh-btn-primary" id="btnPlayAgain" data-i18n="playAgainBtn">Play again</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

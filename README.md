@@ -16,7 +16,7 @@
   <a href="#games">Games</a> ·
   <a href="#architecture">Architecture</a> ·
   <a href="#documentation">Docs</a> ·
-  <a href="#roadmap">Roadmap</a>
+  <a href="#roadmap-snapshot">Roadmap</a>
 </p>
 
 <p align="center">
@@ -40,15 +40,15 @@ The idea crystallized when the project author was **without power during the 202
 The lights were out and the network was unreliable — but people were still together in a room, with charged phones and a need for something human: play, talk, pass the time.  
 **Offline Games Hub / No-Signal LAN Arcade** is built for that kind of night: one host on a battery, everyone else in a browser, no cloud required.
 
-**Offline Games Hub** turns one PC (later: phone) into a **local game server**:
+**Offline Games Hub** turns one PC or Android phone into a **local game server**:
 
 ```text
    📱  📱  💻  📱
     \  |  |  /
      \ | | /
    ┌───────────┐
-   │  HOST PC  │  ← Python server (HTTP + WebSocket)
-   │  Wi‑Fi    │  ← serves lobby + game packs
+   │   HOST    │  ← PC (Python) or Android (Kotlin)
+   │  Wi‑Fi    │  ← serves lobby + game/program packs
    └───────────┘
          ▲
     open in browser
@@ -71,7 +71,7 @@ When the lights come back, you can still use it — because local is faster, pri
 | **LAN multiplayer ready** | Shared protocol + `ogh-net` client; lobby over WebSocket. |
 | **PC host today** | Pure **Python 3 stdlib** — no Node, no pip, no `node_modules`. |
 | **Portable runtimes** | Windows + Linux Python ships *beside* the project for USB handoff. |
-| **Android next** | Kotlin + Compose host (Dual-class stack) planned. |
+| **Android host** | Kotlin + Compose app with one-button hosting, QR invite, and offline game packs. |
 | **UN languages** | i18n path for en · zh · ru · es · ar · fr. |
 
 ---
@@ -92,6 +92,9 @@ cd pc
 > **Phones + microphone / compass:** use `--https`, then open `https://PC_IP:8080/`  
 > and accept the certificate warning once. Details: [`pc/HTTPS.md`](pc/HTTPS.md).
 
+> **No PC nearby?** The [Android host](android/README.md) serves the same offline
+> library and shows one QR invite for everyone in the room.
+
 ### 2. Open the lobby
 
 - **On the host:** [http://127.0.0.1:8080/](http://127.0.0.1:8080/)  
@@ -101,14 +104,15 @@ cd pc
 
 **http://127.0.0.1:8080/games/**
 
-- Browse & **sort** all catalog games  
+- Browse & **sort** all catalog games and utility programs
 - Set **nickname** & **avatar** (presets or custom)  
 - See **local progress** per game  
 - **Download / upload** your profile JSON (browser storage only — never sent to the server)
 
 ### 4. Connect → pick a game → play
 
-Lobby (`/`) is for LAN room presence. Games load as static packs under `/games/<id>/...`.
+Lobby (`/`) is for LAN room presence. Games load under `/games/<id>/...`;
+utility programs live in the same web tree under `/games/programs/<id>/...`.
 
 > **Fully offline pack:** see [`pc/OFFLINE.md`](pc/OFFLINE.md).  
 > Portable Python under `pc/runtimes/` is gitignored (large) but lives on disk for USB copies.
@@ -117,18 +121,24 @@ Lobby (`/`) is for LAN room presence. Games load as static packs under `/games/<
 
 ## Games
 
-Experimental packs shipping in-repo:
+The catalog currently contains **55 game and utility entries**. Open
+[`games/catalog/games.json`](games/catalog/games.json) for the source of truth,
+or start the host and browse the friendly library at `/games/`.
 
-| Game | Feel | Players | Notes |
-|------|------|---------|--------|
-| **[Comet](games/comet/)** | Neon gravity puzzle | 1 | Place wells, guide the comet, difficulty scales speed & charges |
-| **[Comet Pixel](games/comet-pixel/)** | Chunkier pixel twin | 1 | Same soul, grid-snapped wells — a *variant*, not a reskin only |
-| **[Rootwork](games/rootwork/)** | 2D dig-build sandbox | 1 | Not Minecraft. Burrow, build, crystal light. Auto-save. |
-| **[Pulse Race](games/pulse-race/)** | Neon top-down racing | 1–4* | AI now; multiplayer path via `ogh-net` when host WS is up |
+### Add your game
 
-\*Online multiplayer gameplay is rolling out game-by-game; networking plumbing is already in place.
+You do not need Node.js, a framework, or a backend. Scaffold a tiny web game,
+edit its HTML/CSS/JavaScript, test it on a phone, and open a pull request:
 
-More ideas (party, word, board, trivia…): [`docs/games/CATALOG.md`](docs/games/CATALOG.md)
+```bash
+python3 tools/new_game.py my-cool-game --title "My Cool Game" --author "Your Name"
+python3 tools/validate_catalog.py
+```
+
+Start with the [beginner guide](docs/contributing/ADD_A_GAME.md) or the
+[краткая инструкция на русском](docs/contributing/ADD_A_GAME.ru.md). Ideas for
+party, word, board, and trivia games live in
+[`docs/games/CATALOG.md`](docs/games/CATALOG.md).
 
 ---
 
@@ -138,12 +148,12 @@ More ideas (party, word, board, trivia…): [`docs/games/CATALOG.md`](docs/games
 ┌────────────────────────────────────────────────────────────┐
 │  Platform hosts                                            │
 │  • pc/host.py     Python stdlib  — HTTP + WebSocket  ✅    │
-│  • android/       Kotlin + Compose host              🔜    │
+│  • android/       Kotlin + Compose host              ✅    │
 └────────────────────────────┬───────────────────────────────┘
                              │ LAN
 ┌────────────────────────────▼───────────────────────────────┐
 │  Browser clients                                           │
-│  lobby (pc/www)  ·  games/*  ·  shared kit (_shared)       │
+│  lobby (pc/www) · games/* · games/programs/* · shared kit  │
 │  ogh-net.js → offline fallback OR /ws when host is live    │
 └────────────────────────────────────────────────────────────┘
 ```
@@ -160,7 +170,7 @@ Deep dive: [`docs/architecture/MULTIPLAYER.md`](docs/architecture/MULTIPLAYER.md
 | PC host | Python **stdlib only** | Tiny, offline, no dependency hell |
 | Games | HTML / CSS / Canvas / vanilla JS | Universal phones, zero install |
 | Net | WebSocket + thin `ogh-net` | One protocol, many games |
-| Android (planned) | Kotlin + Jetpack Compose | Native UX, small APK, Dual-like DX |
+| Android host | Kotlin + Jetpack Compose | Native one-button hosting, QR invite, small APK |
 | Not used | Node-in-APK, Unity, Electron | Too heavy for this philosophy |
 
 ---
@@ -175,11 +185,12 @@ OFFline_games_app/
 ├── games/
 │   ├── _shared/              fonts, CSS, sfx, shaders, ogh-net
 │   ├── catalog/              JSON registry (genre, controls, authors…)
+│   ├── programs/             utility HTML/CSS/JS packs
 │   ├── comet/ · comet-pixel/
 │   ├── rootwork/
 │   └── pulse-race/
 ├── pc/                       LAN host + lobby + portable Python scripts
-└── android/                  host shell (docs first)
+└── android/                  Kotlin/Compose Android host
 ```
 
 ---
@@ -195,7 +206,7 @@ OFFline_games_app/
 | [Catalog schema](games/catalog/SCHEMA.md) | Metadata DB shape (JSON → SQLite later) |
 | [Core architecture](docs/architecture/CORE.md) | Host adapters, plugins |
 | [PC host architecture](docs/architecture/HOST_PC.md) | Python host design |
-| [Android stack](docs/architecture/ANDROID_STACK.md) | Kotlin/Compose host plan |
+| [Android stack](docs/architecture/ANDROID_STACK.md) | Kotlin/Compose host architecture |
 | [Multiplayer](docs/architecture/MULTIPLAYER.md) | LAN model, protocol draft |
 | [Security](docs/SECURITY.md) | LAN trust model |
 | [Roadmap](docs/plans/ROADMAP.md) | Phases |
@@ -222,9 +233,9 @@ OFFline_games_app/
 |-------|--------|--------|
 | 0 | Docs, catalog, first games, PC host | **Done** |
 | 1 | Real LAN multiplayer (turn-based → race → party) | In progress |
-| 2 | Android host (Compose + foreground service) | Planned |
-| 3 | 15–25 micro-games, filters, i18n | Planned |
-| 4 | CI, polished release, offline GitHub Release zips | Planned |
+| 2 | Android host (Compose + foreground service) | **Available** |
+| 3 | Community catalog, filters, i18n | In progress — 55 entries |
+| 4 | CI, polished release, offline GitHub Release zips | In progress |
 
 Full agent-friendly plan: [`docs/plans/LLM_DEVELOPMENT_PLAN.md`](docs/plans/LLM_DEVELOPMENT_PLAN.md)
 
@@ -240,6 +251,7 @@ Full agent-friendly plan: [`docs/plans/LLM_DEVELOPMENT_PLAN.md`](docs/plans/LLM_
 | **[Documentation index](docs/README.md)** | Full map of docs (English) |
 | **[Game integration manual](docs/contributing/GAME_INTEGRATION_MANUAL.md)** | **Long guide: embed solo/MP games + saves** |
 | **[Add a game (short)](docs/contributing/ADD_A_GAME.md)** | Quick beginner path |
+| **[Добавить игру (по-русски)](docs/contributing/ADD_A_GAME.ru.md)** | Краткая инструкция для начинающих |
 | **[Multiplayer games](docs/contributing/ADD_MULTIPLAYER_GAME.md)** | ogh-net guide |
 | **[Save progress](docs/contributing/SAVE_PROGRESS.md)** | Profile + localStorage API |
 | **[Engine API](docs/contributing/ENGINE_API.md)** | Manifest, URLs, net events |
@@ -247,8 +259,8 @@ Full agent-friendly plan: [`docs/plans/LLM_DEVELOPMENT_PLAN.md`](docs/plans/LLM_
 
 ```bash
 # scaffold + register in library
-python3 tools/new_game.py my-cool-game --title "My Cool Game"
-python3 tools/new_game.py tap-arena --multiplayer --title "Tap Arena"
+python3 tools/new_game.py my-cool-game --title "My Cool Game" --author "Your Name"
+python3 tools/new_game.py tap-arena --multiplayer --title "Tap Arena" --author "Your Name"
 python3 tools/validate_catalog.py
 ```
 
@@ -271,7 +283,8 @@ Prompt starter for AI agents:
 
 Third-party notes:
 
-- Fonts under `games/_shared/fonts/` — SIL OFL (and JetBrains Mono OFL)  
+- Bundled fonts keep their upstream OFL/Apache licenses; see
+  [`games/_shared/fonts/THIRD_PARTY_NOTICES.md`](games/_shared/fonts/THIRD_PARTY_NOTICES.md)
 - Portable CPython under `pc/runtimes/*` (when present) — PSF License  
 
 ---

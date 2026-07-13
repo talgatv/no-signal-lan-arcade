@@ -1,0 +1,481 @@
+/* Brick Game — a deliberately skeuomorphic retro-LCD handheld skin, a clear
+ * departure from the hub's neon-vector look (same spirit as paint-xp going
+ * full Windows-XP). A graphite plastic console holds a pale olive dot-matrix
+ * LCD; all three sub-games render as chunky dark dots on that one screen, and
+ * a physical D-pad + A button drive them. The LCD palette here mirrors the
+ * constants in lcd.js so canvas and chrome agree.
+ *
+ * RTL: the document flips for Arabic so the header, hint, HUD, menu and
+ * overlay text mirror — but .bg-controls is dir="ltr" (D-pad never mirrors)
+ * and the <canvas> is drawn dir=ltr in lcd.js (the play field never mirrors).
+ */
+:root {
+  --lcd-panel: #aab883;
+  --lcd-ghost: #9eac76;
+  --lcd-ink: #2c3317;
+  --lcd-dim: #5f6a37;
+  --case: #262a32;
+  --case-hi: #39404b;
+  --case-lo: #171a20;
+  --case-edge: #4b5360;
+  --bezel: #12141a;
+  --btn-face: #454c57;
+  --btn-face-hi: #565e6b;
+  --btn-shadow: #14161c;
+  --a-red: #d6473b;
+  --a-red-hi: #e8695e;
+}
+
+.bg-body {
+  background:
+    radial-gradient(120% 80% at 50% -10%, #20242c 0%, #0c0d12 70%);
+  color: var(--ogh-fg);
+}
+
+/* ── header ─────────────────────────────────────────────────────────── */
+.bg-top {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px 4px;
+  z-index: 3;
+}
+.back {
+  color: var(--ogh-accent);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+.lang-btn {
+  min-height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(158, 172, 118, 0.4);
+  background: transparent;
+  color: var(--ogh-fg-dim);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lang-btn.is-on {
+  color: #14160f;
+  background: #b7c187;
+  border-color: #b7c187;
+}
+
+/* ── stage + console ────────────────────────────────────────────────── */
+.bg-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  z-index: 1;
+}
+
+.bg-console {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(94vw, 56vh, 372px);
+  padding: 16px 16px 18px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, var(--case-hi), var(--case) 45%, var(--case-lo));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.5),
+    0 18px 44px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.bg-brand {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 2px;
+}
+.bg-brand-name {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(10px, 3.2vw, 15px);
+  color: #e7ead8;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 0 #000, 0 0 10px rgba(214, 71, 59, 0.25);
+}
+.bg-brand-badge {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(5px, 1.6vw, 7.5px);
+  color: #e8b23a;
+  border: 1px solid rgba(232, 178, 58, 0.5);
+  border-radius: 4px;
+  padding: 3px 5px;
+  white-space: nowrap;
+}
+
+/* ── the LCD screen ─────────────────────────────────────────────────── */
+.bg-screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  background: var(--lcd-panel);
+  overflow: hidden;
+  padding: 5px;
+  border: 3px solid var(--bezel);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.25),
+    inset 0 2px 10px rgba(0, 0, 0, 0.3),
+    0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* HUD readout — a mono "digital" strip printed on the LCD. */
+.bg-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  gap: 4px 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 5px 8px;
+  pointer-events: none;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  background: linear-gradient(180deg, rgba(44, 51, 23, 0.14), rgba(44, 51, 23, 0));
+}
+.bg-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--lcd-ink);
+  font-size: clamp(8px, 2.3vw, 11px);
+  line-height: 1;
+}
+.bg-pill .k {
+  font-size: 0.82em;
+  opacity: 0.72;
+  letter-spacing: 0.04em;
+}
+.bg-pill .v {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Flash banner (READY / WAVE 2 / LEVEL 3). */
+.bg-banner {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-weight: 700;
+  font-size: clamp(16px, 5.5vw, 28px);
+  letter-spacing: 0.14em;
+  color: var(--lcd-ink);
+  text-shadow: 0 1px 0 rgba(170, 184, 131, 0.8);
+  opacity: 0;
+}
+.bg-banner.is-show {
+  animation: bg-banner 1.4s ease-out both;
+}
+@keyframes bg-banner {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+  18% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  72% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── menu (the collection hub) ──────────────────────────────────────── */
+.bg-menu-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+.bg-menu {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 9px 10px 8px;
+  color: var(--lcd-ink);
+  /* faint ghost-dot texture so the menu reads as the same LCD grid */
+  background-color: var(--lcd-panel);
+  background-image: radial-gradient(var(--lcd-ghost) 34%, transparent 36%);
+  background-size: 7.7% 7.7%;
+  background-position: 1px 1px;
+}
+.bg-menu-head { text-align: center; margin-bottom: 6px; }
+.bg-menu-title {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(9px, 3vw, 13px);
+  letter-spacing: 0.02em;
+}
+:root[dir="rtl"] .bg-menu-title,
+:root[lang="zh"] .bg-menu-title,
+:root[lang="ar"] .bg-menu-title {
+  /* Press Start 2P has no CJK/Arabic glyphs — fall back for those langs. */
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-weight: 700;
+}
+.bg-menu-sub {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: clamp(8px, 2.2vw, 10px);
+  opacity: 0.75;
+  margin-top: 4px;
+}
+.bg-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+.bg-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border: 2px solid var(--lcd-ink);
+  border-radius: 5px;
+  cursor: pointer;
+  background: rgba(44, 51, 23, 0.04);
+}
+.bg-menu-item.is-sel {
+  background: var(--lcd-ink);
+  color: var(--lcd-panel);
+}
+.bg-menu-icon {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: 3px;
+  image-rendering: pixelated;
+}
+.bg-menu-info { flex: 1 1 auto; min-width: 0; text-align: start; }
+.bg-menu-name {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-weight: 700;
+  font-size: clamp(11px, 3.1vw, 14px);
+  letter-spacing: 0.02em;
+}
+.bg-menu-desc {
+  font-size: clamp(9px, 2.4vw, 11px);
+  opacity: 0.78;
+  margin-top: 1px;
+}
+.bg-menu-best {
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: clamp(8px, 2.2vw, 10px);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.bg-menu-hint {
+  text-align: center;
+  font-size: clamp(8px, 2.2vw, 10px);
+  opacity: 0.72;
+  margin-top: 6px;
+}
+
+/* ── overlays (start / results) ─────────────────────────────────────── */
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(24, 28, 16, 0.62);
+}
+.bg-card {
+  width: 100%;
+  max-width: 260px;
+  text-align: center;
+  color: var(--lcd-ink);
+  background: linear-gradient(180deg, #b6c48f, #a3b17b);
+  border: 2px solid var(--lcd-ink);
+  border-radius: 7px;
+  padding: 14px 14px 16px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+}
+.bg-card h2 {
+  margin: 0 0 6px;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: clamp(15px, 4.6vw, 20px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.bg-blurb {
+  margin: 0 0 8px;
+  font-size: clamp(10px, 2.7vw, 12px);
+  line-height: 1.4;
+}
+.bg-controls-note {
+  margin: 0 0 8px;
+  font-size: clamp(9px, 2.3vw, 10.5px);
+  opacity: 0.82;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+}
+.bg-best, .bg-sub, .bg-score {
+  margin: 4px 0;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-size: clamp(10px, 2.7vw, 12px);
+}
+.bg-score { font-weight: 700; font-size: clamp(12px, 3.2vw, 15px); }
+.bg-newbest {
+  margin: 4px 0;
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-weight: 700;
+  font-size: clamp(11px, 3vw, 13px);
+  animation: bg-blink 0.7s steps(2) infinite;
+}
+@keyframes bg-blink { 50% { opacity: 0.3; } }
+
+.bg-ui-btn {
+  margin-top: 8px;
+  min-height: 40px;
+  width: 100%;
+  padding: 0 14px;
+  border: 2px solid var(--lcd-ink);
+  border-radius: 5px;
+  background: var(--lcd-ink);
+  color: var(--lcd-panel);
+  font-family: "JetBrains Mono", var(--ogh-mono);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+.bg-ui-btn:active { transform: scale(0.97); }
+.bg-ui-btn-ghost {
+  background: transparent;
+  color: var(--lcd-ink);
+}
+.bg-card-btns { display: flex; flex-direction: column; gap: 6px; }
+
+/* ── physical controls ──────────────────────────────────────────────── */
+.bg-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 4px 0;
+  gap: 12px;
+}
+
+.bg-dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 40px);
+  grid-template-rows: repeat(3, 40px);
+  flex: 0 0 auto;
+}
+.bg-db {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: #cfd3da;
+  font-size: 15px;
+  cursor: pointer;
+  background: linear-gradient(160deg, var(--btn-face-hi), var(--btn-face));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 3px var(--btn-shadow);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+.bg-db:active, .bg-db.is-active {
+  background: linear-gradient(160deg, var(--btn-face), var(--btn-face-hi));
+  color: #fff;
+  transform: translateY(1px);
+}
+.bg-db-up { grid-area: 1 / 2; border-radius: 7px 7px 0 0; }
+.bg-db-left { grid-area: 2 / 1; border-radius: 7px 0 0 7px; }
+.bg-db-right { grid-area: 2 / 3; border-radius: 0 7px 7px 0; }
+.bg-db-down { grid-area: 3 / 2; border-radius: 0 0 7px 7px; }
+.bg-db-mid {
+  grid-area: 2 / 2;
+  background: linear-gradient(160deg, var(--btn-face), var(--btn-face-hi));
+  box-shadow: inset 0 0 4px var(--btn-shadow);
+}
+.bg-db-mid::after {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: 15px auto;
+  border-radius: 50%;
+  background: #2c313a;
+}
+
+.bg-action-cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+.bg-a-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  font-family: "Press Start 2P", monospace;
+  font-size: 18px;
+  cursor: pointer;
+  background: radial-gradient(circle at 35% 30%, var(--a-red-hi), var(--a-red) 65%, #a5342b);
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), 0 4px 8px rgba(0, 0, 0, 0.45);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+.bg-a-btn:active, .bg-a-btn.is-active {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.bg-menu-btn {
+  min-width: 54px;
+  height: 26px;
+  border-radius: 999px;
+  border: none;
+  color: #d3d7de;
+  font-size: 13px;
+  cursor: pointer;
+  background: linear-gradient(160deg, var(--btn-face-hi), var(--btn-face));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 2px 3px var(--btn-shadow);
+}
+.bg-menu-btn:active { transform: translateY(1px); }
+
+/* ── hint ───────────────────────────────────────────────────────────── */
+.ogh-hint {
+  color: var(--ogh-fg-dim);
+}
+
+@media (max-height: 620px) {
+  .bg-brand-badge { display: none; }
+  .bg-console { gap: 7px; padding: 12px 12px 14px; }
+  .bg-dpad { grid-template-columns: repeat(3, 34px); grid-template-rows: repeat(3, 34px); }
+  .bg-a-btn { width: 60px; height: 60px; }
+}
